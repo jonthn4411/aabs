@@ -159,8 +159,8 @@ build_droid_code: output_dir
 	make 
 	$(log) "  done"
 
-.PHONY: build_kernel_flash build_kernel_nfs cp_root_dir
-build_kernel: build_kernel_nfs build_kernel_flash  
+.PHONY: build_kernel_flash build_kernel_nfs build_kernel_mmc cp_root_dir 
+build_kernel: build_kernel_flash build_kernel_mmc build_kernel_nfs  
 
 cp_root_dir:
 	$(log) "copying root directory from $(OUTPUT_DIR)..."
@@ -186,6 +186,17 @@ build_kernel_nfs: output_dir
 	make pxa168_android_nfs_defconfig && \
 	make 
 	$(hide)cp $(KERNEL_SRC_DIR)/arch/arm/boot/zImage $(OUTPUT_DIR)/zImage.nfs
+	$(log) "  done."
+
+build_kernel_mmc: output_dir
+	$(log) "starting to build kernel for booting android from SD card..."
+	$(hide)cd $(KERNEL_SRC_DIR) && \
+	export PATH=$(KERNEL_TOOLCHAIN_DIR):$$PATH && \
+	export ARCH=arm && \
+	export CROSS_COMPILE=$(KERNEL_TOOLCHAIN_PREFIX) && \
+	make pxa168_android_mmc_defconfig && \
+	make
+	$(hide)cp $(KERNEL_SRC_DIR)/arch/arm/boot/zImage $(OUTPUT_DIR)/zImage.mmc
 	$(log) "  done."
 
 build_uboot:
@@ -220,6 +231,7 @@ publish_bin: publish_dir
 	$(hide)cp $(OUTPUT_DIR)/userdata.img $(PUBLISH_DIR)
 	$(hide)cp $(OUTPUT_DIR)/zImage.nfs $(PUBLISH_DIR)
 	$(hide)cp $(OUTPUT_DIR)/root_nfs.tgz $(PUBLISH_DIR)
+	$(hide)cp $(OUTPUT_DIR)/zImage.mmc $(PUBLISH_DIR)
 	$(hide)cp $(OUTPUT_DIR)/changelog.day $(PUBLISH_DIR)
 	$(hide)cp $(OUTPUT_DIR)/changelog.week $(PUBLISH_DIR)
 	$(hide)cp $(OUTPUT_DIR)/changelog.biweek $(PUBLISH_DIR)
