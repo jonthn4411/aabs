@@ -142,11 +142,8 @@ cp_droid_bin:
 
 gen_droid_nfs:
 	$(log) "generating root file system for booting android from NFS."
-	$(log) "  modifying init.rc..."
-	$(hide)sed -in "/^[ tab]*mount yaffs2/ s/mount/#(for nfs)mount/" $(OUTPUT_DIR)/root_nfs/init.rc
-	$(hide)sed -in "/^[ tab]*mount rootfs rootfs/ s/mount/#(for nfs)mount/" $(OUTPUT_DIR)/root_nfs/init.rc
-	$(log) "  chmod a+r system/usr/keychars/*..."
-	$(hide)chmod a+r $(OUTPUT_DIR)/root_nfs/system/usr/keychars/* 
+	$(log) "  modifying root nfs folder..."
+	$(hide)cd $(OUTPUT_DIR)/root_nfs && $(TOP_DIR)/twist_root_nfs.sh 
 	$(log) "  packaging the root_nfs.tgz..."
 	$(hide)cd $(OUTPUT_DIR) && tar czf root_nfs.tgz root_nfs/
 	$(log) "  done"
