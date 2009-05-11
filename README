@@ -1,0 +1,61 @@
+Setup the environment
+=====================
+
+1. Install the required components to build Android. Check for http://source.android.com
+
+2. Install Marvell gcc toolchain which is needed to build kernel.
+   The marvell gcc toolchain can be downloaded from //sh1sbak009/Product_Integration/Releases/Toolchain.
+   In order to simplify the setting, the toolchain should be installed at: /usr/local/arm-marvell-linux-gnueabi/bin
+
+3. Create the publish directory which is used to post the build result.
+   In order to simplify the setting, the publish directory should be /autobuild/android/
+
+4. Create the demomedia directory and put the demo media files there. This is not mandatory. If the demomedia folder
+   exists, the build script will copy the demo media files to the /sdcard folder of the device while generating the
+   root_nfs.tgz.
+
+
+Running the script
+==================
+
+Usage: autobuild.sh [clean] [pkgsrc] [email] [publish]
+
+By default the script doesn't do clean, if "clean" is not specified.
+The script doesn't generate the package of source code, if "pkgsrc" is not specified.
+The script doesn't send any email notification, if "email" is not specified.
+The script doesn't copy the result to publish folder, if "publish" is not specified.
+
+Running the script daily:
+
+$ crontab -e
+
+Be sure add the following lines:
+
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+If you want to run the build script daily, add the following line:
+
+0   1   *   *  2-6   cd ~/work/autobuild && ./autobuild.sh clean pkgsrc publish email
+
+Notes: the script must run from the folder where it locates.
+
+
+Email notification
+==================
+
+If the "email" is specified in the command line, the script generates a notification at the end of script.
+
+If the build is failed, an error notification is generated and sent to "dev_team".
+
+If the build is successful and there is change since last day, a succesful notification is generated and sent to 
+bot the "dev_team" and "announce_list"
+
+If the build is successful and there is no change since last day, a successful notification is generated and send to
+the "maintainer" only.
+
+
+
+
+   
+
