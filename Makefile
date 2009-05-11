@@ -38,6 +38,7 @@ SRC_DIR:=avengers
 OUTPUT_DIR:=out
 RELEASE_VERSION:=$(shell date +%Y-%m-%d)
 PUBLISH_DIR:=/autobuild/android/$(RELEASE_VERSION)/avlite
+DEMO_MEDIA_DIR:=/autobuild/demomedia
 
 current-time:=[$$(date "+%Y-%m-%d %H:%M:%S")]
 log:=@echo $(current-time)
@@ -144,6 +145,14 @@ gen_droid_nfs:
 	$(log) "generating root file system for booting android from NFS."
 	$(log) "  modifying root nfs folder..."
 	$(hide)cd $(OUTPUT_DIR)/root_nfs && $(TOP_DIR)/twist_root_nfs.sh 
+	$(log) "copy demo media files to /sdcard if there are demo media files..."
+	$(hide)if [ -d "$(DEMO_MEDIA_DIR)" ]; then \
+			mkdir -p $(OUTPUT_DIR)/root_nfs/sdcard && \
+			cp $(DEMO_MEDIA_DIR)/* $(OUTPUT_DIR)/root_nfs/sdcard/ && \
+			echo "  done."; \
+		   else \
+			echo "    !!!demo media is not found."; \
+		   fi
 	$(log) "  packaging the root_nfs.tgz..."
 	$(hide)cd $(OUTPUT_DIR) && tar czf root_nfs.tgz root_nfs/
 	$(log) "  done"
