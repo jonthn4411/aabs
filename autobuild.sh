@@ -138,7 +138,7 @@ STD_LOG=autobuild.log
 build_maintainer=$(cat maintainer)
 dev_team=$(cat dev_team )
 announce_list=$(cat announce_list )
-project_name=$(cat project_name)
+project_name="Android for AVLite"
 envelopesend="-f $build_maintainer"
 
 FLAG_CLEAN=false
