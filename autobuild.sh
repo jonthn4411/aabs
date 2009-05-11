@@ -32,9 +32,16 @@ generate_error_notification_email()
 	This is an automated email from the autobuild script. It was
 	generated because an error encountered while building the code.
 	The error can be resulted from newly updated source codes. 
-	Please check the log below and fix the error as early as possible.
+	Please check the change log (if it is generated successfully) 
+    and build log below and fix the error as early as possible.
 
-	=========================== LOG ===========================
+	=========================== Change LOG ====================
+
+	$(cat out/changelog.day 2>/dev/null)
+	
+	===========================================================
+
+	=========================== Build LOG =====================
 
 	$(cat $STD_LOG 2>/dev/null)
 	
