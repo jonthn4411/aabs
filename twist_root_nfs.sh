@@ -4,11 +4,12 @@
 # This script can be run multiple times on the root nfs folder and still
 # generate the proper result.
 
-function gen_init_sdcard_sh()
+function gen_init_nfs_sh()
 {
 	cat > $1 <<-EOF
 	#!/system/bin/sh
-
+	
+	#simulate SD card and generate mounted intent
 	chmod 0777 /sdcard
 	chmod 0444 /sdcard/*.*
 	setprop EXTERNAL_STORAGE_STATE mounted
@@ -17,6 +18,17 @@ function gen_init_sdcard_sh()
 	ls /sdcard >/dev/null	
 	sleep 2s
 	am broadcast -a android.intent.action.MEDIA_MOUNTED --ez read-only false -d file:///sdcard
+
+	#work around for audio mixer, enable all the path by default
+	#Enable Speaker
+	amixer cset numid=8 3
+	amixer cset numid=9 127
+	amixer cset numid=10 1
+
+	#Enable Headset
+	amixer cset numid=6 127
+	amixer cset numid=5 1
+
 	EOF
 }
 
@@ -37,13 +49,14 @@ a\
 
 }' init.rc &&
 
-if grep "service init-sdcard /init.sdcard.sh" init.rc; then
-  echo "  already have service init-sdcard define..."
+#add service to init nfs
+if grep "service init-nfs /init.nfs.sh" init.rc; then
+  echo "  already have service init-nfs defined..."
 else
   cat >>init.rc <<-EOF
 	
 	#for nfs
-	service init-sdcard /init.sdcard.sh
+	service init-nfs /init.nfs.sh
 	    user root
 	    group root
 	    oneshot
@@ -52,9 +65,9 @@ else
 	EOF
 fi &&
 
-gen_init_sdcard_sh init.sdcard.sh &&
+gen_init_nfs_sh init.nfs.sh &&
 
-chmod 0755 init.sdcard.sh &&
+chmod 0755 init.nfs.sh &&
 
 echo "  chmod a+r system/usr/keychars/*..." &&
 chmod a+r ./system/usr/keychars/* 
