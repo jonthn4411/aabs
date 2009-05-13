@@ -166,7 +166,10 @@ build_droid_code: output_dir
 	$(log) "  done"
 
 .PHONY: build_kernel_flash build_kernel_nfs build_kernel_mmc cp_root_dir 
-build_kernel: build_kernel_flash build_kernel_mmc build_kernel_nfs  
+build_kernel: build_kernel_flash build_kernel_mmc build_kernel_nfs build_maemo_kernel 
+
+.PHONY: build_maemo_kernel build_kernel_mameo_flash build_kernel_maemo_nfs build_kernel_maemo_mmc
+build_maemo_kernel: build_kernel_mameo_flash build_kernel_maemo_nfs build_kernel_maemo_mmc 
 
 cp_root_dir:
 	$(log) "copying root directory from $(OUTPUT_DIR)..."
@@ -180,7 +183,7 @@ build_kernel_flash: output_dir cp_root_dir
 	export CROSS_COMPILE=$(KERNEL_TOOLCHAIN_PREFIX) && \
 	make pxa168_android_defconfig && \
 	make 
-	$(hide)cp $(KERNEL_SRC_DIR)/arch/arm/boot/zImage $(OUTPUT_DIR)/zImage 
+	$(hide)cp $(KERNEL_SRC_DIR)/arch/arm/boot/zImage $(OUTPUT_DIR)/zImage.droid 
 	$(log) "  done."
 
 build_kernel_nfs: output_dir
@@ -191,7 +194,7 @@ build_kernel_nfs: output_dir
 	export CROSS_COMPILE=$(KERNEL_TOOLCHAIN_PREFIX) && \
 	make pxa168_android_nfs_defconfig && \
 	make 
-	$(hide)cp $(KERNEL_SRC_DIR)/arch/arm/boot/zImage $(OUTPUT_DIR)/zImage.nfs
+	$(hide)cp $(KERNEL_SRC_DIR)/arch/arm/boot/zImage $(OUTPUT_DIR)/zImage.droid.nfs
 	$(log) "  done."
 
 build_kernel_mmc: output_dir
@@ -202,7 +205,40 @@ build_kernel_mmc: output_dir
 	export CROSS_COMPILE=$(KERNEL_TOOLCHAIN_PREFIX) && \
 	make pxa168_android_mmc_defconfig && \
 	make
-	$(hide)cp $(KERNEL_SRC_DIR)/arch/arm/boot/zImage $(OUTPUT_DIR)/zImage.mmc
+	$(hide)cp $(KERNEL_SRC_DIR)/arch/arm/boot/zImage $(OUTPUT_DIR)/zImage.droid.mmc
+	$(log) "  done."
+
+build_kernel_maemo_flash: output_dir cp_root_dir
+	$(log) "starting to build kernel for booting maemo from flash..."
+	$(hide)cd $(KERNEL_SRC_DIR) && \
+	export PATH=$(KERNEL_TOOLCHAIN_DIR):$$PATH && \
+	export ARCH=arm && \
+	export CROSS_COMPILE=$(KERNEL_TOOLCHAIN_PREFIX) && \
+	make pxa168_defconfig && \
+	make 
+	$(hide)cp $(KERNEL_SRC_DIR)/arch/arm/boot/zImage $(OUTPUT_DIR)/zImage.maemo 
+	$(log) "  done."
+
+build_kernel_maemo_nfs: output_dir
+	$(log) "starting to build kernel for booting maemo from NFS..."
+	$(hide)cd $(KERNEL_SRC_DIR) && \
+	export PATH=$(KERNEL_TOOLCHAIN_DIR):$$PATH && \
+	export ARCH=arm && \
+	export CROSS_COMPILE=$(KERNEL_TOOLCHAIN_PREFIX) && \
+	make pxa168_nfs_defconfig && \
+	make 
+	$(hide)cp $(KERNEL_SRC_DIR)/arch/arm/boot/zImage $(OUTPUT_DIR)/zImage.maemo.nfs
+	$(log) "  done."
+
+build_kernel_maemo_mmc: output_dir
+	$(log) "starting to build kernel for booting maemo from SD card..."
+	$(hide)cd $(KERNEL_SRC_DIR) && \
+	export PATH=$(KERNEL_TOOLCHAIN_DIR):$$PATH && \
+	export ARCH=arm && \
+	export CROSS_COMPILE=$(KERNEL_TOOLCHAIN_PREFIX) && \
+	make pxa168_mmc_defconfig && \
+	make
+	$(hide)cp $(KERNEL_SRC_DIR)/arch/arm/boot/zImage $(OUTPUT_DIR)/zImage.maemo.mmc
 	$(log) "  done."
 
 build_uboot:
@@ -232,12 +268,15 @@ publish_src: publish_dir
 	
 publish_bin: publish_dir
 	$(log) "copy binary files to publish dir..."
-	$(hide)cp $(OUTPUT_DIR)/zImage $(PUBLISH_DIR) 
+	$(hide)cp $(OUTPUT_DIR)/zImage.droid $(PUBLISH_DIR) 
 	$(hide)cp $(OUTPUT_DIR)/system.img $(PUBLISH_DIR)
 	$(hide)cp $(OUTPUT_DIR)/userdata.img $(PUBLISH_DIR)
-	$(hide)cp $(OUTPUT_DIR)/zImage.nfs $(PUBLISH_DIR)
+	$(hide)cp $(OUTPUT_DIR)/zImage.droid.nfs $(PUBLISH_DIR)
 	$(hide)cp $(OUTPUT_DIR)/root_nfs.tgz $(PUBLISH_DIR)
-	$(hide)cp $(OUTPUT_DIR)/zImage.mmc $(PUBLISH_DIR)
+	$(hide)cp $(OUTPUT_DIR)/zImage.droid.mmc $(PUBLISH_DIR)
+	$(hide)cp $(OUTPUT_DIR)/zImage.maemo $(PUBLISH_DIR)
+	$(hide)cp $(OUTPUT_DIR)/zImage.maemo.nfs $(PUBLISH_DIR)
+	$(hide)cp $(OUTPUT_DIR)/zImage.maemo.mmc $(PUBLISH_DIR)
 	$(hide)cp $(OUTPUT_DIR)/changelog.day $(PUBLISH_DIR)
 	$(hide)cp $(OUTPUT_DIR)/changelog.week $(PUBLISH_DIR)
 	$(hide)cp $(OUTPUT_DIR)/changelog.biweek $(PUBLISH_DIR)
