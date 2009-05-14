@@ -168,8 +168,8 @@ build_droid_code: output_dir
 .PHONY: build_kernel_flash build_kernel_nfs build_kernel_mmc cp_root_dir 
 build_kernel: build_kernel_flash build_kernel_mmc build_kernel_nfs build_maemo_kernel 
 
-.PHONY: build_maemo_kernel build_kernel_mameo_flash build_kernel_maemo_nfs build_kernel_maemo_mmc
-build_maemo_kernel: build_kernel_mameo_flash build_kernel_maemo_nfs build_kernel_maemo_mmc 
+.PHONY: build_maemo_kernel build_kernel_maemo_flash build_kernel_maemo_nfs build_kernel_maemo_mmc
+build_maemo_kernel: build_kernel_maemo_flash build_kernel_maemo_nfs build_kernel_maemo_mmc 
 
 cp_root_dir:
 	$(log) "copying root directory from $(OUTPUT_DIR)..."
