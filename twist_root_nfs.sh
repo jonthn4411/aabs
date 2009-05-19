@@ -29,6 +29,9 @@ function gen_init_nfs_sh()
 	amixer cset numid=6 127
 	amixer cset numid=5 1
 
+	#workaround for keychars
+	chmod 0644 /system/usr/keychars/*
+
 	EOF
 }
 
@@ -67,10 +70,7 @@ fi &&
 
 gen_init_nfs_sh init.nfs.sh &&
 
-chmod 0755 init.nfs.sh &&
-
-echo "  chmod a+r system/usr/keychars/*..." &&
-chmod a+r ./system/usr/keychars/* 
+chmod 0755 init.nfs.sh 
 
 if [ $? -ne 0 ]; then
   exit 1
