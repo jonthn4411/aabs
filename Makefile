@@ -131,8 +131,8 @@ build_droid: build_droid_code cp_droid_bin gen_droid_nfs
 
 cp_droid_bin:
 	$(log) "copying android binaries to output dir:$(OUTPUT_DIR)..."
-	$(hide)cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system.img $(OUTPUT_DIR)
-	$(hide)cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/userdata.img $(OUTPUT_DIR)
+	$(hide)cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system.img $(OUTPUT_DIR) && chmod a+r $(OUTPUT_DIR)/system.img
+	$(hide)cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/userdata.img $(OUTPUT_DIR) && chmod a+r $(OUTPUT_DIR)/userdata.img
 	$(hide)if [ -d $(OUTPUT_DIR)/root ]; then rm -fr $(OUTPUT_DIR)/root; fi
 	$(hide)if [ -d $(OUTPUT_DIR)/root_nfs ]; then rm -fr $(OUTPUT_DIR)/root_nfs; fi
 	$(hide)cp -p -r $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/root $(OUTPUT_DIR) 
