@@ -37,9 +37,7 @@ function gen_init_nfs_sh()
 
 echo "  modifying init.rc..." &&
 sed -i "/^[ tab]*mount yaffs2/ s/mount/#(for nfs)mount/" init.rc &&
-
 sed -i "/^[ tab]*mount rootfs rootfs/ s/mount/#(for nfs)mount/" init.rc &&
-
 sed -i '/^[ tab]*mkdir \/sdcard 0000 system system/ {
 s/mkdir/#(for nfs)mkdir/ 
 a\
@@ -69,8 +67,12 @@ else
 fi &&
 
 gen_init_nfs_sh init.nfs.sh &&
+chmod 0755 init.nfs.sh &&
 
-chmod 0755 init.nfs.sh 
+#temp work around for loading GC300 driver which requires mknod. to be removed.
+echo "  copying busybox to /data for loading GC300 driver..." &&
+cp /autobuild/tools/busybox data/ &&
+chmod 777 data/busybox
 
 if [ $? -ne 0 ]; then
   exit 1
