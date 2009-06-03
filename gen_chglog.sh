@@ -22,7 +22,7 @@ function gen_log()
 			COMMITS[$len]=$line
 			len=$(( $len + 1 ))
 		fi
-	done < <(git --no-pager log --since="$1" --pretty="format:%s [%h]%n")
+	done < <(git --no-pager log --since="$1" --pretty="format:%s [%an][%h]%n")
 
 	if [ $len -gt 0 ]; then
 		echo "--------" >> $2
