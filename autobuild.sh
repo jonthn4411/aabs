@@ -20,6 +20,24 @@ esac
 echo "$IP"
 }
 
+function get_new_publish_dir()
+{
+	DATE=$(date +%Y-%m-%d)
+	PUBLISH_DIR=$PUBLISH_DIR_BASE/${DATE}_avlite
+	index=0
+	while [ 1 ]; do
+	  if [ ! -d $PUBLISH_DIR ]; then
+	    break
+	  else
+	    if [ -z "$(ls $PUBLISH_DIR)" ]; then
+	      break
+	    fi
+	  fi
+	  index=$(( index + 1 ))
+	  PUBLISH_DIR=$PUBLISH_DIR_BASE/${DATE}_${index}_avlite
+	done
+}
+
 generate_error_notification_email()
 {
 	# --- Email (all stdout will be the email)
@@ -66,15 +84,15 @@ generate_success_notification_email()
 	the package is changed since last day.
 
 	You can get the package from:
-		\\\\$(get_ip)${PACKAGE_DIR//\//\\}
+		\\\\$(get_ip)${PUBLISH_DIR//\//\\}
 	or
-		http://$(get_ip)${PACKAGE_DIR}
+		http://$(get_ip)${PUBLISH_DIR}
 	or
-		mount -t nfs $(get_ip):${PACKAGE_DIR} /mnt
+		mount -t nfs $(get_ip):${PUBLISH_DIR} /mnt
 
 	The change log since last day is:
 
-	$(cat ${PACKAGE_DIR}/changelog.day)
+	$(cat ${PUBLISH_DIR}/changelog.day)
 
 	---
 	$project_name	
@@ -95,11 +113,11 @@ generate_build_complete_email()
 	no change is found since last day.
 
 	You can get the package from:
-		\\\\$(get_ip)${PACKAGE_DIR//\//\\}
+		\\\\$(get_ip)${PUBLISH_DIR//\//\\}
 	or
-		http://$(get_ip)${PACKAGE_DIR}
+		http://$(get_ip)${PUBLISH_DIR}
 	or
-		mount -t nfs $(get_ip):${PACKAGE_DIR} /mnt
+		mount -t nfs $(get_ip):${PUBLISH_DIR} /mnt
 
 	---
 	$project_name	
@@ -113,7 +131,7 @@ send_error_notification()
 
 send_success_notification()
 {
-	if [ -s "${PACKAGE_DIR}/changelog.day" ]; then
+	if [ -s "${PUBLISH_DIR}/changelog.day" ]; then
 		echo "    changes found since last day, notify all..."
 		generate_success_notification_email | /usr/sbin/sendmail -t $envelopesender
 	else
@@ -140,6 +158,9 @@ dev_team=$(cat dev_team )
 announce_list=$(cat announce_list )
 project_name="Android for AVLite"
 envelopesend="-f $build_maintainer"
+
+PUBLISH_DIR="Not Published"
+PUBLISH_DIR_BASE=/autobuild/android
 
 FLAG_CLEAN=false
 FLAG_PUBLISH=false
@@ -171,12 +192,10 @@ if [ "$FLAG_PKGSRC" = "true" ]; then
 	make pkgsrc 2>&1 | tee -a $STD_LOG
 fi &&
 
-#we need get the publish_dir just before publishing, as the make may accross one day, 
-#it may return different path if calling it before make all.
-PACKAGE_DIR=$(make get_publish_dir) &&
-
 if [ "$FLAG_PUBLISH" = "true" ]; then
-	make publish 2>&1 | tee -a $STD_LOG 
+	get_new_publish_dir
+	export PUBLISH_DIR
+	make publish -e 2>&1 | tee -a $STD_LOG 
 fi
 
 if [ $? -ne 0 ]; then #auto build fail, send an email

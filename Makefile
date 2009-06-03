@@ -36,8 +36,6 @@ hide:=@
 
 SRC_DIR:=avengers
 OUTPUT_DIR:=out
-RELEASE_VERSION:=$(shell date +%Y-%m-%d)
-PUBLISH_DIR:=/autobuild/android/$(RELEASE_VERSION)/avlite
 DEMO_MEDIA_DIR:=/autobuild/demomedia
 
 current-time:=[$$(date "+%Y-%m-%d %H:%M:%S")]
@@ -237,14 +235,15 @@ build_kernel_maemo_mmc: output_dir
 
 build_uboot:
 
-.PHONY: publish_dir, get_publish_dir
+.PHONY: publish_dir
 publish_dir:
+	$(hide)if [ -z "$(PUBLISH_DIR)" ]; then \
+	  echo "Please specify export PUBLISH_DIR in shell environment."; \
+	  exit 1; \
+	fi
 	$(hide)if [ ! -d "$(PUBLISH_DIR)" ]; then \
 	    mkdir -p $(PUBLISH_DIR); \
 	fi
-
-get_publish_dir:
-	@echo $(PUBLISH_DIR)
 
 #copy the file only if the file exists
 define cpif
@@ -255,14 +254,14 @@ endef
 publish: publish_bin publish_src
 
 publish_src: publish_dir
-	$(log) "copy source code tarball to publish dir..."
+	$(log) "copy source code tarball to $(PUBLISH_DIR)..."
 	$(hide)cp $(OUTPUT_DIR)/manifest.xml $(PUBLISH_DIR)
 	$(call cpif, $(OUTPUT_DIR)/droid_src.tgz, $(PUBLISH_DIR)) 
 	$(call cpif, $(OUTPUT_DIR)/kernel_src.tgz, $(PUBLISH_DIR))
 	$(log) "  done."
 	
 publish_bin: publish_dir
-	$(log) "copy binary files to publish dir..."
+	$(log) "copy binary files to $(PUBLISH_DIR)..."
 	$(hide)cp $(OUTPUT_DIR)/zImage.droid $(PUBLISH_DIR) 
 	$(hide)cp $(OUTPUT_DIR)/system.img $(PUBLISH_DIR)
 	$(hide)cp $(OUTPUT_DIR)/userdata.img $(PUBLISH_DIR)
