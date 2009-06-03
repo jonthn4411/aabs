@@ -98,8 +98,6 @@ manifest: output_dir
 #if an expection happened, repo doesn't exit with a non-zero value, we use below command to make sure the manifest.xml is generated.
 	$(hide)ls $(OUTPUT_DIR)/manifest.xml > /dev/null
 
-PKGSRC_EXCLUDE:=\.git
-
 #make sure the last character of $(SRC_DIR) is not "/"
 pkgsrc: output_dir
 	$(log) "Package source code using the $(OUTPUT_DIR)/manifest.xml"
@@ -112,9 +110,8 @@ pkgsrc: output_dir
 	$(hide)cd $(OUTPUT_DIR)/source && \
 	repo init -u ssh://$(GIT_MANIFEST) -b $(MANIFEST_BRANCH) --repo-url ssh://$(GIT_REPO) && \
 	cp $(OUTPUT_DIR)/manifest.xml $(OUTPUT_DIR)/source/.repo/ && \
-	repo sync
-	$(hide)cd $(OUTPUT_DIR) && \
-	tar czf source.tgz --exclude=$(PKGSRC_EXCLUDE) source/
+	repo sync && \
+	$(TOP_DIR)/pkgsrc.sh $(OUTPUT_DIR)
 	$(log) "  done."
 
 #generate the changelog from GIT commit history
@@ -260,7 +257,8 @@ publish: publish_bin publish_src
 publish_src: publish_dir
 	$(log) "copy source code tarball to publish dir..."
 	$(hide)cp $(OUTPUT_DIR)/manifest.xml $(PUBLISH_DIR)
-	$(call cpif, $(OUTPUT_DIR)/source.tgz, $(PUBLISH_DIR)) 
+	$(call cpif, $(OUTPUT_DIR)/droid_src.tgz, $(PUBLISH_DIR)) 
+	$(call cpif, $(OUTPUT_DIR)/kernel_src.tgz, $(PUBLISH_DIR))
 	$(log) "  done."
 	
 publish_bin: publish_dir
