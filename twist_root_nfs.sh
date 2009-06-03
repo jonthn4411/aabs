@@ -51,7 +51,7 @@ a\
 }' init.rc &&
 
 #add service to init nfs
-if grep "service init-nfs /init.nfs.sh" init.rc; then
+if grep "service init-nfs /init.nfs.sh" init.rc >/dev/null; then
   echo "  already have service init-nfs defined..."
 else
   cat >>init.rc <<-EOF
@@ -68,6 +68,10 @@ fi &&
 
 gen_init_nfs_sh init.nfs.sh &&
 chmod 0755 init.nfs.sh &&
+
+echo "  temporarily disable copybit engine as it is not stable..." &&
+if [ -e system/lib/hw/copybit.default.so ]; then  mv system/lib/hw/copybit.default.so system/lib/hw/copybit.default.so.bak; fi  &&
+if [ -e system/lib/libopencorehw.so ]; then mv system/lib/libopencorehw.so system/lib/libopencorehw.so.bak; fi &&
 
 #temp work around for loading GC300 driver which requires mknod. to be removed.
 echo "  copying busybox to /data for loading GC300 driver..." &&
