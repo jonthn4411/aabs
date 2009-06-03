@@ -120,10 +120,7 @@ pkgsrc: output_dir
 #generate the changelog from GIT commit history
 changelog: 
 	$(log) "generating changelogs ..."
-	@echo -n > $(OUTPUT_DIR)/changelog.day && echo -n > $(OUTPUT_DIR)/changelog.week &&\
-	echo -n > $(OUTPUT_DIR)/changelog.biweek && echo -n > $(OUTPUT_DIR)/changelog.month
-	$(hide)cd $(SRC_DIR) && \
-	repo forall -c "$(TOP_DIR)/gen_chglog.sh $(OUTPUT_DIR)"
+	$(hide)./gen_chglog.sh $(OUTPUT_DIR) $(SRC_DIR) 
 	$(log) "  done."
 
 .PHONY: build_droid_code cp_droid_bin gen_droid_nfs
