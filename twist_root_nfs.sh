@@ -67,11 +67,7 @@ else
 fi &&
 
 gen_init_nfs_sh init.nfs.sh &&
-chmod 0755 init.nfs.sh &&
-
-echo "  temporarily disable copybit engine as it is not stable..." &&
-if [ -e system/lib/hw/copybit.default.so ]; then  mv system/lib/hw/copybit.default.so system/lib/hw/copybit.default.so.bak; fi  &&
-if [ -e system/lib/libopencorehw.so ]; then mv system/lib/libopencorehw.so system/lib/libopencorehw.so.bak; fi 
+chmod 0755 init.nfs.sh 
 
 if [ $? -ne 0 ]; then
   exit 1
