@@ -71,12 +71,7 @@ chmod 0755 init.nfs.sh &&
 
 echo "  temporarily disable copybit engine as it is not stable..." &&
 if [ -e system/lib/hw/copybit.default.so ]; then  mv system/lib/hw/copybit.default.so system/lib/hw/copybit.default.so.bak; fi  &&
-if [ -e system/lib/libopencorehw.so ]; then mv system/lib/libopencorehw.so system/lib/libopencorehw.so.bak; fi &&
-
-#temp work around for loading GC300 driver which requires mknod. to be removed.
-echo "  copying busybox to /data for loading GC300 driver..." &&
-cp /autobuild/tools/busybox data/ &&
-chmod 777 data/busybox
+if [ -e system/lib/libopencorehw.so ]; then mv system/lib/libopencorehw.so system/lib/libopencorehw.so.bak; fi 
 
 if [ $? -ne 0 ]; then
   exit 1
