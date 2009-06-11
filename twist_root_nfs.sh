@@ -67,7 +67,11 @@ else
 fi &&
 
 gen_init_nfs_sh init.nfs.sh &&
-chmod 0755 init.nfs.sh 
+chmod 0755 init.nfs.sh &&
+
+#don't mount sdcard in vold for NFS
+echo "  disable mount sdcard in vold.conf"
+sed -i '/^[ tab]*volume_sdcard/,/\}/ s/\(.*\)/#\1/' system/etc/vold.conf 
 
 if [ $? -ne 0 ]; then
   exit 1
