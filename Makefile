@@ -123,8 +123,8 @@ build_droid: build_droid_code cp_droid_bin gen_droid_nfs
 
 cp_droid_bin:
 	$(log) "copying android binaries to output dir:$(OUTPUT_DIR)..."
-	$(hide)cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system.img $(OUTPUT_DIR) && chmod a+r $(OUTPUT_DIR)/system.img
-	$(hide)cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/userdata.img $(OUTPUT_DIR) && chmod a+r $(OUTPUT_DIR)/userdata.img
+	$(hide)cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system_ubi.img $(OUTPUT_DIR) && chmod a+r $(OUTPUT_DIR)/system_ubi.img
+	$(hide)cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/userdata_ubi.img $(OUTPUT_DIR) && chmod a+r $(OUTPUT_DIR)/userdata_ubi.img
 	$(hide)if [ -d $(OUTPUT_DIR)/root ]; then rm -fr $(OUTPUT_DIR)/root; fi
 	$(hide)if [ -d $(OUTPUT_DIR)/root_nfs ]; then rm -fr $(OUTPUT_DIR)/root_nfs; fi
 	$(hide)cp -p -r $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/root $(OUTPUT_DIR) 
@@ -157,28 +157,37 @@ build_droid_code: output_dir
 	make 
 	$(log) "  done"
 
-.PHONY: build_kernel_flash build_kernel_nfs build_kernel_mmc cp_root_dir 
-build_kernel: build_kernel_flash build_kernel_mmc build_kernel_nfs build_maemo_kernel 
+.PHONY: build_kernel_droid build_kernel_maemo build_kernel
+build_kernel: build_kernel_droid build_kernel_maemo
 
-.PHONY: build_maemo_kernel build_kernel_maemo_flash build_kernel_maemo_nfs build_kernel_maemo_mmc
-build_maemo_kernel: build_kernel_maemo_flash build_kernel_maemo_nfs build_kernel_maemo_mmc 
+.PHONY: build_kernel_droid_mlc build_kernel_droid_nfs build_kernel_droid_mmc cp_droid_root_dir
+build_kernel_droid: build_kernel_droid_mlc build_kernel_droid_mmc build_kernel_droid_nfs  
 
-cp_root_dir:
-	$(log) "copying root directory from $(OUTPUT_DIR)..."
-	$(hide)cp -p -r $(OUTPUT_DIR)/root $(KERNEL_SRC_DIR)
+.PHONY: build_kernel_maemo_mlc build_kernel_maemo_nfs build_kernel_maemo_mmc
+build_kernel_maemo: build_kernel_maemo_mlc build_kernel_maemo_nfs build_kernel_maemo_mmc 
 
-build_kernel_flash: output_dir cp_root_dir
+cp_droid_root_dir:
+	$(log) "copying root directory from $(OUTPUT_DIR) ..."
+	$(hide)if [ -d "$(KERNEL_SRC_DIR)/root" ]; then rm -fr $(KERNEL_SRC_DIR)/root; fi
+	$(hide)cp -p -r $(OUTPUT_DIR)/root $(KERNEL_SRC_DIR) && \
+	cd $(KERNEL_SRC_DIR)/root && \
+	rm init.rc && \
+	mv init-ubi.rc init.rc
+
+build_kernel_droid_mlc: output_dir cp_droid_root_dir
 	$(log) "starting to build kernel for booting android from flash..."
+	$(log) "  update init.rc for mount ubi fs in init.rc"
+	$(hide)./update_init_for_ubi.sh $(KERNEL_SRC_DIR)/root/init.rc
 	$(hide)cd $(KERNEL_SRC_DIR) && \
 	export PATH=$(KERNEL_TOOLCHAIN_DIR):$$PATH && \
 	export ARCH=arm && \
 	export CROSS_COMPILE=$(KERNEL_TOOLCHAIN_PREFIX) && \
-	make pxa168_android_defconfig && \
+	make pxa168_android_mlc_defconfig && \
 	make 
-	$(hide)cp $(KERNEL_SRC_DIR)/arch/arm/boot/zImage $(OUTPUT_DIR)/zImage.droid 
+	$(hide)cp $(KERNEL_SRC_DIR)/arch/arm/boot/zImage $(OUTPUT_DIR)/zImage.droid.mlc 
 	$(log) "  done."
 
-build_kernel_nfs: output_dir
+build_kernel_droid_nfs: output_dir
 	$(log) "starting to build kernel for booting android from NFS..."
 	$(hide)cd $(KERNEL_SRC_DIR) && \
 	export PATH=$(KERNEL_TOOLCHAIN_DIR):$$PATH && \
@@ -189,7 +198,7 @@ build_kernel_nfs: output_dir
 	$(hide)cp $(KERNEL_SRC_DIR)/arch/arm/boot/zImage $(OUTPUT_DIR)/zImage.droid.nfs
 	$(log) "  done."
 
-build_kernel_mmc: output_dir
+build_kernel_droid_mmc: output_dir
 	$(log) "starting to build kernel for booting android from SD card..."
 	$(hide)cd $(KERNEL_SRC_DIR) && \
 	export PATH=$(KERNEL_TOOLCHAIN_DIR):$$PATH && \
@@ -200,15 +209,15 @@ build_kernel_mmc: output_dir
 	$(hide)cp $(KERNEL_SRC_DIR)/arch/arm/boot/zImage $(OUTPUT_DIR)/zImage.droid.mmc
 	$(log) "  done."
 
-build_kernel_maemo_flash: output_dir cp_root_dir
+build_kernel_maemo_mlc: output_dir 
 	$(log) "starting to build kernel for booting maemo from flash..."
 	$(hide)cd $(KERNEL_SRC_DIR) && \
 	export PATH=$(KERNEL_TOOLCHAIN_DIR):$$PATH && \
 	export ARCH=arm && \
 	export CROSS_COMPILE=$(KERNEL_TOOLCHAIN_PREFIX) && \
-	make pxa168_defconfig && \
+	make pxa168_mlc_defconfig && \
 	make 
-	$(hide)cp $(KERNEL_SRC_DIR)/arch/arm/boot/zImage $(OUTPUT_DIR)/zImage.maemo 
+	$(hide)cp $(KERNEL_SRC_DIR)/arch/arm/boot/zImage $(OUTPUT_DIR)/zImage.maemo.mlc 
 	$(log) "  done."
 
 build_kernel_maemo_nfs: output_dir
@@ -262,13 +271,13 @@ publish_src: publish_dir
 	
 publish_bin: publish_dir
 	$(log) "copy binary files to $(PUBLISH_DIR)..."
-	$(hide)cp $(OUTPUT_DIR)/zImage.droid $(PUBLISH_DIR) 
-	$(hide)cp $(OUTPUT_DIR)/system.img $(PUBLISH_DIR)
-	$(hide)cp $(OUTPUT_DIR)/userdata.img $(PUBLISH_DIR)
+	$(hide)cp $(OUTPUT_DIR)/zImage.droid.mlc $(PUBLISH_DIR) 
+	$(hide)cp $(OUTPUT_DIR)/system_ubi.img $(PUBLISH_DIR)
+	$(hide)cp $(OUTPUT_DIR)/userdata_ubi.img $(PUBLISH_DIR)
 	$(hide)cp $(OUTPUT_DIR)/zImage.droid.nfs $(PUBLISH_DIR)
 	$(hide)cp $(OUTPUT_DIR)/root_nfs.tgz $(PUBLISH_DIR)
 	$(hide)cp $(OUTPUT_DIR)/zImage.droid.mmc $(PUBLISH_DIR)
-	$(hide)cp $(OUTPUT_DIR)/zImage.maemo $(PUBLISH_DIR)
+	$(hide)cp $(OUTPUT_DIR)/zImage.maemo.mlc $(PUBLISH_DIR)
 	$(hide)cp $(OUTPUT_DIR)/zImage.maemo.nfs $(PUBLISH_DIR)
 	$(hide)cp $(OUTPUT_DIR)/zImage.maemo.mmc $(PUBLISH_DIR)
 	$(hide)cp $(OUTPUT_DIR)/changelog.day $(PUBLISH_DIR)
