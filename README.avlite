@@ -1,0 +1,39 @@
+Files in this folder
+====================
+zImage.droid.mlc	Kernel image to boot android from MLC. A root file system is built in.
+zImage.droid.nfs	Kernel image to boot android from NFS.
+zImage.droid.mmc	Kernel image to boot android from SD card.
+
+system_ubi.img		Android system image for UBI file system.
+userdata_ubi.img	Android userdata image for UBI file system.
+
+kernel_src.tgz		Kernel source code tar ball.
+droid_src.tgz		Android source code tar ball without code of Marvell developed application.
+manifest.xml		Saving the GIT commit number of each project used in this build.
+
+changelog.day		GIT change log of each project since yesterday.
+changelog.week		GIT change log of each project since last week.
+changelog.biweek 	GIT change log of each project since 2 weeks ago.
+changelog.month		GIT change log of each project since a month ago.
+
+zImage.maemo.mlc	Kernel image to boot Maemo from MLC.
+zImage.maemo.nfs	Kernel image to boot Maemo from NFS.
+zImage.maemo.mmc	Kernel image to boot Maemo from SD card.
+
+
+FAQ
+=====
++Wifi can't be enabled if I use a zImage built at the other day.
+The wifi kernel module in root_nfs.tgz or system_ubi.img may not comply with zImages built at the other day. Please use the zImage and root_nfs.tgz or system_ubi.img built at the same day.
+
++Media on SD Card can't be seen while running Android at NFS
+Mounting SD card is disabled in root_nfs.tgz on purpose. As if Android is running on SD card, enable mount of SD card may cause confliction. So by default we disable it in root_nfs.tgz. You can enable it manually by edit /system/etc/vold.conf, uncomment the section of volume_sdcard.
+
++How can I disable GC300 copybit engine completely?
+You can do this by: 1) rm /system/lib/hw/copybit.default.so
+		    2) rm /system/lib/libopencorehw.so
+
++How can I disable GC300 copybit engine on video playback only?
+You can do this by: rm /system/lib/libopencorehw.so . Once this file is deleted, android uses SW resizing and color coversion module to resize and conver the YUV video to RGB.
+
+

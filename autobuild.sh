@@ -195,7 +195,8 @@ fi &&
 if [ "$FLAG_PUBLISH" = "true" ]; then
 	get_new_publish_dir
 	export PUBLISH_DIR
-	make publish -e 2>&1 | tee -a $STD_LOG 
+	make publish -e 2>&1 | tee -a $STD_LOG &&
+	cp README.avlite $PUBLISH_DIR 
 fi
 
 if [ $? -ne 0 ]; then #auto build fail, send an email
