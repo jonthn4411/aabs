@@ -169,10 +169,7 @@ build_kernel_maemo: build_kernel_maemo_mlc build_kernel_maemo_nfs build_kernel_m
 cp_droid_root_dir:
 	$(log) "copying root directory from $(OUTPUT_DIR) ..."
 	$(hide)if [ -d "$(KERNEL_SRC_DIR)/root" ]; then rm -fr $(KERNEL_SRC_DIR)/root; fi
-	$(hide)cp -p -r $(OUTPUT_DIR)/root $(KERNEL_SRC_DIR) && \
-	cd $(KERNEL_SRC_DIR)/root && \
-	rm init.rc && \
-	mv init-ubi.rc init.rc
+	$(hide)cp -p -r $(OUTPUT_DIR)/root $(KERNEL_SRC_DIR)  
 
 build_kernel_droid_mlc: output_dir cp_droid_root_dir
 	$(log) "starting to build kernel for booting android from flash..."
