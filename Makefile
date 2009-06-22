@@ -27,19 +27,15 @@ GIT_MANIFEST:=$(GIT_ANDROID_ROOT)/platform/manifest.git
 GIT_REPO:=$(GIT_ANDROID_ROOT)/tools/repo.git
 MANIFEST_BRANCH:=avengers-cupcake
 
-KERNEL_TOOLCHAIN_DIR:=/usr/local/arm-marvell-linux-gnueabi/bin
-KERNEL_TOOLCHAIN_PREFIX:=arm-marvell-linux-gnueabi-
-KERNEL_SRC_DIR:=kernel
-
-UBOOT_TOOLCHAIN_DIR:=$(KERNEL_TOOLCHAIN_DIR)
-hide:=@
-
 SRC_DIR:=avengers
 OUTPUT_DIR:=out
 DEMO_MEDIA_DIR:=/autobuild/demomedia
 
 current-time:=[$$(date "+%Y-%m-%d %H:%M:%S")]
 log:=@echo $(current-time)
+
+KERNEL_SRC_DIR:=kernel
+hide:=@
 
 #
 #convert the relative directory to absolute directory.
@@ -48,6 +44,16 @@ TOP_DIR:=$(shell pwd)
 OUTPUT_DIR:=$(TOP_DIR)/$(OUTPUT_DIR)
 SRC_DIR:=$(TOP_DIR)/$(SRC_DIR)
 KERNEL_SRC_DIR:=$(SRC_DIR)/$(KERNEL_SRC_DIR)
+
+#use the Android toolchain by default
+ifeq ($(strip $(DEFAULT_TOOLCHAIN_PREFIX)),)
+    KERNEL_TOOLCHAIN_PREFIX:=$(SRC_DIR)/prebuilt/linux-x86/toolchain/arm-eabi-4.2.1/bin/arm-eabi-
+else
+    #make Android use default toolchain
+    export TARGET_TOOLS_PREFIX:=$(DEFAULT_TOOLCHAIN_PREFIX)
+    KERNEL_TOOLCHAIN_PREFIX:=$(DEFAULT_TOOLCHAIN_PREFIX)
+endif
+
 
 #by default show the help
 help:
@@ -185,7 +191,6 @@ build_kernel_$$(os)_$$(storage): output_dir $$(if $$(findstring root,$$(root)), 
 	$$(log) "starting to build kernel for booting $$(private_os) from $$(private_storage) ..."
 	$$(log) "    kernel_config: $$(private_kernel_cfg): ..."
 	$$(hide)cd $$(KERNEL_SRC_DIR) && \
-	export PATH=$$(KERNEL_TOOLCHAIN_DIR):$$$$PATH && \
 	export ARCH=arm && \
 	export CROSS_COMPILE=$$(KERNEL_TOOLCHAIN_PREFIX) && \
 	make $$(private_kernel_cfg) && \
@@ -271,8 +276,9 @@ help:
 	@echo "  Settings:"
 	@echo "    Manifest Repository: $(GIT_MANIFEST)"
 	@echo "    Manifest Branch: $(MANIFEST_BRANCH)"
-	@echo "    Kernel Toolchain: $(KERNEL_TOOLCHAIN_DIR)"
-	@echo "    UBoot Toolchain: $(UBOOT_TOOLCHAIN_DIR)"
+	@echo "    Kernel Toolchain: $(KERNEL_TOOLCHAIN_PREFIX)"
+	@echo "    Output Directory: $(OUTPUT_DIR)"
+	@echo "    Source Directory: $(SRC_DIR)"
 	@echo "    Publish Directory: $(PUBLISH_DIR)"
 	@echo " "
 
