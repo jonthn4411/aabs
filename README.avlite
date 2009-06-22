@@ -22,20 +22,100 @@ zImage.maemo.mlc	Kernel image to boot Maemo from MLC.
 zImage.maemo.nfs	Kernel image to boot Maemo from NFS.
 zImage.maemo.mmc	Kernel image to boot Maemo from SD card.
 
+Burning OBM and UBoot
+=====================
+
+
+Setup Android on NAND(MLC)
+=========================
+Follow the below process and address to burn the zImage and system_ubi and userdata_ubi images.
+Boot the device with console,
+
+Avengers>> nand device 1
+Avengers>> bbt init nand
+Avengers>> tftp 0x500000 zImage.android.mlc
+Avengers>> nand erase 0x80000 0x380000
+Avengers>> nand write 0x500000 0x80000 <size of loaded zImage>
+Avengers>> tftp 0x1000000 system_ubi.img
+Avengers>> nand erase 0x800000 0xf800000
+Avengers>> nand write 0x1000000 0x800000 <size of loaded UBI image>
+Avengers>> tftp 0x1000000 userdata_ubi.img
+Avengers>> nand erase 0x10000000 0x70000000
+Avengers>> nand write 0x1000000 0x10000000 <size of loaded UBI image>
+
+After tftp an image to device, please remember the size of the image printed by the command. This size will be used in the followed nand write command.
+
+
+Setup Android on SD Card
+========================
+Follow the below process to make a SD card with Android root file system installed.
+1) Plug a SD card to the PC
+2) mkfs.ext3 /dev/sdc #be noticed that all data on SD card will be removed.
+3) mount /dev/sdc /mnt
+4) tar xvf root_nfs.tgz /mnt
+5) umount /dev/sdc
+
+Second, burning the zImage.android.mmc image.
+Boot the device with console,
+Avengers>> nand device 1
+Avengers>> tftp 0x500000 zImage.android.mmc
+Avengers>> nand erase 0x80000 0x380000
+Avengers>> nand write 0x500000 0x80000 <size of loaded zImage>
+
+
+Setup Android on NFS
+====================
+1) Installed the NFS server on PC host. We prefer to use UBuntu8.04 or 8.10. 9.04 is not recommended.
+2) mkdir /srv
+3) add below line to /etc/exports
+  /srv            *(rw,sync,no_root_squash,no_subtree_check)
+  Notes: be sure you specify all the optional paramters above.
+4) tar xvf root_nfs.tgz /srv/
+5) mv /srv/root_nfs /srv/nfs
+
+Last, you should use zImage.android.nfs to boot Android from NFS.
+
+
+Known Issues about running Android on NFS
+=========================================
++ Wifi can't be enabled if you are using UBuntu9.04 or higher
+-------------------------------------------------------------
+  Symptom: When you enabled the Wifi, use the logcat you can see a message "Error changing group ownership of wpa_supplicant.conf to 1001:Operation not permitted." This only happens if your host PC is running with UBuntu9.04. We tested UBuntu8.04 and UBuntu8.10, which doesn't have this issue.
+  Reason: We don't know the exact reason why chown doesn't work on UBuntu9.04 but works on 8.04 or 8.10.
+
+  Workaround:In the console, you can copy the wpa_supplicant.conf from /system/etc/wifi/wpa_supplicant.conf to /data/misc/wifi/wpa_supplicant.conf and chmod 777 wpa_supplicant.conf.
+
+
++ Calibration data can't be saved, any setting data can't be saved.
+------------------------------------------------------------------
+  Symptom: You calibrate the touch screen with Calibration app, and the screen works well. But at next boot, you have to calibrate it again. The calibration data isn't stored. 
+
+  Reason: Actually the calibration data is saved to persistent property file. But just fail to read it from persistent property at boot. This seems a limitation of NFS file system on support opendir() function.
+
+  Workaround: no workaround is available right now, just recalibrate it.
+
+
++Media on SD Card can't be seen by Video/Music/Photo App
+------------------------------------------------------------
+  Symptom: Plug the SD card to device, with media files on SD card, but Video/Music/Photo App can't see anything.
+  Reason: Mounting SD card is disabled in root_nfs.tgz on purpose. As if Android is running on SD card, enable mounting of SD card may cause confliction. So by default we disable it in root_nfs.tgz. 
+  Workaround:You can enable it manually by edit /system/etc/vold.conf, uncomment the section of volume_sdcard.
 
 FAQ
 =====
 +Wifi can't be enabled if I use a zImage built at the other day.
+----------------------------------------------------------------
 The wifi kernel module in root_nfs.tgz or system_ubi.img may not comply with zImages built at the other day. Please use the zImage and root_nfs.tgz or system_ubi.img built at the same day.
 
-+Media on SD Card can't be seen while running Android at NFS
-Mounting SD card is disabled in root_nfs.tgz on purpose. As if Android is running on SD card, enable mount of SD card may cause confliction. So by default we disable it in root_nfs.tgz. You can enable it manually by edit /system/etc/vold.conf, uncomment the section of volume_sdcard.
 
 +How can I disable GC300 copybit engine completely?
+---------------------------------------------------
 You can do this by: 1) rm /system/lib/hw/copybit.default.so
 		    2) rm /system/lib/libopencorehw.so
 
+
 +How can I disable GC300 copybit engine on video playback only?
+---------------------------------------------------------------
 You can do this by: rm /system/lib/libopencorehw.so . Once this file is deleted, android uses SW resizing and color coversion module to resize and conver the YUV video to RGB.
 
 
