@@ -119,3 +119,8 @@ You can do this by: 1) rm /system/lib/hw/copybit.default.so
 You can do this by: rm /system/lib/libopencorehw.so . Once this file is deleted, android uses SW resizing and color coversion module to resize and conver the YUV video to RGB.
 
 
++How to modify the files after the system_ubi.img has been burned to the flash?
+-------------------------------------------------------------------------------
+In the console mode, you can remount the /system folder by
+$mount -o remount -t ubifs ubi0_0 /system
+
