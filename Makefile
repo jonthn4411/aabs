@@ -257,7 +257,7 @@ $(foreach kc, $(kernel_configs), $(eval $(call define-kernel-publishing-file, $(
 
 define cp-with-md5
 	@echo "publishing mandatory file:$(2)"
-	@cp $(1) $(2)
+	@cp $(1) $(2) && chmod a+r $(2)
 	$(if $(findstring $(strip $(3)),md5), \
 		@echo "generating md5 for $(2)" && \
 		cd $(dir $(1)) && \
@@ -266,7 +266,7 @@ define cp-with-md5
 endef
 
 define cpif-with-md5
-	@if [ -f $1 ]; then echo "publishing optional file:$(2)"; cp $1 $2; fi
+	@if [ -f $(1) ]; then echo "publishing optional file:$(2)"; cp $(1) $(2) && chmod a+r $(2); fi
 	$(if $(findstring $(strip $(3)),md5), \
 		@if [ -f $1 ]; then echo "generating md5 for $(2)"; \
 		cd $(dir $(1)) && \
