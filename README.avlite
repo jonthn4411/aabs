@@ -8,6 +8,8 @@ root_android_mlc.tgz	The root directory used to build zImage.android.mlc
 modules.tgz		Kernel modules that have been built into system_ubi.img
 system_ubi.img		Android system image for UBI file system.
 userdata_ubi.img	Android userdata image for UBI file system.
+system.img		Android system image for yaffs2 file system.
+userdata.img		Android userdata image for yaffs2 file system.
 
 kernel_src.tgz		Kernel source code tar ball.
 droid_src.tgz		Android source code tar ball without code of Marvell developed application.
