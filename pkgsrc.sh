@@ -29,6 +29,11 @@ tar czf kernel_src.tgz --exclude=$PKGSRC_EXCLUDE kernel/ &&
 mv kernel_src.tgz $OUTPUT_DIR &&
 rm -fr kernel &&
 
+echo "  packaging uboot and obm source code:" &&
+tar czf boot_src.tgz --exclude=$PKGSRC_EXECLUDE boot/ &&
+mv boot_src.tgz $OUTPUT_DIR &&
+rm -fr boot &&
+
 echo "  packaging android source code:" &&
 remove_internal_apps &&
 cd $OUTPUT_DIR &&

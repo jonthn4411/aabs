@@ -33,9 +33,11 @@ DEMO_MEDIA_DIR:=/autobuild/demomedia
 
 current-time:=[$$(date "+%Y-%m-%d %H:%M:%S")]
 log:=@echo $(current-time)
+hide:=@
 
 KERNEL_SRC_DIR:=kernel
-hide:=@
+UBOOT_SRC_DIR:=boot/uboot
+UBOOT_CONFIG:=avengers_config
 
 #
 #convert the relative directory to absolute directory.
@@ -44,6 +46,7 @@ TOP_DIR:=$(shell pwd)
 OUTPUT_DIR:=$(TOP_DIR)/$(OUTPUT_DIR)
 SRC_DIR:=$(TOP_DIR)/$(SRC_DIR)
 KERNEL_SRC_DIR:=$(SRC_DIR)/$(KERNEL_SRC_DIR)
+UBOOT_SRC_DIR:=$(SRC_DIR)/$(UBOOT_SRC_DIR)
 
 #use the Android toolchain by default
 ifeq ($(strip $(DEFAULT_TOOLCHAIN_PREFIX)),)
@@ -204,7 +207,16 @@ endef
 
 $(foreach kc, $(kernel_configs), $(eval $(call define-kernel-target, $(kc) ) ) )
 
+#build uboot
 build_uboot:
+	$(log) "starting to build uboot"
+	$(hide)cd $(UBOOT_SRC_DIR) && \
+	export ARCH=arm && \
+	export CROSS_COMPILE=$(KERNEL_TOOLCHAIN_PREFIX) && \
+	make $(UBOOT_CONFIG) && \
+	make 
+	$(hide)cp $(UBOOT_SRC_DIR)/u-boot.bin $(OUTPUT_DIR)/
+	$(log) "  done."
 
 MD5_FILE:=checksums.md5
 
@@ -226,6 +238,9 @@ PUBLISHING_FILES+=changelog.day:m \
 	changelog.week:m \
 	changelog.biweek:m \
 	changelog.month:m 
+
+PUBLISHING_FILES+=u-boot.bin:m:md5 \
+	boot_src.tgz:o:md5
 
 define define-kernel-publishing-file
 tw:=$$(subst :,  , $(1) )
