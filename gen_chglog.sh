@@ -5,10 +5,11 @@
 # $1: output directory
 # $2: source code directory
 
-function project_name()
+#$1: the base part
+function get_project_name()
 {
 	PWD=$(pwd)
-	echo ${PWD##\/*\/}
+	echo ${PWD##${1}}
 }
 
 #$1: since
@@ -26,7 +27,7 @@ function gen_log()
 
 	if [ $len -gt 0 ]; then
 		echo "--------" >> $2
-		echo "$(project_name):$REPO_PROJECT" >> $2
+		echo "$CURRENT_PRJNAME" >> $2
 		echo "--------" >> $2
 
 		local i=0
@@ -45,8 +46,8 @@ if [[ ! -d "$SRC_DIR" ]] || [[ ! -d "$OUTPUT_DIR" ]]; then
   echo "source dir($SRC_DIR) or output dir($OUTPUT_DIR) doesn't exit"
   exit 1
 fi
-
-echo "  log for: $(project_name) "
+CURRENT_PRJNAME=avgsbuild
+echo "  log for: $CURRENT_PRJNAME "
 echo -n > $OUTPUT_DIR/changelog.day    && gen_log "1 day ago"   "$OUTPUT_DIR/changelog.day" &&
 echo -n > $OUTPUT_DIR/changelog.week   && gen_log "1 week ago"  "$OUTPUT_DIR/changelog.week" &&
 echo -n > $OUTPUT_DIR/changelog.biweek && gen_log "2 weeks ago" "$OUTPUT_DIR/changelog.biweek" &&
@@ -56,8 +57,8 @@ cd $SRC_DIR &&
 PRJS=$(repo forall -c "pwd") &&
 for prj in $PRJS
 do
-  cd $prj &&
-  echo "  log for: $(project_name) " &&
+  cd $prj && CURRENT_PRJNAME=$(get_project_name $SRC_DIR) &&
+  echo "  log for: $CURRENT_PRJNAME " &&
   gen_log "1 day ago"   "$OUTPUT_DIR/changelog.day" &&
   gen_log "1 week ago"  "$OUTPUT_DIR/changelog.week" &&
   gen_log "2 weeks ago" "$OUTPUT_DIR/changelog.biweek" &&
