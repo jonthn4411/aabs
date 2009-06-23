@@ -1,13 +1,23 @@
 Files in this folder
 ====================
-zImage.android.mlc	Kernel image to boot android from MLC. A root file system is built in.
+zImage.android.mlc	Kernel image to boot android from MLC. A root file system is built in. The root file system also packaged as root_android_mlc.tgz
 zImage.android.nfs	Kernel image to boot android from NFS.
 zImage.android.mmc	Kernel image to boot android from SD card.
+
 root_android_mlc.tgz	The root directory used to build zImage.android.mlc
 
-modules.tgz		Kernel modules that have been built into system_ubi.img
+modules_android_mlc.tgz Kernel modules that built along with zImage.android.mlc
+modules_android_mmc.tgz Kernel modules that built along with zImage.android.mmc
+modules_android_nfs.tgz Kernel modules that built along with zImage.android.nfs
+modules_mameo_mlc.tgz	Kernel modules that built along with zImage.mameo.mlc
+modules_mameo_mmc.tgz	Kernel modules that built along with zImage.mameo.mmc
+modules_maemo_nfs.tgz	Kernel modules that built along with zImage.mameo.nfs
+
+root_nfs.tgz		Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
+
 system_ubi.img		Android system image for UBI file system.
 userdata_ubi.img	Android userdata image for UBI file system.
+
 system.img		Android system image for yaffs2 file system.
 userdata.img		Android userdata image for yaffs2 file system.
 

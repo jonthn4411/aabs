@@ -64,8 +64,11 @@ help:
 .PHONY: all clean source manifest changelog pkgsrc build publish
 all: source manifest changelog build 
 
-build: build_droid build_kernel build_uboot 
-.PHONY: build_droid build_kernel build_uboot
+#we need first build the android, so we get the root dir 
+# and then we build the kernel images with the root dir and get the package of corresponding modules
+# and then we use those module package to build corresponding android package.
+build: build_droid_root build_kernel build_droid_pkgs build_uboot 
+.PHONY: build_droid_root build_kernel build_droid_pkgs build_uboot
 
 .PHONY: clean_src_dir clean_out_dir
 clean: clean_src_dir clean_out_dir
@@ -127,28 +130,51 @@ changelog:
 	$(hide)./gen_chglog.sh $(OUTPUT_DIR) $(SRC_DIR) 
 	$(log) "  done."
 
-.PHONY: build_droid_code cp_droid_bin gen_droid_nfs
-build_droid: build_droid_code cp_droid_bin gen_droid_nfs
-
-cp_droid_bin:
-	$(log) "copying android binaries to output dir:$(OUTPUT_DIR)..."
-	$(hide)cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system_ubi.img $(OUTPUT_DIR) && \
-	cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/userdata_ubi.img $(OUTPUT_DIR) && \
-	cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system.img $(OUTPUT_DIR) && \
-	cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/userdata.img $(OUTPUT_DIR) && \
+build_droid_root: output_dir
+	$(log) "building android source code ..."
+	$(hide)cd $(SRC_DIR) && \
+	source ./build/envsetup.sh && \
+	chooseproduct $(DROID_PRODUCT) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
+	make && \
 	if [ -d $(OUTPUT_DIR)/root ]; then rm -fr $(OUTPUT_DIR)/root; fi && \
-	if [ -d $(OUTPUT_DIR)/root_nfs ]; then rm -fr $(OUTPUT_DIR)/root_nfs; fi && \
-	cp -p -r $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/root $(OUTPUT_DIR) && \
-	mv $(OUTPUT_DIR)/root $(OUTPUT_DIR)/root_nfs && \
-	cp -p -r $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system $(OUTPUT_DIR)/root_nfs && \
-	cp -p -r $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/root $(OUTPUT_DIR) && \
-	if [ -d $(OUTPUT_DIR)/modules ]; then rm -fr $(OUTPUT_DIR)/modules; fi && \
-	cp -p -r $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system/lib/modules $(OUTPUT_DIR) && \
-	cd $(OUTPUT_DIR) && tar czf modules.tgz modules/
+	echo "  copy root directory ..." && \
+	cp -p -r $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/root $(OUTPUT_DIR) 
+	$(log) "  done"
+
+build_droid_pkgs: build_droid_mlc build_droid_mmc build_droid_slc
+.PHONY: build_droid_mlc build_droid_mmc build_droid_slc
+
+build_droid_mlc:
+	$(log) "buiding file system for booting android from MLC ..."
+	$(log) "  updating the modules..."
+	$(hide)if [ -d $(OUTPUT_DIR)/modules ]; then rm -fr $(OUTPUT_DIR)/modules; fi
+	$(hide)cd $(OUTPUT_DIR) && tar xzf modules_android_mlc.tgz
+	$(hide)export ANDROID_PREBUILT_MODULES=$(OUTPUT_DIR)/modules && \
+	cd $(SRC_DIR) && \
+	source ./build/envsetup.sh && \
+	chooseproduct $(DROID_PRODUCT) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
+	make && \
+	echo "    copy UBI image files..." && \
+	cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system_ubi.img $(OUTPUT_DIR) && \
+	cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/userdata_ubi.img $(OUTPUT_DIR) 
 	$(log) "  done."
 
-gen_droid_nfs:
-	$(log) "generating root file system for booting android from NFS."
+#not completed, need update the modules.
+build_droid_slc:
+	$(log) "buiding file system for booting android from SLC ..."
+	$(log) "    copy yaff2 image files ..."
+	$(hide)cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system.img $(OUTPUT_DIR) && \
+	cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/userdata.img $(OUTPUT_DIR)
+	$(log) "  done."
+
+build_droid_mmc:
+	$(log) "building root file system for booting android from SD card or NFS."
+	$(hide)if [ -d $(OUTPUT_DIR)/root_nfs ]; then rm -fr $(OUTPUT_DIR)/root_nfs; fi
+	$(hide)cp -r -p $(OUTPUT_DIR)/root $(OUTPUT_DIR)/root_nfs && \
+	cp -p -r $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system $(OUTPUT_DIR)/root_nfs
+	$(log) "  updating the modules..."
+	$(hide)if [ -d $(OUTPUT_DIR)/modules ]; then rm -fr $(OUTPUT_DIR)/modules; fi
+	$(hide)cd $(OUTPUT_DIR) && tar xzf modules_android_mmc.tgz && cp modules/* $(OUTPUT_DIR)/root_nfs/system/lib/modules
 	$(log) "  modifying root nfs folder..."
 	$(hide)cd $(OUTPUT_DIR)/root_nfs && $(TOP_DIR)/twist_root_nfs.sh 
 	$(log) "copy demo media files to /sdcard if there are demo media files..."
@@ -163,14 +189,6 @@ gen_droid_nfs:
 	$(hide)cd $(OUTPUT_DIR) && tar czf root_nfs.tgz root_nfs/
 	$(log) "  done"
 
-build_droid_code: output_dir
-	$(log) "building android source code ..."
-	$(hide)cd $(SRC_DIR) && \
-	source ./build/envsetup.sh && \
-	chooseproduct $(DROID_PRODUCT) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	make 
-	$(log) "  done"
-
 cp_android_root_dir_mlc:
 	$(log) "copying root directory from $(OUTPUT_DIR) ..."
 	$(hide)if [ -d "$(KERNEL_SRC_DIR)/root" ]; then rm -fr $(KERNEL_SRC_DIR)/root; fi
@@ -180,6 +198,9 @@ cp_android_root_dir_mlc:
 
 kernel_configs:=android:mlc:root android:nfs android:mmc 
 kernel_configs+=mameo:mlc mameo:nfs mameo:mmc
+
+module_files:=$(KERNEL_SRC_DIR)/drivers/net/wireless/libertas/libertas.ko \
+	$(KERNEL_SRC_DIR)/drivers/net/wireless/libertas/libertas_sdio.ko
 
 define define-kernel-target
 tw:=$$(subst :,  , $(1) )
@@ -200,7 +221,11 @@ build_kernel_$$(os)_$$(storage): output_dir $$(if $$(findstring root,$$(root)), 
 	export CROSS_COMPILE=$$(KERNEL_TOOLCHAIN_PREFIX) && \
 	make $$(private_kernel_cfg) && \
 	make clean && make 
-	$(hide)cp $$(KERNEL_SRC_DIR)/arch/arm/boot/zImage $$(OUTPUT_DIR)/zImage.$$(private_os).$$(private_storage) 
+	$$(hide)cp $$(KERNEL_SRC_DIR)/arch/arm/boot/zImage $$(OUTPUT_DIR)/zImage.$$(private_os).$$(private_storage) 
+	$$(log) "    copy module files ..."
+	$$(hide)if [ -d $$(OUTPUT_DIR)/modules ]; then rm -fr $$(OUTPUT_DIR)/modules; fi && mkdir $$(OUTPUT_DIR)/modules
+	$$(hide)for mod in $$(module_files); do cp $$$$mod $$(OUTPUT_DIR)/modules; done
+	$$(hide)cd $$(OUTPUT_DIR) && tar czf modules_$$(private_os)_$$(private_storage).tgz modules/ 
 	$(log) "  done."
 
 .PHONY: build_kernel_$$(os)_$$(storage)
@@ -235,7 +260,6 @@ PUBLISHING_FILES+=system_ubi.img:m:md5 \
 	system.img:m:md5 \
 	userdata.img:m:md5 \
 	root_android_mlc.tgz:m:md5 \
-	modules.tgz:m:md5 \
 	root_nfs.tgz:m:md5
 
 PUBLISHING_FILES+=changelog.day:m \
@@ -251,6 +275,7 @@ tw:=$$(subst :,  , $(1) )
 os:=$$(word 1, $$(tw) )
 storage:=$$(word 2, $$(tw) )
 PUBLISHING_FILES+=zImage.$$(os).$$(storage):m:md5
+PUBLISHING_FILES+=modules_$$(os)_$$(storage).tgz:m:md5
 endef
 
 $(foreach kc, $(kernel_configs), $(eval $(call define-kernel-publishing-file, $(kc) ) ) )
