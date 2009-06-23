@@ -206,6 +206,74 @@ $(foreach kc, $(kernel_configs), $(eval $(call define-kernel-target, $(kc) ) ) )
 
 build_uboot:
 
+MD5_FILE:=checksums.md5
+
+#format: <file name>:[m|o]:[md5]
+#m:means mandatory
+#o:means optional
+#md5: need to generate md5 sum
+PUBLISHING_FILES:=manifest.xml:m\
+	kernel_src.tgz:o:md5 \
+	droid_src.tgz:o:md5
+
+PUBLISHING_FILES+=system_ubi.img:m \
+	userdata_ubi.img:m:md5 \
+	root_android_mlc.tgz:m:md5 \
+	modules.tgz:m:md5 \
+	root_nfs.tgz:m:md5
+
+PUBLISHING_FILES+=changelog.day:m \
+	changelog.week:m \
+	changelog.biweek:m \
+	changelog.month:m 
+
+define define-kernel-publishing-file
+tw:=$$(subst :,  , $(1) )
+os:=$$(word 1, $$(tw) )
+storage:=$$(word 2, $$(tw) )
+PUBLISHING_FILES+=zImage.$$(os).$$(storage):m:md5
+endef
+
+$(foreach kc, $(kernel_configs), $(eval $(call define-kernel-publishing-file, $(kc) ) ) )
+
+define cp-with-md5
+	@echo "publishing mandatory file:$(2)"
+	@cp $(1) $(2)
+	$(if $(findstring $(strip $(3)),md5), \
+		@echo "generating md5 for $(2)" && \
+		cd $(dir $(1)) && \
+		md5sum $(notdir $(1)) >>$(OUTPUT_DIR)/$(MD5_FILE) \
+	 )
+endef
+
+define cpif-with-md5
+	@if [ -f $1 ]; then echo "publishing optional file:$(2)"; cp $1 $2; fi
+	$(if $(findstring $(strip $(3)),md5), \
+		@if [ -f $1 ]; then echo "generating md5 for $(2)"; \
+		cd $(dir $(1)) && \
+		md5sum $(notdir $(1)) >>$(OUTPUT_DIR)/$(MD5_FILE); fi\
+	 )
+endef
+
+define define-publishing-file-target
+tw:=$$(subst :,  , $(1) )
+name:=$$(word 1, $$(tw) )
+mandatory:=$$(word 2, $$(tw) )
+md5:=$$(word 3, $$(tw) )
+
+.PHONY: publish_$$(name)
+
+publish_$$(name): private_name:=$$(name)
+publish_$$(name): private_mandatory:=$$(mandatory)
+publish_$$(name): private_md5:=$$(md5)
+publish_$$(name): 
+	$$(if $$(findstring $$(strip $$(private_mandatory)),m), \
+	$$(call cp-with-md5, $$(OUTPUT_DIR)/$$(private_name), $$(PUBLISH_DIR)/$$(private_name), $$(private_md5) ), \
+	$$(call cpif-with-md5, $$(OUTPUT_DIR)/$$(private_name), $$(PUBLISH_DIR)/$$(private_name), $$(private_md5) ) )
+
+publish: publish_$$(name)
+endef
+
 .PHONY: publish_dir
 publish_dir:
 	$(hide)if [ -z "$(PUBLISH_DIR)" ]; then \
@@ -216,47 +284,14 @@ publish_dir:
 	    mkdir -p $(PUBLISH_DIR); \
 	fi
 
-#copy the file only if the file exists
-define cpif
-$(hide)if [ -f $1 ]; then cp $1 $2; fi
-endef
+clean_md5_file:
+	@echo -n > $(OUTPUT_DIR)/$(MD5_FILE)
 
-.PHONY: publish_bin publish_src
-publish: publish_droid_images publish_src publish_kernels publish_others
+publish: publish_dir clean_md5_file
+	@echo "Publish $(MD5_FILE)"
+	@cp $(OUTPUT_DIR)/$(MD5_FILE) $(PUBLISH_DIR)
 
-define define-kernel-publish-target
-tw:=$$(subst :,  , $(1) )
-os:=$$(word 1, $$(tw) )
-storage:=$$(word 2, $$(tw) )
-$(PUBLISH_DIR)/zImage.$$(os).$$(storage): $$(OUTPUT_DIR)/zImage.$$(os).$$(storage)
-	@echo "copy file: $$< $$(OUTPUT_DIR)"
-	@cp $$< $$@
-
-publish_kernels: $(PUBLISH_DIR)/zImage.$$(os).$$(storage)
-endef
-$(foreach kc, $(kernel_configs), $(eval $(call define-kernel-publish-target, $(kc) ) ) )
-
-publish_src: publish_dir
-	$(log) "copy source code tarball to $(PUBLISH_DIR)..."
-	$(hide)cp $(OUTPUT_DIR)/manifest.xml $(PUBLISH_DIR)
-	$(call cpif, $(OUTPUT_DIR)/droid_src.tgz, $(PUBLISH_DIR)) 
-	$(call cpif, $(OUTPUT_DIR)/kernel_src.tgz, $(PUBLISH_DIR))
-	$(log) "  done."
-	
-publish_droid_images: publish_dir
-	$(log) "copy droid images files to $(PUBLISH_DIR)..."
-	$(hide)cp $(OUTPUT_DIR)/system_ubi.img $(PUBLISH_DIR)
-	$(hide)cp $(OUTPUT_DIR)/userdata_ubi.img $(PUBLISH_DIR)
-
-publish_others: publish_dir
-	$(hide)cp $(OUTPUT_DIR)/root_android_mlc.tgz $(PUBLISH_DIR)
-	$(hide)cp $(OUTPUT_DIR)/modules.tgz $(PUBLISH_DIR)
-	$(hide)cp $(OUTPUT_DIR)/root_nfs.tgz $(PUBLISH_DIR)
-	$(hide)cp $(OUTPUT_DIR)/changelog.day $(PUBLISH_DIR)
-	$(hide)cp $(OUTPUT_DIR)/changelog.week $(PUBLISH_DIR)
-	$(hide)cp $(OUTPUT_DIR)/changelog.biweek $(PUBLISH_DIR)
-	$(hide)cp $(OUTPUT_DIR)/changelog.month $(PUBLISH_DIR)
-	$(log) "  done."
+$(foreach pf, $(PUBLISHING_FILES), $(eval $(call define-publishing-file-target, $(pf) ) ) )
 
 .PHONY: help
 help:

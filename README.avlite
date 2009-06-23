@@ -22,6 +22,8 @@ zImage.maemo.mlc	Kernel image to boot Maemo from MLC.
 zImage.maemo.nfs	Kernel image to boot Maemo from NFS.
 zImage.maemo.mmc	Kernel image to boot Maemo from SD card.
 
+checksums.md5		This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
+
 Burning OBM and UBoot
 =====================
 
