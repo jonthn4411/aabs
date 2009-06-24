@@ -135,7 +135,7 @@ build_droid_root: output_dir
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $(DROID_PRODUCT) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	make && \
+	ANDROID_KERNEL_CONFIG=no_kernel_modules make && \
 	if [ -d $(OUTPUT_DIR)/root ]; then rm -fr $(OUTPUT_DIR)/root; fi && \
 	echo "  copy root directory ..." && \
 	cp -p -r $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/root $(OUTPUT_DIR) 
