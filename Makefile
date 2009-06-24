@@ -61,8 +61,8 @@ endif
 #by default show the help
 help:
 
-.PHONY: all clean source manifest changelog pkgsrc build publish
-all: source manifest changelog build 
+.PHONY: all clean source changelog pkgsrc build publish
+all: changelog build 
 
 #we need first build the android, so we get the root dir 
 # and then we build the kernel images with the root dir and get the package of corresponding modules
@@ -92,7 +92,7 @@ output_dir:
         fi
 
 #get source code from GIT by repo
-source:
+source: output_dir
 	$(hide)if [ ! -d "$(SRC_DIR)" ]; then \
 	    mkdir $(SRC_DIR); \
 	fi
@@ -100,13 +100,11 @@ source:
 	$(hide)cd $(SRC_DIR) && \
 	repo init -u ssh://$(GIT_MANIFEST) -b $(MANIFEST_BRANCH) --repo-url ssh://$(GIT_REPO) && \
 	repo sync
-	$(log) "  done."
-
-manifest: output_dir
 	$(log) "saving manifest file..."
 	$(hide)cd $(SRC_DIR) && repo manifest -r -o $(OUTPUT_DIR)/manifest.xml
 #if an expection happened, repo doesn't exit with a non-zero value, we use below command to make sure the manifest.xml is generated.
 	$(hide)ls $(OUTPUT_DIR)/manifest.xml > /dev/null
+	$(log) "  done."
 
 #make sure the last character of $(SRC_DIR) is not "/"
 pkgsrc: output_dir
@@ -343,12 +341,12 @@ help:
 	@echo "  Auto build system for Avengers-Lite product."
 	@echo "--------"
 	@echo "  Targets:"
-	@echo "    source: get the source code from GIT and put it in $(SRC_DIR). "
+	@echo "    source: get the source code from GIT and put it in $(SRC_DIR). and save the manifest file."
 	@echo "    changelog: generate the changelog from from GIT commit history. "
 	@echo "    manifest: save the manifest file."
 	@echo "    build: build the droid, kernel and uboot."
 	@echo ""
-	@echo "    all: source manifest changelog build publish." 
+	@echo "    all: changelog build" 
 	@echo "    clean: remove all the files in output directory and remove all the source files."
 	@echo "    publish: copy the final targets from output directory to publishing directory."
 	@echo "    pkgsrc: using manifest.xml to get the source from GIT server and package it as a tarball."
