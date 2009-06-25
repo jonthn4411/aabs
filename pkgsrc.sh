@@ -29,6 +29,11 @@ tar czf kernel_src.tgz --exclude=$PKGSRC_EXCLUDE kernel/ &&
 mv kernel_src.tgz $OUTPUT_DIR &&
 rm -fr kernel &&
 
+echo "  packaging gc300_driver source code: " &&
+tar czf gc300_driver_src.tgz --exclude=$PKGSRC_EXCLUDE gc300_driver/ &&
+mv gc300_driver_src.tgz $OUTPUT_DIR &&
+rm -fr gc300_driver &&
+
 echo "  packaging uboot and obm source code:" &&
 tar czf boot_src.tgz --exclude=$PKGSRC_EXECLUDE boot/ &&
 mv boot_src.tgz $OUTPUT_DIR &&

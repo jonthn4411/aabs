@@ -24,6 +24,7 @@ userdata.img		Android userdata image for yaffs2 file system.
 kernel_src.tgz		Kernel source code tar ball.
 droid_src.tgz		Android source code tar ball without code of Marvell developed application.
 manifest.xml		Saving the GIT commit number of each project used in this build.
+gc300_driver_src.tgz	Source code tar ball of gc300 driver
 
 changelog.day		GIT change log of each project since yesterday.
 changelog.week		GIT change log of each project since last week.

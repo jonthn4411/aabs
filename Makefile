@@ -200,6 +200,9 @@ kernel_configs+=mameo:mlc mameo:nfs mameo:mmc
 module_files:=$(KERNEL_SRC_DIR)/drivers/net/wireless/libertas/libertas.ko \
 	$(KERNEL_SRC_DIR)/drivers/net/wireless/libertas/libertas_sdio.ko
 
+GC300_SRC_DIR:=$(SRC_DIR)/gc300_driver
+module_files+=$(GC300_SRC_DIR)/build/sdk/drivers/galcore.ko
+
 define define-kernel-target
 tw:=$$(subst :,  , $(1) )
 os:=$$(word 1, $$(tw) )
@@ -220,6 +223,9 @@ build_kernel_$$(os)_$$(storage): output_dir $$(if $$(findstring root,$$(root)), 
 	make $$(private_kernel_cfg) && \
 	make clean && make 
 	$$(hide)cp $$(KERNEL_SRC_DIR)/arch/arm/boot/zImage $$(OUTPUT_DIR)/zImage.$$(private_os).$$(private_storage) 
+	$$(log) "    building gc300 driver..."
+	$$(hide)export KERNEL_DIR=$$(KERNEL_SRC_DIR) && export CROSS_COMPILE=$$(KERNEL_TOOLCHAIN_PREFIX) && \
+	cd $$(GC300_SRC_DIR) && make avlite
 	$$(log) "    copy module files ..."
 	$$(hide)if [ -d $$(OUTPUT_DIR)/modules ]; then rm -fr $$(OUTPUT_DIR)/modules; fi && mkdir $$(OUTPUT_DIR)/modules
 	$$(hide)for mod in $$(module_files); do cp $$$$mod $$(OUTPUT_DIR)/modules; done
@@ -251,7 +257,8 @@ MD5_FILE:=checksums.md5
 #md5: need to generate md5 sum
 PUBLISHING_FILES:=manifest.xml:m\
 	kernel_src.tgz:o:md5 \
-	droid_src.tgz:o:md5
+	droid_src.tgz:o:md5 \
+	gc300_driver_src.tgz:o:md5
 
 PUBLISHING_FILES+=system_ubi.img:m:md5 \
 	userdata_ubi.img:m:md5 \
