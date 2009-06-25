@@ -117,7 +117,8 @@ pkgsrc: output_dir
 	$(log) " getting source code using manifest.xml"
 	$(hide)cd $(OUTPUT_DIR)/source && \
 	repo init -u ssh://$(GIT_MANIFEST) -b $(MANIFEST_BRANCH) --repo-url ssh://$(GIT_REPO) && \
-	cp $(OUTPUT_DIR)/manifest.xml $(OUTPUT_DIR)/source/.repo/ && \
+	cp $(OUTPUT_DIR)/manifest.xml $(OUTPUT_DIR)/source/.repo/manifests/autobuild.xml && \
+	repo init -m autobuild.xml && \
 	repo sync && \
 	$(TOP_DIR)/pkgsrc.sh $(OUTPUT_DIR)
 	$(log) "  done."
