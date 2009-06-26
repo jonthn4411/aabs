@@ -1,47 +1,62 @@
 Files in this folder
 ====================
-zImage.android.mlc	Kernel image to boot android from MLC. A root file system is built in. The root file system also packaged as root_android_mlc.tgz
-zImage.android.nfs	Kernel image to boot android from NFS.
-zImage.android.mmc	Kernel image to boot android from SD card.
+.OBM and UBoot
+  ntim_obm_uboot_aspen_nand.bin NTIM for avlite
+  ASPEN_NTLOADER.bin	NTLoader for avlite
+  u-boot.bin		uboot for avlite
 
-root_android_mlc.tgz	The root directory used to build zImage.android.mlc
+.Kernel and Modules for Android
+  zImage.android.mlc	Kernel image to boot android from MLC. A root file system is built in. The root file system also packaged as root_android_mlc.tgz
+  zImage.android.nfs	Kernel image to boot android from NFS.
+  zImage.android.mmc	Kernel image to boot android from SD card.
 
-modules_android_mlc.tgz Kernel modules that built along with zImage.android.mlc
-modules_android_mmc.tgz Kernel modules that built along with zImage.android.mmc
-modules_android_nfs.tgz Kernel modules that built along with zImage.android.nfs
-modules_mameo_mlc.tgz	Kernel modules that built along with zImage.mameo.mlc
-modules_mameo_mmc.tgz	Kernel modules that built along with zImage.mameo.mmc
-modules_maemo_nfs.tgz	Kernel modules that built along with zImage.mameo.nfs
+  modules_android_mlc.tgz Kernel modules that built along with zImage.android.mlc
+  modules_android_mmc.tgz Kernel modules that built along with zImage.android.mmc
+  modules_android_nfs.tgz Kernel modules that built along with zImage.android.nfs
 
-root_nfs.tgz		Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
+  root_android_mlc.tgz	The root directory used to build zImage.android.mlc
 
-system_ubi.img		Android system image for UBI file system.
-userdata_ubi.img	Android userdata image for UBI file system.
+.Kernel and Modules for Maemo
+  zImage.maemo.mlc	Kernel image to boot Maemo from MLC.
+  zImage.maemo.nfs	Kernel image to boot Maemo from NFS.
+  zImage.maemo.mmc	Kernel image to boot Maemo from SD card.
+  modules_mameo_mlc.tgz	Kernel modules that built along with zImage.mameo.mlc
+  modules_mameo_mmc.tgz	Kernel modules that built along with zImage.mameo.mmc
+  modules_maemo_nfs.tgz	Kernel modules that built along with zImage.mameo.nfs
 
-system.img		Android system image for yaffs2 file system.
-userdata.img		Android userdata image for yaffs2 file system.
+.Android File Systems
+  root_nfs.tgz		Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
+  
+  system_ubi.img		Android system image for UBI file system.
+  userdata_ubi.img	Android userdata image for UBI file system.
 
-kernel_src.tgz		Kernel source code tar ball.
-droid_src.tgz		Android source code tar ball without code of Marvell developed application.
-manifest.xml		Saving the GIT commit number of each project used in this build.
-gc300_driver_src.tgz	Source code tar ball of gc300 driver
+  system.img		Android system image for yaffs2 file system.
+  userdata.img		Android userdata image for yaffs2 file system.
+  
+.Source codes
+  manifest.xml		Saving the GIT commit number of each project used in this build.
+  kernel_src.tgz	Kernel source code tar ball.
+  droid_src.tgz		Android source code tar ball without code of Marvell developed application.
+  gc300_driver_src.tgz	Source code tar ball of gc300 driver
+  boot_src.tgz		Uboot and OBM source code tar ball
 
-changelog.day		GIT change log of each project since yesterday.
-changelog.week		GIT change log of each project since last week.
-changelog.biweek 	GIT change log of each project since 2 weeks ago.
-changelog.month		GIT change log of each project since a month ago.
+.Change logs and checksum file
+  changelog.day		GIT change log of each project since yesterday.
+  changelog.week		GIT change log of each project since last week.
+  changelog.biweek 	GIT change log of each project since 2 weeks ago.
+  changelog.month		GIT change log of each project since a month ago.
 
-zImage.maemo.mlc	Kernel image to boot Maemo from MLC.
-zImage.maemo.nfs	Kernel image to boot Maemo from NFS.
-zImage.maemo.mmc	Kernel image to boot Maemo from SD card.
-
-u-boot.bin		uboot for avlite
-boot_src.tgz		Uboot and OBM source code tar ball
-
-checksums.md5		This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
+  checksums.md5		This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
 
 Burning OBM and UBoot
 =====================
+1. install XDB 4.1.1 from: \\sh1sbak009\Product_Integration\Tools\eXtreme_Debugger_v4.1.1
+2. Burn OBM and U-boot by XDB
+   1) Use flash burn tool: flash --> burn flash, select: board -- aspen, and flash type - nand
+   2) Reset "bad block" table and Erase all
+   3) burn file "ntim_obm_uboot_aspen_nand.bin"	--> 0x0
+   4) burn file "ASPEN_NTLOADER.bin"		--> 0x20000
+   5) burn file "u-boot.bin"			--> 0x40000
 
 
 Setup Android on NAND(MLC)
