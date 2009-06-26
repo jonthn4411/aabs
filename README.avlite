@@ -68,7 +68,7 @@ Avengers>> nand device 1
 Avengers>> bbt init nand
 Avengers>> tftp 0x500000 zImage.android.mlc
 Avengers>> nand erase 0x80000 0x380000
-Avengers>> nand write 0x500000 0x80000 <size of loaded zImage>
+Avengers>> nand write 0x500000 0x80000 0x300000 
 Avengers>> tftp 0x1000000 system_ubi.img
 Avengers>> nand erase 0x800000 0xf800000
 Avengers>> nand write 0x1000000 0x800000 <size of loaded UBI image>
