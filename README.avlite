@@ -142,3 +142,11 @@ You can do this by: rm /system/lib/libopencorehw.so . Once this file is deleted,
 In the console mode, you can remount the /system folder by
 $mount -o remount -t ubifs ubi0_0 /system
 
++How to enable the video playback profiling?
+--------------------------------------------
+After the android boot up, type in console:
+$setprop enable.pvplayer.profiling 1
+$logcat &
+
+While playback a video clip, the profiling data will be output to console.
+
