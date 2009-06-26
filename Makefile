@@ -67,8 +67,8 @@ all: changelog build
 #we need first build the android, so we get the root dir 
 # and then we build the kernel images with the root dir and get the package of corresponding modules
 # and then we use those module package to build corresponding android package.
-build: build_droid_root build_kernel build_droid_pkgs build_uboot 
-.PHONY: build_droid_root build_kernel build_droid_pkgs build_uboot
+build: build_droid_root build_kernel build_droid_pkgs build_uboot build_obm
+.PHONY: build_droid_root build_kernel build_droid_pkgs build_uboot build_obm
 
 .PHONY: clean_src_dir clean_out_dir
 clean: clean_src_dir clean_out_dir
@@ -250,6 +250,15 @@ build_uboot:
 	$(hide)cp $(UBOOT_SRC_DIR)/u-boot.bin $(OUTPUT_DIR)/
 	$(log) "  done."
 
+#build obm
+OBM_NTIM:=ntim_obm_uboot_aspen_nand.bin
+OBM_NTLOADER:=ASPEN_NTLOADER.bin
+build_obm:
+	$(log) "start to copy obm files"
+	@cp $(SRC_DIR)/boot/obm/binaries/BootLoader/$(OBM_NTIM) $(OUTPUT_DIR)
+	@cp $(SRC_DIR)/boot/obm/binaries/BootLoader/$(OBM_NTLOADER) $(OUTPUT_DIR)
+	$(log) "  done."
+
 MD5_FILE:=checksums.md5
 
 #format: <file name>:[m|o]:[md5]
@@ -275,6 +284,9 @@ PUBLISHING_FILES+=changelog.day:m \
 
 PUBLISHING_FILES+=u-boot.bin:m:md5 \
 	boot_src.tgz:o:md5
+
+PUBLISHING_FILES+=$(OBM_NTIM):m:md5 \
+	$(OBM_NTLOADER):m:md5
 
 define define-kernel-publishing-file
 tw:=$$(subst :,  , $(1) )
