@@ -34,6 +34,7 @@ DEMO_MEDIA_DIR:=/autobuild/demomedia
 current-time:=[$$(date "+%Y-%m-%d %H:%M:%S")]
 log:=@echo $(current-time)
 hide:=@
+space:= #a designated space
 
 KERNEL_SRC_DIR:=kernel
 UBOOT_SRC_DIR:=boot/uboot
@@ -48,15 +49,24 @@ SRC_DIR:=$(TOP_DIR)/$(SRC_DIR)
 KERNEL_SRC_DIR:=$(SRC_DIR)/$(KERNEL_SRC_DIR)
 UBOOT_SRC_DIR:=$(SRC_DIR)/$(UBOOT_SRC_DIR)
 
+#default android tool
+DEFAULT_CCACHE:=$(SRC_DIR)/prebuilt/linux-x86/ccache/ccache
+DEFAULT_ANDROID_TOOLCHAIN:=$(SRC_DIR)/prebuilt/linux-x86/toolchain/arm-eabi-4.2.1/bin/arm-eabi-
+
 #use the Android toolchain by default
-ifeq ($(strip $(DEFAULT_TOOLCHAIN_PREFIX)),)
-    KERNEL_TOOLCHAIN_PREFIX:=$(SRC_DIR)/prebuilt/linux-x86/toolchain/arm-eabi-4.2.1/bin/arm-eabi-
+ifeq ($(strip $(EXTERNAL_TOOLCHAIN_PREFIX)),)
+    KERNEL_TOOLCHAIN_PREFIX:=$(DEFAULT_ANDROID_TOOLCHAIN)
 else
-    #make Android use default toolchain
-    export TARGET_TOOLS_PREFIX:=$(DEFAULT_TOOLCHAIN_PREFIX)
-    KERNEL_TOOLCHAIN_PREFIX:=$(DEFAULT_TOOLCHAIN_PREFIX)
+    #make Android use external toolchain
+    export TARGET_TOOLS_PREFIX:=$(EXTERNAL_TOOLCHAIN_PREFIX)
+    KERNEL_TOOLCHAIN_PREFIX:=$(EXTERNAL_TOOLCHAIN_PREFIX)
 endif
 
+ifneq ($(strip $(USE_CCACHE) ), )
+    #enable android build system to use ccache
+    export USE_CCACHE:=true
+    KERNEL_TOOLCHAIN_PREFIX:=$(DEFAULT_CCACHE) $(KERNEL_TOOLCHAIN_PREFIX)
+endif
 
 #by default show the help
 help:
@@ -220,12 +230,12 @@ build_kernel_$$(os)_$$(storage): output_dir $$(if $$(findstring root,$$(root)), 
 	$$(log) "    kernel_config: $$(private_kernel_cfg): ..."
 	$$(hide)cd $$(KERNEL_SRC_DIR) && \
 	export ARCH=arm && \
-	export CROSS_COMPILE=$$(KERNEL_TOOLCHAIN_PREFIX) && \
+	export CROSS_COMPILE="$$(KERNEL_TOOLCHAIN_PREFIX)" && \
 	make $$(private_kernel_cfg) && \
 	make clean && make 
 	$$(hide)cp $$(KERNEL_SRC_DIR)/arch/arm/boot/zImage $$(OUTPUT_DIR)/zImage.$$(private_os).$$(private_storage) 
 	$$(log) "    building gc300 driver..."
-	$$(hide)export KERNEL_DIR=$$(KERNEL_SRC_DIR) && export CROSS_COMPILE=$$(KERNEL_TOOLCHAIN_PREFIX) && \
+	$$(hide)export KERNEL_DIR=$$(KERNEL_SRC_DIR) && export CROSS_COMPILE="$$(KERNEL_TOOLCHAIN_PREFIX)" && \
 	cd $$(GC300_SRC_DIR) && make avlite
 	$$(log) "    copy module files ..."
 	$$(hide)if [ -d $$(OUTPUT_DIR)/modules ]; then rm -fr $$(OUTPUT_DIR)/modules; fi && mkdir $$(OUTPUT_DIR)/modules
@@ -244,7 +254,7 @@ build_uboot:
 	$(log) "starting to build uboot"
 	$(hide)cd $(UBOOT_SRC_DIR) && \
 	export ARCH=arm && \
-	export CROSS_COMPILE=$(KERNEL_TOOLCHAIN_PREFIX) && \
+	export CROSS_COMPILE="$(KERNEL_TOOLCHAIN_PREFIX)" && \
 	make $(UBOOT_CONFIG) && \
 	make 
 	$(hide)cp $(UBOOT_SRC_DIR)/u-boot.bin $(OUTPUT_DIR)/
