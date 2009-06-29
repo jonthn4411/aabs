@@ -20,9 +20,9 @@ Files in this folder
   zImage.maemo.mlc	Kernel image to boot Maemo from MLC.
   zImage.maemo.nfs	Kernel image to boot Maemo from NFS.
   zImage.maemo.mmc	Kernel image to boot Maemo from SD card.
-  modules_mameo_mlc.tgz	Kernel modules that built along with zImage.mameo.mlc
-  modules_mameo_mmc.tgz	Kernel modules that built along with zImage.mameo.mmc
-  modules_maemo_nfs.tgz	Kernel modules that built along with zImage.mameo.nfs
+  modules_maemo_mlc.tgz	Kernel modules that built along with zImage.maemo.mlc
+  modules_maemo_mmc.tgz	Kernel modules that built along with zImage.maemo.mmc
+  modules_maemo_nfs.tgz	Kernel modules that built along with zImage.maemo.nfs
 
 .Android File Systems
   root_nfs.tgz		Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.

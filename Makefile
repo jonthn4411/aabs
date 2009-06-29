@@ -196,7 +196,7 @@ cp_android_root_dir_mlc:
 	cd $(KERNEL_SRC_DIR) && tar czf $(OUTPUT_DIR)/root_android_mlc.tgz root/ 
 
 kernel_configs:=android:mlc:root android:nfs android:mmc 
-kernel_configs+=mameo:mlc mameo:nfs mameo:mmc
+kernel_configs+=maemo:mlc maemo:nfs maemo:mmc
 
 module_files:=$(KERNEL_SRC_DIR)/drivers/net/wireless/libertas/libertas.ko \
 	$(KERNEL_SRC_DIR)/drivers/net/wireless/libertas/libertas_sdio.ko
@@ -209,7 +209,7 @@ tw:=$$(subst :,  , $(1) )
 os:=$$(word 1, $$(tw) )
 storage:=$$(word 2, $$(tw) )
 root:=$$(word 3, $$(tw) )
-kernel_cfg:=$$(if $$(findstring mameo,$$(os)), pxa168_$$(storage)_defconfig, pxa168_$$(os)_$$(storage)_defconfig )
+kernel_cfg:=$$(if $$(findstring maemo,$$(os)), pxa168_$$(storage)_defconfig, pxa168_$$(os)_$$(storage)_defconfig )
 build_kernel_$$(os)_$$(storage): private_os:=$$(os)
 build_kernel_$$(os)_$$(storage): private_storage:=$$(storage)
 build_kernel_$$(os)_$$(storage): private_root:=$$(root)
