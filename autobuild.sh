@@ -143,12 +143,14 @@ send_success_notification()
 
 function print_usage()
 {
-	echo "Usage: $0 [clean] [source] [pkgsrc] [publish] [email]  [help]"
+	echo "Usage: $0 [clean] [source] [pkgsrc] [publish] [email] [temp] [ccache] [help]"
 	echo "  clean: do a clean build. Before build starts, the source code and output directory is removed first."
 	echo "  source: download the source code from GIT server."
 	echo "  publish:if build success, copy the result to publish dir."
 	echo "  email:once build is completed, either successfully or interrupted due to an error, generate an email notification."
 	echo "  pkgsrc: package the source code into a tarball."
+	echo "  temp: indicate a temporarily build, the build will be published to a temp folder:$TEMP_PUBLISH_DIR."
+	echo "  ccache: using ccache to speedup the build process."
 	echo "  help: print this list."
 }
 
@@ -161,13 +163,17 @@ project_name="Android for AVLite"
 envelopesend="-f $build_maintainer"
 
 PUBLISH_DIR="Not Published"
-PUBLISH_DIR_BASE=/autobuild/android
+OFFICIAL_PUBLISH_DIR=/autobuild/android
+TEMP_PUBLISH_DIR=/autobuild/temp
+PUBLISH_DIR_BASE=$OFFICIAL_PUBLISH_DIR
 
 FLAG_CLEAN=false
 FLAG_PUBLISH=false
 FLAG_EMAIL=false
 FLAG_PKGSRC=false
 FLAG_SOURCE=false
+FLAG_TEMP=false
+FLAG_CCACHE=false
 for flag in $*; do
 	case $flag in
 		clean) FLAG_CLEAN=true;;
@@ -175,15 +181,26 @@ for flag in $*; do
 		publish)FLAG_PUBLISH=true;;
 		pkgsrc)FLAG_PKGSRC=true;;
 		source)FLAG_SOURCE=true;;
+		temp)FLAG_TEMP=true;;
+		ccache)FLAG_CCACHE=true;;
 		help) print_usage; exit 2;;
 		*) echo "Unknown flag: $flag"; print_usage; exit 2;;
 	esac
 done
 
+if [ "$FLAG_TEMP" = "true" ]; then
+	PUBLISH_DIR_BASE=$TEMP_PUBLISH_DIR
+fi
+
 #enable pipefail so that if make fail the exit of whole command is non-zero value.
 set -o pipefail
 
 echo "Starting autobuild @$(date)..." > $STD_LOG
+
+if [ "$FLAG_CCACHE" = "true" ]; then
+	export USE_CCACHE=true
+	echo "ccache is enabled."
+fi
 
 if [ "$FLAG_CLEAN" = "true" ]; then 
 	make clean 2>&1 | tee -a $STD_LOG
