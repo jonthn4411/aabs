@@ -7,22 +7,16 @@ Files in this folder
 
 .Kernel and Modules for Android
   zImage.android.mlc	Kernel image to boot android from MLC. A root file system is built in. The root file system also packaged as root_android_mlc.tgz
-  zImage.android.nfs	Kernel image to boot android from NFS.
   zImage.android.mmc	Kernel image to boot android from SD card.
 
   modules_android_mlc.tgz Kernel modules that built along with zImage.android.mlc
   modules_android_mmc.tgz Kernel modules that built along with zImage.android.mmc
-  modules_android_nfs.tgz Kernel modules that built along with zImage.android.nfs
 
   root_android_mlc.tgz	The root directory used to build zImage.android.mlc
 
 .Kernel and Modules for Maemo
   zImage.maemo.mlc	Kernel image to boot Maemo from MLC.
-  zImage.maemo.nfs	Kernel image to boot Maemo from NFS.
-  zImage.maemo.mmc	Kernel image to boot Maemo from SD card.
   modules_maemo_mlc.tgz	Kernel modules that built along with zImage.maemo.mlc
-  modules_maemo_mmc.tgz	Kernel modules that built along with zImage.maemo.mmc
-  modules_maemo_nfs.tgz	Kernel modules that built along with zImage.maemo.nfs
 
 .Android File Systems
   root_nfs.tgz		Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
@@ -93,10 +87,10 @@ Follow the below process to make a SD card with Android root file system install
 
 Second, burning the zImage.android.mmc image.
 Boot the device with console,
-Avengers>> nand device 1
+Avengers>> nand device 0
 Avengers>> tftp 0x500000 zImage.android.mmc
-Avengers>> nand erase 0x80000 0x380000
-Avengers>> nand write 0x500000 0x80000 <size of loaded zImage>
+Avengers>> nand erase 0x100000 0x300000
+Avengers>> nand write 0x500000 0x100000 0x300000 
 
 
 Setup Android on NFS
@@ -109,7 +103,22 @@ Setup Android on NFS
 4) tar xvf root_nfs.tgz /srv/
 5) mv /srv/root_nfs /srv/nfs
 
-Last, you should use zImage.android.nfs to boot Android from NFS.
+Last, you should use zImage.android.mmc to boot the kernel and then set the bootargs variable in UBoot.
+
+Avengers>>tftp zImage.android.mmc
+Avengers>>setenv bootargs root=/dev/nfs nfsroot=192.168.1.100:/srv/nfs/,nolock,rsize=1024,wsize=1024 ip=192.168.1.101:192.168.1.100::255.255.255.0::usb0:on console=ttyS0,115200 mem=256M uart_dma init=/init android
+Avengers>>saveenv
+Avengers>>boot
+
+Notes:if you are using a different host ip address and exported a different NFS directory, you should change the above command line accordingly.
+
+Notes:You only need use setenv and savenv command one time. Next time UBoot will load the environment variable from NAND automaticllay. But later if you want use zImage.android.mmc to boot Android from SD card, you should clear the "bootargs" environment variable. You can do this by:
+
+Avengers>>setenv bootargs
+Avengers>>saveenv
+Avengers>>printenv 
+
+printenv will list all the environment variables, which can be used to verify what current value of bootargs is.
 
 
 Known Issues about running Android on NFS

@@ -205,8 +205,8 @@ cp_android_root_dir_mlc:
 	cd $(KERNEL_SRC_DIR)/root && $(TOP_DIR)/update_root_for_mlc.sh && \
 	cd $(KERNEL_SRC_DIR) && tar czf $(OUTPUT_DIR)/root_android_mlc.tgz root/ 
 
-kernel_configs:=android:mlc:root android:nfs android:mmc 
-kernel_configs+=maemo:mlc maemo:nfs maemo:mmc
+kernel_configs:=android:mlc:root android:mmc 
+kernel_configs+=maemo:mlc
 
 module_files:=$(KERNEL_SRC_DIR)/drivers/net/wireless/libertas/libertas.ko \
 	$(KERNEL_SRC_DIR)/drivers/net/wireless/libertas/libertas_sdio.ko
