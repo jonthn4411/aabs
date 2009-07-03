@@ -155,13 +155,15 @@ The wifi kernel module in root_nfs.tgz or system_ubi.img may not comply with zIm
 
 +How can I disable GC300 copybit engine completely?
 ---------------------------------------------------
-You can do this by: 1) rm /system/lib/hw/copybit.default.so
-		    2) rm /system/lib/libopencorehw.so
+You can do this by: rm /system/lib/hw/copybit.default.so, so that Android GUI system won't use GC300 copybit engine. 
+But the built-in media playback engine will still try to use GC300 copybit engine to do resizing and color conversion. Check the topic "How can I disable GC300 copybit engine on video playback?".
 
 
-+How can I disable GC300 copybit engine on video playback only?
++How can I disable GC300 copybit engine on video playback?
 ---------------------------------------------------------------
-You can do this by: rm /system/lib/libopencorehw.so . Once this file is deleted, android uses SW resizing and color coversion module to resize and conver the YUV video to RGB.
+You can do this by: rm /system/lib/libopencorehw.so . Once this file is deleted, OpenCore uses SW resizing and color coversion module to resize and conver the YUV video to RGB.
+
+Second, you should "setprop debug.disable.pmem.output 1", so that GStreamer and Helix will use SW resizing and color conversion module.
 
 
 +How to modify the files after the system_ubi.img has been burned to the flash?
