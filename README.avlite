@@ -19,13 +19,15 @@ Files in this folder
   modules_maemo_mlc.tgz	Kernel modules that built along with zImage.maemo.mlc
 
 .Android File Systems
-  root_nfs.tgz		Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
+  root_nfs_helix.tgz		Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package, with helix built in.
+  root_nfs_nohelix.tgz		Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package, without helix built in.
   
-  system_ubi.img		Android system image for UBI file system.
-  userdata_ubi.img	Android userdata image for UBI file system.
+  system_ubi_helix.img		Android system image for UBI file system, with helix built in.
+  userdata_ubi_helix.img	Android userdata image for UBI file system, with helix built in.
 
-  system.img		Android system image for yaffs2 file system.
-  userdata.img		Android userdata image for yaffs2 file system.
+  system_ubi_nohelix.img	Android system image for UBI file system, without helix built in.
+  userdata_ubi_nohelix.img	Android userdata image for UBI file system, without helix built in.
+
   
 .Source codes
   manifest.xml		Saving the GIT commit number of each project used in this build.

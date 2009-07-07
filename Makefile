@@ -39,7 +39,7 @@ space:= #a designated space
 KERNEL_SRC_DIR:=kernel
 UBOOT_SRC_DIR:=boot/uboot
 UBOOT_CONFIG:=avengers_config
-
+PUBLISHING_FILES:=
 #
 #convert the relative directory to absolute directory.
 #
@@ -150,53 +150,88 @@ build_droid_root: output_dir
 	cp -p -r $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/root $(OUTPUT_DIR) 
 	$(log) "  done"
 
-build_droid_pkgs: build_droid_mlc build_droid_mmc build_droid_slc
-.PHONY: build_droid_mlc build_droid_mmc build_droid_slc
+build_droid_pkgs: build_droid_with_helix build_droid_without_helix
+.PHONY: build_droid_with_helix build_droid_without_helix
 
-build_droid_mlc:
-	$(log) "buiding file system for booting android from MLC ..."
-	$(log) "  updating the modules..."
-	$(hide)if [ -d $(OUTPUT_DIR)/modules ]; then rm -fr $(OUTPUT_DIR)/modules; fi
-	$(hide)cd $(OUTPUT_DIR) && tar xzf modules_android_mlc.tgz
-	$(hide)export ANDROID_PREBUILT_MODULES=$(OUTPUT_DIR)/modules && \
-	cd $(SRC_DIR) && \
+build_droid_with_helix: rebuild_droid_helix_enabled package_droid_mlc_helix package_droid_mmc_helix
+build_droid_without_helix: rebuild_droid_helix_disabled package_droid_mlc_nohelix package_droid_mmc_nohelix
+
+define rebuild-droid-helix-config
+.PHONY:rebuild_droid_helix_$(1)
+
+#we only rebuild a certain files that affect helix player to speed up the build process.
+#files to remove: TARGET_OUT/system/lib/helix/*
+#		TARGET_OUT/*.img
+#		limmediaplayerservice
+rebuild_droid_helix_$(1): helix_config:=$$(if $$(findstring $(1),enabled),true,false)
+rebuild_droid_helix_$(1):
+	$$(log) "rebuild android with helix:$(1)..."
+	$$(hide)cd $(SRC_DIR)/vendor/marvell/$$(DROID_PRODUCT) && \
+	sed -i "/^[ tab]*BOARD_ENABLE_HELIX[ tab]*:=/ s/:=.*/:= $$(helix_config)/" BoardConfig.mk
+	$$(hide)cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
-	chooseproduct $(DROID_PRODUCT) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
+	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
+	rm -f out/target/product/$$(DROID_PRODUCT)/*.img && \
+	rm -fr out/target/product/$$(DROID_PRODUCT)/system/lib/helix && \
+	rm -fr out/target/product/$$(DROID_PRODUCT)/obj/SHARED_LIBRARIES/libmediaplayerservice_intermediates/ && \
+	ANDROID_KERNEL_CONFIG=no_kernel_modules make
+	$$(log) "  done for rebuild_droid_helix_$(1)"
+endef
+
+$(eval $(call rebuild-droid-helix-config,enabled) )
+$(eval $(call rebuild-droid-helix-config,disabled) )
+
+define package-droid-mlc-config
+.PHONY:package_droid_mlc_$(1)
+package_droid_mlc_$(1):
+	$$(log) "package file system for booting android from MLC for $(1)..."
+	$$(log) "  updating the modules..."
+	$$(hide)if [ -d $$(OUTPUT_DIR)/modules ]; then rm -fr $$(OUTPUT_DIR)/modules; fi
+	$$(hide)cd $$(OUTPUT_DIR) && tar xzf modules_android_mlc.tgz
+	$$(hide)export ANDROID_PREBUILT_MODULES=$$(OUTPUT_DIR)/modules && \
+	cd $$(SRC_DIR) && \
+	source ./build/envsetup.sh && \
+	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make && \
 	echo "    copy UBI image files..." && \
-	cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system_ubi.img $(OUTPUT_DIR) && \
-	cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/userdata_ubi.img $(OUTPUT_DIR) 
-	$(log) "  done."
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ubi.img $$(OUTPUT_DIR)/system_ubi_$(1).img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ubi.img $$(OUTPUT_DIR)/userdata_ubi_$(1).img 
+	$$(log) "  done for package_droid_mlc_$(1)."
 
-#not completed, need update the modules.
-build_droid_slc:
-	$(log) "buiding file system for booting android from SLC ..."
-	$(log) "    copy yaff2 image files ..."
-	$(hide)cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system.img $(OUTPUT_DIR) && \
-	cp -p $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/userdata.img $(OUTPUT_DIR)
-	$(log) "  done."
+PUBLISHING_FILES+=system_ubi_$(1).img:m:md5 
+PUBLISHING_FILES+=userdata_ubi_$(1).img:m:md5 
+endef
+$(eval $(call package-droid-mlc-config,helix) )
+$(eval $(call package-droid-mlc-config,nohelix) )
 
-build_droid_mmc:
-	$(log) "building root file system for booting android from SD card or NFS."
-	$(hide)if [ -d $(OUTPUT_DIR)/root_nfs ]; then rm -fr $(OUTPUT_DIR)/root_nfs; fi
-	$(hide)cp -r -p $(OUTPUT_DIR)/root $(OUTPUT_DIR)/root_nfs && \
-	cp -p -r $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system $(OUTPUT_DIR)/root_nfs
-	$(log) "  updating the modules..."
-	$(hide)if [ -d $(OUTPUT_DIR)/modules ]; then rm -fr $(OUTPUT_DIR)/modules; fi
-	$(hide)cd $(OUTPUT_DIR) && tar xzf modules_android_mmc.tgz && cp modules/* $(OUTPUT_DIR)/root_nfs/system/lib/modules
-	$(log) "  modifying root nfs folder..."
-	$(hide)cd $(OUTPUT_DIR)/root_nfs && $(TOP_DIR)/twist_root_nfs.sh 
-	$(log) "copy demo media files to /sdcard if there are demo media files..."
-	$(hide)if [ -d "$(DEMO_MEDIA_DIR)" ]; then \
-			mkdir -p $(OUTPUT_DIR)/root_nfs/sdcard && \
-			cp $(DEMO_MEDIA_DIR)/* $(OUTPUT_DIR)/root_nfs/sdcard/ && \
+define package-droid-mmc-config
+.PHONY: package_droid_mmc_$(1)
+package_droid_mmc_$(1):
+	$$(log) "package root file system for booting android from SD card or NFS for $(1)."
+	$$(hide)if [ -d $$(OUTPUT_DIR)/root_nfs ]; then rm -fr $$(OUTPUT_DIR)/root_nfs; fi
+	$$(hide)cp -r -p $$(OUTPUT_DIR)/root $$(OUTPUT_DIR)/root_nfs && \
+	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system $$(OUTPUT_DIR)/root_nfs
+	$$(log) "  updating the modules..."
+	$$(hide)if [ -d $$(OUTPUT_DIR)/modules ]; then rm -fr $$(OUTPUT_DIR)/modules; fi
+	$$(hide)cd $$(OUTPUT_DIR) && tar xzf modules_android_mmc.tgz && cp -r modules $$(OUTPUT_DIR)/root_nfs/system/lib/modules
+	$$(log) "  modifying root nfs folder..."
+	$$(hide)cd $$(OUTPUT_DIR)/root_nfs && $$(TOP_DIR)/twist_root_nfs.sh 
+	$$(log) "copy demo media files to /sdcard if there are demo media files..."
+	$$(hide)if [ -d "$$(DEMO_MEDIA_DIR)" ]; then \
+			mkdir -p $$(OUTPUT_DIR)/root_nfs/sdcard && \
+			cp $$(DEMO_MEDIA_DIR)/* $$(OUTPUT_DIR)/root_nfs/sdcard/ && \
 			echo "  done."; \
 		   else \
 			echo "    !!!demo media is not found."; \
 		   fi
-	$(log) "  packaging the root_nfs.tgz..."
-	$(hide)cd $(OUTPUT_DIR) && tar czf root_nfs.tgz root_nfs/
-	$(log) "  done"
+	$$(log) "  packaging the root_nfs.tgz..."
+	$$(hide)cd $$(OUTPUT_DIR) && tar czf root_nfs_$(1).tgz root_nfs/
+	$$(log) "  done for package_droid_mmc_$(1)."
+
+PUBLISHING_FILES+=root_nfs_$(1).tgz:m:md5 
+endef
+$(eval $(call package-droid-mmc-config,helix) )
+$(eval $(call package-droid-mmc-config,nohelix) )
 
 cp_android_root_dir_mlc:
 	$(log) "copying root directory from $(OUTPUT_DIR) ..."
@@ -275,17 +310,12 @@ MD5_FILE:=checksums.md5
 #m:means mandatory
 #o:means optional
 #md5: need to generate md5 sum
-PUBLISHING_FILES:=manifest.xml:m\
+PUBLISHING_FILES+=manifest.xml:m\
 	kernel_src.tgz:o:md5 \
 	droid_src.tgz:o:md5 \
 	gc300_driver_src.tgz:o:md5
 
-PUBLISHING_FILES+=system_ubi.img:m:md5 \
-	userdata_ubi.img:m:md5 \
-	system.img:m:md5 \
-	userdata.img:m:md5 \
-	root_android_mlc.tgz:m:md5 \
-	root_nfs.tgz:m:md5
+PUBLISHING_FILES+=root_android_mlc.tgz:m:md5 
 
 PUBLISHING_FILES+=changelog.day:m \
 	changelog.week:m \
