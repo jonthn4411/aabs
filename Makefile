@@ -213,7 +213,7 @@ package_droid_mmc_$(1):
 	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system $$(OUTPUT_DIR)/root_nfs
 	$$(log) "  updating the modules..."
 	$$(hide)if [ -d $$(OUTPUT_DIR)/modules ]; then rm -fr $$(OUTPUT_DIR)/modules; fi
-	$$(hide)cd $$(OUTPUT_DIR) && tar xzf modules_android_mmc.tgz && cp -r modules $$(OUTPUT_DIR)/root_nfs/system/lib/modules
+	$$(hide)cd $$(OUTPUT_DIR) && tar xzf modules_android_mmc.tgz && cp -r modules $$(OUTPUT_DIR)/root_nfs/system/lib/
 	$$(log) "  modifying root nfs folder..."
 	$$(hide)cd $$(OUTPUT_DIR)/root_nfs && $$(TOP_DIR)/twist_root_nfs.sh 
 	$$(log) "copy demo media files to /sdcard if there are demo media files..."
