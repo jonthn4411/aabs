@@ -3,30 +3,49 @@ Setup the environment
 
 1. Install the required components to build Android. Check for http://source.android.com
 
-2. Install Marvell gcc toolchain which is needed to build kernel.
-   The marvell gcc toolchain can be downloaded from //sh1sbak009/Product_Integration/Releases/Toolchain.
-   In order to simplify the setting, the toolchain should be installed at: /usr/local/arm-marvell-linux-gnueabi/bin
+2. Create the publish directory which is used to post the build result.
+   One is for official build: e.g /autobuild/android/
+   The other is for temp build: e.g /autobuild/temp
 
-3. Create the publish directory which is used to post the build result.
-   In order to simplify the setting, the publish directory should be /autobuild/android/
+3. Configure the buildhost.def if your host uses a different configuration for:
+   GIT_SERVER where the source code locates.
+   OFFICIAL_PUBLISH_DIR_BASE and TEMP_PUBLISH_DIR_BASE where the target files are published.
 
 4. Create the demomedia directory and put the demo media files there. This is not mandatory. If the demomedia folder
    exists, the build script will copy the demo media files to the /sdcard folder of the device while generating the
    root_nfs.tgz.
 
 
-Running the script
-==================
+Build scripts
+=============
 
-Usage: autobuild.sh [clean] [pkgsrc] [email] [publish]
+Each product should have its own build script, for example, build-avlite-cupcake.sh, build-dove-donut.sh etc. Ultimately these scripts call core/autobuild.sh to do the actual jobs. Usually the command line parameters of each product build script are same as the core/autobuild.sh. For meaning each command line parameter, type <build-product-code>.sh help.
 
-By default the script doesn't do clean, if "clean" is not specified.
-The script doesn't generate the package of source code, if "pkgsrc" is not specified.
-The script doesn't send any email notification, if "email" is not specified.
-The script doesn't copy the result to publish folder, if "publish" is not specified.
+Generally the autobuild.sh divides the build process into: clobber source changelog build pkgsource publish
+
+clobber: means clean the source code directory and output directory. It is necessary to get a completely clean build.
+
+source: means getting the source code from GIT server. The autobuild assumes "repo" tool is used to get all the source code.
+
+changelog: means generating the change log according to the log in GIT. The following change log will be generated. change log since last build; change log since last release; change log since yesterday; change log since last week; change log since last 2 weeks; change log since last month.
+
+build: means building the code. E.g build the uboot, obm, kernel and android. Build variants are used to support multiple toolchain. Once a build variant is done, build_clean goal is used to clean the intermediate files and target files. And then start another complete build. The target files of different build variant are published to the sub folder named with build variant.
+
+pkgsource: means packaging all the source code.
+
+publish: means copying the target files to a published folder.
+
+Running each goal independently
+===============================
+The build script is only a task organizer and driver. The actual task is implemented in the Make file. You can run each sub task by:
+make -f avlite-cupcake.mk <goal>
+e.g
+make -f avlite-cupcake.mk source //will repo sync the source code
+make -f avlite-cupcake.mk build // will build the package from source code
+make -f avlite-cupcake.mk publish //will publish the package
 
 Running the script daily:
-
+=========================
 $ crontab -e
 
 Be sure add the following lines:
@@ -35,8 +54,7 @@ SHELL=/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 If you want to run the build script daily, add the following line:
-
-0   1   *   *  2-6   cd ~/work/autobuild && ./autobuild.sh clean pkgsrc publish email
+0   1   *   *  2-6   cd ~/work/autobuild && ./build-avlite-cupcake.sh clobber source pkgsrc publish email
 
 Notes: the script must run from the folder where it locates.
 
@@ -51,8 +69,7 @@ If the build is failed, an error notification is generated and sent to "dev_team
 If the build is successful and there is change since last day, a succesful notification is generated and sent to 
 bot the "dev_team" and "announce_list"
 
-If the build is successful and there is no change since last day, a successful notification is generated and send to
-the "maintainer" only.
+If "temp" is specified, only build_maintainer is notified.
 
 
 

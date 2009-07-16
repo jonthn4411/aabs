@@ -1,11 +1,34 @@
 Files in this folder
 ====================
-.OBM and UBoot
+-Change logs and checksum file
+  changelog.day		GIT change log of each project since yesterday.
+  changelog.week		GIT change log of each project since last week.
+  changelog.biweek 	GIT change log of each project since 2 weeks ago.
+  changelog.month		GIT change log of each project since a month ago.
+
+  checksums.md5		This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
+
+-Source codes
+  manifest.xml		Saving the GIT commit number of each project used in this build.
+  kernel_src.tgz	Kernel source code tar ball.
+  droid_src.tgz		Android source code tar ball without code of Marvell developed application.
+  gc300_driver_src.tgz	Source code tar ball of gc300 driver
+  boot_src.tgz		Uboot and OBM source code tar ball
+
+-droid-gcc folder
+ Files under droid-gcc folder are built with android-toolchain.
+ If this folder is missing, it means that this package wasn't built with marvell gcc toolchain.
+
+-mrvl-gcc folder
+ Files under mrvl-gcc folder are built with marvell gcc toolchain.
+ If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
+ 
+-OBM and UBoot
   ntim_obm_uboot_aspen_nand.bin NTIM for avlite
   ASPEN_NTLOADER.bin	NTLoader for avlite
   u-boot.bin		uboot for avlite
 
-.Kernel and Modules for Android
+-Kernel and Modules for Android
   zImage.android.mlc	Kernel image to boot android from MLC. A root file system is built in. The root file system also packaged as root_android_mlc.tgz
   zImage.android.mmc	Kernel image to boot android from SD card.
 
@@ -14,11 +37,11 @@ Files in this folder
 
   root_android_mlc.tgz	The root directory used to build zImage.android.mlc
 
-.Kernel and Modules for Maemo
+-Kernel and Modules for Maemo
   zImage.maemo.mlc	Kernel image to boot Maemo from MLC.
   modules_maemo_mlc.tgz	Kernel modules that built along with zImage.maemo.mlc
 
-.Android File Systems
+-Android File Systems
   root_nfs_helix.tgz		Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package, with helix built in.
   root_nfs_nohelix.tgz		Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package, without helix built in.
   
@@ -27,23 +50,7 @@ Files in this folder
 
   system_ubi_nohelix.img	Android system image for UBI file system, without helix built in.
   userdata_ubi_nohelix.img	Android userdata image for UBI file system, without helix built in.
-
   
-.Source codes
-  manifest.xml		Saving the GIT commit number of each project used in this build.
-  kernel_src.tgz	Kernel source code tar ball.
-  droid_src.tgz		Android source code tar ball without code of Marvell developed application.
-  gc300_driver_src.tgz	Source code tar ball of gc300 driver
-  boot_src.tgz		Uboot and OBM source code tar ball
-
-.Change logs and checksum file
-  changelog.day		GIT change log of each project since yesterday.
-  changelog.week		GIT change log of each project since last week.
-  changelog.biweek 	GIT change log of each project since 2 weeks ago.
-  changelog.month		GIT change log of each project since a month ago.
-
-  checksums.md5		This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
-
 Burning OBM and UBoot
 =====================
 1. install XDB 4.1.1 from: \\sh1sbak009\Product_Integration\Tools\eXtreme_Debugger_v4.1.1
