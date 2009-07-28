@@ -36,7 +36,7 @@ function gen_init_nfs_sh()
 }
 
 echo "  modifying init.rc..." &&
-sed -i "/^[ tab]*mount yaffs2/ s/mount/#(for nfs)mount/" init.rc &&
+sed -i "/^[ tab]*mount[ tab]*.\+[ tab]*\(\/system\|\/data\|\/cache\)/ s/mount/#(for nfs)mount/" init.rc &&
 sed -i "/^[ tab]*mount rootfs rootfs/ s/mount/#(for nfs)mount/" init.rc &&
 sed -i '/^[ tab]*mkdir \/sdcard 0000 system system/ {
 s/mkdir/#(for nfs)mkdir/ 
