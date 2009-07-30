@@ -19,16 +19,6 @@ function gen_init_nfs_sh()
 	sleep 2s
 	am broadcast -a android.intent.action.MEDIA_MOUNTED --ez read-only false -d file:///sdcard
 
-	#work around for audio mixer, enable all the path by default
-	#Enable Speaker
-	amixer cset numid=8 3
-	amixer cset numid=9 127
-	amixer cset numid=10 1
-
-	#Enable Headset
-	amixer cset numid=6 127
-	amixer cset numid=5 1
-
 	#workaround for keychars
 	chmod 0644 /system/usr/keychars/*
 
