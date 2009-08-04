@@ -58,45 +58,63 @@ build_droid_root_$(1): output_dir
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/root $$(OUTPUT_DIR)/$(1) 
 	$(log) "  done"
+
 endef
+
 
 #$1:build variant
 define define-build-droid-pkgs
 .PHONY:build_droid_pkgs_$(1)
-build_droid_pkgs_$(1): build_droid_with_helix_$(1) build_droid_without_helix_$(1)
-
-.PHONY: build_droid_with_helix_$(1) 
-build_droid_with_helix_$(1): rebuild_droid_helix_enabled_$(1) package_droid_mlc_helix_$(1) package_droid_mmc_helix_$(1)
-
-.PHONY:build_droid_without_helix_$(1)
-build_droid_without_helix_$(1): rebuild_droid_helix_disabled_$(1) package_droid_mlc_nohelix_$(1) package_droid_mmc_nohelix_$(1)
+build_droid_pkgs_$(1): 
 endef
 
-#$1:helix enabling status
-#$2:build variant
-define rebuild-droid-helix-config
-.PHONY:rebuild_droid_helix_$(1)_$(2)
+#$1: build variant
+#$2: internal or external
+define define-build-droid-config
+.PHONY: build_droid_$(2)_$(1) 
+build_droid_$(2)_$(1): rebuild_droid_$(2)_$(1) package_droid_mlc_$(2)_$(1) package_droid_mmc_$(2)_$(1)
+	$$(log) "build_droid_$(2)_$(1) is done, reseting the source code."
+	$$(hide)cd $$(SRC_DIR)/vendor/marvell/$$(DROID_PRODUCT)/ &&\
+	git reset --hard
+	$$(log) "  done"
 
-#we only rebuild a certain files that affect helix player to speed up the build process.
-#files to remove: TARGET_OUT/system/lib/helix/*
-#		TARGET_OUT/*.img
-#		limmediaplayerservice
-rebuild_droid_helix_$(1)_$(2): helix_config:=$$(if $$(findstring $(1),enabled),true,false)
-rebuild_droid_helix_$(1)_$(2):
-	$$(log) "[$(2)]rebuild android with helix:$(1)..."
+build_droid_pkgs_$(1): build_droid_$(2)_$(1)
+endef
+
+#$1:internal or external
+#$2:build variant
+define rebuild-droid-config
+.PHONY:rebuild_droid_$(1)_$(2)
+
+#for external build, we should remove helix and adobe flash libraries.
+rebuild_droid_$(1)_$(2): nolib_config:=$$(if $$(findstring $(1),external),true,false)
+rebuild_droid_$(1)_$(2):
+	$$(log) "[$(2)]rebuild android for $(1)..."
 	$$(hide)cd $$(SRC_DIR)/vendor/marvell/$$(DROID_PRODUCT) && \
-	sed -i "/^[ tab]*BOARD_ENABLE_HELIX[ tab]*:=/ s/:=.*/:= $$(helix_config)/" BoardConfig.mk
+	sed -i "/^[ tab]*BOARD_NO_HELIX_LIBS[ tab]*:=/ s/:=.*/:= $$(nolib_config)/" BoardConfig.mk && \
+	sed -i "/^[ tab]*BOARD_NO_FLASH_PLUGIN[ tab]*:=/ s/:=.*/:= $$(nolib_config)/" BoardConfig.mk
+	$$(hide)rm -fr $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib/helix
+	$$(hide)rm -f $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib/netscape/libflashplayer.so
+	$$(hide)rm -f $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/*.img
 	$$(hide)cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-	rm -f out/target/product/$$(DROID_PRODUCT)/*.img && \
-	rm -fr out/target/product/$$(DROID_PRODUCT)/system/lib/helix && \
-	rm -fr out/target/product/$$(DROID_PRODUCT)/obj/SHARED_LIBRARIES/libmediaplayerservice_intermediates/ && \
 	ANDROID_KERNEL_CONFIG=no_kernel_modules make
-	$$(log) "  done for rebuild_droid_helix_$(1)"
+	$$(log) "    packaging helix libraries and flash library..."
+	$$(hide)if [ "$(1)" == "internal" ]; then \
+	cd $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib &&\
+	tar czf $$(OUTPUT_DIR)/$(2)/helix.tgz helix/ && \
+	tar czf $$(OUTPUT_DIR)/$(2)/flash.tgz netscape/libflashplayer.so; \
+	fi
+	$$(log) "  done for rebuild_droid_$(1)_$(2)"
+
+ifeq ($(1),internal)
+PUBLISHING_FILES_$(2)+=$(2)/helix.tgz:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/flash.tgz:m:md5
+endif
 endef
 
-#$1:helix enabling status
+#$1:internal or external
 #$2:build variant
 define package-droid-mlc-config
 .PHONY:package_droid_mlc_$(1)_$(2)
@@ -120,7 +138,7 @@ PUBLISHING_FILES_$(2)+=$(2)/system_ubi_$(1).img:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/userdata_ubi_$(1).img:m:md5 
 endef
 
-#$1:helix enabling status
+#$1:internal or external
 #$2:build variant
 define package-droid-mmc-config
 .PHONY: package_droid_mmc_$(1)_$(2)
@@ -144,7 +162,7 @@ package_droid_mmc_$(1)_$(2):
 		   fi
 	$$(log) "  packaging the root_nfs.tgz..."
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf root_nfs_$(1).tgz root_nfs/
-	$$(log) "  done for package_droid_mmc_$(1)."
+	$$(log) "  done for package_droid_mmc_$(1)_$(2)."
 
 PUBLISHING_FILES_$(2)+=$(2)/root_nfs_$(1).tgz:m:md5 
 endef
@@ -230,13 +248,15 @@ endef
 $(foreach bv,$(BUILD_VARIANTS), $(eval $(call define-build-droid-kernel,$(bv)) )\
 								$(eval $(call define-build-droid-root,$(bv)) ) \
 								$(eval $(call define-build-droid-pkgs,$(bv)) ) \
+								$(eval $(call define-build-droid-config,$(bv),internal) ) \
+								$(eval $(call define-build-droid-config,$(bv),external) ) \
 								$(eval $(call define-cp-android-root-dir-mlc,$(bv)) )\
-								$(eval $(call rebuild-droid-helix-config,enabled,$(bv)) )\
-								$(eval $(call rebuild-droid-helix-config,disabled,$(bv)) )\
-								$(eval $(call package-droid-mlc-config,helix,$(bv)) )\
-								$(eval $(call package-droid-mlc-config,nohelix,$(bv)) )\
-								$(eval $(call package-droid-mmc-config,helix,$(bv)) )\
-								$(eval $(call package-droid-mmc-config,nohelix,$(bv)) ) \
+								$(eval $(call rebuild-droid-config,internal,$(bv)) )\
+								$(eval $(call rebuild-droid-config,external,$(bv)) )\
+								$(eval $(call package-droid-mlc-config,internal,$(bv)) )\
+								$(eval $(call package-droid-mlc-config,external,$(bv)) )\
+								$(eval $(call package-droid-mmc-config,internal,$(bv)) )\
+								$(eval $(call package-droid-mmc-config,external,$(bv)) ) \
 								$(foreach kc, $(kernel_configs),$(eval $(call define-kernel-target,$(kc),$(bv)) ) )\
 )
 

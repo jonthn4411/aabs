@@ -42,14 +42,45 @@ Files in this folder
   modules_maemo_mlc.tgz	Kernel modules that built along with zImage.maemo.mlc
 
 -Android File Systems
-  root_nfs_helix.tgz		Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package, with helix built in.
-  root_nfs_nohelix.tgz		Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package, without helix built in.
-  
-  system_ubi_helix.img		Android system image for UBI file system, with helix built in.
-  userdata_ubi_helix.img	Android userdata image for UBI file system, with helix built in.
+  root_nfs_xxx.tgz		Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package. 
+ 
+  system_ubi_xxx.img		Android system image for UBI file system.
+  userdata_ubi_xxx.img	    Android userdata image for UBI file system.
 
-  system_ubi_nohelix.img	Android system image for UBI file system, without helix built in.
-  userdata_ubi_nohelix.img	Android userdata image for UBI file system, without helix built in.
+  if xxx is "internal" means everything is built in the package, and should be used internally.
+
+  if xxx is "external" means the package can be delivered outside, components with license issue has been removed. Currently helix and adobe flash is removed.
+
+-Extra Libraries
+   helix.tgz    Helix libraries. Refer to below for installing helix libraries.
+   flash.tgz    Adobe Flash plugin library. Refer to below for installing adobe flash plugin.
+
+Install Helix Libraries
+=======================
+. Android is running from SD card
+  a) plug the SD card to a PC
+  b) untar helix.tgz and copy files to /system/lib/helix/
+
+. Android is running from MLC nand
+  a) untar helix.tgz
+  b) adb shell
+  c) su; mount -o remount ubi0_0 system;
+  d) mkdir /system/lib/helix; exit
+  d) adb push *.so /system/lib/helix/
+   
+
+Install Adobe Flash plugin
+==========================
+. Android is running from SD card
+  a) plug the SD card to a PC
+  b) untar flash.tgz and copy files to /system/lib/netscape/
+
+. Android is running from MLC nand
+  a) untar flash.tgz
+  b) adb shell
+  c) su; mount -o remount ubi0_0 system;
+  d) mkdir /system/lib/netscape; exit
+  d) adb push *.so /system/lib/netscape/
   
 Burning OBM and UBoot
 =====================

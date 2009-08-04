@@ -36,5 +36,8 @@ echo "  packaging android source code:" &&
   if [ -d "$OUTPUT_DIR/source/vendor/marvell/external/helix" ]; then
     rm -fr $OUTPUT_DIR/source/vendor/marvell/external/helix
   fi &&
+  if [ -d "$OUTPUT_DIR/source/vendor/marvell/external/flash" ]; then
+    rm -fr $OUTPUT_DIR/source/vendor/marvell/external/flash
+  fi &&
 cd $OUTPUT_DIR &&
 tar czf droid_src.tgz $EXCLUDE_VCS source/
