@@ -64,10 +64,18 @@ Install Helix Libraries
 . Android is running from MLC nand
   a) untar helix.tgz
   b) adb shell
-  c) su; mount -o remount ubi0_0 system;
+  c) su; mount -o remount ubi0_0 /system;
   d) mkdir /system/lib/helix; exit
-  d) adb push *.so /system/lib/helix/
+  e) cd <helix folder>;
+  f) for file in $(ls); do adb push $(file) /system/lib/helix/; done
+
+Notes:If you are using Windows host, you can install the cygwin which has the capability to run the last shell script.
+   Or you can put the below lines into a BAT file:
    
+   @echo off
+   FOR %%file in (*.*) DO adb push "%%file" /system/lib/helix/
+
+   You should run the BAT file in the folder where helix libraries locate.
 
 Install Adobe Flash plugin
 ==========================
@@ -80,7 +88,7 @@ Install Adobe Flash plugin
   b) adb shell
   c) su; mount -o remount ubi0_0 system;
   d) mkdir /system/lib/netscape; exit
-  d) adb push *.so /system/lib/netscape/
+  d) adb push libflashplayer.so /system/lib/netscape/
   
 Burning OBM and UBoot
 =====================
