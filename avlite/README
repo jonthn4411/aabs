@@ -24,9 +24,12 @@ Files in this folder
  If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
  
 -OBM and UBoot
-  ntim_obm_uboot_aspen_nand.bin NTIM for avlite
-  ASPEN_NTLOADER.bin	NTLoader for avlite
+  ASPN_NTLOADER.bin	NTLoader for avlite
   u-boot.bin		uboot for avlite
+
+  NTIM_OBM_uboot_ASPEN_Mode2.bin	Core 624mhz with 624mhz DDR
+  NTIM_OBM_uboot_ASPEN_Mode3.bin	Core 800mhz with 800mhz DDR (This is recommended to be used with AV-Lite 1.5Q board)
+  NTIM_OBM_uboot_ASPEN_Mode5.bin	Core 1.2Ghz with 800mhz DDR
 
 -Kernel and Modules for Android
   zImage.android.mlc	Kernel image to boot android from MLC. A root file system is built in. The root file system also packaged as root_android_mlc.tgz
@@ -96,7 +99,7 @@ Burning OBM and UBoot
 2. Burn OBM and U-boot by XDB
    1) Use flash burn tool: flash --> burn flash, select: board -- aspen, and flash type - nand
    2) Reset "bad block" table and Erase all
-   3) burn file "ntim_obm_uboot_aspen_nand.bin"	--> 0x0
+   3) burn file "NTIM_OBM_uboot_ASPEN_Mode3.bin"--> 0x0
    4) burn file "ASPEN_NTLOADER.bin"		--> 0x20000
    5) burn file "u-boot.bin"			--> 0x40000
 
