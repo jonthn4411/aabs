@@ -11,10 +11,10 @@ define define-build-obm
 #m:means mandatory
 #o:means optional
 #md5: need to generate md5 sum
-PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTLOADER_STEM)2.bin:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTLOADER_STEM)3.bin:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTLOADER_STEM)5.bin:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTLOADER):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_STEM)2.bin:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_STEM)3.bin:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_STEM)5.bin:m:md5
 
 .PHONY:build_obm_$(1)
 build_obm_$(1):
