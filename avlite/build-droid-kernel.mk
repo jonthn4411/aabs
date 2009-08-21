@@ -103,6 +103,7 @@ rebuild_droid_$(1)_$(2):
 	$$(log) "    packaging helix libraries and flash library..."
 	$$(hide)if [ "$(1)" == "internal" ]; then \
 	cd $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib &&\
+	mkdir -p helix &&\
 	tar czf $$(OUTPUT_DIR)/$(2)/helix.tgz helix/ && \
 	tar czf $$(OUTPUT_DIR)/$(2)/flash.tgz netscape/libflashplayer.so; \
 	fi
