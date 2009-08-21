@@ -230,3 +230,15 @@ $logcat &
 
 While playback a video clip, the profiling data will be output to console.
 
++How to enable the fake ac and battery status?
+----------------------------------------------
+If the battery service reports wrong battery status, Android power off the system automatically. You can use the below way to request battery service to report fake status to cheat android system.
+
+Open /init.rc, add the below line before class_start default:
+setprop battery.fake_ac true
+
+
+
+
+
+
