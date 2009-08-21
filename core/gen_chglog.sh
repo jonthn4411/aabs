@@ -243,6 +243,8 @@ do
     else  
       gen_log_lastbuild $OUTPUT_DIR/changelog.build $commit 
     fi
+  else
+    gen_log_lastbuild_newprj $OUTPUT_DIR/changelog.build "2 weeks ago"
   fi &&
 
   if [ ! -z "$LAST_REL_PACKAGE" ]; then
@@ -252,6 +254,8 @@ do
     else
       gen_log_lastbuild $OUTPUT_DIR/changelog.rel $commit
     fi
+  else
+    gen_log_lastbuild_newprj $OUTPUT_DIR/changelog.rel "3 months ago"
   fi &&
   cd - >/dev/null
 done
