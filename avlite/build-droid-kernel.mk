@@ -13,7 +13,7 @@ KERNEL_SRC_DIR:=kernel
 #
 # The source directory of the GC300 driver, it should be relative to SRC_DIR.
 #GC300_SRC_DIR:=
-GC300_SRC_DIR:=gc300_driver
+GC300_SRC_DIR:=vendor/marvell/generic/gc300/galcore_src
 
 .PHONY:clean_droid_kernel
 clean_droid_kernel: clean_droid clean_kernel
