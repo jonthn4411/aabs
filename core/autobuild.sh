@@ -142,6 +142,23 @@ send_nobuild_notification()
 	generate_nobuild_notification_email $1 | /usr/sbin/sendmail -t $envelopesender
 }
 
+#$1: the folder where change logs locate
+#$2: build number
+update_changelogs()
+{
+	LOG_FILES="changelog.build changelog.rel changelog.day changelog.week changelog.biweek changelog.month"
+	for log in $LOG_FILES; do
+		log_file=$1/$log
+		if [ -e "$log_file" ]; then
+			echo >> $log_file
+			echo "=============================================================================" >>$log_file
+			echo "Build: $2" >> $log_file
+			echo "Complete Time: $(date)" >> $log_file
+			echo "Build Host: $(hostname)" >> $log_file
+		fi
+	done
+}
+
 print_usage()
 {
 	echo "Usage: $0 [clobber] [source] [pkgsrc] [publish] [email] [temp] [ccache] [mgcc] [force] [help]"
@@ -278,6 +295,8 @@ if [ "$FLAG_PUBLISH" = "true" ]; then
 	make -f ${MAKEFILE} publish -e 2>&1 | tee -a $STD_LOG &&
 	cp ${ABS_BOARD}/README $PUBLISH_DIR &&
 	
+	update_changelogs $PUBLISH_DIR $BUILD_NUM
+		
 	#saving the build info to file:$LAST_BUILD
 	echo "Project:$PRODUCT_NAME" > $LAST_BUILD &&
 	echo "Build-Num:$BUILD_NUM" >> $LAST_BUILD &&
