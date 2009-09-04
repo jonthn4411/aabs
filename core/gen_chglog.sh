@@ -18,7 +18,7 @@ function gen_log()
 			COMMITS[$len]=$line
 			len=$(( $len + 1 ))
 		fi
-	done < <(git --no-pager log --since="$1" --pretty="format:%s [%an][%h]%n")
+	done < <(git --no-pager log --since="$1" --pretty="format:%s [%an][%h][%ci]%n")
 
 	if [ $len -gt 0 ]; then
 		echo "----------------" >> $2
@@ -48,7 +48,7 @@ function gen_log_lastbuild()
 			COMMITS[$len]=$line
 			len=$(( $len + 1 ))
 		fi
-	done < <(git --no-pager log ${commit}..HEAD --pretty="format:%s [%an][%h]%n")
+	done < <(git --no-pager log ${commit}..HEAD --pretty="format:%s [%an][%h][%ci]%n")
 
 	if [ $len -gt 0 ]; then
 		echo "----------------" >> $output_file
@@ -82,7 +82,7 @@ function gen_log_lastbuild_newprj()
 			COMMITS[$len]=$line
 			len=$(( $len + 1 ))
 		fi
-	done < <(git --no-pager log --since="$since" --pretty="format:%s [%an][%h]%n")
+	done < <(git --no-pager log --since="$since" --pretty="format:%s [%an][%h][%ci]%n")
 
 	local i=0
 	while [ $i -lt $len ]; do
