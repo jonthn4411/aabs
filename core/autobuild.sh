@@ -78,7 +78,7 @@ generate_success_notification_email()
 	# Generate header
 	cat <<-EOF
 	From: $build_maintainer
-	To: $dev_team;$announce_list
+	To: $dev_team;
 	Subject: $TEMP_BUILD_TAG [$PRODUCT_CODE] build $BUILD_NUM is ready.
 
 	This is an automated email from the autobuild script. It was
@@ -108,7 +108,7 @@ generate_nobuild_notification_email()
 	# Generate header
 	cat <<-EOF
 	From: $build_maintainer
-	To: $build_maintainer
+	To: $dev_team;
 	Subject: $TEMP_BUILD_TAG [$PRODUCT_CODE] no build today.
 
 	This is an automated email from the autobuild script. You received
