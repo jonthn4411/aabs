@@ -195,6 +195,7 @@ endef
 kernel_configs:=android:mlc:pxa168_android_mlc_defconfig:root 
 kernel_configs+=android:mmc:pxa168_android_mmc_defconfig 
 kernel_configs+=maemo:mlc:pxa168_mlc_defconfig
+kernel_configs+=maemo:mmc:pxa168_mmc_defconfig
 
 #
 # <a list of kernel module files that will be copied and tared>
