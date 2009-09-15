@@ -195,6 +195,10 @@ dev_team=$(cat ${ABS_BOARD}/dev_team )
 announce_list=$(cat ${ABS_BOARD}/announce_list )
 envelopesend="-f $build_maintainer"
 
+#remove the new line character
+dev_team=$(echo $dev_team)
+announce_list=$(echo $announce_list)
+
 #the value of this variable will be prefixed as the email subject
 TEMP_BUILD_TAG="[Temp Build]"
 
