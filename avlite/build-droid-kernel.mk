@@ -8,6 +8,8 @@ DROID_PRODUCT:=avlite
 DROID_TYPE:=release
 DROID_VARIANT:=eng
 
+MAKE_JOBS:=4
+
 KERNEL_SRC_DIR:=kernel
 
 #
@@ -52,7 +54,7 @@ build_droid_root_$(1): output_dir
 	$$(hide)cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-	ANDROID_KERNEL_CONFIG=no_kernel_modules make 
+	ANDROID_KERNEL_CONFIG=no_kernel_modules make -j$$(MAKE_JOBS) 
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(1)/root ]; then rm -fr $(OUTPUT_DIR)/$(1)/root; fi
 	$$(hide)echo "  copy root directory ..." 
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
@@ -99,7 +101,7 @@ rebuild_droid_$(1)_$(2):
 	$$(hide)cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-	ANDROID_KERNEL_CONFIG=no_kernel_modules make
+	ANDROID_KERNEL_CONFIG=no_kernel_modules make -j$$(MAKE_JOBS)
 	$$(log) "    packaging helix libraries and flash library..."
 	$$(hide)if [ "$(1)" == "internal" ]; then \
 	cd $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib &&\
@@ -129,7 +131,7 @@ package_droid_mlc_$(1)_$(2):
 	cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-	make && \
+	make -j$$(MAKE_JOBS) && \
 	echo "    copy UBI image files..." && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ubi.img $$(OUTPUT_DIR)/$(2)/system_ubi_$(1).img && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ubi.img $$(OUTPUT_DIR)/$(2)/userdata_ubi_$(1).img 
@@ -231,7 +233,7 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	export ARCH=arm && \
 	export CROSS_COMPILE="$$(KERNEL_TOOLCHAIN_PREFIX)" && \
 	make $$(private_kernel_cfg) && \
-	make clean && make 
+	make clean && make -j$$(MAKE_JOBS)
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)
 	$$(hide)cp $$(SRC_DIR)/$$(KERNEL_SRC_DIR)/arch/arm/boot/zImage $$(OUTPUT_DIR)/$(2)/zImage.$$(private_os).$$(private_storage) 
 	$$(log) "    building gc300 driver..."
