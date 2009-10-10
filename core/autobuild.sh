@@ -61,12 +61,47 @@ generate_error_notification_email()
 	
 	===========================================================
 
+	Last part of build log is followed:
+	=========================== Build LOG =====================
+
+	$(tail -200 $STD_LOG 2>/dev/null)
+	
+	===========================================================
+
+	---
+	Team of $PRODUCT_CODE
+	EOF
+}
+
+#$1: changelog.build
+generate_error_log_email()
+{
+	# --- Email (all stdout will be the email)
+	# Generate header
+	cat <<-EOF
+	From: $build_maintainer
+	To: $build_maintainer
+	Subject: $TEMP_BUILD_TAG [$PRODUCT_CODE] autobuild failed! Full log is attached.
+
+	This is an automated email from the autobuild script. It was
+	generated because an error encountered while building the code.
+	The error can be resulted from newly checked in codes. 
+	Please check the change log (if it is generated successfully) 
+    and build log below and fix the error as early as possible.
+
+	=========================== Change LOG ====================
+
+	$(cat ${1}  2>/dev/null)
+	
+	===========================================================
+
+	
 	=========================== Build LOG =====================
 
 	$(cat $STD_LOG 2>/dev/null)
 	
 	===========================================================
-	
+
 	---
 	Team of $PRODUCT_CODE
 	EOF
@@ -129,6 +164,7 @@ generate_nobuild_notification_email()
 send_error_notification()
 {
 	generate_error_notification_email $1 | /usr/sbin/sendmail -t $envelopesender
+	generate_error_log_email $1 | /usr/sbin/sendmail -t $envelopesender
 }
 
 send_success_notification()
