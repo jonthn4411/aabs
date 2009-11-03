@@ -10,7 +10,7 @@ DROID_VARIANT:=eng
 
 MAKE_JOBS:=4
 
-KERNEL_SRC_DIR:=kernel
+KERNEL_SRC_DIR:=kernel/kernel
 
 #
 # The source directory of the GC300 driver, it should be relative to SRC_DIR.
