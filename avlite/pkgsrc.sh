@@ -33,7 +33,7 @@ cd $OUTPUT_DIR/source &&
   echo "  packaging uboot and obm source code:" &&
   tar czf boot_src.tgz $EXCLUDE_VCS boot/ &&
   mv boot_src.tgz $OUTPUT_DIR &&
-  rm -fr boot &&
+  rm -fr boot 
 ) &&
 
 echo "  packaging android source code:" &&
