@@ -14,31 +14,32 @@ EXCLUDE_VCS="--exclude-vcs --exclude=.repo"
 cd $OUTPUT_DIR/source &&
 (
   echo "  packaging kernel source code:" &&
+  cd kernel &&
+
   tar czf kernel_src.tgz $EXCLUDE_VCS kernel/ &&
   mv kernel_src.tgz $OUTPUT_DIR &&
+
+  echo "   copy gc300 driver source code: " &&
+  cp -p -r ../vendor/marvell/generic/gc300 . &&
+  echo "   copy sd8688 driver source code: " &&
+  cp -p -r ../vendor/marvell/generic/sd8688 . &&
+
+  tar czf drivers_src.tgz $EXCLUDE_VCS gc300/ sd8688/ &&
+  mv drivers_src.tgz $OUTPUT_DIR &&
+
+  cd - &&
   rm -fr kernel &&
 
   echo "  packaging uboot and obm source code:" &&
   tar czf boot_src.tgz $EXCLUDE_VCS boot/ &&
   mv boot_src.tgz $OUTPUT_DIR &&
   rm -fr boot &&
-
-  echo "  packaging gc300_driver source code: " &&
-  cd vendor/marvell/generic/gc300 &&
-  tar czf gc300_driver_src.tgz $EXCLUDE_VCS galcore_src/ &&
-  mv gc300_driver_src.tgz $OUTPUT_DIR &&
-  rm -fr gc300_driver 
 ) &&
 
 echo "  packaging android source code:" &&
-  if [ -d "$OUTPUT_DIR/source/vendor/marvell/generic/apps" ]; then
-    rm -fr $OUTPUT_DIR/source/vendor/marvell/generic/apps
-  fi &&
-  if [ -d "$OUTPUT_DIR/source/vendor/marvell/external/helix" ]; then
-    rm -fr $OUTPUT_DIR/source/vendor/marvell/external/helix
-  fi &&
-  if [ -d "$OUTPUT_DIR/source/vendor/marvell/external/flash" ]; then
-    rm -fr $OUTPUT_DIR/source/vendor/marvell/external/flash
-  fi &&
+  rm -fr $OUTPUT_DIR/source/vendor/marvell/generic/apps &&
+  rm -fr $OUTPUT_DIR/source/vendor/marvell/external/helix &&
+  rm -fr $OUTPUT_DIR/source/vendor/marvell/external/flash &&
+
 cd $OUTPUT_DIR &&
 tar czf droid_src.tgz $EXCLUDE_VCS source/

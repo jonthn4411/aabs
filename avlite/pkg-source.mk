@@ -12,6 +12,6 @@ pkgsrc: output_dir get_source_for_pkg
 #md5: need to generate md5 sum
 PUBLISHING_FILES+=kernel_src.tgz:o:md5 \
 	droid_src.tgz:o:md5 \
-	gc300_driver_src.tgz:o:md5\
+	drivers_src.tgz:o:md5\
 	boot_src.tgz:o:md5
 

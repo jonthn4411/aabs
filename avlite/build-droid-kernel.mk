@@ -9,13 +9,7 @@ DROID_TYPE:=release
 DROID_VARIANT:=eng
 
 MAKE_JOBS:=4
-
-KERNEL_SRC_DIR:=kernel/kernel
-
-#
-# The source directory of the GC300 driver, it should be relative to SRC_DIR.
-#GC300_SRC_DIR:=
-GC300_SRC_DIR:=vendor/marvell/generic/gc300/galcore_src
+KERNELSRC_TOPDIR:=kernel
 
 .PHONY:clean_droid_kernel
 clean_droid_kernel: clean_droid clean_kernel
@@ -32,8 +26,7 @@ clean_droid:
 .PHONY:clean_kernel
 clean_kernel:
 	$(log) "clean kernel ..."
-	$(hide)cd $(SRC_DIR)/$(KERNEL_SRC_DIR) && make clean
-	$(hide)cd $(SRC_DIR)/$(GC300_SRC_DIR) && make avlite-clean
+	$(hide)cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && make clean
 	$(log) "    done"
 
 #we need first build the android, so we get the root dir 
@@ -170,19 +163,16 @@ package_droid_mmc_$(1)_$(2):
 PUBLISHING_FILES_$(2)+=$(2)/root_nfs_$(1).tgz:m:md5 
 endef
 
-# The source directory of the kernel, it should be relative to SRC_DIR
-# KERNEL_SRC_DIR
-
 #$1:build variant
 define define-cp-android-root-dir-mlc
 PUBLISHING_FILES_$(1)+=$(1)/root_android_mlc.tgz:m:md5 
 cp_android_root_dir_mlc_$(1):
 	$$(log) "[$(1)]copying root directory from $$(OUTPUT_DIR) ..."
-	$$(hide)if [ -d "$$(SRC_DIR)/$$(KERNEL_SRC_DIR)/root" ]; then rm -fr $$(SRC_DIR)/$$(KERNEL_SRC_DIR)/root; fi
-	$$(hide)cp -p -r $$(OUTPUT_DIR)/$(1)/root $$(SRC_DIR)/$$(KERNEL_SRC_DIR) 
-	$$(hide)cd $$(SRC_DIR)/$$(KERNEL_SRC_DIR)/root && $$(MY_SCRIPT_DIR)/update_root_for_mlc.sh 
+	$$(hide)if [ -d "$$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/root" ]; then rm -fr $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/root; fi
+	$$(hide)cp -p -r $$(OUTPUT_DIR)/$(1)/root $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/ 
+	$$(hide)cd $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/root && $$(MY_SCRIPT_DIR)/update_root_for_mlc.sh 
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
-	$$(hide)cd $$(SRC_DIR)/$$(KERNEL_SRC_DIR) && tar czf $$(OUTPUT_DIR)/$(1)/root_android_mlc.tgz root/ 
+	$$(hide)cd $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel && tar czf $$(OUTPUT_DIR)/$(1)/root_android_mlc.tgz root/ 
 endef
 
 #
@@ -199,13 +189,8 @@ kernel_configs+=android:mmc:pxa168_android_mmc_defconfig
 kernel_configs+=maemo:mlc:pxa168_mlc_defconfig
 kernel_configs+=maemo:mmc:pxa168_mmc_defconfig
 
-#
-# <a list of kernel module files that will be copied and tared>
-# The module file's path is relative to SRC_DIR
-# modules:=
-module_files:=$(KERNEL_SRC_DIR)/drivers/net/wireless/libertas/libertas.ko
-module_files+=$(KERNEL_SRC_DIR)/drivers/net/wireless/libertas/libertas_sdio.ko
-module_files+=$(GC300_SRC_DIR)/build/sdk/drivers/galcore.ko
+export KERNEL_TOOLCHAIN_PREFIX
+export MAKE_JOBS
 
 #$1:kernel_config
 #$2:build variant
@@ -229,19 +214,14 @@ build_kernel_$$(os)_$$(storage)_$(2): private_root:=$$(root)
 build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(root)), cp_$$(os)_root_dir_$$(storage)_$(2) ) 
 	$$(log) "[$(2)]starting to build kernel for booting $$(private_os) from $$(private_storage) ..."
 	$$(log) "    kernel_config: $$(private_kernel_cfg): ..."
-	$$(hide)cd $$(SRC_DIR)/$$(KERNEL_SRC_DIR) && \
-	export ARCH=arm && \
-	export CROSS_COMPILE="$$(KERNEL_TOOLCHAIN_PREFIX)" && \
-	make $$(private_kernel_cfg) && \
-	make clean && make -j$$(MAKE_JOBS)
+	$$(hide)cd $$(SRC_DIR)/$$(KERNELSRC_TOPDIR) && \
+	KERNEL_CONFIG=$$(private_kernel_cfg) make clean all 
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)
-	$$(hide)cp $$(SRC_DIR)/$$(KERNEL_SRC_DIR)/arch/arm/boot/zImage $$(OUTPUT_DIR)/$(2)/zImage.$$(private_os).$$(private_storage) 
-	$$(log) "    building gc300 driver..."
-	$$(hide)export KERNEL_DIR=$$(SRC_DIR)/$$(KERNEL_SRC_DIR) && export CROSS_COMPILE="$$(KERNEL_TOOLCHAIN_PREFIX)" && \
-	cd $$(SRC_DIR)/$$(GC300_SRC_DIR) && make avlite
-	$$(log) "    copy module files ..."
-	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi && mkdir $$(OUTPUT_DIR)/$(2)/modules
-	$$(hide)for mod in $$(module_files); do cp $$(SRC_DIR)/$$$$mod $$(OUTPUT_DIR)/$(2)/modules; done
+	$$(log) "    copy kernel and module files ..."
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage $$(OUTPUT_DIR)/$(2)/zImage.$$(private_os).$$(private_storage) 
+	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi &&\
+	mkdir -p $$(OUTPUT_DIR)/$(2)/modules
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules/* $$(OUTPUT_DIR)/$(2)/modules
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf modules_$$(private_os)_$$(private_storage).tgz modules/ 
 	$(log) "  done."
 
