@@ -12,7 +12,7 @@ Files in this folder
   manifest.xml		Saving the GIT commit number of each project used in this build.
   kernel_src.tgz	Kernel source code tar ball.
   droid_src.tgz		Android source code tar ball without code of Marvell developed application.
-  gc300_driver_src.tgz	Source code tar ball of gc300 driver
+  drivers_src.tgz	Source code tar ball for drivers, such as gc, wifi etc
   boot_src.tgz		Uboot and OBM source code tar ball
 
 -droid-gcc folder
@@ -109,10 +109,10 @@ Setup Android on NAND(MLC)
 Follow the below process and address to burn the zImage and system_ubi and userdata_ubi images.
 Boot the device with console,
 
-Avengers>> nand device 0
+Avengers>> nand device 1
 Avengers>> tftp 0x500000 zImage.android.mlc
 Avengers>> nand erase 0x100000 0x300000
-Avengers>> nand write 0x500000 0x100000 0x300000 
+Avengers>> nand write 0x500000 0x80000 0x300000 
 Avengers>> nand device 1
 Avengers>> bbt init nand
 Avengers>> tftp 0x1000000 system_ubi.img
@@ -131,9 +131,9 @@ Setup Android on SD Card
 ========================
 Follow the below process to make a SD card with Android root file system installed.
 1) Plug a SD card to the PC
-2) mkfs.ext3 /dev/sdc #be noticed that all data on SD card will be removed.
-3) mount /dev/sdc /mnt
-4) tar xvf root_nfs.tgz /mnt
+2) mkfs.ext3 /dev/sdc #your SD card maybe mounted at the other sd device, such as /dev/sdb
+3) mount /dev/sdc /mnt/disk
+4) tar xvf root_nfs.tgz /tmp; cp -p -r /tmp/root_nfs/* /mnt/disk/;
 5) umount /dev/sdc
 
 Second, burning the zImage.android.mmc image.
@@ -141,7 +141,7 @@ Boot the device with console,
 Avengers>> nand device 0
 Avengers>> tftp 0x500000 zImage.android.mmc
 Avengers>> nand erase 0x100000 0x300000
-Avengers>> nand write 0x500000 0x100000 0x300000 
+Avengers>> nand write 0x500000 0x80000 0x300000 
 
 
 Setup Android on NFS
@@ -151,13 +151,14 @@ Setup Android on NFS
 3) add below line to /etc/exports
   /srv            *(rw,sync,no_root_squash,no_subtree_check)
   Notes: be sure you specify all the optional paramters above.
-4) tar xvf root_nfs.tgz /srv/
-5) mv /srv/root_nfs /srv/nfs
+4) tar xvf root_nfs.tgz /tmp/
+5) mv /tmp/root_nfs/* /srv/nfs/
 
 Last, you should use zImage.android.mmc to boot the kernel and then set the bootargs variable in UBoot.
+(Notes:if adb is enabled in the kernel, this way doesn't work as the usb net won't work as the usb is used for adb)
 
 Avengers>>tftp zImage.android.mmc
-Avengers>>setenv bootargs root=/dev/nfs nfsroot=192.168.1.100:/srv/nfs/,nolock,rsize=1024,wsize=1024 ip=192.168.1.101:192.168.1.100::255.255.255.0::usb0:on console=ttyS0,115200 mem=256M uart_dma init=/init android
+Avengers>>setenv bootargs root=/dev/nfs nfsroot=192.168.1.100:/srv/nfs/,nolock,rsize=1024,wsize=1024 ip=192.168.1.101:192.168.1.100::255.255.255.0::usb0:on console=ttyS1,115200 mem=256M uart_dma init=/init android
 Avengers>>saveenv
 Avengers>>boot
 
