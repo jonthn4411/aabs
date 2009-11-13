@@ -109,10 +109,10 @@ Setup Android on NAND(MLC)
 Follow the below process and address to burn the zImage and system_ubi and userdata_ubi images.
 Boot the device with console,
 
-Avengers>> nand device 1
+Avengers>> nand device 0 
 Avengers>> tftp 0x500000 zImage.android.mlc
 Avengers>> nand erase 0x100000 0x300000
-Avengers>> nand write 0x500000 0x80000 0x300000 
+Avengers>> nand write 0x500000 0x100000 0x300000 
 Avengers>> nand device 1
 Avengers>> bbt init nand
 Avengers>> tftp 0x1000000 system_ubi.img
