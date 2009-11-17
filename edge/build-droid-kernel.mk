@@ -2,7 +2,7 @@
 #$(call check-variables,BUILD_VARIANTS)
 
 DEMO_MEDIA_DIR:=/autobuild/demomedia
-MY_SCRIPT_DIR:=$(TOP_DIR)/avlite
+MY_SCRIPT_DIR:=$(TOP_DIR)/$(BOARD)
 
 DROID_PRODUCT:=avlite
 DROID_TYPE:=release

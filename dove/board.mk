@@ -17,25 +17,25 @@ include core/changelog.mk
 #
 # Include goal for package source code.
 #
-include avlite/pkg-source.mk
+include $(BOARD)/pkg-source.mk
 
 #
 # Include goal for build android and kernels.
 #
-include avlite/build-droid-kernel.mk
+include $(BOARD)/build-droid-kernel.mk
 
 #
 # Include goal for build UBoot
 #
 UBOOT_CONFIG:=avengers_config
 UBOOT_SRC_DIR:=boot/uboot
-include avlite/build-uboot.mk
+include $(BOARD)/build-uboot.mk
 
 #
 # Include goal for build OBM
 #
 OBM_SRC_DIR:=boot/obm
-include avlite/build-obm.mk
+include $(BOARD)/build-obm.mk
 
 #define the combined goal to include all build goals
 define define-build
