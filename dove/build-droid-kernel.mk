@@ -67,7 +67,8 @@ endef
 #$2: internal or external
 define define-build-droid-config
 .PHONY: build_droid_$(2)_$(1) 
-build_droid_$(2)_$(1): rebuild_droid_$(2)_$(1) package_droid_mlc_$(2)_$(1) package_droid_mmc_$(2)_$(1)
+#build_droid_$(2)_$(1): rebuild_droid_$(2)_$(1) package_droid_mlc_$(2)_$(1) package_droid_mmc_$(2)_$(1)
+build_droid_$(2)_$(1): rebuild_droid_$(2)_$(1) package_droid_mmc_$(2)_$(1)
 	$$(log) "build_droid_$(2)_$(1) is done, reseting the source code."
 	$$(hide)cd $$(SRC_DIR)/vendor/marvell/$$(DROID_PRODUCT)/ &&\
 	git reset --hard
@@ -165,7 +166,7 @@ endef
 
 #$1:build variant
 define define-cp-android-root-dir-mlc
-PUBLISHING_FILES_$(1)+=$(1)/root_android_mlc.tgz:m:md5 
+PUBLISHING_FILES_$(1)+=$(1)/root_android_mlc.tgz:o:md5 
 cp_android_root_dir_mlc_$(1):
 	$$(log) "[$(1)]copying root directory from $$(OUTPUT_DIR) ..."
 	$$(hide)if [ -d "$$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/root" ]; then rm -fr $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/root; fi
@@ -218,7 +219,7 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage $$(OUTPUT_DIR)/$(2)/zImage.$$(private_os).$$(private_storage) 
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi &&\
 	mkdir -p $$(OUTPUT_DIR)/$(2)/modules
-	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules/* $$(OUTPUT_DIR)/$(2)/modules
+	$$(hide)cp -r $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules $$(OUTPUT_DIR)/$(2)/
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf modules_$$(private_os)_$$(private_storage).tgz modules/ 
 	$(log) "  done."
 
