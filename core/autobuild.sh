@@ -335,7 +335,7 @@ if [ "$FLAG_PUBLISH" = "true" ]; then
 	make -f ${MAKEFILE} publish -e 2>&1 | tee -a $STD_LOG &&
 	cp ${ABS_BOARD}/README $PUBLISH_DIR &&
 	
-	update_changelogs $PUBLISH_DIR $BUILD_NUM
+	update_changelogs $PUBLISH_DIR $BUILD_NUM &&
 		
 	#saving the build info to file:$LAST_BUILD
 	echo "Project:$PRODUCT_NAME" > $LAST_BUILD &&
