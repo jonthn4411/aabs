@@ -131,8 +131,8 @@ package_droid_mlc_$(1)_$(2):
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ubi.img $$(OUTPUT_DIR)/$(2)/userdata_ubi_$(1).img 
 	$$(log) "  done for package_droid_mlc_$(1)$(2)."
 
-PUBLISHING_FILES_$(2)+=$(2)/system_ubi_$(1).img:m:md5 
-PUBLISHING_FILES_$(2)+=$(2)/userdata_ubi_$(1).img:m:md5 
+PUBLISHING_FILES_$(2)+=$(2)/system_ubi_$(1).img:o:md5 
+PUBLISHING_FILES_$(2)+=$(2)/userdata_ubi_$(1).img:o:md5 
 endef
 
 #$1:internal or external
