@@ -4,7 +4,7 @@
 DEMO_MEDIA_DIR:=/autobuild/demomedia
 MY_SCRIPT_DIR:=$(TOP_DIR)/$(BOARD)
 
-DROID_PRODUCT:=avlite
+DROID_PRODUCT:=edge
 DROID_TYPE:=release
 DROID_VARIANT:=eng
 
