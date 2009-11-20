@@ -19,21 +19,14 @@ cd $OUTPUT_DIR/source &&
   tar czf kernel_src.tgz $EXCLUDE_VCS kernel/ &&
   mv kernel_src.tgz $OUTPUT_DIR &&
 
-  echo "   copy gc300 driver source code: " &&
-  cp -p -r ../vendor/marvell/generic/gc300 . &&
-  echo "   copy sd8688 driver source code: " &&
-  cp -p -r ../vendor/marvell/generic/sd8688 . &&
-
-  tar czf drivers_src.tgz $EXCLUDE_VCS gc300/ sd8688/ &&
-  mv drivers_src.tgz $OUTPUT_DIR &&
-
   cd - &&
   rm -fr kernel &&
 
-  echo "  packaging uboot and obm source code:" &&
-  tar czf boot_src.tgz $EXCLUDE_VCS boot/ &&
-  mv boot_src.tgz $OUTPUT_DIR &&
-  rm -fr boot 
+#  echo "  packaging uboot and obm source code:" &&
+#  tar czf boot_src.tgz $EXCLUDE_VCS boot/ &&
+#  mv boot_src.tgz $OUTPUT_DIR &&
+#  rm -fr boot &&
+   echo 
 ) &&
 
 echo "  packaging android source code:" &&

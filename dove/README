@@ -24,19 +24,12 @@ Files in this folder
  If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
  
 -OBM and UBoot
-  ASPN_NTLOADER.bin	NTLoader for avlite
-  u-boot.bin		uboot for avlite
-
-  NTIM_OBM_uboot_ASPEN_Mode2.bin	Core 624mhz with 624mhz DDR
-  NTIM_OBM_uboot_ASPEN_Mode3.bin	Core 800mhz with 800mhz DDR (This is recommended to be used with AV-Lite 1.5Q board)
-  NTIM_OBM_uboot_ASPEN_Mode5.bin	Core 1.2Ghz with 800mhz DDR
 
 -Kernel and Modules for Android
   zImage.android.mmc	Kernel image to boot android from SD card.
-
   modules_android_mmc.tgz Kernel modules that built along with zImage.android.mmc
 
-  root_android_mlc.tgz	The root directory used to build zImage.android.mlc
+#  root_android_mlc.tgz	The root directory used to build zImage.android.mlc
 
 -Android File Systems
   root_nfs_xxx.tgz		Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package. 
@@ -90,35 +83,10 @@ Install Adobe Flash plugin
 Burning OBM and UBoot
 =====================
 1. install XDB 4.1.1 from: \\sh1sbak009\Product_Integration\Tools\eXtreme_Debugger_v4.1.1
-2. Burn OBM and U-boot by XDB
-   1) Use flash burn tool: flash --> burn flash, select: board -- aspen, and flash type - nand
-   2) Reset "bad block" table and Erase all
-   3) burn file "NTIM_OBM_uboot_ASPEN_Mode3.bin"--> 0x0
-   4) burn file "ASPEN_NTLOADER.bin"		--> 0x20000
-   5) burn file "u-boot.bin"			--> 0x40000
 
 
-Setup Android on NAND(MLC)
+ddSetup Android on NAND(MLC)
 =========================
-Follow the below process and address to burn the zImage and system_ubi and userdata_ubi images.
-Boot the device with console,
-
-Avengers>> nand device 0 
-Avengers>> tftp 0x500000 zImage.android.mlc
-Avengers>> nand erase 0x100000 0x300000
-Avengers>> nand write 0x500000 0x100000 0x300000 
-Avengers>> nand device 1
-Avengers>> bbt init nand
-Avengers>> tftp 0x1000000 system_ubi.img
-Avengers>> nand erase 0x800000 0x8000000
-Avengers>> nand write 0x1000000 0x800000 <size of loaded UBI image>
-Avengers>> tftp 0x1000000 userdata_ubi.img
-Avengers>> nand erase 0x8800000 0x13800000
-Avengers>> nand write 0x1000000 0x8800000 <size of loaded UBI image>
-
-After tftp an image to device, please remember the size of the image printed by the command. This size will be used in the followed nand write command.
-
-Notes: the above commands will burn zImage to SLC, system_ubi and userdata_ubi to MLC.
 
 
 Setup Android on SD Card
@@ -132,10 +100,6 @@ Follow the below process to make a SD card with Android root file system install
 
 Second, burning the zImage.android.mmc image.
 Boot the device with console,
-Avengers>> nand device 0
-Avengers>> tftp 0x500000 zImage.android.mmc
-Avengers>> nand erase 0x100000 0x300000
-Avengers>> nand write 0x500000 0x80000 0x300000 
 
 
 Setup Android on NFS
