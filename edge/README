@@ -24,12 +24,9 @@ Files in this folder
  If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
  
 -OBM and UBoot
-  ASPN_NTLOADER.bin	NTLoader for avlite
-  u-boot.bin		uboot for avlite
-
-  NTIM_OBM_uboot_ASPEN_Mode2.bin	Core 624mhz with 624mhz DDR
-  NTIM_OBM_uboot_ASPEN_Mode3.bin	Core 800mhz with 800mhz DDR (This is recommended to be used with AV-Lite 1.5Q board)
-  NTIM_OBM_uboot_ASPEN_Mode5.bin	Core 1.2Ghz with 800mhz DDR
+  ntim_a0_edge_512mb_400mhz_mode3_spi.bin	boot from SPI NOR
+  desc_a0_edge_512mb_400mhz_mode3_spi.txt
+  ASPN_NTLOADER_spi.bin
 
 -Kernel and Modules for Android
   zImage.android.mlc	Kernel image to boot android from MLC. A root file system is built in. The root file system also packaged as root_android_mlc.tgz
@@ -106,17 +103,17 @@ Follow the below process and address to burn the zImage and system_ubi and userd
 Boot the device with console,
 
 Avengers>> nand device 0 
-Avengers>> tftp 0x500000 zImage.android.mlc
-Avengers>> nand erase 0x100000 0x300000
-Avengers>> nand write 0x500000 0x100000 0x300000 
-Avengers>> nand device 1
+Avengers>> bbt init nand
+Avengers>> tftp 0x1000000 zImage.android.mlc
+Avengers>> nand erase 0x80000 0x380000
+Avengers>> nand write 0x1000000 0x80000 0x380000 
 Avengers>> bbt init nand
 Avengers>> tftp 0x1000000 system_ubi.img
-Avengers>> nand erase 0x800000 0x8000000
+Avengers>> nand erase 0x800000 0xF800000
 Avengers>> nand write 0x1000000 0x800000 <size of loaded UBI image>
 Avengers>> tftp 0x1000000 userdata_ubi.img
-Avengers>> nand erase 0x8800000 0x13800000
-Avengers>> nand write 0x1000000 0x8800000 <size of loaded UBI image>
+Avengers>> nand erase 0x10000000 0x70000000
+Avengers>> nand write 0x1000000 0x10000000 <size of loaded UBI image>
 
 After tftp an image to device, please remember the size of the image printed by the command. This size will be used in the followed nand write command.
 
