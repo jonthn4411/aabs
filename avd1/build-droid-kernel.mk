@@ -1,7 +1,7 @@
 #check if the required variables have been set.
 #$(call check-variables,BUILD_VARIANTS)
 
-DEMO_MEDIA_DIR:=/autobuild/demomedia
+DEMO_MEDIA_DIR:=/autobuild/mobcon_demomedia
 MY_SCRIPT_DIR:=$(TOP_DIR)/avd1
 
 DROID_PRODUCT:=avd1
