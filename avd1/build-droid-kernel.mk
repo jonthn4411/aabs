@@ -2,9 +2,9 @@
 #$(call check-variables,BUILD_VARIANTS)
 
 DEMO_MEDIA_DIR:=/autobuild/demomedia
-MY_SCRIPT_DIR:=$(TOP_DIR)/dove
+MY_SCRIPT_DIR:=$(TOP_DIR)/avd1
 
-DROID_PRODUCT:=dove
+DROID_PRODUCT:=avd1
 DROID_TYPE:=release
 DROID_VARIANT:=eng
 

@@ -1,6 +1,6 @@
-MANIFEST_BRANCH:=dove-donut
-BOARD:=dove
+MANIFEST_BRANCH:=avd1-donut
+BOARD:=avd1
 ANDROID_VERSION:=donut
 PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
 
-include dove/board.mk
+include avd1/board.mk
