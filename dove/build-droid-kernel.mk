@@ -152,7 +152,7 @@ package_droid_mmc_$(1)_$(2):
 	$$(log) "copy demo media files to /sdcard if there are demo media files..."
 	$$(hide)if [ -d "$$(DEMO_MEDIA_DIR)" ]; then \
 			mkdir -p $$(OUTPUT_DIR)/$(2)/root_nfs/sdcard && \
-			cp $$(DEMO_MEDIA_DIR)/* $$(OUTPUT_DIR)/$(2)/root_nfs/sdcard/ && \
+			cp -r $$(DEMO_MEDIA_DIR)/* $$(OUTPUT_DIR)/$(2)/root_nfs/sdcard/ && \
 			echo "  done."; \
 		   else \
 			echo "    !!!demo media is not found."; \
