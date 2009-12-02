@@ -99,6 +99,12 @@ Follow the below process to make a SD card with Android root file system install
 5) umount /dev/sdc
 
 Second, burning the zImage.android.mmc image.
+Marvell>>setenv ipaddr 192.168.1.101
+Marvell>>setenv serverip 192.168.1.100
+Marvell>>setenv bootargs rootdelay=5 root=/dev/mmcblk0 ip=${ipaddr}:${serverip}::255.255.255.0::eth0:on console=ttyS0,115200 mem=512M init=/init android video=dovefb:lcd0:1024x600-24@60,lcd1:1024x768-24@60 clcd.lcd0_enable=1 clcd.lcd1_enable=1
+Marvell>>saveenv
+Marvell>>tftp 0x1000000 zImage.android.mmc
+Marvell>>bootm 0x1000000
 Boot the device with console,
 
 
@@ -115,10 +121,12 @@ Setup Android on NFS
 Last, you should use zImage.android.mmc to boot the kernel and then set the bootargs variable in UBoot.
 (Notes:if adb is enabled in the kernel, this way doesn't work as the usb net won't work as the usb is used for adb)
 
-Avengers>>tftp zImage.android.mmc
-Avengers>>setenv bootargs root=/dev/nfs nfsroot=192.168.1.100:/srv/nfs/,nolock,rsize=1024,wsize=1024 ip=192.168.1.101:192.168.1.100::255.255.255.0::usb0:on console=ttyS1,115200 mem=256M uart_dma init=/init android
-Avengers>>saveenv
-Avengers>>boot
+Marvell>>setenv ipaddr 192.168.1.101
+Marvell>>setenv serverip 192.168.1.100
+Marvell>>setenv bootargs root=/dev/nfs rootfstype=nfs nfsroot=${serverip}:/srv/nfs/ ip=${ipaddr}:${serverip}::255.255.255.0::eth0:on console=ttyS0,115200 mem=512M init=/init android video=dovefb:lcd0:1024x600-24@60,lcd1:1024x768-24@60 clcd.lcd0_enable=1 clcd.lcd1_enable=1
+Marvell>>saveenv
+Marvell>>tftp 0x1000000 zImage.android.mmc
+Marvell>>bootm 0x1000000
 
 Notes:if you are using a different host ip address and exported a different NFS directory, you should change the above command line accordingly.
 
@@ -195,9 +203,3 @@ If the battery service reports wrong battery status, Android power off the syste
 
 Open /init.rc, add the below line before class_start default:
 setprop battery.fake_ac true
-
-
-
-
-
-
