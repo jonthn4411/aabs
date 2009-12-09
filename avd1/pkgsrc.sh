@@ -19,6 +19,16 @@ cd $OUTPUT_DIR/source &&
   tar czf kernel_src.tgz $EXCLUDE_VCS kernel/ &&
   mv kernel_src.tgz $OUTPUT_DIR &&
 
+  echo "   copy gc600 driver source code: " &&
+  cp -p -r ../vendor/marvell/generic/gc600 . &&
+  echo "   copy bmm driver source code: " &&
+  cp -p -r ../vendor/marvell/generic/bmm-lib . &&
+  echo "   copy usb8786 driver source code: " &&
+  cp -p -r ../vendor/marvell/generic/usb8786 . &&
+
+  tar czf drivers_src.tgz $EXCLUDE_VCS gc600/ bmm-lib/ usb8786/ &&
+  mv drivers_src.tgz $OUTPUT_DIR &&
+
   cd - &&
   rm -fr kernel &&
 
