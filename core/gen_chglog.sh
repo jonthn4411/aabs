@@ -22,7 +22,7 @@ function gen_log()
 
 	if [ $len -gt 0 ]; then
 		echo "----------------" >> $2
-		echo "-prj:$CURRENT_PRJNAME:" >> $2
+		echo "-prj:$CURRENT_PRJNAME: [$CURRENT_PRJORG]" >> $2
 		echo "----------------" >> $2
 
 		local i=0
@@ -52,7 +52,7 @@ function gen_log_lastbuild()
 
 	if [ $len -gt 0 ]; then
 		echo "----------------" >> $output_file
-		echo "-prj:$CURRENT_PRJNAME:" >> $output_file
+		echo "-prj:$CURRENT_PRJNAME: [$CURRENT_PRJORG]" >> $output_file
 		echo "----------------" >> $output_file
 
 		local i=0
@@ -72,7 +72,7 @@ function gen_log_lastbuild_newprj()
 	local since=$2
 
 	echo "----------------" >> $output_file
-	echo "-prj:$CURRENT_PRJNAME:+newly added project, commits since $since" >> $output_file
+	echo "-prj:$CURRENT_PRJNAME:+newly added project, commits since $since. [$CURRENT_PRJORG]" >> $output_file
 	echo "----------------" >> $output_file
 
 	declare -a COMMITS
@@ -208,6 +208,7 @@ if [ ! -z "$LAST_BUILD_LOC" ]; then
 fi &&
 
 CURRENT_PRJNAME=aabs &&
+CURRENT_PRJORG=master &&
 echo "  log for: $CURRENT_PRJNAME " &&
 echo -n > $OUTPUT_DIR/changelog.day    && gen_log "1 day ago"   "$OUTPUT_DIR/changelog.day" &&
 echo -n > $OUTPUT_DIR/changelog.week   && gen_log "1 week ago"  "$OUTPUT_DIR/changelog.week" &&
@@ -231,6 +232,8 @@ do
   CURRENT_PRJPATH=${prj##*:} &&
   cd $CURRENT_PRJPATH &&
   echo "  log for: $CURRENT_PRJNAME " &&
+  BRANCH=$(cat .git/refs/remotes/m/$PRODUCT_CODE) &&
+  CURRENT_PRJORG=${BRANCH##ref: refs\/remotes\/} &&
   gen_log "1 day ago"   "$OUTPUT_DIR/changelog.day" &&
   gen_log "1 week ago"  "$OUTPUT_DIR/changelog.week" &&
   gen_log "2 weeks ago" "$OUTPUT_DIR/changelog.biweek" &&
