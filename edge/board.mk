@@ -27,7 +27,7 @@ include $(BOARD)/build-droid-kernel.mk
 #
 # Include goal for build UBoot
 #
-UBOOT_CONFIG:=avengers_config
+UBOOT_CONFIG:=edge_config
 UBOOT_SRC_DIR:=boot/uboot
 include $(BOARD)/build-uboot.mk
 
