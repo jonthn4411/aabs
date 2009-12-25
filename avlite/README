@@ -142,7 +142,7 @@ Boot the device with console,
 Avengers>> nand device 0
 Avengers>> tftp 0x500000 zImage.android.mmc
 Avengers>> nand erase 0x100000 0x300000
-Avengers>> nand write 0x500000 0x80000 0x300000 
+Avengers>> nand write 0x500000 0x100000 0x300000 
 
 
 Setup Android on NFS
