@@ -96,24 +96,24 @@ Burning OBM and UBoot
    4) burn file "ASPEN_NTLOADER.bin"		--> 0x20000
    5) burn file "u-boot.bin"			--> 0x40000
 
-
 Setup Android on NAND(MLC)
 =========================
 Follow the below process and address to burn the zImage and system_ubi and userdata_ubi images.
-Boot the device with console,
+Boot the device with console, after uboot start up to console, stop autoboot by typing anything on console
 
-Avengers>> nand device 0 
-Avengers>> bbt init nand
-Avengers>> tftp 0x1000000 zImage.android.mlc
-Avengers>> nand erase 0x80000 0x380000
-Avengers>> nand write 0x1000000 0x80000 0x380000 
-Avengers>> bbt init nand
-Avengers>> tftp 0x1000000 system_ubi.img
-Avengers>> nand erase 0x800000 0xF800000
-Avengers>> nand write 0x1000000 0x800000 <size of loaded UBI image>
-Avengers>> tftp 0x1000000 userdata_ubi.img
-Avengers>> nand erase 0x10000000 0x70000000
-Avengers>> nand write 0x1000000 0x10000000 <size of loaded UBI image>
+Edge>> nand device 0 
+Edge>> bbt init nand new
+Edge>> tftp 0x1000000 zImage.android.mlc
+Edge>> nand erase 0x80000 0x380000
+Edge>> nand write 0x1000000 0x80000 0x380000 
+Edge>> tftp 0x1000000 system_ubi.img
+Edge>> nand erase 0x800000 0xF800000
+Edge>> nand write 0x1000000 0x800000 <size of loaded UBI image>
+Edge>> tftp 0x1000000 userdata_ubi.img
+Edge>> nand erase 0x10000000 0x70000000
+Edge>> nand write 0x1000000 0x10000000 <size of loaded UBI image>
+Edge>> setenv bootargs ubi.mtd=3 ubi.mtd=4 rootfstype=ubifs ip=192.168.1.101:192.168.1.100::255.255.255.0::usb0:on console=ttyS1,115200 mem=512M uart_dma pxastorage=4G init=/init android
+Edge>> saveenv
 
 After tftp an image to device, please remember the size of the image printed by the command. This size will be used in the followed nand write command.
 
@@ -131,11 +131,13 @@ Follow the below process to make a SD card with Android root file system install
 
 Second, burning the zImage.android.mmc image.
 Boot the device with console,
-Avengers>> nand device 0
-Avengers>> tftp 0x500000 zImage.android.mmc
-Avengers>> nand erase 0x100000 0x300000
-Avengers>> nand write 0x500000 0x80000 0x300000 
-
+Edge>> nand device 0
+Edge>> bbt init nand new
+Edge>> tftp 0x500000 zImage.android.mmc
+Edge>> nand erase 0x100000 0x300000
+Edge>> nand write 0x500000 0x80000 0x300000 
+Edge>> setenv bootargs rootdelay=5 root=/dev/mmcblk0 ip=192.168.1.101:192.168.1.100::255.255.255.0::usb0:on console=ttyS1,115200 mem=512M uart_dma pxastorage=4G init=/init android
+Edge>> saveenv
 
 Setup Android on NFS
 ====================
@@ -150,18 +152,18 @@ Setup Android on NFS
 Last, you should use zImage.android.mmc to boot the kernel and then set the bootargs variable in UBoot.
 (Notes:if adb is enabled in the kernel, this way doesn't work as the usb net won't work as the usb is used for adb)
 
-Avengers>>tftp zImage.android.mmc
-Avengers>>setenv bootargs root=/dev/nfs nfsroot=192.168.1.100:/srv/nfs/,nolock,rsize=1024,wsize=1024 ip=192.168.1.101:192.168.1.100::255.255.255.0::usb0:on console=ttyS1,115200 mem=256M uart_dma init=/init android
-Avengers>>saveenv
-Avengers>>boot
+Edge>>tftp zImage.android.mmc
+Edge>>setenv bootargs root=/dev/nfs nfsroot=192.168.1.100:/srv/nfs/,nolock,rsize=1024,wsize=1024 ip=192.168.1.101:192.168.1.100::255.255.255.0::usb0:on console=ttyS1,115200 mem=512M uart_dma pxastorage=4G init=/init android
+Edge>>saveenv
+Edge>>boot
 
 Notes:if you are using a different host ip address and exported a different NFS directory, you should change the above command line accordingly.
 
 Notes:You only need use setenv and savenv command one time. Next time UBoot will load the environment variable from NAND automaticllay. But later if you want use zImage.android.mmc to boot Android from SD card, you should clear the "bootargs" environment variable. You can do this by:
 
-Avengers>>setenv bootargs
-Avengers>>saveenv
-Avengers>>printenv 
+Edge>>setenv bootargs
+Edge>>saveenv
+Edge>>printenv 
 
 printenv will list all the environment variables, which can be used to verify what current value of bootargs is.
 
@@ -230,9 +232,5 @@ If the battery service reports wrong battery status, Android power off the syste
 
 Open /init.rc, add the below line before class_start default:
 setprop battery.fake_ac true
-
-
-
-
 
 
