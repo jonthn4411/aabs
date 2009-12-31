@@ -19,12 +19,12 @@ cd $OUTPUT_DIR/source &&
   tar czf kernel_src.tgz $EXCLUDE_VCS kernel/ &&
   mv kernel_src.tgz $OUTPUT_DIR &&
 
-  echo "   copy gc300 driver source code: " &&
-  cp -p -r ../vendor/marvell/generic/gc300 . &&
+  echo "   copy gc800 driver source code: " &&
+  cp -p -r ../vendor/marvell/generic/gc800 . &&
   echo "   copy sd8688 driver source code: " &&
   cp -p -r ../vendor/marvell/generic/sd8688 . &&
 
-  tar czf drivers_src.tgz $EXCLUDE_VCS gc300/ sd8688/ &&
+  tar czf drivers_src.tgz $EXCLUDE_VCS gc800/ sd8688/ &&
   mv drivers_src.tgz $OUTPUT_DIR &&
 
   cd - &&
