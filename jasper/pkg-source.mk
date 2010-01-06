@@ -2,7 +2,7 @@ include core/pkg-source.mk
 
 .PHONY:pkgsrc
 pkgsrc: output_dir get_source_for_pkg
-	$(hide)$(TOP_DIR)/avlite/pkgsrc.sh $(OUTPUT_DIR)
+	$(hide)$(TOP_DIR)/$(BOARD)/pkgsrc.sh $(OUTPUT_DIR)
 	$(log) "  done."
 
 
