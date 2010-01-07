@@ -23,18 +23,9 @@ Files in this folder
  Files under mrvl-gcc folder are built with marvell gcc toolchain.
  If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
  
--OBM and UBoot
-  ntim_a0_avengers-a_1.6F_256mb_400mhz_mode3_pm_slc.bin		boot from SLC nand
-  ASPN_NTLOADER_avengers-a_slc.bin
-  desc_a0_avengers-a_1.6F_256mb_400mhz_mode3_pm_slc.txt
-
-  desc_a0_avengers-a_1.6F_256mb_400mhz_mode3_pm_spi.txt		boot from SPI NOR
-  ntim_a0_avengers-a_1.6F_256mb_400mhz_mode3_pm_spi.bin
-  ASPN_NTLOADER_spi.bin
-
 -Kernel and Modules for Android
-  zImage.android.mlc	Kernel image to boot android from MLC. A root file system is built in. The root file system also packaged as root_android_mlc.tgz
-  zImage.android.mmc	Kernel image to boot android from SD card.
+  zImage.android.mlc	we will use one kernel binary solution, finally we onlyu provide one kernel image. TODO: change autobuild scripts to do it.
+  zImage.android.mmc	
 
   modules_android_mlc.tgz Kernel modules that built along with zImage.android.mlc
   modules_android_mmc.tgz Kernel modules that built along with zImage.android.mmc
@@ -96,36 +87,22 @@ Install Adobe Flash plugin
   
 Burning OBM and UBoot
 =====================
-1. install XDB 4.1.1 from: \\sh1sbak009\Product_Integration\Tools\eXtreme_Debugger_v4.1.1
-2. Burn OBM and U-boot by XDB
-   1) Use flash burn tool: flash --> burn flash, select: board -- aspen, and flash type - nand
-   2) Reset "bad block" table and Erase all
-   3) burn file "ntim_xxx.bin"--> 0x0
-   4) burn file "ASPEN_NTLOADER_xxx.bin"		--> 0x20000
-   5) burn file "u-boot.bin"			--> 0x40000
-
+1. install XDB 4.1.1 from: \\sh1sbak009\debugger_public\Engineering_Release\EMU_AddOn\EMU 2.1
+2. Get binary from \\sh1sbak009\embedded_os\Temp\mhu4\Bonnell, we suggest use 400-200 OP
+3. Burn OBM and U-boot by XDB
+   1) Use flash burn tool: flash --> burn flash, use default config
+   2) Initial a new flash
+   3) Erase all blocks
+   4) Make sure NOT select "erase affected blocks"
+   5) Burn ntim_mmp2_nand_bbu_ddr.bin to 0x0
+   6) Burn MMP2_JASPER_Loader_3_2_13.bin to 0x80000
+   7) Burn WtmUnresetPJ4.bin to 0xc0000
+   8) Burn u-boot.bin to 0x100000
 
 Setup Android on NAND(MLC)
 =========================
-Follow the below process and address to burn the zImage and system_ubi and userdata_ubi images.
-Boot the device with console,
 
-Avengers>> nand device 0 
-Avengers>> tftp 0x500000 zImage.android.mlc
-Avengers>> nand erase 0x100000 0x300000
-Avengers>> nand write 0x500000 0x100000 0x300000 
-Avengers>> nand device 1
-Avengers>> bbt init nand
-Avengers>> tftp 0x1000000 system_ubi.img
-Avengers>> nand erase 0x800000 0x8000000
-Avengers>> nand write 0x1000000 0x800000 <size of loaded UBI image>
-Avengers>> tftp 0x1000000 userdata_ubi.img
-Avengers>> nand erase 0x8800000 0x13800000
-Avengers>> nand write 0x1000000 0x8800000 <size of loaded UBI image>
-
-After tftp an image to device, please remember the size of the image printed by the command. This size will be used in the followed nand write command.
-
-Notes: the above commands will burn zImage to SLC, system_ubi and userdata_ubi to MLC.
+   Not supportted now
 
 
 Setup Android on SD Card
@@ -139,39 +116,32 @@ Follow the below process to make a SD card with Android root file system install
 
 Second, burning the zImage.android.mmc image.
 Boot the device with console,
-Avengers>> nand device 0
-Avengers>> tftp 0x500000 zImage.android.mmc
-Avengers>> nand erase 0x100000 0x300000
-Avengers>> nand write 0x500000 0x80000 0x300000 
+MMP2>> sw         // Set the interface to u2o-eth
+MMP2>> t zImage.android.mmc
+MMP2>> nand erase 0x980000 0x300000
+MMP2>> nand write 0x1100000 0x980000 0x300000 
 
 
 Setup Android on NFS
 ====================
-1) Installed the NFS server on PC host. We prefer to use UBuntu8.04 or 8.10. 9.04 is not recommended.
-2) mkdir /srv
+1) Installed the NFS server on PC host.
+2) mkdir /nfs and /nfs/android
 3) add below line to /etc/exports
   /srv            *(rw,sync,no_root_squash,no_subtree_check)
   Notes: be sure you specify all the optional paramters above.
 4) tar xvf root_nfs.tgz /tmp/
-5) mv /tmp/root_nfs/* /srv/nfs/
+5) mv /tmp/root_nfs/* /nfs/android
 
 Last, you should use zImage.android.mmc to boot the kernel and then set the bootargs variable in UBoot.
 (Notes:if adb is enabled in the kernel, this way doesn't work as the usb net won't work as the usb is used for adb)
 
-Avengers>>tftp zImage.android.mmc
-Avengers>>setenv bootargs root=/dev/nfs nfsroot=192.168.1.100:/srv/nfs/,nolock,rsize=1024,wsize=1024 ip=192.168.1.101:192.168.1.100::255.255.255.0::usb0:on console=ttyS1,115200 mem=256M uart_dma init=/init android
-Avengers>>saveenv
-Avengers>>boot
+Avengers>>t zImage.android.mmc
+Avengers>>bo
 
-Notes:if you are using a different host ip address and exported a different NFS directory, you should change the above command line accordingly.
+Notes:we used one kernel binary solution, the boot sequence is nand --> mmc --> nfs, now nand is not supported, so remove sdcard first if you want to boot from nfs. And the nfs server is fixed as 192.168.1.100:/nfs/android. if you want to change it, modify vendor/marvell/jasper/roodir/rdinit and build the kernel again
 
 Notes:You only need use setenv and savenv command one time. Next time UBoot will load the environment variable from NAND automaticllay. But later if you want use zImage.android.mmc to boot Android from SD card, you should clear the "bootargs" environment variable. You can do this by:
 
-Avengers>>setenv bootargs
-Avengers>>saveenv
-Avengers>>printenv 
-
-printenv will list all the environment variables, which can be used to verify what current value of bootargs is.
 
 
 Known Issues about running Android on NFS
