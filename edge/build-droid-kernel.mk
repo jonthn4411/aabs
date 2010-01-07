@@ -184,8 +184,8 @@ endef
 #example: android:mlc:pxa168_android_mlc_defconfig:root
 # kernel_configs:=
 #
-kernel_configs:=android:mlc:pxa168_android_mlc_defconfig:root 
-kernel_configs+=android:mmc:pxa168_android_mmc_defconfig 
+kernel_configs:=android:mlc:pxa168_edge_android_mlc_defconfig:root 
+kernel_configs+=android:mmc:pxa168_edge_android_mmc_defconfig 
 
 export KERNEL_TOOLCHAIN_PREFIX
 export MAKE_JOBS
