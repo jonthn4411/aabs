@@ -15,7 +15,7 @@ function gen_init_nfs_sh()
 	setprop EXTERNAL_STORAGE_STATE mounted
 	
 	#touch the directory. A trick for NFS
-	ls /sdcard >/dev/null	
+	ls -l /sdcard/* >/dev/null	
 	sleep 2s
 	am broadcast -a android.intent.action.MEDIA_MOUNTED --ez read-only false -d file:///sdcard
 
