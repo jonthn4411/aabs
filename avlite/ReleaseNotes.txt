@@ -1,0 +1,360 @@
+TO be modified for AV-A release
+
+==============================================================================
+Marvell PXA910 Android Platform Release for Linux 
+Platform README 
+Last update: 12/29/2009
+==============================================================================
+
+1. Platform features
+1.1 Supported Components
+- Rebase to google android eclair branch
+- Do key pad mapping, touch for PXA910 DKB platform
+- HIFI playback on headset and speaker
+- Audio routing for phone earpiece and headset
+- Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC500
+- Integrate IPP H.264 decoder for media player
+- Integrate IPP MPEG-4 decoder for media player
+- Integrate IPP AAC version decoder for media player
+- Integrate IPP MP3 version decoder for media player
+- Integrate Marvell RIL and telephony baseband
+  - Support 2G vioce call and data call
+  - Support 3G vioce call on DKB board
+  - Support SMS
+  - Support STK for 2G
+  - Support Modem function
+  - Support DIAG
+
+1.2 BSP features
+Uboot
+- Boot from Nand/Onenand
+- Bownload from USB ethernet
+- Burn image into Nand/Onenand
+- Fash Bad block management
+- Boot kernel with kernel command line
+- Voltage/Frequency change
+Linux-2.6.29
+- MTD devices
+  - Support Nand
+  - Support Onenand
+  - Support Fash Bad block management
+  - Support JFSS2
+  - Support YAFFS
+  - Support Partition
+- WMMX
+  - Support context switch
+- IMM
+  - SRAM is maintained by IMM. (audio driver occupy all the SRAM maintained by IMM.)
+- Power Management
+  - Support chip sleep
+  - Support chip idle
+  - Support core idle
+  - Support to use Keypad to wake up system
+  - Support to use RTC to wake up system
+  - Support to switch OP by "echo" command to sysfs
+  - Support dynamic frequenc and voltage change base on power policy maker in kernel. 
+- LCD (Dump panel)
+  - Support base display
+  - Support overlay display
+  - Support scaling
+  - Support backlight control
+  - Support FB interface
+  - Support pan display
+  - Support HVGA resolution display
+  - Support RGB565, RGB888Packed, RGB888Unpacked, YUV420planar, YUV422planar and YUV422Packed format. 
+- IRE
+  - Support YUV420 90 degree clockwise rotation
+- Camera (CCIC)
+  - Support V4L2 interface
+  - Support Parallel and MIPI interface.
+  - Support JPEG format
+  - Support YUV420Planar, YUV422Planar and YUV422Packed format. 
+  - Support to accept framebuf from user application.
+- OV7670 
+  - Support to config pixel format
+  - Support to switch image/video mode 
+  - Support still image with QVGA, VGA and HVGA resolution. 
+  - Support video with QVGA, VGA and HVGA resolution. 
+- OV3640
+  - Support to config pixel format
+  - Support to switch image/video mode 
+  - Support still image with QVGA and VGA resolution. HVGA and 3M resolutions still have problems. 
+  - Support video with QVGA, VGA and HVGA resolution. 3M resolution still has problem. 
+- SSP
+  - Support to config it as I2S to transfer audio PCM data to outside code. 
+- Audio (use levante as outside audio codec)
+  - Support ALSA interface
+  - Support to playback Audio
+  - Support to Recodrd Audio 
+  - Support to playback and record simultaneously. (The codec native sample rate will locked as 48K for both playback and record. And the alsa lib will handle the sample rate conversion automaitically)
+  - Support 2.5mm Jack
+  - Support headset and MICIN detection. (The audio server application will setup the audio path base on the detection event automatically)
+  - Support on-board mic
+- Touch screen (TPO touch)
+  - Support pen attach, move, detach and time stamp. 
+- Keypad
+  - Support Key down, up, repeat and time stamp. 
+- I2C (two i2c busses)
+  - Share/Arbitrate the busses for multi devies.
+  - Support RIPC to share the bus with other CPUs.
+- UART (FFUART, BTUART)
+  - Support tty interface
+  - Support tty console
+  - Support multi sample rate
+  - Support HW flaw control
+  - Support both DMA and PIO modes
+- USB
+  - Host
+    - Support to access USB mass storage device
+    - Support hot plug-in and remove
+    - Support USB hub
+  - OTG
+    - Support dual role device
+    - HNP and SRP are NOT support
+  - Client
+    - Support ethernet, mass storage, adb and diag drivers.
+    - Support composite devie.
+    - Support hot attach and detach
+- MMC/SD
+  - MMC4.3/SD2.0
+    - Support partition
+    - Support hot plug-in and remove
+    - Support lock and unlock
+    - Support write protect switch
+  - SDIO
+    - Support WiFi SDIO card
+- WLAN
+  - Support SD8688
+  - Support WPA 
+- BT
+  - Support SD8688
+  - Support A2DP profile
+- Power supply
+  - Support battery temperature measurement
+  - Support battery capacity measurement. (it is not accurate.)
+  - Support USB supply
+  - Support USB charging
+  - Support poweroff. (NOTE: if the system is not poweroff normally, the next boot time will be longer for the filesystem scan. )
+- Sensors
+  - g sensor (lis3lv02d)
+- MISC
+  - FM Radio 
+
+1.2 Release package contents
+- PXA910_Android_Platform_Alpha8_prebuilt_bin.zip  :Pre-built bin binaries
+- PXA910_Android_Platform_Alpha8_src.tgz           :Source code tarball (patch mode)
+  - README.txt                                     :This readme.txt(include how to setup Android dir,build and burn flash)
+  - setup_android.sh                               :Script to setup Android directory
+  - android                                        :Source about Android
+     - android_patches                             :Patches against Android eclair
+     - marvell_manifest.xml                        :Manifest xml file to download Android eclair as a base
+     - vendor.tgz                                  :Non-Google projects in Android directory
+  - kernel                                         :Source about kernel 
+     - linux-2.6.29_patches                        :Kernel patches agaist Linux-2.6.29
+     - linux-2.6.29.tgz                            :Linux-2.6.29 base
+     - uboot_patches                               :Uboot patches agaist uboot
+     - uboot.tgz                                   :Uboot base
+     - obm.tgz                                     :OBM source code
+  - tools                                          :Compile tools
+     - arm-linux-4.1.1.tgz                         :Compile for compiling obm and uboot
+
+2. System Requirements
+2.1 Hardware requirements
+- OneNAND flash 256-MB large block
+- DDR SDRAM 128 MB
+- PXA910 DKB Board
+
+2.2 Software requirements
+- Host PC with operating system Ubuntu 6.06 or above
+
+3. Usage of this package 
+3.1 Install this package
+3.1.1 Download the Marvell packages:
+----PXA910_Android_Platform_Alpha8_src.tgz  
+----PXA910_Android_Platform_Alpha8_prebuilt_bin.zip
+3.1.2 Type the following command to install:
+ $ mkdir [installed_directory]
+ $ cd [installed_directory]
+ $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA910_Android_Platform_Alpha8_src.tgz
+ $ unzip [The PATH you downloaded Marvell Packages]/PXA910_Android_Platform_Alpha8_prebuilt_bin.zip
+
+3.2 Setup Android directory
+ $ mkdir [android_dir]
+ $ [installed_directory]/src/setup_android.sh [android_dir]
+Note!!!***:[android_dir] should use absolute directory, not relative directory. 
+
+3.3 Building Android,Linux Kernel,Uboot and OBM
+
+3.3.1 Build Linux Kernel
+ $ cd [android_dir]/kernel
+ $ make kernel
+After a short while, the binaries will be generated under [android]/kernel/out/zImage
+
+3.3.2 Build Modules
+ $ cd [android_dir]/kernel
+ $ make modules
+Note: Please make kernel before making modules
+After a short while, the binaries will be generated under [android]/kernel/out/modules
+
+3.3.3 Buid PXA Android by:
+ $ cd [android_dir]
+ $ . build/envsetup.sh
+ $ chooseproduct dkbttc
+ $ export ANDROID_PREBUILT_MODULES=[android]/kernel/out/modules
+ $ make -j4
+Note : If there is no modules, Please export ANDROID_PREBUILT_MODULES=no_kernel_modules
+After a while (30~60 minutes), the binaries will be generated under [android_dir]/out/target/product/dkbttc/.
+Note: Currently we use Android default toolchain version: arm-eabi-4.2.1 to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for arm-eabi-4.2.1. Please don¡¯t specify other android toolchain version. 
+
+3.3.4 Building telephony
+ $ cd [android_dir]/kernel
+ $ make telephony
+Note: Please make android before making telephony
+After a short while, the binary will be generated under [android]/kernel/out/pxafs.img
+
+3.3.5 Building uboot
+ $ cd [android_dir]/boot
+ $ make uboot
+After a short while, the binary will be generated under [android]/boot/out/u-boot.bin
+
+3.3.6 Building OBM
+ $ cd [android_dir]/boot
+ $ make obm
+After a short while, the binary will be generated under [android]/boot/TTC_LINUX_NTOBM.bin  [android]/boot/NTIM_OBM_UBOOT.bin
+Note: Please make uboot before making obm
+
+3.4 Flashing images and boot system (128MB is set as default)
+3.4.1 CP version
+        TTC Alpha8                      --> TTC_CP_03.00.004
+3.4.2 Burn following binaries to flash by using the Marvell eXtreme Debugger.
+        NTIM_OBM_UBOOT.bin              --> flash address 0x00000
+        TTC_LINUX_NTOBM.bin             --> flash address 0x20000
+        u-boot.bin                      --> flash address 0x40000
+        ramdisk.img                     --> falsh address 0xc0000
+        Arbel.bin                       --> flash address 0x120000
+        TTC1_M05_A0_AI_Flash.bin        --> flash address 0x820000
+
+3.4.3 Start your favorite terminal emulator with the appropriate 
+      COM port set to 115200,8N1. Power on the board and wait for TTC_DKB>> prompt to appear
+
+3.4.4 Enter the following command to upload the kernel into the RAM and burn into flash:
+For OneNAND flash, issue the following commands:
+TTC_DKB>>onenand erase 0x920000 0x300000
+TTC_DKB>>tftp 0x1000000 zImage
+TTC_DKB>>onenand write 0x1000000 0x920000 0x300000
+For NAND flash, issue the following commands:
+TTC_DKB>>nand erase 0x920000 0x300000
+TTC_DKB>>tftp 0x1000000 zImage
+TTC_DKB>>nand write 0x1000000 0x920000 0x300000
+Note 1: You need to configure the host network interface:
+   # ifconfig usb0 192.168.1.100 (for USB)
+   # ifconfig eth0 192.168.1.100 (for Ethernet)
+Note 2: uboot configures ethernet download as default. please use TTC_DKB>> sw to switch to USB 
+
+3.4.5 Enter the following command to upload the system.img into the RAM and burn into flash:
+For OneNAND flash, issue the following commands:
+TTC_DKB>>onenand erase 0x0c20000 0x4000000
+TTC_DKB>>tftp 0x1000000 system.img
+TTC_DKB>>onenand write.yaffs 0x1000000 0x0c20000 <system.img actual length> (Note: ony hex supported)
+For NAND flash, issue the following commands:
+TTC_DKB>>nand erase 0x0c20000 0x4000000
+TTC_DKB>>tftp 0x1000000 system.img
+TTC_DKB>>nand write.yaffs 0x1000000 0x0c20000 <system.img actual length> (Note: ony hex supported)
+
+3.5.6 Enter the following command to upload the userata.img into the RAM and burn into flash:
+For OneNAND flash, issue the following commands:
+TTC_DKB>>onenand erase 0x7c20000 0x20e0000
+TTC_DKB>>tftp 0x1000000 userdata.img
+TTC_DKB>>onenand write.yaffs 0x1000000 0x7c20000 <userdata.img actual length> (Note: ony hex supported)
+For NAND flash, issue the following commands:
+TTC_DKB>>nand erase 0x7c20000 0x20e0000
+TTC_DKB>>tftp 0x1000000 userdata.img
+TTC_DKB>>nand write.yaffs 0x1000000 0x7c20000 <userdata.img actual length> (Note: ony hex supported)
+
+3.5.7 Enter the following command to upload the marvell data into the RAM and burn into flash:
+For OneNAND flash, issue the following commands:
+TTC_DKB>>onenand erase 0xec20000 0x1000000
+TTC_DKB>>tftp 0x1000000  pxafs.img
+TTC_DKB>>onenand write.yaffs 0x1000000 0xec20000 <pxafs.img actual length> (Note: ony hex supported)
+For NAND flash, issue the following commands:
+TTC_DKB>>nand erase 0xec20000 0x1000000
+TTC_DKB>>tftp 0x1000000  pxafs.img
+TTC_DKB>>nand write.yaffs 0x1000000 0xec20000 <pxafs.img actual length> (Note: ony hex supported)
+
+boot up system by:
+TTC_DKB>>onenand read 0x500000 0x920000 0x300000
+TTC_DKB>>bootz
+
+4.0 Known issues and workarounds
+
+
+----------------------------
+
+---------------------------------------------------------------------
+Disclaimer and Legal Information:
+---------------------------------------------------------------------
+No part of this document may be reproduced or transmitted in any 
+form or by any means, electronic or mechanical, including 
+photocopying and recording, for any purpose, without the express 
+written permission of Marvell. Marvell retains the right to make 
+changes to this document at any time, without notice. Marvell makes 
+no warranty of any kind, expressed or implied, with regard to any 
+information contained in this document, including, but not limited 
+to, the implied warranties of merchantability or fitness for any 
+particular purpose. Further, Marvell does not warrant the accuracy 
+or completeness of the information, text, graphics, or other items 
+contained within this document.
+ 
+Marvell products are not designed for use in life-support equipment 
+or applications that would cause a life-threatening situation if 
+any such products failed. Do not use Marvell products in these 
+types of equipment or applications.
+ 
+With respect to the products described herein, the user or 
+recipient, in the absence of appropriate U.S. government 
+authorization, agrees:
+ 
+1) Not to re-export or release any such information consisting of 
+technology, software or source code controlled for national 
+security reasons by the U.S. Export Control Regulations ("EAR"), 
+to a national of EAR Country Groups D:1 or E:2;
+ 
+2) Not to export the direct product of such technology or such 
+software, to EAR Country Groups D:1 or E:2, if such technology or 
+software and direct products thereof are controlled for national 
+security reasons by the EAR; and,
+ 
+3) In the case of technology controlled for national security 
+reasons under the EAR where the direct product of the technology 
+is a complete plant or component of a plant, not to export to 
+EAR Country Groups D:1 or E:2 the direct product of the plant or 
+major component thereof, if such direct product is controlled for 
+national security reasons by the EAR, or is subject to controls 
+under the U.S. Munitions List ("USML").
+ 
+At all times hereunder, the recipient of any such information 
+agrees that they shall be deemed to have manually signed this 
+document in connection with their receipt of any such information.
+ 
+Copyright (C) 2008. Marvell International Ltd. All rights reserved. 
+Marvell, the Marvell logo, Moving Forward Faster, Alaska, 
+AnyVoltage, CODECHANNEL, Fastwriter, Datacom Systems on Silicon, 
+DSP Switcher, Feroceon, GalNet, INTERPRINT, Libertas, Link Street, 
+MOBILEPRINT, NetGX, PHYAdvantage, Prestera, Raising The Technology 
+Bar, SUPERPRINT, SUPERQUEUE, The Technology Within, Virtual Cable 
+Tester, Yukon, ZJ, ZSCRIPT, ZX, and ZXSTREAM are registered 
+trademarks of Marvell. Ants,  Discovery, GalTis, Horizon, Marvell 
+Makes It All Possible, RADLAN, UniMAC, and VCT are trademarks of 
+Marvell.
+
+All other trademarks are the property of their respective 
+owners.
+
+Marvell Semiconductor, Inc.
+5488 Marvell Lane
+Santa Clara, CA 95054, USA
+Tel: 1.408.222.2500
+Fax: 1.408.752.9028
+Email: commsales@marvell.com
+
+
