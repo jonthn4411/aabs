@@ -104,11 +104,11 @@ Boot the device with console, after uboot start up to console, stop autoboot by 
 Edge>> nand device 0 
 Edge>> bbt init nand new
 Edge>> tftp 0x1000000 zImage.android.mlc
-Edge>> nand erase 0x80000 0x380000
-Edge>> nand write 0x1000000 0x80000 0x380000 
+Edge>> nand erase 0xA00000 0x380000
+Edge>> nand write 0x1000000 0xA00000 0x380000 
 Edge>> tftp 0x1000000 system_ubi.img
-Edge>> nand erase 0x800000 0xF800000
-Edge>> nand write 0x1000000 0x800000 <size of loaded UBI image>
+Edge>> nand erase 0x1180000 0xEE80000
+Edge>> nand write 0x1000000 0x1180000 <size of loaded UBI image>
 Edge>> tftp 0x1000000 userdata_ubi.img
 Edge>> nand erase 0x10000000 0x70000000
 Edge>> nand write 0x1000000 0x10000000 <size of loaded UBI image>
@@ -134,8 +134,8 @@ Boot the device with console,
 Edge>> nand device 0
 Edge>> bbt init nand new
 Edge>> tftp 0x500000 zImage.android.mmc
-Edge>> nand erase 0x100000 0x300000
-Edge>> nand write 0x500000 0x80000 0x300000 
+Edge>> nand erase 0xA00000 0x380000
+Edge>> nand write 0x500000 0xA00000 0x380000 
 Edge>> setenv bootargs rootdelay=5 root=/dev/mmcblk0 ip=192.168.1.101:192.168.1.100::255.255.255.0::usb0:on console=ttyS1,115200 mem=512M uart_dma pxastorage=4G init=/init android
 Edge>> saveenv
 
