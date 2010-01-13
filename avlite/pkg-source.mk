@@ -17,8 +17,7 @@ else
 endif
 
 .PHONY:pkgsrc
-#pkgsrc: output_dir get_source_for_pkg
-pkgsrc:
+pkgsrc: output_dir get_source_for_pkg
 	$(hide)echo "  save project list"
 	$(hide)cd $(OUTPUT_DIR)/source && repo forall -c "echo -n \$$(pwd):;echo \$$REPO_PROJECT" > $(OUTPUT_DIR)/prjlist
 
