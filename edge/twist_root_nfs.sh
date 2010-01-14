@@ -22,6 +22,9 @@ function gen_init_nfs_sh()
 	#workaround for keychars
 	chmod 0644 /system/usr/keychars/*
 
+	#workaround for android pm suspend 
+	echo disable_pm_suspend > /sys/power/wake_lock
+
 	EOF
 }
 
