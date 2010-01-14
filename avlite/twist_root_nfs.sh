@@ -22,6 +22,8 @@ function gen_init_nfs_sh()
 	#workaround for keychars
 	chmod 0644 /system/usr/keychars/*
 
+	#always disable pm suspend for NFS and MMC version
+	echo disable_pm_suspend > /sys/power/wake_lock
 	EOF
 }
 
