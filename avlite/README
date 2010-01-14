@@ -117,8 +117,8 @@ Avengers>> nand write 0x500000 0x100000 0x300000
 Avengers>> nand device 1
 Avengers>> bbt init nand
 Avengers>> tftp 0x1000000 system_ubi.img
-Avengers>> nand erase 0x11800000 0x7680000
-Avengers>> nand write 0x1000000 0x11800000 <size of loaded UBI image>
+Avengers>> nand erase 0x1180000 0x7680000
+Avengers>> nand write 0x1000000 0x1180000 <size of loaded UBI image>
 Avengers>> tftp 0x1000000 userdata_ubi.img
 Avengers>> nand erase 0x8800000 0x13800000
 Avengers>> nand write 0x1000000 0x8800000 <size of loaded UBI image>
