@@ -207,6 +207,7 @@ print_usage()
 	echo "  ccache: using ccache to speedup the build process."
 	echo "  mgcc: enable to build targets with Marvell GCC."
 	echo "  force: no matter if there is any change since last build, always rebuild."
+	echo "  nobuild:don't build any targets."
 	echo "  help: print this list."
 }
 
@@ -247,6 +248,8 @@ FLAG_TEMP=false
 FLAG_CCACHE=false
 FLAG_MGCC=false
 FLAG_FORCE=false
+FLAG_BUILD=true
+
 for flag in $*; do
 	case $flag in
 		clobber) FLAG_CLOBBER=true;;
@@ -258,6 +261,7 @@ for flag in $*; do
 		ccache)FLAG_CCACHE=true;;
 		mgcc)FLAG_MGCC=true;;
 		force)FLAG_FORCE=true;;
+		nobuild)FLAG_BUILD=false;;
 		help) print_usage; exit 2;;
 		*) echo "Unknown flag: $flag"; print_usage; exit 2;;
 	esac
@@ -314,7 +318,9 @@ if [ -z "$change_since_last_build" ]; then
 	fi
 fi &&
 
-make -f ${MAKEFILE} build_droid-gcc 2>&1 | tee -a $STD_LOG &&
+if [ "$FLAG_BUILD" = "true" ]; then
+	make -f ${MAKEFILE} build_droid-gcc 2>&1 | tee -a $STD_LOG 
+fi &&
 
 if [ "$FLAG_MGCC" = "true" ]; then
 	make -f ${MAKEFILE} clean 2>&1 | tee -a $STD_LOG &&
