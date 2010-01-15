@@ -1,29 +1,36 @@
-TO be modified for AV-A release
-
-==============================================================================
-Marvell PXA910 Android Platform Release for Linux 
-Platform README 
-Last update: 12/29/2009
-==============================================================================
+===========================================================
+Marvell ARMADA 100 AV-A Full System SW release for Android 
+Release Notes
+Last update: 1/15/2010
+===========================================================
 
 1. Platform features
+=====================
 1.1 Supported Components
-- Rebase to google android eclair branch
-- Do key pad mapping, touch for PXA910 DKB platform
+- Rebase to google android donut-release branch
+- Running Android on UBI FS
+- Support Home/Menu/Back/Search key buttons on board 
+
+- Support external USB Keyboard 
 - HIFI playback on headset and speaker
-- Audio routing for phone earpiece and headset
-- Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC500
-- Integrate IPP H.264 decoder for media player
-- Integrate IPP MPEG-4 decoder for media player
-- Integrate IPP AAC version decoder for media player
-- Integrate IPP MP3 version decoder for media player
-- Integrate Marvell RIL and telephony baseband
-  - Support 2G vioce call and data call
-  - Support 3G vioce call on DKB board
-  - Support SMS
-  - Support STK for 2G
-  - Support Modem function
-  - Support DIAG
+- Music Playback through Bluetooth
+
+- Web Browsing through Wifi
+- Integrate Copybit Engine for GC300
+- Integrate Marvell OpenMax Codecs for OpenCore, including H.264, MPEG-4, AAC, MP3
+- Integrate GStreamer 0.10.24, as well as gst-plugins-good, gst-plugins-bad and gst-plugins-ugly
+
+- Integrate Marvell GStreamer Plugins wrap-ups, including AAC, MP3, H.264, H.263, MPEG-4, MPEG2, MJPEG, WMA, WMV, AMRNB, AMRWB
+
+- Support 3G USB modem
+
+- Support G-Sensor rotation
+
+- Support sound recording
+
+- Support video recording and still image capturing
+-
+ Integrate Helix engine to support playback RMVB and RM file (Not in release package, please consult the AE)
 
 1.2 BSP features
 Uboot
@@ -33,7 +40,8 @@ Uboot
 - Fash Bad block management
 - Boot kernel with kernel command line
 - Voltage/Frequency change
-Linux-2.6.29
+
+Linux-2.6.29 Kernel
 - MTD devices
   - Support Nand
   - Support Onenand
@@ -41,6 +49,7 @@ Linux-2.6.29
   - Support JFSS2
   - Support YAFFS
   - Support Partition
+  - Support UBI FS
 - WMMX
   - Support context switch
 - IMM
@@ -62,8 +71,6 @@ Linux-2.6.29
   - Support pan display
   - Support HVGA resolution display
   - Support RGB565, RGB888Packed, RGB888Unpacked, YUV420planar, YUV422planar and YUV422Packed format. 
-- IRE
-  - Support YUV420 90 degree clockwise rotation
 - Camera (CCIC)
   - Support V4L2 interface
   - Support Parallel and MIPI interface.
@@ -92,8 +99,6 @@ Linux-2.6.29
   - Support on-board mic
 - Touch screen (TPO touch)
   - Support pen attach, move, detach and time stamp. 
-- Keypad
-  - Support Key down, up, repeat and time stamp. 
 - I2C (two i2c busses)
   - Share/Arbitrate the busses for multi devies.
   - Support RIPC to share the bus with other CPUs.
@@ -137,158 +142,192 @@ Linux-2.6.29
   - Support poweroff. (NOTE: if the system is not poweroff normally, the next boot time will be longer for the filesystem scan. )
 - Sensors
   - g sensor (lis3lv02d)
-- MISC
-  - FM Radio 
+
 
 1.2 Release package contents
-- PXA910_Android_Platform_Alpha8_prebuilt_bin.zip  :Pre-built bin binaries
-- PXA910_Android_Platform_Alpha8_src.tgz           :Source code tarball (patch mode)
-  - README.txt                                     :This readme.txt(include how to setup Android dir,build and burn flash)
-  - setup_android.sh                               :Script to setup Android directory
-  - android                                        :Source about Android
-     - android_patches                             :Patches against Android eclair
-     - marvell_manifest.xml                        :Manifest xml file to download Android eclair as a base
-     - vendor.tgz                                  :Non-Google projects in Android directory
-  - kernel                                         :Source about kernel 
-     - linux-2.6.29_patches                        :Kernel patches agaist Linux-2.6.29
-     - linux-2.6.29.tgz                            :Linux-2.6.29 base
-     - uboot_patches                               :Uboot patches agaist uboot
-     - uboot.tgz                                   :Uboot base
-     - obm.tgz                                     :OBM source code
-  - tools                                          :Compile tools
-     - arm-linux-4.1.1.tgz                         :Compile for compiling obm and uboot
+- ARMADA100_AVA_Android_Alpha1_prebuilt_bin.zip    	:Pre-built bin binaries
+  - system_ubi_external.img							:Android system image for UBI
+  - userdata_ubi_external.img						:Android user data image for UBI
+  - zImage.android.mlc								:kernel image for booting android from MLC
+  - u-boot.bin										:uboot
+
+  - ntim_a0_avengers-a_1.6F_256mb_400mhz_mode3_pm_slc.bin: boot from SLC nand
+    ASPN_NTLOADER_avengers-a_slc.bin
+    desc_a0_avengers-a_1.6F_256mb_400mhz_mode3_pm_slc.txt
+
+  - ntim_a0_avengers-a_1.6F_256mb_400mhz_mode3_pm_spi.bin: boot from SPI NOR 
+    ASPN_NTLOADER_spi.bin
+    desc_a0_avengers-a_1.6F_256mb_400mhz_mode3_pm_spi.txt
+
+
+- ARMADA100_AVA_Android_Alpha1_src.tgz             	:Source code tarball (patch based source code)
+  - setup_android.sh                               	:Script help to setup Android code base from the xxx_src.tgz and xxx_patches.tgz
+  - android_patches.tgz                            	:Marvell patches to Android Projects
+  - android_src.tgz								   	:Source code for projects added by Marvell
+  - marvell_manifest.xml                           	:Manifest xml file to download android source code from Google as a base
+  - kernel_patches.tgz                             	:Marvell patches to kernel_src.tgz
+  - kernel_src.tgz								   	:Kernel base source code
+  - uboot_patches.tgz                              	:Marvell patches to uboot_src.tgz
+  - uboot_src.tgz                                  	:Uboot base source code
+  - obm_src.tgz                                    	:OBM source code
 
 2. System Requirements
+==========================
+
 2.1 Hardware requirements
-- OneNAND flash 256-MB large block
-- DDR SDRAM 128 MB
-- PXA910 DKB Board
+- AVA 2.0 board or later
 
 2.2 Software requirements
-- Host PC with operating system Ubuntu 6.06 or above
+- Host PC with operating system Ubuntu 8.04 or above
 
-3. Usage of this package 
-3.1 Install this package
-3.1.1 Download the Marvell packages:
-----PXA910_Android_Platform_Alpha8_src.tgz  
-----PXA910_Android_Platform_Alpha8_prebuilt_bin.zip
-3.1.2 Type the following command to install:
- $ mkdir [installed_directory]
- $ cd [installed_directory]
- $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA910_Android_Platform_Alpha8_src.tgz
- $ unzip [The PATH you downloaded Marvell Packages]/PXA910_Android_Platform_Alpha8_prebuilt_bin.zip
+3. Use the prebuilt binaries
 
-3.2 Setup Android directory
- $ mkdir [android_dir]
- $ [installed_directory]/src/setup_android.sh [android_dir]
-Note!!!***:[android_dir] should use absolute directory, not relative directory. 
+============================
 
-3.3 Building Android,Linux Kernel,Uboot and OBM
-
-3.3.1 Build Linux Kernel
- $ cd [android_dir]/kernel
- $ make kernel
-After a short while, the binaries will be generated under [android]/kernel/out/zImage
-
-3.3.2 Build Modules
- $ cd [android_dir]/kernel
- $ make modules
-Note: Please make kernel before making modules
-After a short while, the binaries will be generated under [android]/kernel/out/modules
-
-3.3.3 Buid PXA Android by:
- $ cd [android_dir]
- $ . build/envsetup.sh
- $ chooseproduct dkbttc
- $ export ANDROID_PREBUILT_MODULES=[android]/kernel/out/modules
- $ make -j4
-Note : If there is no modules, Please export ANDROID_PREBUILT_MODULES=no_kernel_modules
-After a while (30~60 minutes), the binaries will be generated under [android_dir]/out/target/product/dkbttc/.
-Note: Currently we use Android default toolchain version: arm-eabi-4.2.1 to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for arm-eabi-4.2.1. Please don¡¯t specify other android toolchain version. 
-
-3.3.4 Building telephony
- $ cd [android_dir]/kernel
- $ make telephony
-Note: Please make android before making telephony
-After a short while, the binary will be generated under [android]/kernel/out/pxafs.img
-
-3.3.5 Building uboot
- $ cd [android_dir]/boot
- $ make uboot
-After a short while, the binary will be generated under [android]/boot/out/u-boot.bin
-
-3.3.6 Building OBM
- $ cd [android_dir]/boot
- $ make obm
-After a short while, the binary will be generated under [android]/boot/TTC_LINUX_NTOBM.bin  [android]/boot/NTIM_OBM_UBOOT.bin
-Note: Please make uboot before making obm
-
-3.4 Flashing images and boot system (128MB is set as default)
-3.4.1 CP version
-        TTC Alpha8                      --> TTC_CP_03.00.004
-3.4.2 Burn following binaries to flash by using the Marvell eXtreme Debugger.
-        NTIM_OBM_UBOOT.bin              --> flash address 0x00000
-        TTC_LINUX_NTOBM.bin             --> flash address 0x20000
-        u-boot.bin                      --> flash address 0x40000
-        ramdisk.img                     --> falsh address 0xc0000
-        Arbel.bin                       --> flash address 0x120000
-        TTC1_M05_A0_AI_Flash.bin        --> flash address 0x820000
-
-3.4.3 Start your favorite terminal emulator with the appropriate 
-      COM port set to 115200,8N1. Power on the board and wait for TTC_DKB>> prompt to appear
-
-3.4.4 Enter the following command to upload the kernel into the RAM and burn into flash:
-For OneNAND flash, issue the following commands:
-TTC_DKB>>onenand erase 0x920000 0x300000
-TTC_DKB>>tftp 0x1000000 zImage
-TTC_DKB>>onenand write 0x1000000 0x920000 0x300000
-For NAND flash, issue the following commands:
-TTC_DKB>>nand erase 0x920000 0x300000
-TTC_DKB>>tftp 0x1000000 zImage
-TTC_DKB>>nand write 0x1000000 0x920000 0x300000
-Note 1: You need to configure the host network interface:
-   # ifconfig usb0 192.168.1.100 (for USB)
-   # ifconfig eth0 192.168.1.100 (for Ethernet)
-Note 2: uboot configures ethernet download as default. please use TTC_DKB>> sw to switch to USB 
-
-3.4.5 Enter the following command to upload the system.img into the RAM and burn into flash:
-For OneNAND flash, issue the following commands:
-TTC_DKB>>onenand erase 0x0c20000 0x4000000
-TTC_DKB>>tftp 0x1000000 system.img
-TTC_DKB>>onenand write.yaffs 0x1000000 0x0c20000 <system.img actual length> (Note: ony hex supported)
-For NAND flash, issue the following commands:
-TTC_DKB>>nand erase 0x0c20000 0x4000000
-TTC_DKB>>tftp 0x1000000 system.img
-TTC_DKB>>nand write.yaffs 0x1000000 0x0c20000 <system.img actual length> (Note: ony hex supported)
-
-3.5.6 Enter the following command to upload the userata.img into the RAM and burn into flash:
-For OneNAND flash, issue the following commands:
-TTC_DKB>>onenand erase 0x7c20000 0x20e0000
-TTC_DKB>>tftp 0x1000000 userdata.img
-TTC_DKB>>onenand write.yaffs 0x1000000 0x7c20000 <userdata.img actual length> (Note: ony hex supported)
-For NAND flash, issue the following commands:
-TTC_DKB>>nand erase 0x7c20000 0x20e0000
-TTC_DKB>>tftp 0x1000000 userdata.img
-TTC_DKB>>nand write.yaffs 0x1000000 0x7c20000 <userdata.img actual length> (Note: ony hex supported)
-
-3.5.7 Enter the following command to upload the marvell data into the RAM and burn into flash:
-For OneNAND flash, issue the following commands:
-TTC_DKB>>onenand erase 0xec20000 0x1000000
-TTC_DKB>>tftp 0x1000000  pxafs.img
-TTC_DKB>>onenand write.yaffs 0x1000000 0xec20000 <pxafs.img actual length> (Note: ony hex supported)
-For NAND flash, issue the following commands:
-TTC_DKB>>nand erase 0xec20000 0x1000000
-TTC_DKB>>tftp 0x1000000  pxafs.img
-TTC_DKB>>nand write.yaffs 0x1000000 0xec20000 <pxafs.img actual length> (Note: ony hex supported)
-
-boot up system by:
-TTC_DKB>>onenand read 0x500000 0x920000 0x300000
-TTC_DKB>>bootz
-
-4.0 Known issues and workarounds
+3.1 Burning OBM and UBoot
+  
+  1. You need Marvell Extreme Debug 4.1.1 or higher
+  
+  2. Burn OBM and U-boot by XDB
+     
+  1) Use flash burn tool: flash --> burn flash, select: board -- aspen, and flash type - nand
+     
+  2) Reset "bad block" table and Erase all
+     
+  3) burn file "ntim_a0_avengers-a_1.6F_256mb_400mhz_mode3_pm_slc.bin"  --> 0x0
+     
+  4) burn file "ASPN_NTLOADER_avengers-a_slc.bin"		        --> 0x20000
+     
+  5) burn file "u-boot.bin"						--> 0x40000
 
 
-----------------------------
+
+
+3.2 Burn Android on NAND(MLC)
+  
+  The below commands will burn zImage to SLC, system_ubi and userdata_ubi to MLC.
+
+
+
+  Avengers>> nand device 0 
+  
+  Avengers>> tftp 0x500000 zImage.android.mlc
+  
+  Avengers>> nand erase 0x100000 0x300000
+  
+  Avengers>> nand write 0x500000 0x100000 0x300000 
+
+  
+  Avengers>> nand device 1
+  
+  Avengers>> bbt init nand
+  
+  Avengers>> tftp 0x1000000 system_ubi.img
+  
+  Avengers>> nand erase 0x1180000 0x7680000
+  
+  Avengers>> nand write 0x1000000 0x1180000 <size of loaded UBI image>
+
+
+  Avengers>> tftp 0x1000000 userdata_ubi.img
+  
+  Avengers>> nand erase 0x8800000 0x13800000
+  
+  Avengers>> nand write 0x1000000 0x8800000 <size of loaded UBI image>
+
+
+  Notes:
+  
+    After tftp an image to device, please remember the size of the image printed by the command. This size will be used in the followed nand write command.
+  
+
+4. Use the patch-based source code 
+==================================
+
+4.1 Setup Android working directory
+  
+
+  First, please go to http://source.android.com to download the "repo" tool and setup the build environment for Android.
+
+
+  Second, create the android working directory and download the initial code base.
+    $ mkdir <android_working_dir>
+	 
+    $ cd <android_working_dir>
+	 
+    $ repo init -u git://android.git.kernel.org/platform/manifest -b master
+	 
+    $ repo sync
+
+  
+  Third, switch the code base specified by marvell_manifest.xml
+	 
+    $ cp <installed_source_dir>/marvell_manifest.xml .repo/manifest/
+     
+    $ repo init -m marvell_manifest.xml
+     
+    $ repo sync
+
+  
+  Last, apply marvell patches
+     
+    $ cd <installed_source_dir>
+     
+    $ ./setup_android.sh <android_working_dir>
+
+
+4.2 Building the source code
+4.2.1 Build Android by:
+  $ cd <android_working_dir>
+  $ . build/envsetup.sh
+  $ chooseproduct avlite
+  $ export ANDROID_PREBUILT_MODULES=no_kernel_modules
+  $ make -j4
+
+  Note: 
+  
+    Since we haven't built the kernel, there are no kernel modules. While building kernel requires root directory which is generated by building Android.
+
+
+4.2.2 Build kernel and modules
+  $ cd <android_working_dir>
+  $ cp -p -r out/target/product/avlite/root kernel/kernel/
+  
+  $ cd kernel
+  
+  $ KERNEL_CONFIG=pxa168_android_mlc_defconfig make all
+  
+  
+  Notes:
+  
+    The zImage locates at kernel/out/
+
+
+
+4.2.3 Rebuild Android
+  
+  $ export ANDROID_PREBUILT_MODULES=kernel/out/modules/
+  
+  $ make -j4
+  
+  Notes:
+  
+    The android system_ubi.img and userdata_ubi.img locate at out/target/product/avlite
+
+
+4.2.4 Building uboot
+  $ cd <android_working_dir>/boot/uboot
+  $ make avengers_config
+  
+
+  Notes:
+  
+    The u-boot.bin locate at boot/uboot/u-boot.bin
+  
+5. Known issues and workarounds
+===============================
+
+
 
 ---------------------------------------------------------------------
 Disclaimer and Legal Information:
@@ -356,5 +395,3 @@ Santa Clara, CA 95054, USA
 Tel: 1.408.222.2500
 Fax: 1.408.752.9028
 Email: commsales@marvell.com
-
-
