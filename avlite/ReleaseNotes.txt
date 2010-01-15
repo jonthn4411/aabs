@@ -32,6 +32,8 @@ Last update: 1/15/2010
 -
  Integrate Helix engine to support playback RMVB and RM file (Not in release package, please consult the AE)
 
+- Support CMMB Playback (Not in release package, please consult the AE)
+
 1.2 BSP features
 Uboot
 - Boot from Nand/Onenand
