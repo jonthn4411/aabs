@@ -29,9 +29,7 @@ clean_kernel:
 	$(hide)cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && make clean
 	$(log) "    done"
 
-#we need first build the android, so we get the root dir 
-# and then we build the kernel images with the root dir and get the package of corresponding modules
-# and then we use those module package to build corresponding android package.
+# we first build the whole android and then we can do incremental build to save time.
 
 #$1:build variant
 define define-build-droid-kernel
@@ -48,14 +46,9 @@ build_droid_root_$(1): output_dir
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	ANDROID_PREBUILT_MODULES=no_kernel_modules make -j$$(MAKE_JOBS) 
-	$$(hide)if [ -d $$(OUTPUT_DIR)/$(1)/root ]; then rm -fr $(OUTPUT_DIR)/$(1)/root; fi
-	$$(hide)echo "  copy root directory ..." 
-	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/root $$(OUTPUT_DIR)/$(1) 
 	$(log) "  done"
 
 endef
-
 
 #$1:build variant
 define define-build-droid-pkgs
@@ -120,7 +113,7 @@ package_droid_mlc_$(1)_$(2):
 	$$(log) "  updating the modules..."
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)
-	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar xzf modules_android_mlc.tgz
+	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar xzf modules_android_mmc.tgz
 	$$(hide)export ANDROID_PREBUILT_MODULES=$$(OUTPUT_DIR)/$(2)/modules && \
 	cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -142,7 +135,7 @@ define package-droid-mmc-config
 package_droid_mmc_$(1)_$(2):
 	$$(log) "[$(2)]package root file system for booting android from SD card or NFS for $(1)."
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/root_nfs ]; then rm -fr $$(OUTPUT_DIR)/$(2)/root_nfs; fi
-	$$(hide)cp -r -p $$(OUTPUT_DIR)/$(2)/root $$(OUTPUT_DIR)/$(2)/root_nfs && \
+	$$(hide)cp -r -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/root $$(OUTPUT_DIR)/$(2)/root_nfs && \
 	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system $$(OUTPUT_DIR)/$(2)/root_nfs
 	$$(log) "  updating the modules..."
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi
@@ -164,19 +157,6 @@ package_droid_mmc_$(1)_$(2):
 PUBLISHING_FILES_$(2)+=$(2)/root_nfs_$(1).tgz:m:md5 
 endef
 
-#$1:build variant
-define define-cp-android-root-dir-mlc
-PUBLISHING_FILES_$(1)+=$(1)/root_android_mlc.tgz:m:md5 
-cp_android_root_dir_mlc_$(1):
-	$$(log) "[$(1)]copying root directory from $$(OUTPUT_DIR) ..."
-	$$(hide)if [ -d "$$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/root" ]; then rm -fr $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/root; fi
-	$$(hide)cp -p -r $$(OUTPUT_DIR)/$(1)/root $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/ 
-	$$(hide)cd $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/root && $$(MY_SCRIPT_DIR)/update_root_for_mlc.sh 
-	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
-	$$(hide)cd $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel && tar czf $$(OUTPUT_DIR)/$(1)/root_android_mlc.tgz root/ 
-endef
-
-#
 #<os>:<storage>:<kernel_cfg>:<root>
 # os: the operating system
 # storage: the OS will startup from which storage
@@ -185,10 +165,7 @@ endef
 #example: android:mlc:pxa168_android_mlc_defconfig:root
 # kernel_configs:=
 #
-kernel_configs:=android:mlc:pxa688_defconfig:root 
-kernel_configs+=android:mmc:pxa688_defconfig 
-#kernel_configs+=maemo:mlc:pxa688_defconfig
-#kernel_configs+=maemo:mmc:pxa688_defconfig
+kernel_configs:=android:mmc:pxa688_android_defconfig 
 
 export KERNEL_TOOLCHAIN_PREFIX
 export MAKE_JOBS
@@ -235,7 +212,6 @@ $(foreach bv,$(BUILD_VARIANTS), $(eval $(call define-build-droid-kernel,$(bv)) )
 								$(eval $(call define-build-droid-pkgs,$(bv)) ) \
 								$(eval $(call define-build-droid-config,$(bv),internal) ) \
 								$(eval $(call define-build-droid-config,$(bv),external) ) \
-								$(eval $(call define-cp-android-root-dir-mlc,$(bv)) )\
 								$(eval $(call rebuild-droid-config,internal,$(bv)) )\
 								$(eval $(call rebuild-droid-config,external,$(bv)) )\
 								$(eval $(call package-droid-mlc-config,internal,$(bv)) )\
