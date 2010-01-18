@@ -36,34 +36,23 @@ Last update: 1/15/2010
 
 1.2 BSP features
 Uboot
-- Boot from Nand/Onenand
+- Boot from Nand/SPI NOR
 - Bownload from USB ethernet
-- Burn image into Nand/Onenand
-- Fash Bad block management
+- Burn image into Nand/SPI NOR
+- Flash Bad block management
 - Boot kernel with kernel command line
-- Voltage/Frequency change
 
 Linux-2.6.29 Kernel
 - MTD devices
   - Support Nand
-  - Support Onenand
-  - Support Fash Bad block management
-  - Support JFSS2
-  - Support YAFFS
+  - Support Flash Bad block management
   - Support Partition
   - Support UBI FS
 - WMMX
   - Support context switch
-- IMM
-  - SRAM is maintained by IMM. (audio driver occupy all the SRAM maintained by IMM.)
-- Power Management
-  - Support chip sleep
-  - Support chip idle
-  - Support core idle
-  - Support to use Keypad to wake up system
-  - Support to use RTC to wake up system
-  - Support to switch OP by "echo" command to sysfs
-  - Support dynamic frequenc and voltage change base on power policy maker in kernel. 
+- Power Management (PM Suspend is disabled from Android as HW ECN is required on AVLite 2.0 board)
+  - Support core idle, system sleep for idle mode 
+  - Support chip hibernate with power-on key, RTC to wake up system
 - LCD (Dump panel)
   - Support base display
   - Support overlay display
@@ -71,7 +60,7 @@ Linux-2.6.29 Kernel
   - Support backlight control
   - Support FB interface
   - Support pan display
-  - Support HVGA resolution display
+  - Support WVGA resolution display
   - Support RGB565, RGB888Packed, RGB888Unpacked, YUV420planar, YUV422planar and YUV422Packed format. 
 - Camera (CCIC)
   - Support V4L2 interface
@@ -79,27 +68,21 @@ Linux-2.6.29 Kernel
   - Support JPEG format
   - Support YUV420Planar, YUV422Planar and YUV422Packed format. 
   - Support to accept framebuf from user application.
-- OV7670 
+- OV7470 
   - Support to config pixel format
   - Support to switch image/video mode 
   - Support still image with QVGA, VGA and HVGA resolution. 
   - Support video with QVGA, VGA and HVGA resolution. 
-- OV3640
-  - Support to config pixel format
-  - Support to switch image/video mode 
-  - Support still image with QVGA and VGA resolution. HVGA and 3M resolutions still have problems. 
-  - Support video with QVGA, VGA and HVGA resolution. 3M resolution still has problem. 
 - SSP
   - Support to config it as I2S to transfer audio PCM data to outside code. 
-- Audio (use levante as outside audio codec)
+- Audio (use WM8960 as outside audio codec)
   - Support ALSA interface
   - Support to playback Audio
   - Support to Recodrd Audio 
-  - Support to playback and record simultaneously. (The codec native sample rate will locked as 48K for both playback and record. And the alsa lib will handle the sample rate conversion automaitically)
-  - Support 2.5mm Jack
-  - Support headset and MICIN detection. (The audio server application will setup the audio path base on the detection event automatically)
+  - Support 3.5mm Jack
+  - Support headset and speaker detection.
   - Support on-board mic
-- Touch screen (TPO touch)
+- Touch screen 
   - Support pen attach, move, detach and time stamp. 
 - I2C (two i2c busses)
   - Share/Arbitrate the busses for multi devies.
@@ -115,9 +98,6 @@ Linux-2.6.29 Kernel
     - Support to access USB mass storage device
     - Support hot plug-in and remove
     - Support USB hub
-  - OTG
-    - Support dual role device
-    - HNP and SRP are NOT support
   - Client
     - Support ethernet, mass storage, adb and diag drivers.
     - Support composite devie.
@@ -143,7 +123,7 @@ Linux-2.6.29 Kernel
   - Support USB charging
   - Support poweroff. (NOTE: if the system is not poweroff normally, the next boot time will be longer for the filesystem scan. )
 - Sensors
-  - g sensor (lis3lv02d)
+  - g sensor (bm020)
 
 
 1.2 Release package contents
