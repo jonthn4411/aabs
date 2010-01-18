@@ -260,6 +260,8 @@ Linux-2.6.29 Kernel
 
 4.2 Building the source code
 4.2.1 Build Android by:
+  First, edit vendor/marvell/avlite/BoardConfig.mk to set BOARD_ENABLE_HELIX to false as helix is not released in this package.
+  Second, type as below:
   $ cd <android_working_dir>
   $ . build/envsetup.sh
   $ chooseproduct avlite
