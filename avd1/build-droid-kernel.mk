@@ -88,26 +88,22 @@ rebuild_droid_$(1)_$(2):
 	$$(log) "[$(2)]rebuild android for $(1)..."
 	$$(hide)cd $$(SRC_DIR)/vendor/marvell/$$(DROID_PRODUCT) && \
 	sed -i "/^[ tab]*BOARD_NO_HELIX_LIBS[ tab]*:=/ s/:=.*/:= $$(nolib_config)/" BoardConfig.mk && \
-	sed -i "/^[ tab]*BOARD_NO_FLASH_PLUGIN[ tab]*:=/ s/:=.*/:= $$(nolib_config)/" BoardConfig.mk
 	$$(hide)rm -fr $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib/helix
-	$$(hide)rm -f $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib/netscape/libflashplayer.so
 	$$(hide)rm -f $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/*.img
 	$$(hide)cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	ANDROID_PREBUILT_MODULES=no_kernel_modules make -j$$(MAKE_JOBS)
-	$$(log) "    packaging helix libraries and flash library..."
+	$$(log) "    packaging helix libraries..."
 	$$(hide)if [ "$(1)" == "internal" ]; then \
 	cd $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib &&\
 	mkdir -p helix &&\
 	tar czf $$(OUTPUT_DIR)/$(2)/helix.tgz helix/ && \
-	tar czf $$(OUTPUT_DIR)/$(2)/flash.tgz netscape/libflashplayer.so; \
 	fi
 	$$(log) "  done for rebuild_droid_$(1)_$(2)"
 
 ifeq ($(1),internal)
 PUBLISHING_FILES_$(2)+=$(2)/helix.tgz:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/flash.tgz:m:md5
 endif
 endef
 

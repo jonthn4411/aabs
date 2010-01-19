@@ -1,93 +1,3 @@
-Files in this folder
-====================
--Change logs and checksum file
-  changelog.day		GIT change log of each project since yesterday.
-  changelog.week		GIT change log of each project since last week.
-  changelog.biweek 	GIT change log of each project since 2 weeks ago.
-  changelog.month		GIT change log of each project since a month ago.
-
-  checksums.md5		This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
-
--Source codes
-  manifest.xml		Saving the GIT commit number of each project used in this build.
-  kernel_src.tgz	Kernel source code tar ball.
-  droid_src.tgz		Android source code tar ball without code of Marvell developed application.
-  drivers_src.tgz	Source code tar ball for drivers, such as gc, wifi etc
-  boot_src.tgz		Uboot and OBM source code tar ball
-
--droid-gcc folder
- Files under droid-gcc folder are built with android-toolchain.
- If this folder is missing, it means that this package wasn't built with marvell gcc toolchain.
-
--mrvl-gcc folder
- Files under mrvl-gcc folder are built with marvell gcc toolchain.
- If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
- 
--OBM and UBoot
-
--Kernel and Modules for Android
-  zImage.android.mmc	Kernel image to boot android from SD card.
-  modules_android_mmc.tgz Kernel modules that built along with zImage.android.mmc
-
-#  root_android_mlc.tgz	The root directory used to build zImage.android.mlc
-
--Android File Systems
-  root_nfs_xxx.tgz		Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package. 
- 
-  system_ubi_xxx.img		Android system image for UBI file system.
-  userdata_ubi_xxx.img	    Android userdata image for UBI file system.
-
-  if xxx is "internal" means everything is built in the package, and should be used internally.
-
-  if xxx is "external" means the package can be delivered outside, components with license issue has been removed. Currently helix and adobe flash is removed.
-
--Extra Libraries
-   helix.tgz    Helix libraries. Refer to below for installing helix libraries.
-   flash.tgz    Adobe Flash plugin library. Refer to below for installing adobe flash plugin.
-
-Install Helix Libraries
-=======================
-. Android is running from SD card
-  a) plug the SD card to a PC
-  b) untar helix.tgz and copy files to /system/lib/helix/
-
-. Android is running from MLC nand
-  a) untar helix.tgz
-  b) adb shell
-  c) su; mount -o remount ubi0_0 /system;
-  d) mkdir /system/lib/helix; exit
-  e) cd <helix folder>;
-  f) for file in $(ls); do adb push $(file) /system/lib/helix/; done
-
-Notes:If you are using Windows host, you can install the cygwin which has the capability to run the last shell script.
-   Or you can put the below lines into a BAT file:
-   
-   @echo off
-   FOR %%file in (*.*) DO adb push "%%file" /system/lib/helix/
-
-   You should run the BAT file in the folder where helix libraries locate.
-
-Install Adobe Flash plugin
-==========================
-. Android is running from SD card
-  a) plug the SD card to a PC
-  b) untar flash.tgz and copy files to /system/lib/netscape/
-
-. Android is running from MLC nand
-  a) untar flash.tgz
-  b) adb shell
-  c) su; mount -o remount ubi0_0 system;
-  d) mkdir /system/lib/netscape; exit
-  d) adb push libflashplayer.so /system/lib/netscape/
-  
-Burning OBM and UBoot
-=====================
-1. install XDB 4.1.1 from: \\sh1sbak009\Product_Integration\Tools\eXtreme_Debugger_v4.1.1
-
-
-ddSetup Android on NAND(MLC)
-=========================
-
 
 Setup Android on SD Card
 ========================
@@ -98,15 +8,14 @@ Follow the below process to make a SD card with Android root file system install
 4) tar xvf root_nfs.tgz /tmp; cp -p -r /tmp/root_nfs/* /mnt/disk/;
 5) umount /dev/sdc
 
-Second, burning the zImage.android.mmc image.
+Second, burning the uImage image.
 Marvell>>setenv ipaddr 192.168.1.101
 Marvell>>setenv serverip 192.168.1.100
-Marvell>>setenv bootargs rootdelay=5 root=/dev/mmcblk0 ip=${ipaddr}:${serverip}::255.255.255.0::eth0:on console=ttyS0,115200 mem=512M init=/init android video=dovefb:lcd0:1024x600-24@60,lcd1:1024x768-24@60 clcd.lcd0_enable=1 clcd.lcd1_enable=1
+Marvell>>setenv bootargs rootdelay=5 root=/dev/mmcblk0 ip=${ipaddr}:${serverip}::255.255.255.0::eth0:on console=ttyS0,115200 init=/init android video=dovefb:lcd0:1024x600-16@60,lcd1:1024x768-16@60 clcd.lcd0_enable=1 clcd.lcd1_enable=0 pm_disable mem=700M
 Marvell>>saveenv
-Marvell>>tftp 0x1000000 zImage.android.mmc
+Marvell>>tftp 0x1000000 uImage
 Marvell>>bootm 0x1000000
 Boot the device with console,
-
 
 Setup Android on NFS
 ====================
@@ -123,25 +32,62 @@ Last, you should use zImage.android.mmc to boot the kernel and then set the boot
 
 Marvell>>setenv ipaddr 192.168.1.101
 Marvell>>setenv serverip 192.168.1.100
-Marvell>>setenv bootargs root=/dev/nfs rootfstype=nfs nfsroot=${serverip}:/srv/nfs/ ip=${ipaddr}:${serverip}::255.255.255.0::eth0:on console=ttyS0,115200 mem=512M init=/init android video=dovefb:lcd0:1024x600-24@60,lcd1:1024x768-24@60 clcd.lcd0_enable=1 clcd.lcd1_enable=1
+Marvell>>setenv bootargs root=/dev/nfs rootfstype=nfs nfsroot=${serverip}:/srv/nfs/ ip=${ipaddr}:${serverip}::255.255.255.0::eth0:on console=ttyS0,115200 init=/init android video=dovefb:lcd0:1024x600-16@60,lcd1:1024x768-16@60 clcd.lcd0_enable=1 clcd.lcd1_enable=0 pm_disable mem=700M
 Marvell>>saveenv
-Marvell>>tftp 0x1000000 zImage.android.mmc
+Marvell>>tftp 0x1000000 uImage
 Marvell>>bootm 0x1000000
 
 Notes:if you are using a different host ip address and exported a different NFS directory, you should change the above command line accordingly.
 
-Notes:You only need use setenv and savenv command one time. Next time UBoot will load the environment variable from NAND automaticllay. But later if you want use zImage.android.mmc to boot Android from SD card, you should clear the "bootargs" environment variable. You can do this by:
-
-Avengers>>setenv bootargs
-Avengers>>saveenv
-Avengers>>printenv 
+Notes:if you are using an AVD1 board with only 512M memory, you must remove "mem=700M" in bootargs env.
 
 printenv will list all the environment variables, which can be used to verify what current value of bootargs is.
 
+Step by step to write kernel image to SPI flash and boot from SPI flash
+================================
+Marvell>>setenv ipaddr 192.168.1.101
+Marvell>>setenv serverip 192.168.1.100
+Marvell>>tftp 0x2000000 uImage
+Marvell>>sflash protect off
+Marvell>>sflash erase 0xa-0x3a
+Marvell>>sflash write 0x2000000 0xa0000 {actual length of linux kernel image in hex}
+Marvell>>sflash protect on
+Marvell>>setenv bootcmd 'sflash read 0xa0000 0x2000000 0x300000;bootm 0x2000000'
+Marvell>>saveenv
 
-Known Issues about running Android on NFS
+Known Issues about Android
 =========================================
++ mm06 cannot be run
+-------------------------------------------------------------
+  Symptom: No output when running mm06 application
+
+  Reason: mm06 needs to write something to /sdcard/mm06. But it failed due to access check.
+
+  Workaround: cd /sdcard; chmod 777 mm06; chmod 777 mm06/*
+
++ DLNA demo video streaming may not success
+-------------------------------------------------------------
+  Symptom: We cannot see viedo output on Dongle side
+
+  Reason: Sometimes GStreamer's registry file is wrong.
+
+  Workaround: Reboot Android.
+
++ Old cupcake Android application cannot run full screen on Donut
+-------------------------------------------------------------
+  Symptom: Android application cannot run full screen on Donut
+
+  Reason: It's the design change of Android.
+
+  Workaround: Simply disable Compatibility Mode in Spare Parts Application, turn it off and reboot.
+
 + Wifi can't be enabled if you are using UBuntu9.04 or higher
+-------------------------------------------------------------
+  Symptom: When you enabled the Wifi, use the logcat you can see a message "Error changing group ownership of wpa_supplicant.conf to 1001:Operation not permitted." This only happens if your host PC is running with UBuntu9.04. We tested UBuntu8.04 and UBuntu8.10, which doesn't have this issue.
+  Reason: We don't know the exact reason why chown doesn't work on UBuntu9.04 but works on 8.04 or 8.10.
+
+  Workaround:In the console, you can copy the wpa_supplicant.conf from /system/etc/wifi/wpa_supplicant.conf to /data/misc/wifi/wpa_supplicant.conf and chmod 777 wpa_supplicant.conf.
+
 -------------------------------------------------------------
   Symptom: When you enabled the Wifi, use the logcat you can see a message "Error changing group ownership of wpa_supplicant.conf to 1001:Operation not permitted." This only happens if your host PC is running with UBuntu9.04. We tested UBuntu8.04 and UBuntu8.10, which doesn't have this issue.
   Reason: We don't know the exact reason why chown doesn't work on UBuntu9.04 but works on 8.04 or 8.10.
@@ -157,6 +103,13 @@ Known Issues about running Android on NFS
 
   Workaround: no workaround is available right now, just recalibrate it.
 
++ Android cannot boot up.
+------------------------------------------------------------------
+  Symptom: The screen hangs on "Android" logo, kernel report an issue. 
+
+  Reason: AVD1 has two different boards, one is 512M memory, another is 1G memory. Which causes the different behavior in Kernel.
+
+  Fix: If you are using an AVD1 board with only 512M memory, you must remove "mem=700M" in bootargs env.
 
 +Media on SD Card can't be seen by Video/Music/Photo App
 ------------------------------------------------------------
@@ -166,28 +119,16 @@ Known Issues about running Android on NFS
 
 FAQ
 =====
-+Wifi can't be enabled if I use a zImage built at the other day.
-----------------------------------------------------------------
-The wifi kernel module in root_nfs.tgz or system_ubi.img may not comply with zImages built at the other day. Please use the zImage and root_nfs.tgz or system_ubi.img built at the same day.
 
-
-+How can I disable GC300 copybit engine completely?
++How can I disable GC600 engine completely?
 ---------------------------------------------------
-You can do this by: rm /system/lib/hw/copybit.default.so, so that Android GUI system won't use GC300 copybit engine. 
-But the built-in media playback engine will still try to use GC300 copybit engine to do resizing and color conversion. Check the topic "How can I disable GC300 copybit engine on video playback?".
-
+You can do this by: rm /system/lib/libhgl.so, so that Android GUI system won't use GC600 hardware 3D engine. 
 
 +How can I configure video output path?
 ---------------------------------------------------------------
 The opencore,GStreamer and Helix engine uses the property video.accelerate.hw to determine the video output path.
-If the property is set to 'gc', it will allocate memory from PMEM and expect GC to do color conversion.
 If the property is set to 'overlay', it will use the overlay engine to output the video.
 If it is other values, it will use software color conversion and let surfaceflinger to output the video frame.
-
-+How to modify the files after the system_ubi.img has been burned to the flash?
--------------------------------------------------------------------------------
-In the console mode, you can remount the /system folder by
-$mount -o remount -t ubifs ubi0_0 /system
 
 +How to enable the video playback profiling?
 --------------------------------------------
