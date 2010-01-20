@@ -87,7 +87,7 @@ rebuild_droid_$(1)_$(2): nolib_config:=$$(if $$(findstring $(1),external),true,f
 rebuild_droid_$(1)_$(2):
 	$$(log) "[$(2)]rebuild android for $(1)..."
 	$$(hide)cd $$(SRC_DIR)/vendor/marvell/$$(DROID_PRODUCT) && \
-	sed -i "/^[ tab]*BOARD_NO_HELIX_LIBS[ tab]*:=/ s/:=.*/:= $$(nolib_config)/" BoardConfig.mk && \
+	sed -i "/^[ tab]*BOARD_NO_HELIX_LIBS[ tab]*:=/ s/:=.*/:= $$(nolib_config)/" BoardConfig.mk
 	$$(hide)rm -fr $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib/helix
 	$$(hide)rm -f $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/*.img
 	$$(hide)cd $$(SRC_DIR) && \
