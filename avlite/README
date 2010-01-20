@@ -122,6 +122,10 @@ Avengers>> nand write 0x1000000 0x1180000 <size of loaded UBI image>
 Avengers>> tftp 0x1000000 userdata_ubi.img
 Avengers>> nand erase 0x8800000 0x13800000
 Avengers>> nand write 0x1000000 0x8800000 <size of loaded UBI image>
+Avengers>> tftp 0x1000000 internal_storage_ubi.img
+Avengers>> nand erase 0x1c000000 0x22c00000
+Avengers>> nand write 0x1000000 0x1c000000 <size of loaded UBI image>
+
 
 After tftp an image to device, please remember the size of the image printed by the command. This size will be used in the followed nand write command.
 
