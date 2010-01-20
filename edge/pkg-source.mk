@@ -37,7 +37,7 @@ pkgsrc: output_dir get_source_for_pkg
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(TOP_DIR)/core
 
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
-	$(hide)cp $(BOARD)/ReleaseNotes.txt $(OUTPUT_DIR)
+#	$(hide)cp $(BOARD)/ReleaseNotes.txt $(OUTPUT_DIR)
 	$(log) "  done."
 
 
@@ -55,6 +55,6 @@ PUBLISHING_FILES+=uboot_patches.tgz:m:md5
 PUBLISHING_FILES+=obm_src.tgz:m:md5 
 PUBLISHING_FILES+=marvell_manifest.xml:m
 PUBLISHING_FILES+=setup_android.sh:m
-PUBLISHING_FILES+=README:m
+#PUBLISHING_FILES+=README:m
 
 
