@@ -131,7 +131,7 @@ package_droid_mlc_$(1)_$(2):
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ubi.img $$(OUTPUT_DIR)/$(2)/userdata_ubi_$(1).img 
 
 	$$(hide)if [ "$(1)" == "internal" ] && [ -e $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/internal_storage_ubi.img ]; then \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/internal_storage_ubi.img $$(OUTPUT_DIR)/$(2)/  \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/internal_storage_ubi.img $$(OUTPUT_DIR)/$(2)/;  \
 	fi
 	$$(log) "  done for package_droid_mlc_$(1)$(2)."
 
