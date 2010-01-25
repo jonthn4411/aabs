@@ -15,6 +15,17 @@ Setup the environment
    exists, the build script will copy the demo media files to the /sdcard folder of the device while generating the
    root_nfs.tgz.
 
+5. Install the postfix for sending email. This is not mandatory if you don't send email.
+    sudo apt-get install postfix
+    Configure the postfix and make sure you can send email with sendmail
+
+6. Setup your account as no password for sudo. Right now "rdinit" tool requires to use root to unpack. 
+   sudo vim /etc/sudoers
+   add the following line:
+       johnny ALL=(ALL) NOPASSWD: ALL
+
+   You should use your account name to replace "johnny".
+
 
 Build scripts
 =============
@@ -54,10 +65,9 @@ SHELL=/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 If you want to run the build script daily, add the following line:
-0   1   *   *  2-6   cd ~/work/autobuild && ./build-avlite-cupcake.sh clobber source pkgsrc publish email
+0   1   *   *  2-6   cd ~/work/aabs && ./tools/build-platforms.sh clobber source pkgsrc publish email
 
 Notes: the script must run from the folder where it locates.
-
 
 Email notification
 ==================
