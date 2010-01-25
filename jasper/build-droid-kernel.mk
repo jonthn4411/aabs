@@ -119,13 +119,19 @@ package_droid_mlc_$(1)_$(2):
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS) && \
-	echo "    copy UBI image files..." && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ubi.img $$(OUTPUT_DIR)/$(2)/system_ubi_$(1).img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ubi.img $$(OUTPUT_DIR)/$(2)/userdata_ubi_$(1).img 
+	echo "    copy ext2 image files..." && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/mbr $$(OUTPUT_DIR)/$(2)/mbr && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk_ext2.img $$(OUTPUT_DIR)/$(2)/ramdisk_ext2.img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext2.img $$(OUTPUT_DIR)/$(2)/system_ext2_$(1).img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext2.img $$(OUTPUT_DIR)/$(2)/userdata_ext2_$(1).img 
 	$$(log) "  done for package_droid_mlc_$(1)$(2)."
 
-PUBLISHING_FILES_$(2)+=$(2)/system_ubi_$(1).img:m:md5 
-PUBLISHING_FILES_$(2)+=$(2)/userdata_ubi_$(1).img:m:md5 
+ifeq ($(1),internal)
+PUBLISHING_FILES_$(2)+=$(2)/mbr:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/ramdisk_ext2.img:m:md5
+endif
+PUBLISHING_FILES_$(2)+=$(2)/system_ext2_$(1).img:m:md5 
+PUBLISHING_FILES_$(2)+=$(2)/userdata_ext2_$(1).img:m:md5 
 endef
 
 #$1:internal or external
@@ -180,8 +186,8 @@ kernel_cfg:=$$(word 3, $$(tw) )
 root:=$$(word 4, $$(tw) )
 
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
-#PUBLISHING_FILES_$(2):=$(PUBLISHING_FILES_$(2)) $(2)/zImage.$$(os).$$(storage):m:md5
-PUBLISHING_FILES_$(2)+=$(2)/zImage.$$(os).$$(storage):m:md5
+#PUBLISHING_FILES_$(2):=$(PUBLISHING_FILES_$(2)) $(2)/zImage.$$(os):m:md5
+PUBLISHING_FILES_$(2)+=$(2)/zImage.$$(os):m:md5
 PUBLISHING_FILES_$(2)+=$(2)/modules_$$(os)_$$(storage).tgz:m:md5
 
 build_kernel_$$(os)_$$(storage)_$(2): private_os:=$$(os)
@@ -196,7 +202,7 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	KERNEL_CONFIG=$$(private_kernel_cfg) make clean all 
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)
 	$$(log) "    copy kernel and module files ..."
-	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage $$(OUTPUT_DIR)/$(2)/zImage.$$(private_os).$$(private_storage) 
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage $$(OUTPUT_DIR)/$(2)/zImage.$$(private_os) 
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi &&\
 	mkdir -p $$(OUTPUT_DIR)/$(2)/modules
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules/* $$(OUTPUT_DIR)/$(2)/modules
@@ -207,7 +213,7 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 build_kernel_$(2): build_kernel_$$(os)_$$(storage)_$(2)
 endef
 
-$(foreach bv,$(BUILD_VARIANTS), $(eval $(call define-build-droid-kernel,$(bv)) )\
+$(foreach bv,$(BUILD_VARIANTS), $(eval $(call define-build-droid-kernel,$(bv)) ) \
 								$(eval $(call define-build-droid-root,$(bv)) ) \
 								$(eval $(call define-build-droid-pkgs,$(bv)) ) \
 								$(eval $(call define-build-droid-config,$(bv),internal) ) \

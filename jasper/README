@@ -24,7 +24,7 @@ Files in this folder
  If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
  
 -Kernel and Modules for Android
-  zImage.android.mlc	we will use one kernel binary solution, finally we onlyu provide one kernel image. TODO: change autobuild scripts to do it.
+  zImage.android.mlc	we will use one kernel binary solution, finally we only provide one kernel image. TODO: change autobuild scripts to do it.
   zImage.android.mmc	
 
   modules_android_mlc.tgz Kernel modules that built along with zImage.android.mlc
@@ -88,7 +88,7 @@ Install Adobe Flash plugin
 Burning OBM and UBoot
 =====================
 1. install XDB 4.1.1 from: \\sh1sbak009\debugger_public\Engineering_Release\EMU_AddOn\EMU 2.1
-2. Get binary from \\sh1sbak009\embedded_os\Temp\mhu4\Bonnell, we suggest use 400-200 OP
+2. Get binary from \\sh1sbak009\embedded_os\Temp\mhu4\eMMC
 3. Burn OBM and U-boot by XDB
    1) Use flash burn tool: flash --> burn flash, use default config
    2) Initial a new flash
@@ -99,11 +99,34 @@ Burning OBM and UBoot
    7) Burn WtmUnresetPJ4.bin to 0xc0000
    8) Burn u-boot.bin to 0x100000
 
-Setup Android on NAND(MLC)
+Setup Android on NAND(emmc)
 =========================
 
-   Not supportted now
+Boot the device with console
 
+first burn zImage
+MMP2>> sw
+MMP2>> t zImage.android
+MMP2>> nand erase 0x980000 0x300000
+MMP2>> nand write 0x1100000 0x980000 0x300000
+
+sencond, burning mbr, ramdisk, system and userdata img
+MMP2>> t u-boot.bin.emmc
+MMP2>> boot
+MMP2>> t mbr
+MMP2>> mmc write 0x4800 0x1 0x1100000
+MMP2>> t ramdisk_ext2.img
+MMP2>> mmc erase 0x6400 0x4000
+MMP2>> mmc write 0x6400 0x4000 0x1100000
+MMP2>> t system_ext2.img
+MMP2>> mmc erase 0xA400 0x3C000
+MMP2>> mmc write 0xA400 0X3C000 0X1100000
+MMP2>> t userdata_ext2.img
+MMP2>> mmc erase 0x46400 0x32000 0x1100000
+MMP2>> mmc write 0x46400 0x32000 0x1100000 
+
+when you done, power off mmp2, and power again to boot it from emmc.
+Note : Reboot is not workable.
 
 Setup Android on SD Card
 ========================
@@ -117,9 +140,11 @@ Follow the below process to make a SD card with Android root file system install
 Second, burning the zImage.android.mmc image.
 Boot the device with console,
 MMP2>> sw         // Set the interface to u2o-eth
-MMP2>> t zImage.android.mmc
+MMP2>> t zImage.android
 MMP2>> nand erase 0x980000 0x300000
 MMP2>> nand write 0x1100000 0x980000 0x300000 
+
+Note : erase ramdisk first if you want to boot from sdcard
 
 
 Setup Android on NFS
@@ -132,11 +157,13 @@ Setup Android on NFS
 4) tar xvf root_nfs.tgz /tmp/
 5) mv /tmp/root_nfs/* /nfs/android
 
-Last, you should use zImage.android.mmc to boot the kernel and then set the bootargs variable in UBoot.
+Last, you should use zImage to boot the kernel and then set the bootargs variable in UBoot.
 (Notes:if adb is enabled in the kernel, this way doesn't work as the usb net won't work as the usb is used for adb)
 
-Avengers>>t zImage.android.mmc
+Avengers>>t zImage.android
 Avengers>>bo
+
+Note : erase ramdisk first if you want to boot from sdcard
 
 Notes:we used one kernel binary solution, the boot sequence is nand --> mmc --> nfs, now nand is not supported, so remove sdcard first if you want to boot from nfs. And the nfs server is fixed as 192.168.1.100:/nfs/android. if you want to change it, modify vendor/marvell/jasper/roodir/rdinit and build the kernel again
 
