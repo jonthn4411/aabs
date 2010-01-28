@@ -29,13 +29,13 @@ include $(BOARD)/build-droid-kernel.mk
 #
 UBOOT_CONFIG:=avengers_config
 UBOOT_SRC_DIR:=boot/uboot
-include $(BOARD)/build-uboot.mk
+#include $(BOARD)/build-uboot.mk
 
 #
 # Include goal for build OBM
 #
 OBM_SRC_DIR:=boot/obm
-include $(BOARD)/build-obm.mk
+#include $(BOARD)/build-obm.mk
 
 #define the combined goal to include all build goals
 define define-build
