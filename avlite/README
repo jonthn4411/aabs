@@ -249,6 +249,13 @@ If you find the screen is on, but key pressing has no effect and find that /sys/
 
 setprop power.fake_power true
 
++How to enable/disable PM suspend feature?
+------------------------------------------
+To disable PM suspend feature, you can do this by:
+	echo disable_pm_suspend > /sys/power/wake_lock
+
+To enable PM suspend feature, you can do this by:
+	echo disable_pm_suspend > /sys/power/wake_unlock
 
 
 
