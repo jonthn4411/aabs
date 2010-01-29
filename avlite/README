@@ -243,6 +243,11 @@ Open /init.rc, add the below line before class_start default:
 setprop battery.fake_ac true
 
 
++How to enable the fake power state?
+------------------------------------
+If you find the screen is on, but key pressing has no effect and find that /sys/power/state file not existing. You can enable fake power state to solve this issue by:
+
+setprop power.fake_power true
 
 
 
