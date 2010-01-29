@@ -109,7 +109,7 @@ install_uboot_source()
 {
 	if [ ! -e $PKG_UBOOTSRC ]; then
 		echo "$PKG_UBOOTSRC is not found."
-		exit 1
+#		exit 1
 	fi
 
 	echo "  unpacking $PKG_UBOOTSRC..."
@@ -132,7 +132,7 @@ apply_uboot_patches()
 {
 	if [ ! -e $PKG_UBOOTPATCH ]; then
 		echo "$PKG_UBOOTPATCH is not found."
-		exit 1
+#		exit 1
 	fi
 
 	echo "  unpacking $PKG_UBOOTPATCH..."
@@ -155,7 +155,7 @@ install_obm_source()
 {
 	if [ ! -e $PKG_OBMSRC ]; then
 		echo "$PKG_OBMSRC is not found."
-		exit 1
+#		exit 1
 	fi
 
 	echo "  unpacking $PKG_OBMSRC..."
