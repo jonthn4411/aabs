@@ -23,6 +23,7 @@ else
 	#tar the source code as .mrvl_base_src.tgz and remove all the source code.
 
 	#the output is expecting to be the manifest file so redirect it to /dev/null
+	echo "TODO TAG2"
 	tar czvf ../.mrvl_base_src.tgz * > /dev/null &&
 	rm -fr * &&
 	mv ../.mrvl_base_src.tgz .

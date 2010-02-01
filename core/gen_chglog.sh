@@ -231,6 +231,7 @@ do
   CURRENT_PRJNAME=${prj%%:*} &&
   CURRENT_PRJPATH=${prj##*:} &&
   cd $CURRENT_PRJPATH &&
+  echo "========="
   echo "  log for: $CURRENT_PRJNAME " &&
   BRANCH=$(cat .git/refs/remotes/m/$PRODUCT_CODE) &&
   CURRENT_PRJORG=${BRANCH##ref: refs\/remotes\/} &&
