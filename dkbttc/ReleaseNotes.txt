@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA910 Android Platform Release for Linux 
 Platform README 
-Last update: 02/01/2010
+Last update: 02/02/2010
 ==============================================================================
 
 1. Platform features
@@ -260,22 +260,18 @@ Linux-2.6.29
 	  - Make voice call
 
 1.3 Release package contents
-- PXA910_Android_Platform_Alpha8_prebuilt_bin.zip  :Pre-built bin binaries
-- PXA910_Android_Platform_Alpha8_src.tgz           :Source code tarball (patch mode)
-  - README.txt                                     :This readme.txt(include how to setup Android dir,build and burn flash)
-  - setup_android.sh                               :Script to setup Android directory
-  - android                                        :Source about Android
-     - android_patches                             :Patches against Android eclair
-     - marvell_manifest.xml                        :Manifest xml file to download Android eclair as a base
-     - vendor.tgz                                  :Non-Google projects in Android directory
-  - kernel                                         :Source about kernel 
-     - linux-2.6.29_patches                        :Kernel patches agaist Linux-2.6.29
-     - linux-2.6.29.tgz                            :Linux-2.6.29 base
-     - uboot_patches                               :Uboot patches agaist uboot
-     - uboot.tgz                                   :Uboot base
-     - obm.tgz                                     :OBM source code
-  - tools                                          :Compile tools
-     - arm-linux-4.1.1.tgz                         :Compile for compiling obm and uboot
+- RELEASENOTE.txt                                    :This readme.txt(include how to setup Android dir,build and burn flash)
+- PXA910_Android_Platform_Alpha8.1_prebuilt_bin.zip  :Pre-built bin binaries
+- PXA910_Android_Platform_Alpha8.1_src.tgz           :Source code tarball (patch mode)
+  - setup_android.sh                                 :Script help to setup Android code base from the xxx_src.tgz and xxx_patches.tgz
+  - android_patches.tgz                              :Marvell patches to Android Projects
+  - android_src.tgz                                  :Source code for projects added by Marvell
+  - marvell_manifest.xml                             :Manifest xml file to download Android eclair as a base
+  - kernel_patches.tgz                               :Marvell patches to kernel_src.tgz 
+  - kernel_src.tgz                                   :Kernel base source code
+  - uboot_patches.tgz                                :Marvell patches to uboot_src.tgz
+  - uboot_src.tgz                                    :Uboot base source code
+  - obm_src.tgz                                      :OBM source code
 
 2. System Requirements
 2.1 Hardware requirements
@@ -289,19 +285,22 @@ Linux-2.6.29
 3. Usage of this package 
 3.1 Install this package
 3.1.1 Download the Marvell packages:
-----PXA910_Android_Platform_Alpha8_src.tgz  
-----PXA910_Android_Platform_Alpha8_prebuilt_bin.zip
+----PXA910_Android_Platform_Alpha8.1_src.tgz  
+----PXA910_Android_Platform_Alpha8.1_prebuilt_bin.zip
 3.1.2 Type the following command to install:
  $ mkdir [installed_directory]
  $ cd [installed_directory]
- $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA910_Android_Platform_Alpha8_src.tgz
- $ unzip [The PATH you downloaded Marvell Packages]/PXA910_Android_Platform_Alpha8_prebuilt_bin.zip
-Note!!!***:[installed_directory] should use absolute directory, not relative directory.
+ $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA910_Android_Platform_Alpha8.1_src.tgz
 
 3.2 Setup Android directory
  $ mkdir [android_dir]
- $ [installed_directory]/src/setup_android.sh [android_dir]
-Note!!!***:[android_dir] should use absolute directory, not relative directory. 
+ $ cd [android_dir]
+ $ repo init -u git://android.git.kernel.org/platform/manifest -b master
+ $ cp [installed_directory]/src/arvell_manifest.xml .repo/manifest/
+ $ repo init -m marvell_manifest.xml
+ $ repo sync
+ $ cd [installed_directory]/src
+ $ ./setup_android.sh [android_dir]
 
 3.3 Building Android,Linux Kernel,Uboot and OBM
 
