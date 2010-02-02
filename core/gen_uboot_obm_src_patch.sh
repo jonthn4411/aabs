@@ -20,11 +20,10 @@ cd $boot_dir/uboot &&
 git rev-parse $UBOOT_HASH > /dev/null &&
 mkdir -p $output_dir/uboot_patches &&
 git format-patch $UBOOT_HASH..HEAD -o $output_dir/uboot_patches > /dev/null &&
-git checkout $UBOOT_HASH &&
-cd .. &&
 
 echo "  packaging uboot base source code:" &&
-tar czf uboot_src.tgz $EXCLUDE_VCS uboot/ &&
+git archive --format=tar --prefix=uboot/ $UBOOT_HASH  |gzip > ../uboot_src.tgz &&
+cd .. &&
 mv uboot_src.tgz $output_dir &&
 rm -fr uboot &&
 cd $output_dir &&
@@ -32,7 +31,9 @@ tar czf uboot_patches.tgz uboot_patches &&
 
 cd $boot_dir &&
 echo "  packaging obm source code:" &&
-tar czf obm_src.tgz $EXCLUDE_VCS obm/ &&
+cd obm &&
+git archive --format=tar --prefix=obm/ HEAD |gzip > ../obm_src.tgz &&
+cd - &&
 mv obm_src.tgz $output_dir &&
 rm -fr obm 
 

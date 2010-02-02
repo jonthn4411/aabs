@@ -21,10 +21,9 @@ git rev-parse $HASH >/dev/null &&
 mkdir -p $OUTPUT_DIR/kernel_patches &&
 git format-patch $HASH..HEAD -o $OUTPUT_DIR/kernel_patches > /dev/null &&
 
-git checkout $HASH &&
-cd .. &&
 echo "  packaging kernel base source code:" &&
-tar czf kernel_src.tgz $EXCLUDE_VCS kernel/ &&
+git archive --format=tar --prefix=kernel/ $HASH |gzip > ../kernel_src.tgz &&
+cd .. &&
 rm -rf kernel 
 mv kernel_src.tgz $OUTPUT_DIR &&
 

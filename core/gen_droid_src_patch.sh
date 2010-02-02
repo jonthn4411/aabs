@@ -36,17 +36,13 @@ for prj in $prjlist; do
 	export REPO_PROJECT=${prj##*:}
 	if [ -d $prjdir ]; then
 		cd $prjdir &&
-		echo "TODO:tag 3" &&
-		set -x
 		$gen_manifest/gen_manifest_android_patch.sh $droid_base $output_dir >> "$output_dir/marvell_manifest.xml"
-		set +x
 	fi
 done
 
 echo '</manifest>' >>$output_dir/marvell_manifest.xml &&
 
 cd $output_dir &&
-echo "TODO:tag" &&
 tar czvf android_patches.tgz android_patches/ &&
 
 echo "    tar the rest of android source code..." &&
