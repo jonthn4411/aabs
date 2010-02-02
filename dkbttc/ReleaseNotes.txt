@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA910 Android Platform Release for Linux 
 Platform README 
-Last update: 12/29/2009
+Last update: 02/01/2010
 ==============================================================================
 
 1. Platform features
@@ -10,19 +10,24 @@ Last update: 12/29/2009
 - Do key pad mapping, touch for PXA910 DKB platform
 - HIFI playback on headset and speaker
 - Audio routing for phone earpiece and headset
+- Audio recorder for built-in Mic and headset Mic
+- Camera preview and still image capture by OV3640
+- Integrated touch calibration tool 
 - Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC500
 - Integrate IPP H.264 decoder for media player
 - Integrate IPP MPEG-4 decoder for media player
 - Integrate IPP AAC version decoder for media player
 - Integrate IPP MP3 version decoder for media player
 - Integrate WIFI to support web browser
+- Integrate BT to support A2DP etc profilers
 - Integrate Marvell RIL and telephony baseband
   - Support 2G vioce call and data call
-  - Support 3G vioce call on DKB board
-  - Support SMS
-  - Support STK for 2G
+  - Support 3G vioce call and data call
+  - Support SMS/MMS
+  - Support STK
   - Support Modem function
   - Support DIAG
+  - Support SS/USSD
 
 1.2 BSP features
 Uboot
@@ -139,7 +144,122 @@ Linux-2.6.29
 - MISC
   - FM Radio 
 
-1.2 Release package contents
+1.3 Telephony
+- Msocket(shared memory + ACIPC)	
+	- Share memory mechanism(2 ring buffer)
+	- Handshake mechanism(ACIPC)
+	- Port flow control
+	- Ring buffer flow control
+	- send/receive Msocket data
+- DIAG	
+	- ACAT-Diag over USB
+	- ACAT-Diag over SD card
+	- ACAT-AT commands through Diag
+- EEH(Error handler)	       
+	- Report
+- NVM	
+	- Flasher explorer support for AP/CP
+	- FDI(Read/Write/Open/Close files)
+- Modem	
+	- Modem over USB 
+	- Modem and Diag USB Composite
+- Network Service related	
+	- GSM/WCDMA Network
+	    - automatic register/deregister
+	    - manual register/deregister
+	- GPRS/EDGE/WCDMA
+	    - automatic attach/detach
+	    - manual attach/detach
+	- RAT selection
+			- 2G only
+			- 3G only
+			- Dual RAT 2G perfer
+			- Dual RAT 3G perfer
+- Voice Call related	
+	- Call Control for 2G/3G
+	    - MO call
+	    - MT call
+	    - DTMF
+	    - Emergency call
+	    - Call Mute (Near end Mute) 
+	    - Voice Volume Control
+	    - PS Data Call and Voice Call Simultaneously
+	- Call Control related Supplentary Service for 2G/3G
+	    - multiparty call 
+	    - call holding
+	    - call waiting
+	    - call forwarding
+	   - Call Transfer on busy/ on reply/Not reachable/unconditional
+	   - Explicit Call Transfer for an Active Call and a Held Call
+	   - Caller ID presentation
+	   - Called ID presentation
+	   - Restrict caller address info shown on called party
+	   - Restrict called address info shown on calling party
+	   - Call Barring
+	     - incoming call barring
+	     - outgoing call barring
+	     - change call barring password
+- Audio	
+	- Audio server
+	   - HIFI:
+	      - Playback
+	      - Recording
+	      - Simultaneous playback and recording
+	      - Change playback volume
+	      - Mute playback
+	   - Headset Detection
+	   - Bluetooth
+	      - BT A2DP music playback
+	      - BT headset incoming call and outgoing call
+	- ACM
+	  - ACM data path
+	   - Mix Audio to far end while making Phone Call
+	   - Recording Phone Call (both far end and near end)
+	  - ACM control path
+	   - Audio input/output route for voice (handset, earpiece, speaker, BT)
+	   - Audio input/output route for HiFi playback (handset, speaker, BT)
+- Data Call related	
+	- PSD Data Call 
+	  - Connection Establish (DirectIP)
+	  - Disconnect (DirectIP)
+	  - Connection Establish (PPP)
+	  - Disconnect (PPP)
+	- CSD Data Call
+	  - CSD PPP
+- SMS/MMS related	
+	- SMS related
+	  - Write SMS to Message storage
+	  - Delete SMS Message from Message Storage
+	  - Send Message
+	  - Send Message from message storage
+	  - Read SMS from Message storage
+	  - Set Message storage
+	  - Set/Read SMS Center address 
+	  - Query Used memory storages
+	  - Set Preferred Message Storage
+	  - SMS full notification(msg storage status indication)
+	  - Bearer Choose GPRS and GSM
+	  - Receive Message
+	- MMS related
+	  - Send MMS
+	  - Receive MMS
+- PhoneBook related	
+	  - read PB entry from SIM
+	  - write PB entry from SIM
+	  - delete PB entry from SIM
+	  - query PB entry from SIM
+	  - set PB storage
+	  - read PB entry from UE
+	  - write PB entry from UE
+	  - delete PB entry from UE
+	  - query PB entry from UE
+- STK related	
+	  - Display menu
+	  - Display information
+	  - Send SMS
+	  - Make voice call
+
+1.3 Release package contents
 - PXA910_Android_Platform_Alpha8_prebuilt_bin.zip  :Pre-built bin binaries
 - PXA910_Android_Platform_Alpha8_src.tgz           :Source code tarball (patch mode)
   - README.txt                                     :This readme.txt(include how to setup Android dir,build and burn flash)
@@ -180,11 +300,6 @@ Note!!!***:[installed_directory] should use absolute directory, not relative dir
 
 3.2 Setup Android directory
  $ mkdir [android_dir]
- $ cd [android_dir]
- $ repo init -u git://android.git.kernel.org/platform/manifest.git -b eclair
- $ cp [installed_directory]/src/android/marvell_manifest.xml .repo/manifests/ 
- $ repo init -m marvell_manifest.xml
- $ repo sync
  $ [installed_directory]/src/setup_android.sh [android_dir]
 Note!!!***:[android_dir] should use absolute directory, not relative directory. 
 
@@ -225,17 +340,18 @@ After a short while, the binary will be generated under [android]/boot/out/u-boo
 3.3.6 Building OBM
  $ cd [android_dir]/boot
  $ make obm
-After a short while, the binary will be generated under [android]/boot/out/TTC_LINUX_NTOBM.bin  [android]/boot/out/NTIM_OBM_UBOOT.bin
+After a short while, the binary will be generated under [android]/boot/TTC_LINUX_NTOBM.bin  [android]/boot/NTIM_OBM_UBOOT.bin
 Note: Please make uboot before making obm
 
 3.4 Flashing images and boot system (128MB is set as default)
 3.4.1 CP version
-        TTC Alpha8                      --> TTC_CP_03.00.004
+        TTC Alpha8                      --> TTC_CP_03.00.008
 3.4.2 Burn following binaries to flash by using the Marvell eXtreme Debugger.
         NTIM_OBM_UBOOT.bin              --> flash address 0x00000
         TTC_LINUX_NTOBM.bin             --> flash address 0x20000
         u-boot.bin                      --> flash address 0x40000
-        ramdisk.img                     --> falsh address 0xc0000
+        ramdisk.img                     --> flash address 0xc0000
+        ReliableData.bin		--> flash address 0x100000
         Arbel.bin                       --> flash address 0x120000
         TTC1_M05_A0_AI_Flash.bin        --> flash address 0x820000
 
