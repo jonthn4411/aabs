@@ -113,6 +113,7 @@ MMP2>> nand write 0x1100000 0x980000 0x300000
 sencond, burning mbr, ramdisk, system and userdata img
 MMP2>> t u-boot.bin.emmc
 MMP2>> boot
+MMP2>> sw
 MMP2>> t mbr
 MMP2>> mmc write 0x4800 0x1 0x1100000
 MMP2>> t ramdisk_ext2.img
@@ -120,9 +121,9 @@ MMP2>> mmc erase 0x6400 0x4000
 MMP2>> mmc write 0x6400 0x4000 0x1100000
 MMP2>> t system_ext2.img
 MMP2>> mmc erase 0xA400 0x3C000
-MMP2>> mmc write 0xA400 0X3C000 0X1100000
+MMP2>> mmc write 0xA400 0x3C000 0x1100000
 MMP2>> t userdata_ext2.img
-MMP2>> mmc erase 0x46400 0x32000 0x1100000
+MMP2>> mmc erase 0x46400 0x32000
 MMP2>> mmc write 0x46400 0x32000 0x1100000 
 
 when you done, power off mmp2, and power again to boot it from emmc.
