@@ -44,7 +44,14 @@ ttc_dkb Flashing images and boot system (256MB is set as default)
 Install OBM and Uboot
 ============================
 1. install XDB EMU 2.1 from: \\sh1sbak009\Product_Integration\Tools\EMU 2.1, configuration file: ttc_ptap_mhk.xsf
-2.Burn following binaries to flash by using the Marvell eXtreme Debugger.
+2. Choose 
+	Board:TavorL 
+	Flash:Nand Flash 
+	Edit Boards: (the button on the top right)
+	Flash Name	Flash Type	Start Address
+	Nand Flash	GP_TAVORL_NAND	0
+	Load Burn Algorithm to Target RAM Address: 0xd1000000
+3.Burn following binaries to flash by using the Marvell eXtreme Debugger.
 	NTIM_OBM_UBOOT.bin 		--> flash address 0x00000
 	TTC_LINUX_NTOBM.bin 		--> flash address 0x20000
 	u-boot.bin			--> flash address 0x40000
@@ -52,16 +59,16 @@ Install OBM and Uboot
 	Arbel.bin			--> flash address 0x120000
 	TTC1_M06_AI_A0_Flash.bin	--> flash address 0x820000
 	
-Setup Android on OneNAND
+Setup Android on NAND
 ===========================
 1.Start your favorite terminal emulator with the appropriate 
       COM port set to 115200,8N1. Power on hte board and wait for TTC_DKB>> prompt to appear
 
 2.Enter the following command to upload the kernel into the RAM and burn into flash:
 For NAND flash, issue the following commands:
-TTC_DKB>>onenand erase 0x920000 0x300000
+TTC_DKB>>nand erase 0x920000 0x300000
 TTC_DKB>>tftp 0x1000000 zImage
-TTC_DKB>>onenand write 0x1000000 0x920000 0x300000
+TTC_DKB>>nand write 0x1000000 0x920000 0x300000
 Note 1: All the following images should copy to the host tftp share directory:
 	zImage
 	system.img
@@ -72,27 +79,27 @@ Note 3: You need to configure the host network interface:
    # ifconfig usb0 192.168.1.100 
 Note 4: If you want to boot from nand flash. You have to burn ramdisk. Otherwise if will boot from MMC or NFS
 	You can burn ramdisk by tftp too.
-TTC_DKB>>onenand erase 0xc0000 0x50000
+TTC_DKB>>nand erase 0xc0000 0x50000
 TTC_DKB>>tftp 0x1000000 ramdisk.img
-TTC_DKB>>onenand write 0x1000000 0xc0000 0x50000
+TTC_DKB>>nand write 0x1000000 0xc0000 0x50000
 
 3.Enter the following command to upload the system.img into the RAM and burn into flash:
 For NAND flash, issue the following commands:
-TTC_DKB>>onenand erase 0x0c20000 0x7000000
+TTC_DKB>>nand erase 0x0c20000 0x7000000
 TTC_DKB>>tftp 0x1000000 system.img
-TTC_DKB>>onenand write.yaffs 0x1000000 0x0c20000 <system.img actual length> (Note: ony hex supported)
+TTC_DKB>>nand write.yaffs 0x1000000 0x0c20000 <system.img actual length> (Note: ony hex supported)
 
 4.Enter the following command to upload the userata.img into the RAM and burn into flash:
 For NAND flash, issue the following commands:
-TTC_DKB>>onenand erase 0x7c20000 0x7000000
+TTC_DKB>>nand erase 0x7c20000 0x7000000
 TTC_DKB>>tftp 0x1000000 userdata.img
-TTC_DKB>>onenand write.yaffs 0x1000000 0x7c20000 <userdata.img actual length> (Note: ony hex supported)
+TTC_DKB>>nand write.yaffs 0x1000000 0x7c20000 <userdata.img actual length> (Note: ony hex supported)
 
 5.Enter the following command to upload the marvell data into the RAM and burn into flash:
 For NAND flash, issue the following commands:
-TTC_DKB>>onenand erase 0xec20000 0x1000000
+TTC_DKB>>nand erase 0xec20000 0x1000000
 TTC_DKB>>tftp 0x1000000  pxafs.img
-TTC_DKB>>onenand write.yaffs 0x1000000 0xec20000 <pxafs.img actual length> (Note: ony hex supported)
+TTC_DKB>>nand write.yaffs 0x1000000 0xec20000 <pxafs.img actual length> (Note: ony hex supported)
 
 6.How to setup nfs
 1)  Burn all images except for ramdisk.img. [zImage.android.mmc can be used]

@@ -44,7 +44,15 @@ ttc_dkb Flashing images and boot system (256MB is set as default)
 Install OBM and Uboot
 ============================
 1. install XDB EMU 2.1 from: \\sh1sbak009\Product_Integration\Tools\EMU 2.1, configuration file: ttc_ptap_mhk.xsf
-2.Burn following binaries to flash by using the Marvell eXtreme Debugger.
+2. Choose
+	Board:TavorL
+	Flash:OneNand Flash
+	Edit Boards: (the button on the top right)
+	Flash Name	Flash Type	Start Address
+	OneNand Flash	GP_PXA930_NAND	0x80000000
+	Load Burn Algorithm to Target RAM Address: 0xd1000000
+
+3.Burn following binaries to flash by using the Marvell eXtreme Debugger.
 	NTIM_OBM_UBOOT.bin 		--> flash address 0x00000
 	TTC_LINUX_NTOBM.bin 		--> flash address 0x20000
 	u-boot.bin			--> flash address 0x40000
