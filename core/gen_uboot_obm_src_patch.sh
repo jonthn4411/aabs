@@ -18,6 +18,7 @@ fi
 
 cd $boot_dir/uboot &&
 git rev-parse $UBOOT_HASH > /dev/null &&
+rm -fr $output_dir/uboot_patches &&
 mkdir -p $output_dir/uboot_patches &&
 git format-patch $UBOOT_HASH..HEAD -o $output_dir/uboot_patches > /dev/null &&
 

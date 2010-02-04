@@ -18,6 +18,7 @@ fi
 
 cd $KERNEL_DIR &&
 git rev-parse $HASH >/dev/null &&
+rm -fr $OUTPUT_DIR/kernel_patches &&
 mkdir -p $OUTPUT_DIR/kernel_patches &&
 git format-patch $HASH..HEAD -o $OUTPUT_DIR/kernel_patches > /dev/null &&
 

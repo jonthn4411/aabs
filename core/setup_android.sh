@@ -16,13 +16,13 @@ install_android_source()
 	cp -f -p -r source/* $android_working_dir
 	check_result
 
-	echo "   unpack all .mrvl_base_src.tgz..." &&
+	echo "   unpack all mrvl_base_src.tgz..." &&
 	cd $android_working_dir &&
-	files=$(find . -type f -name .mrvl_base_src.tgz ) &&
+	files=$(find . -type f -name mrvl_base_src.tgz ) &&
 	for tarfile in $files; do
 		cd $(dirname $tarfile) &&
-		tar xzvf .mrvl_base_src.tgz &&
-		rm .mrvl_base_src.tgz &&
+		tar xzvf mrvl_base_src.tgz &&
+		rm mrvl_base_src.tgz &&
 		git init &&
 		git add * &&
 		git commit -s -m "init code from marvell"
@@ -51,7 +51,7 @@ apply_android_patches()
 		android_project=$(dirname $android_patch)
 		cd $android_working_dir/$android_project 
 		if [ $? -ne 0 ]; then
-			echo '$android_project does not exist in android_working_dir:$android_working_dir'
+			echo "$android_project does not exist in android_working_dir:$android_working_dir"
 			exit 1
 		fi
 		git am $patch_root_dir/$android_patch	
