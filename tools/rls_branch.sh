@@ -69,7 +69,7 @@ if [ -z "$projects" ]; then
 	exit 2
 fi
 
-if [ ! -z "dryrun_flag" ]; then
+if [ ! -z "$dryrun_flag" ]; then
 	echo
 	echo "    !!! DRY_RUN !!!"
 	echo "    Specify actual-run in command line to really update the server."
