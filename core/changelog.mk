@@ -1,5 +1,5 @@
 #check if the required variables have been set.
-$(call check-variables, PRODUCT_CODE)
+$(call check-variables, PRODUCT_CODE MANIFEST_BRANCH)
 
 #format: <file name>:[m|o]:[md5]
 #m:means mandatory
@@ -23,7 +23,7 @@ endif
 .PHONY:changelog
 changelog:
 	$(log) "starting to generate change logs..."
-	$(hide)$(TOP_DIR)/core/gen_chglog.sh $(OUTPUT_DIR) $(SRC_DIR) $(PRODUCT_CODE) $(LAST_BUILD_LOC)
+	$(hide)$(TOP_DIR)/core/gen_chglog.sh $(OUTPUT_DIR) $(SRC_DIR) $(MANIFEST_BRANCH) $(LAST_BUILD_LOC) 
 	$(log) "  done"
 
 .PHONY:get_changelog_build

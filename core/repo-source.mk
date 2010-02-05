@@ -7,7 +7,7 @@ source: output_dir
 	$(hide)if [ ! -d "$(SRC_DIR)" ]; then \
 	    mkdir $(SRC_DIR); \
 	fi
-	$(log) "starting get source code from GIT server:$(GIT_SERVER) ..."
+	$(log) "starting get source code from GIT server:$(GIT_SERVER), branch:$(MANIFEST_BRANCH) ..."
 	$(hide)cd $(SRC_DIR) && \
 	repo init -u ssh://$(GIT_MANIFEST) -b $(MANIFEST_BRANCH) --repo-url ssh://$(GIT_REPO) && \
 	repo sync

@@ -4,8 +4,8 @@
 # The current working directory should be the root folder of this build system. So that it can get the history of this build system.
 # $1: output directory
 # $2: source code directory
-# $3: the product code:such as avlite-cupcake, avlite-donut
-# $4: the directory where LAST_BUILD.<product-code> LAST_REL..<product-code> locates
+# $3: the manifest branch name: such as avlite-donut or rls_avlite_donut_beta1
+# $4: the directory where LAST_BUILD.<manifest-branch-name> LAST_REL.<manifest-branch-name> locates
 
 #$1: since
 #$2: logfile
@@ -136,7 +136,7 @@ function parse_lastrel_file()
 
 OUTPUT_DIR=$1
 SRC_DIR=$2
-PRODUCT_CODE=$3
+MANIFEST_BRANCH=$3
 LAST_BUILD_LOC=$4
 
 LAST_BUILD_PACKAGE=
@@ -163,8 +163,8 @@ if [[ ! -d "$SRC_DIR" ]] || [[ ! -d "$OUTPUT_DIR" ]]; then
 fi
 
 if [ ! -z "$LAST_BUILD_LOC" ]; then
-  if [ -z "$PRODUCT_CODE" ]; then
-    echo "If last-build-location is specified, product-code must be specified in arguments."
+  if [ -z "$MANIFEST_BRANCH" ]; then
+    echo "If last-build-location is specified, MANIFEST_BRANCH must be specified in arguments."
     exit 1
   fi
 fi
@@ -181,9 +181,12 @@ if [ ! -z "$LAST_BUILD_LOC" ] && [ ! "${LAST_BUILD_LOC:0:1}" == '/' ]; then
   LAST_BUILD_LOC=$(pwd)/$SRC_DIR
 fi
 
+LAST_BUILD_FILE=LAST_BUILD.${MANIFEST_BRANCH}
+LAST_REL_FILE=LAST_REL.${MANIFEST_BRANCH}
+
 if [ ! -z "$LAST_BUILD_LOC" ]; then
-  if [ -e $LAST_BUILD_LOC/LAST_BUILD.${PRODUCT_CODE} ]; then
-    parse_lastbuild_file $LAST_BUILD_LOC/LAST_BUILD.${PRODUCT_CODE} &&
+  if [ -e $LAST_BUILD_LOC/${LAST_BUILD_FILE} ]; then
+    parse_lastbuild_file $LAST_BUILD_LOC/${LAST_BUILD_FILE} &&
     echo -n > "$OUTPUT_DIR/changelog.build"
     echo "Change logs since last build: $LAST_BUILD_BUILDNUM" >> "$OUTPUT_DIR/changelog.build"
     echo "" >> "$OUTPUT_DIR/changelog.build"
@@ -191,11 +194,11 @@ if [ ! -z "$LAST_BUILD_LOC" ]; then
     echo "==============================================================" >> "$OUTPUT_DIR/changelog.build"
     echo >> "$OUTPUT_DIR/changelog.build"
   else
-    echo "LAST_BUILD.${PRODUCT_CODE} is not found at $LAST_BUILD_LOC. This is the first build." > "$OUTPUT_DIR/changelog.build"
+    echo "${LAST_BUILD_FILE} is not found at $LAST_BUILD_LOC. This is the first build." > "$OUTPUT_DIR/changelog.build"
   fi &&
 
-  if [ -e $LAST_BUILD_LOC/LAST_REL.${PRODUCT_CODE} ]; then
-    parse_lastrel_file $LAST_BUILD_LOC/LAST_REL.${PRODUCT_CODE} &&
+  if [ -e $LAST_BUILD_LOC/${LAST_REL_FILE} ]; then
+    parse_lastrel_file $LAST_BUILD_LOC/${LAST_REL_FILE} &&
     echo -n > "$OUTPUT_DIR/changelog.rel"
     echo "Change logs since last release: $LAST_REL_VERSION" >> "$OUTPUT_DIR/changelog.rel"
 	echo "" >> "$OUTPUT_DIR/changelog.rel"
@@ -203,7 +206,7 @@ if [ ! -z "$LAST_BUILD_LOC" ]; then
     echo "==============================================================" >> "$OUTPUT_DIR/changelog.rel"
     echo >> "$OUTPUT_DIR/changelog.build"
   else
-    echo "LAST_REL.${PRODUCT_CODE} is not found at $LAST_BUILD_LOC. This is the first release." > "$OUTPUT_DIR/changelog.rel"
+    echo "${LAST_REL_FILE} is not found at $LAST_BUILD_LOC. This is the first release." > "$OUTPUT_DIR/changelog.rel"
   fi
 fi &&
 
@@ -233,7 +236,7 @@ do
   cd $CURRENT_PRJPATH &&
   echo "========="
   echo "  log for: $CURRENT_PRJNAME " &&
-  BRANCH=$(cat .git/refs/remotes/m/$PRODUCT_CODE) &&
+  BRANCH=$(cat .git/refs/remotes/m/$MANIFEST_BRANCH) &&
   CURRENT_PRJORG=${BRANCH##ref: refs\/remotes\/} &&
   gen_log "1 day ago"   "$OUTPUT_DIR/changelog.day" &&
   gen_log "1 week ago"  "$OUTPUT_DIR/changelog.week" &&

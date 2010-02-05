@@ -32,17 +32,24 @@ endef
 include buildhost.def
 
 #check if the required variables have been set.
-$(call check-variables, PRODUCT_CODE)
+$(call check-variables, PRODUCT_CODE MANIFEST_BRANCH)
 
 current-time:=[$$(date "+%Y-%m-%d %H:%M:%S")]
 log:=@echo $(current-time)
 hide:=@
 space:= #a designated space
 
+ifneq ($(strip $(RELEASE_NAME)),)
+RLS_SUFFIX:=_$(RELEASE_NAME)
+MANIFEST_BRANCH:=rls_$(subst -,_,$(MANIFEST_BRANCH))_$(RELEASE_NAME)
+else
+RLS_SUFFIX:=
+endif
+
 PUBLISHING_FILES:=
 TOP_DIR:=$(shell pwd)
-SRC_DIR:=src.${PRODUCT_CODE}
-OUTPUT_DIR:=out.${PRODUCT_CODE}
+SRC_DIR:=src.$(PRODUCT_CODE)$(RLS_SUFFIX)
+OUTPUT_DIR:=out.$(PRODUCT_CODE)$(RLS_SUFFIX)
 
 #We must initialize PUBLISHING_FILES_XXX to a simply expanded flavor variable
 define define-publish-files

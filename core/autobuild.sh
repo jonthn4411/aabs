@@ -24,7 +24,7 @@ get_new_publish_dir()
 {
 	DATE=$(date +%Y-%m-%d)
 	BUILD_NUM=${DATE}
-	PUBLISH_DIR=$PUBLISH_DIR_BASE/${BUILD_NUM}_${PRODUCT_CODE}
+	PUBLISH_DIR=$PUBLISH_DIR_BASE/${BUILD_NUM}_${PRODUCT_CODE}${RLS_SUFFIX}
 	index=0
 	while [ 1 ]; do
 	  if [ ! -d $PUBLISH_DIR ]; then
@@ -47,7 +47,7 @@ generate_error_notification_email()
 	cat <<-EOF
 	From: $build_maintainer
 	To: $dev_team
-	Subject: $TEMP_BUILD_TAG [$PRODUCT_CODE] autobuild failed! please check
+	Subject: $BUILD_TAG [$PRODUCT_CODE${RLS_SUFFIX}] autobuild failed! please check
 
 	This is an automated email from the autobuild script. It was
 	generated because an error encountered while building the code.
@@ -81,7 +81,7 @@ generate_error_log_email()
 	cat <<-EOF
 	From: $build_maintainer
 	To: $build_maintainer
-	Subject: $TEMP_BUILD_TAG [$PRODUCT_CODE] autobuild failed! Full log is attached.
+	Subject: $BUILD_TAG [$PRODUCT_CODE${RLS_SUFFIX}] autobuild failed! Full log is attached.
 
 	This is an automated email from the autobuild script. It was
 	generated because an error encountered while building the code.
@@ -114,7 +114,7 @@ generate_success_notification_email()
 	cat <<-EOF
 	From: $build_maintainer
 	To: $dev_team;
-	Subject: $TEMP_BUILD_TAG [$PRODUCT_CODE] build $BUILD_NUM is ready.
+	Subject: $BUILD_TAG [$PRODUCT_CODE${RLS_SUFFIX}] build $BUILD_NUM is ready.
 
 	This is an automated email from the autobuild script. It was
 	generated because a new package is generated successfully and
@@ -144,7 +144,7 @@ generate_nobuild_notification_email()
 	cat <<-EOF
 	From: $build_maintainer
 	To: $dev_team;
-	Subject: $TEMP_BUILD_TAG [$PRODUCT_CODE] no build today.
+	Subject: $BUILD_TAG [$PRODUCT_CODE${RLS_SUFFIX}] no build today.
 
 	This is an automated email from the autobuild script. You received
 	this email because you are the maintainer of $PRODUCT_CODE. The
@@ -221,11 +221,9 @@ fi
 PRODUCT_CODE=${ABS_BOARD}-${ABS_DROID_BRANCH}
 MAKEFILE=${PRODUCT_CODE}.mk
 PRODUCT_NAME="$ABS_PRODUCT_NAME"
-STD_LOG="build-${PRODUCT_CODE}.log"
 
 PUBLISH_DIR="PUBLISH_DIR-Not-Defined"
 BUILD_NUM="BUILD_NUM-Not-Defined"
-LAST_BUILD=LAST_BUILD.${PRODUCT_CODE}
 
 build_maintainer=$(cat ${ABS_BOARD}/maintainer)
 dev_team=$(cat ${ABS_BOARD}/dev_team )
@@ -237,7 +235,7 @@ dev_team=$(echo $dev_team)
 announce_list=$(echo $announce_list)
 
 #the value of this variable will be prefixed as the email subject
-TEMP_BUILD_TAG="[Temp Build]"
+BUILD_TAG=[autobuild-dev]
 
 FLAG_CLOBBER=false
 FLAG_PUBLISH=false
@@ -249,6 +247,8 @@ FLAG_CCACHE=false
 FLAG_MGCC=false
 FLAG_FORCE=false
 FLAG_BUILD=true
+RELEASE_NAME=
+RLS_SUFFIX=
 
 for flag in $*; do
 	case $flag in
@@ -263,25 +263,53 @@ for flag in $*; do
 		force)FLAG_FORCE=true;;
 		nobuild)FLAG_BUILD=false;;
 		help) print_usage; exit 2;;
-		*) echo "Unknown flag: $flag"; print_usage; exit 2;;
+		*) 
+		if [ ! "${flag%%:*}" == "${flag}" ] && [ "${flag%%:*}" == "rls" ]; then
+			RELEASE_NAME=${flag##*:}
+			RLS_SUFFIX=_${RELEASE_NAME}
+			export RELEASE_NAME
+		else
+			echo "Unknown flag: $flag"; 
+			print_usage; 
+			exit 2
+		fi;;
 	esac
 done
 
 #enable pipefail so that if make fail the exit of whole command is non-zero value.
 set -o pipefail
 
+#manifest branch name is same as product name if it is not release
+MANIFEST_BRANCH=${PRODUCT_CODE}
+if [ ! -z "$RELEASE_NAME" ]; then
+	MANIFEST_BRANCH=rls_${MANIFEST_BRANCH/-/_}_${RELEASE_NAME}
+fi
+LAST_BUILD=LAST_BUILD.${MANIFEST_BRANCH}
+STD_LOG="build-${PRODUCT_CODE}${RLS_SUFFIX}.log"
+
 #TEMP_PUBLISH_DIR_BASE and OFFICIAL_PUBLISH_DIR_BASE should be defined buildhost.def
 if [ "$FLAG_TEMP" = "true" ]; then
 	PUBLISH_DIR_BASE=$TEMP_PUBLISH_DIR_BASE
 	dev_team=$build_maintainer
 	announce_list=""
+	PUBLISH_DIR_BASE=${PUBLISH_DIR_BASE}/${ABS_BOARD}
+	mkdir -p ${PUBLISH_DIR_BASE}
 else
 	PUBLISH_DIR_BASE=$OFFICIAL_PUBLISH_DIR_BASE
-	TEMP_BUILD_TAG=""
+	PUBLISH_DIR_BASE=${PUBLISH_DIR_BASE}/${ABS_BOARD}
+	mkdir -p ${PUBLISH_DIR_BASE}
 fi
 LAST_BUILD=$PUBLISH_DIR_BASE/$LAST_BUILD
 
-echo "[$(date)]:starting build $PRODUCT_CODE ..." > $STD_LOG
+if [ "$FLAG_TEMP" = "true" ]; then
+	BUILD_TAG=[autobuild-temp]
+else
+	if [ ! -z "$RELEASE_NAME" ]; then
+		BUILD_TAG=[autobuild-rls]
+	fi
+fi
+
+echo "[$(date)]:starting build ${PRODUCT_CODE}${RLS_SUFFIX} ..." > $STD_LOG
 
 if [ "$FLAG_CCACHE" = "true" ]; then
 	export USE_CCACHE=true
