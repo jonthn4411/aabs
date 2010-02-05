@@ -1,28 +1,18 @@
 ==============================================================================
 Marvell PXA950 Android Platform Release for Linux 
 Platform ReleaseNotes
-Last update: 12/29/2009
+Last update: 01/27/2010
 ==============================================================================
 
 1. Platform features
 1.1 Supported Components
 - Rebase to google android eclair branch
 - Do key pad mapping, touch for PXA950 SAARB platform
-- HIFI playback on headset and speaker
-- Audio routing for phone earpiece and headset
 - Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC500
-- Integrate IPP H.264 decoder for media player
-- Integrate IPP MPEG-4 decoder for media player
-- Integrate IPP AAC version decoder for media player
-- Integrate IPP MP3 version decoder for media player
-- Integrate WIFI to support web browser
-- Integrate Marvell RIL and telephony baseband
-  - Support 2G vioce call and data call
-  - Support 3G vioce call on SAARB board
-  - Support SMS
-  - Support STK for 2G
-  - Support Modem function
-  - Support DIAG
+- Integrate IPP/MVED H.264 decoder for media player
+- Integrate IPP/MVED MPEG-4 decoder for media player
+- Integrate IPP/MVED AAC version decoder for media player
+- Integrate IPP/MVED MP3 version decoder for media player
 
 1.2 BSP features
 Uboot
@@ -45,13 +35,11 @@ Linux-2.6.29
 - IMM
   - SRAM is maintained by IMM. (audio driver occupy all the SRAM maintained by IMM.)
 - Power Management
-  - Support chip sleep
-  - Support chip idle
-  - Support core idle
+  - Support D1/D2/D0CS/CG idle
   - Support to use Keypad to wake up system
   - Support to use RTC to wake up system
   - Support to switch OP by "echo" command to sysfs
-  - Support dynamic frequenc and voltage change base on power policy maker in kernel. 
+  - Support dynamic frequency and voltage change base on power policy maker in kernel. 
 - LCD (Dump panel)
   - Support base display
   - Support overlay display
@@ -61,24 +49,12 @@ Linux-2.6.29
   - Support pan display
   - Support HVGA resolution display
   - Support RGB565, RGB888Packed, RGB888Unpacked, YUV420planar, YUV422planar and YUV422Packed format. 
-- IRE
-  - Support YUV420 90 degree clockwise rotation
 - Camera (CCIC)
   - Support V4L2 interface
   - Support Parallel and MIPI interface.
   - Support JPEG format
   - Support YUV420Planar, YUV422Planar and YUV422Packed format. 
   - Support to accept framebuf from user application.
-- OV7670 
-  - Support to config pixel format
-  - Support to switch image/video mode 
-  - Support still image with QVGA, VGA and HVGA resolution. 
-  - Support video with QVGA, VGA and HVGA resolution. 
-- OV3640
-  - Support to config pixel format
-  - Support to switch image/video mode 
-  - Support still image with QVGA and VGA resolution. HVGA and 3M resolutions still have problems. 
-  - Support video with QVGA, VGA and HVGA resolution. 3M resolution still has problem. 
 - SSP
   - Support to config it as I2S to transfer audio PCM data to outside code. 
 - Audio (use levante as outside audio codec)
@@ -122,33 +98,18 @@ Linux-2.6.29
     - Support write protect switch
   - SDIO
     - Support WiFi SDIO card
-- WLAN
-  - Support SD8688
-  - Support WPA 
-- BT
-  - Support SD8688
-  - Support A2DP profile
 - Power supply
   - Support battery temperature measurement
   - Support battery capacity measurement. (it is not accurate.)
   - Support USB supply
   - Support USB charging
   - Support poweroff. (NOTE: if the system is not poweroff normally, the next boot time will be longer for the filesystem scan. )
-- Sensors
-  - g sensor (lis3lv02d)
-- MISC
-  - FM Radio 
 
 
-
-
-
+<VERSION>=
 ===========================================================================================
-TODO:Alpha8,
-<VERSION>
-===========================================================================================
-1.2 Release package contents
-- PXA950_Android_Platform_<VERSION>_prebuilt_bin.zip	:Pre-built bin binaries
+2. Release package contents
+- PXA950_Android_Platform_<VERSION>_prebuilt_bin		:Pre-built bin binaries
 - PXA950_Android_Platform_<VERSION>_src.tgz        	:Source code tarball (patch mode)
   - ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
   - setup_android.sh                               	:Script to setup Android directory
@@ -164,69 +125,66 @@ TODO:Alpha8,
   - tools                                          	:Compile tools
      - arm-linux-4.1.1.tgz                         	:Compile for compiling uboot
 
-2. System Requirements
-2.1 Hardware requirements
+3. System Requirements
+3.1 Hardware requirements
 - OneNAND flash 256-MB large block
 - DDR SDRAM 128 MB
 - PXA950 SAARB Board
 
-2.2 Software requirements
+3.2 Software requirements
 - Host PC with operating system Ubuntu 6.06 or above
 
-3. Usage of this package 
-3.1 Install this package
-3.1.1 Download the Marvell packages:
+4. Usage of this package 
+
+4.1 Install this package
+4.1.1 Download the Marvell packages:
 ----PXA950_Android_Platform_<VERSION>_src.tgz  
-----PXA950_Android_Platform_<VERSION>_prebuilt_bin.zip
-3.1.2 Type the following command to install:
+----PXA950_Android_Platform_<VERSION>_prebuilt_bin
+4.1.2 Type the following command to install:
  $ mkdir [installed_directory]
  $ cd [installed_directory]
- $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA950_Android_Platform_<VERSION>_src.tgz
- $ unzip [The PATH you downloaded Marvell Packages]/PXA950_Android_Platform_<VERSION>_prebuilt_bin.zip
-Note!!!***:[installed_directory] should use absolute directory, not relative directory.
+ $ tar xzf PXA950_Android_Platform_<VERSION>_src.tgz
+ $ cd src
+ $ ./setup_android.sh android (or you can directly use ./setup_android)
+Note: The android source code will be installed in [installed_directory]/src/android
 
-3.2 Setup Android directory
- $ mkdir [android_dir]
- $ [installed_directory]/src/setup_android.sh [android_dir]
-Note!!!***:[android_dir] should use absolute directory, not relative directory. 
+4.2 Building Android,Linux Kernel,Uboot
 
-3.3 Building Android,Linux Kernel,Uboot
-
-3.3.1 Build Linux Kernel
- $ cd [android_dir]/kernel
+4.2.1 Build Linux Kernel
+ $ cd src/android/kernel
  $ sudo make kernel
-After a short while, the binaries will be generated under [android]/kernel/out/zImage
+Note: The binaries will be generated under src/android/kernel/out/zImage
 
-3.3.2 Build Modules
- $ cd [android_dir]/kernel
+4.2.2 Build Modules
+ $ cd src/android/kernel
  $ sudo make modules
 Note: Please make kernel before making modules
-After a short while, the binaries will be generated under [android]/kernel/out/modules
+After a short while, the binaries will be generated under src/android/kernel/out/modules
 
-3.3.3 Buid PXA Android by:
+4.2.3 Buid PXA Android by:
  $ cd [android_dir]
  $ . build/envsetup.sh
  $ chooseproduct saarbpv2
- $ export ANDROID_PREBUILT_MODULES=[android]/kernel/out/modules
+ $ export ANDROID_PREBUILT_MODULES=./kernel/out/modules
  $ make -j4
-Note : If there is no modules, Please export ANDROID_PREBUILT_MODULES=no_kernel_modules
-After a while (30~60 minutes), the binaries will be generated under [android_dir]/out/target/product/evbpv2/.
-Note: Currently we use Android default toolchain version: arm-eabi-4.2.1 to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for arm-eabi-4.2.1. Please donot pecify other android toolchain version. 
+Note: If there is no modules, Please export ANDROID_PREBUILT_MODULES=no_kernel_modules
+Note: The binaries will be generated under src/android/out/target/product/saarbpv2/.
+Note: Currently we use Android default toolchain to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for google arm-eabi toolchain. Please donot pecify other android toolchain version. 
 
-3.3.4 Building uboot
+4.2.4 Building uboot
  $ cd [android_dir]/boot
  $ make uboot
-After a short while, the binary will be generated under [android]/boot/out/u-boot.bin
+After a short while, the binary will be generated under src/android/boot/out/u-boot.bin
 
-3.4 Flashing images and boot system (128MB is set as default)
-3.4.1 Burn following binaries to flash by using the Marvell eXtreme Debugger.
+4.3 Flashing images and boot system (128MB is set as default)
+4.3.1 Burn following binaries to flash by using the Marvell eXtreme Debugger.
 	TAVOR_SAAR_PV_NTOBM_ONENAND_MODE1.bin		--> flash address 0x00000
-	u-boot.bin					--> flash address 0x80000
+	u-boot.bin							--> flash address 0x80000
 
-3.4.2 Start your favorite terminal emulator with the appropriate 
+4.3.2 Start your favorite terminal emulator with the appropriate 
       COM port set to 115200,8N1. Power on the board and wait for TavorPV2>> prompt to appear
 
-3.4.3 Enter the following command to upload the kernel into the RAM and burn into flash:
+4.3.3 Enter the following command to upload the kernel into the RAM and burn into flash:
 For OneNAND flash, issue the following commands:
 TavorPV2>>tftp zImage
 TavorPV2>>onenand erase 0x920000 0x300000
@@ -237,26 +195,26 @@ Note 1: You need to configure the host network interface:
    # ifconfig eth0 192.168.1.100 (for Ethernet)
 Note 2: uboot configures ethernet download as default. please use TavorPV2>> sw to switch to USB 
 
-3.4.4 Enter the following command to upload the system.img into the RAM and burn into flash:
+4.3.4 Enter the following command to upload the system.img into the RAM and burn into flash:
 For OneNAND flash, issue the following commands:
 TavorPV2>>tftp system.img
 TavorPV2>>onenand erase 0x0c20000 0x7000000
 TavorPV2>onenand write.yaffs 0x80800000 0x0c20000 <actual-image-size>(Note: ony hex supported)
 
-3.4.5 Enter the following command to upload the userata.img into the RAM and burn into flash:
+4.3.5 Enter the following command to upload the userata.img into the RAM and burn into flash:
 For OneNAND flash, issue the following commands:
 TavorPV2>>tftp userdata.img
 TavorPV2>>onenand erase 0x7c20000 0x7000000
 TavorPV2>>onenand write.yaffs 0x80800000 0x7c20000 <actual-image-size>(Note: ony hex supported)
 
-3.4.6 Enter the following command to upload the ramdisk.img into the RAM and burn into flash:
+4.3.6 Enter the following command to upload the ramdisk.img into the RAM and burn into flash:
 For OneNAND flash, issue the following commands:
 TavorPV2>>tftp ramdisk.img
 TavorPV2>>onenand erase 0xc0000 0x40000
 TavorPV2>>onenand write 0x80800000 0xc0000 0x40000
 Reboot the system.
 
-4.0 Known issues and workarounds
+5.0 Known issues and workarounds
 
 ----------------------------
 
