@@ -34,6 +34,11 @@ function get_account_to_use()
 		echo "pieadm"
 		return
 	fi
+
+	if [ "$1" == "origin" ]; then
+		echo "androidadm"
+		return
+	fi
 	return
 }
 
@@ -63,6 +68,14 @@ fi
 
 rls_branch=$2
 projects=$(repo forall -c "pwd" | sort)
+
+manifest_prj="$(pwd)/.repo/manifests"
+cd ${manifest_prj} &&
+sed -i "/revision=\"[^[:blank:]]*\"/s/revision=\"[^[:blank:]]*\"/revision=\"${rls_branch}\"/"  ./default.xml  &&
+git add ./default.xml &&
+git commit -s -m "${rls_branch}:enter release cycle" &&
+cd -;
+projects="$projects  ${manifest_prj}"
 
 if [ -z "$projects" ]; then
 	echo "You should run this script in the root directory of android source code."
