@@ -1,0 +1,291 @@
+==============================================================================
+Marvell PXA950 Android Platform Release for Linux 
+Platform ReleaseNotes
+Last update: 01/27/2010
+==============================================================================
+
+1. Platform features
+1.1 Supported Components
+- Rebase to google android eclair branch
+- Do key pad mapping, touch for PXA950 EVB3 platform
+- Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC500
+- Integrate IPP/MVED H.264 decoder for media player
+- Integrate IPP/MVED MPEG-4 decoder for media player
+- Integrate IPP/MVED AAC version decoder for media player
+- Integrate IPP/MVED MP3 version decoder for media player
+
+1.2 BSP features
+Uboot
+- Boot from Nand/Onenand
+- Bownload from USB ethernet
+- Burn image into Nand/Onenand
+- Fash Bad block management
+- Boot kernel with kernel command line
+- Voltage/Frequency change
+Linux-2.6.29
+- MTD devices
+  - Support Nand
+  - Support Onenand
+  - Support Fash Bad block management
+  - Support JFSS2
+  - Support YAFFS
+  - Support Partition
+- WMMX
+  - Support context switch
+- IMM
+  - SRAM is maintained by IMM. (audio driver occupy all the SRAM maintained by IMM.)
+- Power Management
+  - Support D1/D2/D0CS/CG idle
+  - Support to use Keypad to wake up system
+  - Support to use RTC to wake up system
+  - Support to switch OP by "echo" command to sysfs
+  - Support dynamic frequency and voltage change base on power policy maker in kernel. 
+- LCD (Dump panel)
+  - Support base display
+  - Support overlay display
+  - Support scaling
+  - Support backlight control
+  - Support FB interface
+  - Support pan display
+  - Support HVGA resolution display
+  - Support RGB565, RGB888Packed, RGB888Unpacked, YUV420planar, YUV422planar and YUV422Packed format. 
+- Camera (CCIC)
+  - Support V4L2 interface
+  - Support Parallel and MIPI interface.
+  - Support JPEG format
+  - Support YUV420Planar, YUV422Planar and YUV422Packed format. 
+  - Support to accept framebuf from user application.
+- SSP
+  - Support to config it as I2S to transfer audio PCM data to outside code. 
+- Audio (use levante as outside audio codec)
+  - Support ALSA interface
+  - Support to playback Audio
+  - Support to Recodrd Audio 
+  - Support to playback and record simultaneously. (The codec native sample rate will locked as 48K for both playback and record. And the alsa lib will handle the sample rate conversion automaitically)
+  - Support 2.5mm Jack
+  - Support headset and MICIN detection. (The audio server application will setup the audio path base on the detection event automatically)
+  - Support on-board mic
+- Touch screen (TPO touch)
+  - Support pen attach, move, detach and time stamp. 
+- Keypad
+  - Support Key down, up, repeat and time stamp. 
+- I2C (two i2c busses)
+  - Share/Arbitrate the busses for multi devies.
+  - Support RIPC to share the bus with other CPUs.
+- UART (FFUART, BTUART)
+  - Support tty interface
+  - Support tty console
+  - Support multi sample rate
+  - Support HW flaw control
+  - Support both DMA and PIO modes
+- USB
+  - Host
+    - Support to access USB mass storage device
+    - Support hot plug-in and remove
+    - Support USB hub
+  - OTG
+    - Support dual role device
+    - HNP and SRP are NOT support
+  - Client
+    - Support ethernet, mass storage, adb and diag drivers.
+    - Support composite devie.
+    - Support hot attach and detach
+- MMC/SD
+  - MMC4.3/SD2.0
+    - Support partition
+    - Support hot plug-in and remove
+    - Support lock and unlock
+    - Support write protect switch
+  - SDIO
+    - Support WiFi SDIO card
+- WLAN
+  - Support SD8688
+  - Support WPA 
+- Power supply
+  - Support battery temperature measurement
+  - Support battery capacity measurement. (it is not accurate.)
+  - Support USB supply
+  - Support USB charging
+  - Support poweroff. (NOTE: if the system is not poweroff normally, the next boot time will be longer for the filesystem scan. )
+
+
+<VERSION>=
+===========================================================================================
+2. Release package contents
+- PXA950_Android_Platform_<VERSION>_prebuilt_bin.zip	:Pre-built bin binaries
+- PXA950_Android_Platform_<VERSION>_src.tgz        	:Source code tarball (patch mode)
+  - ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
+  - setup_android.sh                               	:Script to setup Android directory
+  - android                                        	:Source about Android
+     - android_patches                             	:Patches against Android eclair
+     - marvell_manifest.xml                        	:Manifest xml file to download Android eclair as a base
+     - vendor.tgz                                  	:Non-Google projects in Android directory
+  - kernel                                         	:Source about kernel 
+     - linux-2.6.29_patches                        	:Kernel patches agaist Linux-2.6.29
+     - linux-2.6.29.tgz                            	:Linux-2.6.29 base
+     - uboot_patches                               	:Uboot patches agaist uboot
+     - uboot.tgz                                   	:Uboot base
+  - tools                                          	:Compile tools
+     - arm-linux-4.1.1.tgz                         	:Compile for compiling uboot
+
+3. System Requirements
+3.1 Hardware requirements
+- OneNAND flash 256-MB large block
+- DDR SDRAM 128 MB
+- PXA950 EVB3 Board
+
+3.2 Software requirements
+- Host PC with operating system Ubuntu 6.06 or above
+
+4. Usage of this package 
+
+4.1 Install this package
+4.1.1 Download the Marvell packages:
+----PXA950_Android_Platform_<VERSION>_src.tgz  
+----PXA950_Android_Platform_<VERSION>_prebuilt_bin
+4.1.2 Type the following command to install:
+ $ mkdir [installed_directory]
+ $ cd [installed_directory]
+ $ tar xzf PXA950_Android_Platform_<VERSION>_src.tgz
+ $ cd src
+ $ ./setup_android.sh android (or you can directly use ./setup_android)
+Note: The android source code will be installed in [installed_directory]/src/android
+
+4.2 Building Android,Linux Kernel,Uboot
+
+4.2.1 Build Linux Kernel
+ $ cd src/android/kernel
+ $ sudo make kernel
+Note: The binaries will be generated under src/android/kernel/out/zImage
+
+4.2.2 Build Modules
+ $ cd src/android/kernel
+ $ sudo make modules
+Note: Please make kernel before making modules
+After a short while, the binaries will be generated under src/android/kernel/out/modules
+
+4.2.3 Buid PXA Android by:
+ $ cd [android_dir]
+ $ . build/envsetup.sh
+ $ chooseproduct evbpv2
+ $ export ANDROID_PREBUILT_MODULES=./kernel/out/modules
+ $ make -j4
+Note: If there is no modules, Please export ANDROID_PREBUILT_MODULES=no_kernel_modules
+Note: The binaries will be generated under src/android/out/target/product/evbpv2/.
+Note: Currently we use Android default toolchain version: arm-eabi-4.2.1 to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for arm-eabi-4.2.1. Please donot pecify other android toolchain version. 
+
+4.2.4 Building uboot
+ $ cd [android_dir]/boot
+ $ make uboot
+After a short while, the binary will be generated under src/android/boot/out/u-boot.bin
+
+4.3 Flashing images and boot system (128MB is set as default)
+4.3.1 Burn following binaries to flash by using the Marvell eXtreme Debugger.
+	TAVOR_LINUX_NTOBM.bin 		--> flash address 0x00000
+	u-boot.bin					--> flash address 0x80000
+
+4.3.2 Start your favorite terminal emulator with the appropriate 
+      COM port set to 115200,8N1. Power on the board and wait for TavorPV2>> prompt to appear
+
+4.3.3 Enter the following command to upload the kernel into the RAM and burn into flash:
+For OneNAND flash, issue the following commands:
+TavorPV2>>tftp zImage
+TavorPV2>>onenand erase 0x920000 0x300000
+TavorPV2>>onenand write 0x80800000 0x920000 0x300000
+
+Note 1: You need to configure the host network interface:
+   # ifconfig usb0 192.168.1.100 (for USB)
+   # ifconfig eth0 192.168.1.100 (for Ethernet)
+Note 2: uboot configures ethernet download as default. please use TavorPV2>> sw to switch to USB 
+
+4.3.4 Enter the following command to upload the system.img into the RAM and burn into flash:
+For OneNAND flash, issue the following commands:
+TavorPV2>>tftp system.img
+TavorPV2>>onenand erase 0x0c20000 0x7000000
+TavorPV2>onenand write.yaffs 0x80800000 0x0c20000 <actual-image-size>(Note: ony hex supported)
+
+4.3.5 Enter the following command to upload the userata.img into the RAM and burn into flash:
+For OneNAND flash, issue the following commands:
+TavorPV2>>tftp userdata.img
+TavorPV2>>onenand erase 0x7c20000 0x7000000
+TavorPV2>>onenand write.yaffs 0x80800000 0x7c20000 <actual-image-size>(Note: ony hex supported)
+
+4.3.6 Enter the following command to upload the ramdisk.img into the RAM and burn into flash:
+For OneNAND flash, issue the following commands:
+TavorPV2>>tftp ramdisk.img
+TavorPV2>>onenand erase 0xc0000 0x40000
+TavorPV2>>onenand write 0x80800000 0xc0000 0x40000
+Reboot the system.
+
+5.0 Known issues and workarounds
+
+----------------------------
+
+---------------------------------------------------------------------
+Disclaimer and Legal Information:
+---------------------------------------------------------------------
+No part of this document may be reproduced or transmitted in any 
+form or by any means, electronic or mechanical, including 
+photocopying and recording, for any purpose, without the express 
+written permission of Marvell. Marvell retains the right to make 
+changes to this document at any time, without notice. Marvell makes 
+no warranty of any kind, expressed or implied, with regard to any 
+information contained in this document, including, but not limited 
+to, the implied warranties of merchantability or fitness for any 
+particular purpose. Further, Marvell does not warrant the accuracy 
+or completeness of the information, text, graphics, or other items 
+contained within this document.
+ 
+Marvell products are not designed for use in life-support equipment 
+or applications that would cause a life-threatening situation if 
+any such products failed. Do not use Marvell products in these 
+types of equipment or applications.
+ 
+With respect to the products described herein, the user or 
+recipient, in the absence of appropriate U.S. government 
+authorization, agrees:
+ 
+1) Not to re-export or release any such information consisting of 
+technology, software or source code controlled for national 
+security reasons by the U.S. Export Control Regulations ("EAR"), 
+to a national of EAR Country Groups D:1 or E:2;
+ 
+2) Not to export the direct product of such technology or such 
+software, to EAR Country Groups D:1 or E:2, if such technology or 
+software and direct products thereof are controlled for national 
+security reasons by the EAR; and,
+ 
+3) In the case of technology controlled for national security 
+reasons under the EAR where the direct product of the technology 
+is a complete plant or component of a plant, not to export to 
+EAR Country Groups D:1 or E:2 the direct product of the plant or 
+major component thereof, if such direct product is controlled for 
+national security reasons by the EAR, or is subject to controls 
+under the U.S. Munitions List ("USML").
+ 
+At all times hereunder, the recipient of any such information 
+agrees that they shall be deemed to have manually signed this 
+document in connection with their receipt of any such information.
+ 
+Copyright (C) 2008. Marvell International Ltd. All rights reserved. 
+Marvell, the Marvell logo, Moving Forward Faster, Alaska, 
+AnyVoltage, CODECHANNEL, Fastwriter, Datacom Systems on Silicon, 
+DSP Switcher, Feroceon, GalNet, INTERPRINT, Libertas, Link Street, 
+MOBILEPRINT, NetGX, PHYAdvantage, Prestera, Raising The Technology 
+Bar, SUPERPRINT, SUPERQUEUE, The Technology Within, Virtual Cable 
+Tester, Yukon, ZJ, ZSCRIPT, ZX, and ZXSTREAM are registered 
+trademarks of Marvell. Ants,  Discovery, GalTis, Horizon, Marvell 
+Makes It All Possible, RADLAN, UniMAC, and VCT are trademarks of 
+Marvell.
+
+All other trademarks are the property of their respective 
+owners.
+
+Marvell Semiconductor, Inc.
+5488 Marvell Lane
+Santa Clara, CA 95054, USA
+Tel: 1.408.222.2500
+Fax: 1.408.752.9028
+Email: commsales@marvell.com
+
+
