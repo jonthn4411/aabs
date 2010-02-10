@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA920 Android Platform Release for Linux 
 Platform README 
-Last update: 1/12/2010
+Last update: 2/10/2010
 ==============================================================================
 
 1. Platform features
@@ -10,6 +10,8 @@ Last update: 1/12/2010
 - Do key pad mapping, touch for PXA920 DKB platform
 - HIFI playback on headset and speaker
 - Audio routing for phone earpiece and headset
+- Audio recorder for built-in Mic and headset Mic
+- Camera preview and still image capture by OV3640
 - Integrated touch calibration tool 
 - Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC500
 - Integrate IPP H.264 decoder for media player
@@ -20,17 +22,18 @@ Last update: 1/12/2010
 - Integrate Marvell RIL and telephony baseband
   - Support 2G vioce call and data call
   - Support 3G vioce call on DKB board
-  - Support SMS
-  - Support STK for 2G
+  - Support SMS/MMS
+  - Support STK
   - Support Modem function
   - Support DIAG
+  - Support SS/USSD
 
 1.2 BSP features
 Uboot
 - Boot from Nand/Onenand
 - Bownload from USB ethernet
 - Burn image into Nand/Onenand
-- Fash Bad block management
+- Flash Bad block management
 - Boot kernel with kernel command line
 - Voltage/Frequency change
 Linux-2.6.29
@@ -166,6 +169,9 @@ Linux-2.6.29
 	- GPRS/EDGE/WCDMA
 	    - automatic attach/detach
 	    - manual attach/detach
+	- RAT selection
+			- 2G only
+			- 3G only
 - Voice Call related	
 	- Call Control for 2G/3G
 	    - MO call
@@ -251,28 +257,28 @@ Linux-2.6.29
 	  - Make voice call
 
 1.4 Release package contents
-- PXA920_Android_Platform_Alpha3_prebuilt_bin.zip  :Pre-built bin binaries
-- PXA920_Android_Platform_Alpha3_src.tgz           :Source code tarball (patch mode)
-  - README.txt                                     :This readme.txt(include how to setup Android dir,build and burn flash)
-  - setup_android.sh                               :Script to setup Android directory
-  - android                                        :Source about Android
-     - android_patches                             :Patches against Android eclair
-     - marvell_manifest.xml                        :Manifest xml file to download Android eclair as a base
-     - vendor.tgz                                  :Non-Google projects in Android directory
-  - kernel                                         :Source about kernel 
-     - linux-2.6.29_patches                        :Kernel patches agaist Linux-2.6.29
-     - linux-2.6.29.tgz                            :Linux-2.6.29 base
-     - uboot_patches                               :Uboot patches agaist uboot
-     - uboot.tgz                                   :Uboot base
-     - obm.tgz                                     :OBM source code
-  - tools                                          :Compile tools
-     - arm-linux-4.1.1.tgz                         :Compile for compiling obm and uboot
+- ReleaseNotes.txt                                    :This readme.txt(include how to setup Android dir,build and burn flash)
+- PXA920_Android_Platform_Alpha4_prebuilt_bin.zip  :Pre-built bin binaries
+- PXA920_Android_Platform_Alpha4_src.tgz           :Source code tarball (patch mode)
+  - setup_android.sh                                 :Script help to setup Android code base from the xxx_src.tgz and xxx_patches.tgz
+  - android_patches.tgz                              :Marvell patches to Android Projects
+  - android_src.tgz                                  :Source code for projects added by Marvell
+  - marvell_manifest.xml                             :Manifest xml file to download Android eclair as a base
+  - kernel_patches.tgz                               :Marvell patches to kernel_src.tgz 
+  - kernel_src.tgz                                   :Kernel base source code
+  - uboot_patches.tgz                                :Marvell patches to uboot_src.tgz
+  - uboot_src.tgz                                    :Uboot base source code
+  - obm_src.tgz                                      :OBM source code
 
 2. System Requirements
 2.1 Hardware requirements
 - OneNAND flash 256-MB large block
 - DDR SDRAM 128 MB
 - PXA920 DKB Board
+  - Debug board: TD_DKB_DEBUG PCB100709 REV1.0 
+  - Core board: TD_DKB_CORE PCB030709 REV1.0
+  - RF board: TD_DKB_RF REV2.0
+  - MMI board: TD_DKB_MMI PCB170709 REV1.0 / TD_DKB_MMI PCB240909 REV2.0
 
 2.2 Software requirements
 - Host PC with operating system Ubuntu 6.06 or above
@@ -280,24 +286,22 @@ Linux-2.6.29
 3. Usage of this package 
 3.1 Install this package
 3.1.1 Download the Marvell packages:
-----PXA920_Android_Platform_Alpha3_src.tgz  
-----PXA920_Android_Platform_Alpha3_prebuilt_bin.zip
+----PXA920_Android_Platform_Alpha4_src.tgz  
+----PXA920_Android_Platform_Alpha4_prebuilt_bin.zip
 3.1.2 Type the following command to install:
  $ mkdir [installed_directory]
  $ cd [installed_directory]
- $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA920_Android_Platform_Alpha3_src.tgz
- $ unzip [The PATH you downloaded Marvell Packages]/PXA920_Android_Platform_Alpha3_prebuilt_bin.zip
-Note!!!***:[installed_directory] should use absolute directory, not relative directory.
+ $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA920_Android_Platform_Alpha4_src.tgz
 
 3.2 Setup Android directory
  $ mkdir [android_dir]
  $ cd [android_dir]
- $ repo init -u git://android.git.kernel.org/platform/manifest.git -b eclair
- $ cp [installed_directory]/src/android/marvell_manifest.xml .repo/manifests/ 
+ $ repo init -u git://android.git.kernel.org/platform/manifest -b master
+ $ cp [installed_directory]/src/marvell_manifest.xml .repo/manifest/
  $ repo init -m marvell_manifest.xml
  $ repo sync
- $ [installed_directory]/src/setup_android.sh [android_dir]
-Note!!!***:[android_dir] should use absolute directory, not relative directory. 
+ $ cd [installed_directory]/src
+ $ ./setup_android.sh [android_dir]
 
 3.3 Building Android,Linux Kernel,Uboot and OBM
 
@@ -341,12 +345,13 @@ Note: Please make uboot before making obm
 
 3.4 Flashing images and boot system (128MB is set as default)
 3.4.1 CP version
-        TD Alpha3                      --> TVRTD_CP01.06.001
+        TD Alpha4                       --> TVRTD_CP01.06.001
 3.4.2 Burn following binaries to flash by using the Marvell eXtreme Debugger.
         NTIM_OBM_UBOOT.bin              --> flash address 0x00000
         TTC_LINUX_NTOBM.bin             --> flash address 0x20000
         u-boot.bin                      --> flash address 0x40000
-        ramdisk.img                     --> falsh address 0xc0000
+        ramdisk.img                     --> flash address 0xc0000
+        ReliableData.bin	         	--> flash address 0x100000
         Arbel.bin                       --> flash address 0x120000
         TTC1_M06_AI_A0_Flash.bin        --> flash address 0x820000
 

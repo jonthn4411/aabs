@@ -34,7 +34,7 @@ Uboot
 - Boot from Nand/Onenand
 - Bownload from USB ethernet
 - Burn image into Nand/Onenand
-- Fash Bad block management
+- Flash Bad block management
 - Boot kernel with kernel command line
 - Voltage/Frequency change
 Linux-2.6.29
@@ -259,8 +259,8 @@ Linux-2.6.29
 	  - Send SMS
 	  - Make voice call
 
-1.3 Release package contents
-- RELEASENOTE.txt                                    :This readme.txt(include how to setup Android dir,build and burn flash)
+1.4 Release package contents
+- ReleaseNotes.txt                                    :This readme.txt(include how to setup Android dir,build and burn flash)
 - PXA910_Android_Platform_Alpha8.1_prebuilt_bin.zip  :Pre-built bin binaries
 - PXA910_Android_Platform_Alpha8.1_src.tgz           :Source code tarball (patch mode)
   - setup_android.sh                                 :Script help to setup Android code base from the xxx_src.tgz and xxx_patches.tgz
@@ -278,6 +278,10 @@ Linux-2.6.29
 - OneNAND flash 256-MB large block
 - DDR SDRAM 128 MB
 - PXA910 DKB Board
+  - Debug board: TD_DKB_DEBUG PCB100709 REV1.0 / TTC_DKB_DEBUG PCB080409 REV2.0
+  - Core board: TTC_DKB_CORE REV2.0
+  - RF board: TTC_DKB_RF REV2.0
+  - MMI board: TD_DKB_MMI PCB170709 REV1.0 / TD_DKB_MMI PCB240909 REV2.0
 
 2.2 Software requirements
 - Host PC with operating system Ubuntu 6.06 or above
@@ -344,13 +348,13 @@ Note: Please make uboot before making obm
 
 3.4 Flashing images and boot system (128MB is set as default)
 3.4.1 CP version
-        TTC Alpha8                      --> TTC_CP_03.00.008
+        TTC Alpha8.1                    --> TTC_CP_03.00.008
 3.4.2 Burn following binaries to flash by using the Marvell eXtreme Debugger.
         NTIM_OBM_UBOOT.bin              --> flash address 0x00000
         TTC_LINUX_NTOBM.bin             --> flash address 0x20000
         u-boot.bin                      --> flash address 0x40000
         ramdisk.img                     --> flash address 0xc0000
-        ReliableData.bin		--> flash address 0x100000
+        ReliableData.bin	         	--> flash address 0x100000
         Arbel.bin                       --> flash address 0x120000
         TTC1_M05_A0_AI_Flash.bin        --> flash address 0x820000
 
