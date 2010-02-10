@@ -79,9 +79,9 @@ Note 3: You need to configure the host network interface:
    # ifconfig usb0 192.168.1.100 
 Note 4: If you want to boot from nand flash. You have to burn ramdisk. Otherwise if will boot from MMC or NFS
 	You can burn ramdisk by tftp too.
-TTC_DKB>>nand erase 0xc0000 0x50000
+TTC_DKB>>nand erase 0xc0000 0x40000
 TTC_DKB>>tftp 0x1000000 ramdisk.img
-TTC_DKB>>nand write 0x1000000 0xc0000 0x50000
+TTC_DKB>>nand write 0x1000000 0xc0000 0x40000
 
 3.Enter the following command to upload the system.img into the RAM and burn into flash:
 For NAND flash, issue the following commands:
