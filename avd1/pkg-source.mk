@@ -7,7 +7,7 @@ INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbStack
 
 EXCLUDE_VCS=--exclude-vcs --exclude=.repo
 
-KERNEL_BASE_COMMIT:=e2984cbfddd5c8fac88b24d7e5f28e1cfb6f3838
+KERNEL_BASE_COMMIT:=c3a8e0eaafb438d5a7e6ca55c09b921291fcc1b1
 #UBOOT_BASE_COMMIT:=aced78d852d0b009e8aaa1445af8cb40861ee549
 
 ifeq ($(ANDROID_VERSION),donut)
