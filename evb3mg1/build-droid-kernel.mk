@@ -203,17 +203,9 @@ ifeq ($(ABS_PRODUCT_NAME),jilmg1)
 kernel_configs:=android:nfs:pxa968_android_nfs_defconfig
 kernel_configs+=android:slc:pxa968_android_defconfig:root
 endif
-ifeq ($(ABS_PRODUCT_NAME),dkbttc)
-kernel_configs:=android:mmc:pxa910_defconfig
-kernel_configs+=android:slc:pxa910_defconfig:root
-endif
 ifeq ($(ABS_PRODUCT_NAME),evb3mg1)
-kernel_configs:=android:mmc:pxa968_evb3_defconfig
-kernel_configs+=android:slc:pxa968_evb3_defconfig
-endif
-ifeq ($(ABS_PRODUCT_NAME),saarbpv2)
-kernel_configs:=android:mmc:pxa950_saarb_defconfig
-kernel_configs+=android:slc:pxa950_saarb_defconfig
+kernel_configs:=android:mmc:pxa968_defconfig
+kernel_configs+=android:slc:pxa968_defconfig
 endif
 
 export KERNEL_TOOLCHAIN_PREFIX
