@@ -55,7 +55,7 @@ if [ "$no_checkout" = "false" ]; then
 	if [ $? -ne 0 ]; then
 		exit 1
 	fi
-	echo "[$(get_date)]:restart the build_platforms.sh as $0 $@ no-checkout"
+	echo "[$(get_date)]:restart the build_platforms.sh as $0 $@ no-checkout" | tee -a $LOG
 	exec $0 $@ no-checkout
 fi
 
