@@ -69,7 +69,7 @@ for platform in $platforms; do
 		fi
 	fi
 
-	echo "[$(get_date)]:start to build:$platform" | tee -a $LOG
+	echo "[$(get_date)]:start to build:$platform $rlsname" | tee -a $LOG
 	if [ -x build-${platform}.sh ]; then
 		if [ "$dryrun_flag" == true ]; then
 			echo "will-run:./build-${platform}.sh clobber source pkgsrc publish email $rlsname" | tee -a $LOG
