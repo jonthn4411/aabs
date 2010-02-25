@@ -55,10 +55,12 @@ if [ "$no_checkout" = "false" ]; then
 	if [ $? -ne 0 ]; then
 		exit 1
 	fi
+	echo "[$(get_date)]:restart the build_platforms.sh as $0 $@ no-checkout"
+	exec $0 $@ no-checkout
 fi
 
 for platform in $platforms; do
-	echo platf:$platform
+	rlsname=
 	if [ ! ${platform%%:*} == "$platform" ]; then
 		rlsname=${platform##*:}
 		platform=${platform%%:*}
