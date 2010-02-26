@@ -26,15 +26,13 @@ PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_1):m:md5
 build_uboot_obm_$(1):
 	$$(log) "starting($(1)) to build uboot and obm"
 	$$(hide)cd $$(SRC_DIR)/$$(BOOT_SRC_DIR) && \
-	make uboot
-	#make all
+	make all
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
-
 	$$(log) "start to copy uboot and obm files"
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot.bin $$(OUTPUT_DIR)/$(1)
 	#$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTLOADER_1) $$(OUTPUT_DIR)/$(1)
-	#$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(OBM_NTIM_1)  $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)/$$(OBM_NTIM_1)_localbuilt
+	$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(OBM_NTIM_1)  $$(OUTPUT_DIR)/$(1)/$$(OBM_NTIM_1)_prebuilt
 	$$(log) "  done."
 
 endef
