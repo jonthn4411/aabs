@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA950 Android Platform Release for Linux 
 Platform ReleaseNotes
-Last update: 01/27/2010
+Last update: 02/02/2010
 ==============================================================================
 
 1. Platform features
@@ -19,7 +19,7 @@ Uboot
 - Boot from Nand/Onenand
 - Bownload from USB ethernet
 - Burn image into Nand/Onenand
-- Fash Bad block management
+- Flash Bad block management
 - Boot kernel with kernel command line
 - Voltage/Frequency change
 Linux-2.6.29
@@ -55,6 +55,10 @@ Linux-2.6.29
   - Support JPEG format
   - Support YUV420Planar, YUV422Planar and YUV422Packed format. 
   - Support to accept framebuf from user application.
+- OV5642
+  - Support to config pixel format
+  - Support to switch preview/image mode 
+  - Support still image with QVGA, VGA and HVGA resolution. 
 - SSP
   - Support to config it as I2S to transfer audio PCM data to outside code. 
 - Audio (use levante as outside audio codec)
@@ -108,86 +112,96 @@ Linux-2.6.29
   - Support USB charging
   - Support poweroff. (NOTE: if the system is not poweroff normally, the next boot time will be longer for the filesystem scan. )
 
+1.3 Telephony
+
 
 <VERSION>=
 ===========================================================================================
-2. Release package contents
+1.4 Release package contents
+- ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
 - PXA950_Android_Platform_<VERSION>_prebuilt_bin.zip	:Pre-built bin binaries
 - PXA950_Android_Platform_<VERSION>_src.tgz        	:Source code tarball (patch mode)
-  - ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
-  - setup_android.sh                               	:Script to setup Android directory
-  - android                                        	:Source about Android
-     - android_patches                             	:Patches against Android eclair
-     - marvell_manifest.xml                        	:Manifest xml file to download Android eclair as a base
-     - vendor.tgz                                  	:Non-Google projects in Android directory
-  - kernel                                         	:Source about kernel 
-     - linux-2.6.29_patches                        	:Kernel patches agaist Linux-2.6.29
-     - linux-2.6.29.tgz                            	:Linux-2.6.29 base
-     - uboot_patches                               	:Uboot patches agaist uboot
-     - uboot.tgz                                   	:Uboot base
-  - tools                                          	:Compile tools
-     - arm-linux-4.1.1.tgz                         	:Compile for compiling uboot
+  - setup_android.sh                                 	:Script help to setup Android code base from the xxx_src.tgz and xxx_patches.tgz
+  - android_patches.tgz                              	:Marvell patches to Android Projects
+  - android_src.tgz                                  	:Source code for projects added by Marvell
+  - marvell_manifest.xml                             	:Manifest xml file to download Android eclair as a base
+  - kernel_patches.tgz                               	:Marvell patches to kernel_src.tgz 
+  - kernel_src.tgz                                   	:Kernel base source code
+  - uboot_patches.tgz                                	:Marvell patches to uboot_src.tgz
+  - uboot_src.tgz                                    	:Uboot base source code
+  - obm_src.tgz                                      	:OBM source code
 
-3. System Requirements
-3.1 Hardware requirements
+2. System Requirements
+2.1 Hardware requirements
 - OneNAND flash 256-MB large block
-- DDR SDRAM 128 MB
-- PXA950 EVB3 Board
+- DDR SDRAM 256 MB
+- PXA950 EVB3PV2-B0 Board
 
-3.2 Software requirements
+2.2 Software requirements
 - Host PC with operating system Ubuntu 6.06 or above
 
-4. Usage of this package 
-
-4.1 Install this package
-4.1.1 Download the Marvell packages:
+3. Usage of this package 
+3.1 Install this package
+3.1.1 Download the Marvell packages:
 ----PXA950_Android_Platform_<VERSION>_src.tgz  
 ----PXA950_Android_Platform_<VERSION>_prebuilt_bin
-4.1.2 Type the following command to install:
+3.1.2 Type the following command to install:
  $ mkdir [installed_directory]
  $ cd [installed_directory]
- $ tar xzf PXA950_Android_Platform_<VERSION>_src.tgz
- $ cd src
- $ ./setup_android.sh android (or you can directly use ./setup_android)
-Note: The android source code will be installed in [installed_directory]/src/android
+ $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA950_Android_Platform_<VERSION>_src.tgz
 
-4.2 Building Android,Linux Kernel,Uboot
+3.2 Setup Android directory
+ $ mkdir [android_dir]
+ $ cd [android_dir]
+ $ repo init -u git://android.git.kernel.org/platform/manifest -b master
+ $ cp [installed_directory]/src/marvell_manifest.xml .repo/manifest/
+ $ repo init -m marvell_manifest.xml
+ $ repo sync
+ $ cd [installed_directory]/src
+ $ ./setup_android.sh [android_dir]
 
-4.2.1 Build Linux Kernel
- $ cd src/android/kernel
- $ sudo make kernel
-Note: The binaries will be generated under src/android/kernel/out/zImage
+3.3 Building Android,Linux Kernel,Uboot and OBM
 
-4.2.2 Build Modules
- $ cd src/android/kernel
- $ sudo make modules
+3.3.1 Build Linux Kernel
+ $ cd [android_dir]/kernel
+ $ make kernel
+After a short while, the binaries will be generated under [android]/kernel/out/zImage
+
+3.3.2 Build Modules
+ $ cd [android_dir]/kernel
+ $ make modules
 Note: Please make kernel before making modules
-After a short while, the binaries will be generated under src/android/kernel/out/modules
+After a short while, the binaries will be generated under [android]/kernel/out/modules
 
-4.2.3 Buid PXA Android by:
+3.3.3 Buid PXA Android by:
  $ cd [android_dir]
  $ . build/envsetup.sh
  $ chooseproduct evbpv2
- $ export ANDROID_PREBUILT_MODULES=./kernel/out/modules
+ $ export ANDROID_PREBUILT_MODULES=[android_dir]/kernel/out/modules
  $ make -j4
 Note: If there is no modules, Please export ANDROID_PREBUILT_MODULES=no_kernel_modules
 Note: The binaries will be generated under src/android/out/target/product/evbpv2/.
 Note: Currently we use Android default toolchain to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for google arm-eabi toolchain. Please donot pecify other android toolchain version. 
 
-4.2.4 Building uboot
+3.3.4 Building uboot
  $ cd [android_dir]/boot
  $ make uboot
-After a short while, the binary will be generated under src/android/boot/out/u-boot.bin
+After a short while, the binary will be generated under [android]/boot/out/u-boot.bin
 
-4.3 Flashing images and boot system (128MB is set as default)
-4.3.1 Burn following binaries to flash by using the Marvell eXtreme Debugger.
+3.3.5 Building OBM
+ $ cd [android_dir]/boot
+ $ make obm
+After a short while, the binary will be generated under [android]/boot/out/TAVOR_LINUX_NTOBM.bin
+
+3.4 Flashing images and boot system (128MB is set as default)
+3.4.1 Burn following binaries to flash by using the Marvell eXtreme Debugger.
 	TAVOR_LINUX_NTOBM.bin 		--> flash address 0x00000
 	u-boot.bin			--> flash address 0x80000
 
-4.3.2 Start your favorite terminal emulator with the appropriate 
+3.4.2 Start your favorite terminal emulator with the appropriate 
       COM port set to 115200,8N1. Power on the board and wait for TavorPV2>> prompt to appear
 
-4.3.3 Enter the following command to upload the kernel into the RAM and burn into flash:
+3.4.3 Enter the following command to upload the kernel into the RAM and burn into flash:
 For OneNAND flash, issue the following commands:
 TavorPV2>>tftp zImage
 TavorPV2>>onenand erase 0x920000 0x300000
@@ -198,26 +212,31 @@ Note 1: You need to configure the host network interface:
    # ifconfig eth0 192.168.1.100 (for Ethernet)
 Note 2: uboot configures ethernet download as default. please use TavorPV2>> sw to switch to USB 
 
-4.3.4 Enter the following command to upload the system.img into the RAM and burn into flash:
+3.4.4 Enter the following command to upload the system.img into the RAM and burn into flash:
+Note: uboot configures ethernet download as default. please use 'TavorPV2>>sw' to switch to USB 
+
 For OneNAND flash, issue the following commands:
 TavorPV2>>tftp system.img
 TavorPV2>>onenand erase 0x0c20000 0x7000000
-TavorPV2>onenand write.yaffs 0x80800000 0x0c20000 <actual-image-size>(Note: ony hex supported)
+TavorPV2>>onenand write.yaffs 0x80800000 0x0c20000 <actual-image-size>(Note: ony hex supported)
 
-4.3.5 Enter the following command to upload the userata.img into the RAM and burn into flash:
+3.4.5 Enter the following command to upload the userata.img into the RAM and burn into flash:
 For OneNAND flash, issue the following commands:
 TavorPV2>>tftp userdata.img
 TavorPV2>>onenand erase 0x7c20000 0x7000000
 TavorPV2>>onenand write.yaffs 0x80800000 0x7c20000 <actual-image-size>(Note: ony hex supported)
 
-4.3.6 Enter the following command to upload the ramdisk.img into the RAM and burn into flash:
+3.4.6 Enter the following command to upload the ramdisk.img into the RAM and burn into flash:
 For OneNAND flash, issue the following commands:
 TavorPV2>>tftp ramdisk.img
 TavorPV2>>onenand erase 0xc0000 0x40000
 TavorPV2>>onenand write 0x80800000 0xc0000 0x40000
 Reboot the system.
 
-5.0 Known issues and workarounds
+4. Known issues and workarounds
+4.1 How to disable GC500?
+	-remove system/lib/egl/egl.cfg from android rootfs
+
 
 ----------------------------
 
