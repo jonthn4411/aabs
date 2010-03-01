@@ -27,6 +27,7 @@ Files in this folder
   TTC_LINUX_NTOBM.bin			NTLoader image
   Arbel.bin				CP Arbel image
   TTC1_M06_AI_A0_Flash.bin		CP MSA image
+  ReliableData.bin                      IMEI
   
 -Kernel and Modules for Android [Currently for TTC/TD, zImage.android.slc and zImage.android.mmc is same]
   zImage.android.slc	Kernel image to boot android from SLC. A root file system is built in. 
@@ -56,6 +57,7 @@ Install OBM and Uboot
 	TTC_LINUX_NTOBM.bin 		--> flash address 0x20000
 	u-boot.bin			--> flash address 0x40000
 	ramdisk.img			--> flash address 0xc0000
+	ReliableData.bin		--> flash address 0x100000
 	Arbel.bin			--> flash address 0x120000
 	TTC1_M06_AI_A0_Flash.bin	--> flash address 0x820000
 	
