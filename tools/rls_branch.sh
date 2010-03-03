@@ -66,16 +66,9 @@ if [ ! -z "$3" ]; then
 	fi
 fi
 
+CWD=$(pwd)
 rls_branch=$2
-projects=$(repo forall -c "pwd" | sort)
-
-manifest_prj="$(pwd)/.repo/manifests"
-cd ${manifest_prj} &&
-sed -i "/revision=\"[^[:blank:]]*\"/s/revision=\"[^[:blank:]]*\"/revision=\"${rls_branch}\"/"  ./default.xml  &&
-git add ./default.xml &&
-git commit -s -m "${rls_branch}:enter release cycle" &&
-cd -;
-projects="$projects  ${manifest_prj}"
+projects=$(repo forall -c "echo \$(pwd):\$REPO_REMOTE" | sort)
 
 if [ -z "$projects" ]; then
 	echo "You should run this script in the root directory of android source code."
@@ -102,9 +95,10 @@ EOF
 chmod a+x $HOME/bin/git-ssh
 
 for prj in $projects; do
-	cd $prj 
-	echo "Handling project:$prj" 
-	rmt=$(git remote) 
+	prj_path=${prj%%:*}
+	rmt=${prj##*:}
+	cd $prj_path
+	echo "Handling project:$prj_path" 
 	if [ -z "$rmt" ]; then
 		echo "git remote returns nothing"
 		exit -1
@@ -128,4 +122,44 @@ for prj in $projects; do
 	fi
 	echo 
 done
+
+echo "Update manifest branch..."
+manifest_prj="${CWD}/.repo/manifests"
+if [ "$action" == "create" ]; then
+	cd ${manifest_prj}
+	if [ -z "$dryrun_flag" ]; then
+		sed -i "/revision=\"[^[:blank:]]*\"/s/revision=\"[^[:blank:]]*\"/revision=\"${rls_branch}\"/"  ./default.xml  &&
+		git add ./default.xml &&
+		git commit -s -m "${rls_branch}:enter release cycle"
+	fi
+	rmt=origin
+	account=$(get_account_to_use $rmt)
+	GIT_SSH=$HOME/bin/git-ssh GIT_SSH_USER=$account git push $dryrun_flag $rmt $head:refs/heads/$rls_branch
+
+	if [ $? -ne 0 ]; then
+		if [ -z "$dryrun_flag" ]; then
+			echo "pushing manifest branch failed, please do it manually, branch name ${rls_branch}."
+		else
+			echo "pushing manifest branch failed"
+		fi
+		exit -1
+	fi
+else
+	cd ${manifest_prj} 
+	rmt=origin
+	account=$(get_account_to_use $rmt)
+	GIT_SSH=$HOME/bin/git-ssh GIT_SSH_USER=$account git push $dryrun_flag $rmt :refs/heads/$rls_branch
+
+	if [ $? -ne 0 ]; then
+		if [ -z "$dryrun_flag" ]; then
+			echo "deleting manifest branch failed, please do it manually, branch name ${rls_branch}."
+		else
+			echo "deleting manifest branch failed"
+		fi
+		exit -1
+	fi
+fi
+
+echo "Success!"
+
 
