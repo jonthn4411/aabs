@@ -97,9 +97,9 @@ output_dir:
 .PHONY: clobber
 clobber:
 	$(log) "clean source directory..."
-	$(hide)rm -fr $(SRC_DIR)
+	$(hide)sudo rm -fr $(SRC_DIR)
 	$(log) "clean output directory..."
-	$(hide)rm -fr $(OUTPUT_DIR)
+	$(hide)sudo rm -fr $(OUTPUT_DIR)
 	$(log) "  done."
 	
 .PHONY: help
