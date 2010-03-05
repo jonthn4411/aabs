@@ -51,6 +51,9 @@ TOP_DIR:=$(shell pwd)
 SRC_DIR:=src.$(PRODUCT_CODE)$(RLS_SUFFIX)
 OUTPUT_DIR:=out.$(PRODUCT_CODE)$(RLS_SUFFIX)
 
+#number of concurrent jobs for make
+MAKE_JOBS:=8
+
 #We must initialize PUBLISHING_FILES_XXX to a simply expanded flavor variable
 define define-publish-files
 PUBLISHING_FILES_$(1):=
