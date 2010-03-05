@@ -180,7 +180,7 @@ endef
 #example: android:mlc:pxa168_android_mlc_defconfig:root
 # kernel_configs:=
 #
-kernel_configs:=android:mmc:dove_android_defconfig 
+kernel_configs:=android:mmc:dove_avng_y1_android_defconfig 
 
 export KERNEL_TOOLCHAIN_PREFIX
 export MAKE_JOBS
