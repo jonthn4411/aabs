@@ -8,7 +8,6 @@ DROID_PRODUCT:=dkbtd
 DROID_TYPE:=release
 DROID_VARIANT:=eng
 
-MAKE_JOBS:=4
 KERNELSRC_TOPDIR:=kernel
 
 .PHONY:clean_droid_kernel
