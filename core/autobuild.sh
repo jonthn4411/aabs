@@ -20,6 +20,19 @@ esac
 echo "$IP"
 }
 
+get_publish_server_ip()
+{
+	if [ -z "$PUBLISH_SERVER_IP_FILE" ]; then
+		echo $(get_ip)
+	else
+		if [ -r $PUBLISH_SERVER_IP_FILE ]; then
+			cat $PUBLISH_SERVER_IP_FILE
+		else
+			echo $(get_ip)
+		fi
+	fi
+}
+
 get_new_publish_dir()
 {
 	DATE=$(date +%Y-%m-%d)
@@ -121,11 +134,11 @@ generate_success_notification_email()
 	the package is changed since last day.
 
 	You can get the package from:
-		\\\\$(get_ip)${PUBLISH_DIR//\//\\}
+		\\\\$(get_publish_server_ip)${PUBLISH_DIR//\//\\}
 	or
-		http://$(get_ip)${PUBLISH_DIR}
+		http://$(get_publish_server_ip)${PUBLISH_DIR}
 	or
-		mount -t nfs $(get_ip):${PUBLISH_DIR} /mnt
+		mount -t nfs $(get_publish_server_ip):${PUBLISH_DIR} /mnt
 
 	The change log since last build is:
 

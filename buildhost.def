@@ -5,3 +5,6 @@ GIT_REPO=${GIT_ANDROID_ROOT}/tools/repo.git
 
 OFFICIAL_PUBLISH_DIR_BASE=/autobuild/android
 TEMP_PUBLISH_DIR_BASE=/autobuild/temp
+
+#file name that is to read the ip address of the publish server. If the file doesn't exists, ip address of the building host is used.
+PUBLISH_SERVER_IP_FILE=/autobuild/publish_server_ip
