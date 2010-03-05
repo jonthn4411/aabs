@@ -345,7 +345,7 @@ Note: Please make uboot before making obm
 
 3.4 Flashing images and boot system (128MB is set as default)
 3.4.1 CP version
-        TD Alpha4                       --> TVRTD_CP01.06.001
+        TD Alpha4                       --> TVRTD_CP01.06.006
 3.4.2 Burn following binaries to flash by using the Marvell eXtreme Debugger.
         NTIM_OBM_UBOOT.bin              --> flash address 0x00000
         TTC_LINUX_NTOBM.bin             --> flash address 0x20000
