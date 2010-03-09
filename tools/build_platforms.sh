@@ -21,6 +21,9 @@ function print_usage()
 
 LOG=build_platforms.log
 
+#enable pipefail so that if make fail the exit of whole command is non-zero value.
+set -o pipefail
+
 platforms=
 dryrun_flag=false
 no_checkout=false
@@ -42,19 +45,19 @@ echo "=========" | tee -a $LOG
 if [ "$no_checkout" = "false" ]; then
 	echo "[$(get_date)]:start to fetch AABS itself..." | tee -a $LOG
 	git fetch origin 2>&1 | tee -a $LOG
-	echo "[$(get_date)]:done" | tee -a $LOG
-
 	if [ $? -ne 0 ]; then
 		exit 1
 	fi
+	echo "[$(get_date)]:done" | tee -a $LOG
+
 
 	echo "[$(get_date)]:start to checkout origin/master..." | tee -a $LOG
 	git checkout origin/master 2>&1 | tee -a $LOG
-	echo "[$(get_date)]:done" | tee -a $LOG
-
 	if [ $? -ne 0 ]; then
 		exit 1
 	fi
+	echo "[$(get_date)]:done" | tee -a $LOG
+
 	echo "[$(get_date)]:restart the build_platforms.sh as $0 $@ no-checkout" | tee -a $LOG
 	exec $0 $@ no-checkout
 fi
