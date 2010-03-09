@@ -37,12 +37,11 @@ for flag in $@; do
 	esac
 done
 
-echo | tee -a $LOG
-echo "=========" | tee -a $LOG
-echo "New round:" | tee -a $LOG
-echo "=========" | tee -a $LOG
-
 if [ "$no_checkout" = "false" ]; then
+	echo "=========" | tee -a $LOG
+	echo "New round:" | tee -a $LOG
+	echo "=========" | tee -a $LOG
+
 	echo "[$(get_date)]:start to fetch AABS itself..." | tee -a $LOG
 	git fetch origin 2>&1 | tee -a $LOG
 	if [ $? -ne 0 ]; then
@@ -61,6 +60,8 @@ if [ "$no_checkout" = "false" ]; then
 	echo "[$(get_date)]:restart the build_platforms.sh as $0 $@ no-checkout" | tee -a $LOG
 	exec $0 $@ no-checkout
 fi
+
+echo | tee -a $LOG
 
 for platform in $platforms; do
 	rlsname=
