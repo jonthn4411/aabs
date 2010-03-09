@@ -78,7 +78,12 @@ for platform in $platforms; do
 		if [ "$dryrun_flag" == true ]; then
 			echo "will-run:./build-${platform}.sh clobber source pkgsrc publish email $rlsname" | tee -a $LOG
 		else
-			./build-${platform}.sh clobber source pkgsrc publish email $rlsname
+			if [ "$FLAG_TEMP_BUILD" = "true" ]; then
+				./build-${platform}.sh clobber source pkgsrc publish temp $rlsname
+			else
+
+				./build-${platform}.sh clobber source pkgsrc publish email $rlsname
+			fi
 		fi
 	else
 		echo "!!!./build-${platform}.sh not exist or not excutable" | tee -a $LOG

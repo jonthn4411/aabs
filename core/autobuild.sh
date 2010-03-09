@@ -351,6 +351,8 @@ if [ -z "$change_since_last_build" ]; then
 	if [ "$FLAG_FORCE" = "true" ]; then
 		echo "force flag is set, continue build."
 	else
+		echo "~~<result>PASS</result>"
+		echo "~~<result-details>No build</result-details>"
 		if [ "$FLAG_EMAIL" = "true" ]; then
 			echo "    sending nobuild email notification..." 2>&1 | tee -a $STD_LOG
 			send_nobuild_notification "$(make -f ${MAKEFILE} get_changelog_build)"
@@ -392,12 +394,15 @@ fi
 
 if [ $? -ne 0 ]; then #auto build fail, send an email
 	echo "error encountered!" 2>&1 | tee -a $STD_LOG
+	echo "~~<result>FAIL</result>"
 	if [ "$FLAG_EMAIL" = "true" ]; then
 		echo "    sending email notification..." 2>&1 | tee -a $STD_LOG
 		send_error_notification "$(make -f ${MAKEFILE} get_changelog_build)"
 	fi
 else
 	echo "build successfully. Cheers!Package:$PUBLISH_DIR " 2>&1 | tee -a $STD_LOG
+	echo "~~<result>PASS</result>"
+	echo "~~<result-dir>http://$(get_publish_server_ip)${PUBLISH_DIR}</result-dir>"
 	if [ "$FLAG_EMAIL" = "true" ]; then
 		echo "    sending email notification..." 2>&1 | tee -a $STD_LOG
 		send_success_notification
