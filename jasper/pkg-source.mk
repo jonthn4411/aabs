@@ -54,5 +54,5 @@ PUBLISHING_FILES+=kernel_patches.tgz:m:md5
 #PUBLISHING_FILES+=obm_src.tgz:m:md5 
 PUBLISHING_FILES+=marvell_manifest.xml:m
 PUBLISHING_FILES+=setup_android.sh:m
-PUBLISHING_FILES+=ReleaseNotes.txt:m
+PUBLISHING_FILES+=ReleaseNotes.doc:m
 
