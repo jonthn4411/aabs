@@ -26,9 +26,9 @@ install_android_source()
 		git init &&
 		git add * &&
 		git commit -s -m "init code from marvell"
+		check_result
 		cd -
 	done
-	check_result
 }
 
 apply_android_patches()
@@ -55,8 +55,8 @@ apply_android_patches()
 			exit 1
 		fi
 		git am $patch_root_dir/$android_patch	
+		check_result
 	done
-	check_result
 }
 
 install_kernel_source()
@@ -101,8 +101,8 @@ apply_kernel_patches()
 	cd $android_working_dir/kernel/kernel &&
 	for patch in $patch_list; do
 		git am $patch_root_dir/$patch	
+		check_result
 	done
-	check_result
 }
 
 install_uboot_source()
@@ -147,8 +147,8 @@ apply_uboot_patches()
 	cd $android_working_dir/boot/uboot &&
 	for patch in $patch_list; do
 		git am $patch_root_dir/$patch	
+		check_result
 	done
-	check_result
 }
 
 install_obm_source()
