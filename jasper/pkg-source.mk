@@ -12,7 +12,7 @@ KERNEL_BASE_COMMIT:=8e0ee43bc2c3e19db56a4adaa9a9b04ce885cd84
 ifeq ($(ANDROID_VERSION),donut)
 	DROID_BASE:=shgit/donut-release
 else
-	DROID_BASE:=shgit/$(ANDROID_VERSION)
+	DROID_BASE:=android-2.1_r2
 endif
 
 .PHONY:pkgsrc
