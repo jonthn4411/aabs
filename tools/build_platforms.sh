@@ -76,13 +76,13 @@ for platform in $platforms; do
 	echo "[$(get_date)]:start to build:$platform $rlsname" | tee -a $LOG
 	if [ -x build-${platform}.sh ]; then
 		if [ "$dryrun_flag" == true ]; then
-			echo "will-run:./build-${platform}.sh clobber source pkgsrc publish email $rlsname" | tee -a $LOG
+			echo "will-run:./build-${platform}.sh clobber source pkgsrc publish autotest email $rlsname" | tee -a $LOG
 		else
 			if [ "$FLAG_TEMP_BUILD" = "true" ]; then
 				./build-${platform}.sh clobber source pkgsrc publish temp $rlsname
 			else
 
-				./build-${platform}.sh clobber source pkgsrc publish email $rlsname
+				./build-${platform}.sh clobber source pkgsrc publish autotest email $rlsname
 			fi
 		fi
 	else

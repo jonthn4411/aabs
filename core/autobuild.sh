@@ -210,7 +210,7 @@ update_changelogs()
 
 print_usage()
 {
-	echo "Usage: $0 [clobber] [source] [pkgsrc] [publish] [email] [temp] [ccache] [mgcc] [force] [help]"
+	echo "Usage: $0 [clobber] [source] [pkgsrc] [publish] [email] [temp] [ccache] [mgcc] [force] [autotest] [help]"
 	echo "  clobber: do a clean build. Before build starts, the source code and output directory is removed first."
 	echo "  source: download the source code from GIT server."
 	echo "  publish:if build success, copy the result to publish dir."
@@ -220,6 +220,7 @@ print_usage()
 	echo "  ccache: using ccache to speedup the build process."
 	echo "  mgcc: enable to build targets with Marvell GCC."
 	echo "  force: no matter if there is any change since last build, always rebuild."
+	echo "  autotest: use submitBuildInfo.pl to inform QA a build is ready."
 	echo "  nobuild:don't build any targets."
 	echo "  help: print this list."
 }
@@ -260,6 +261,7 @@ FLAG_CCACHE=false
 FLAG_MGCC=false
 FLAG_FORCE=false
 FLAG_BUILD=true
+FLAG_AUTOTEST=false
 RELEASE_NAME=
 RLS_SUFFIX=
 
@@ -275,6 +277,7 @@ for flag in $*; do
 		mgcc)FLAG_MGCC=true;;
 		force)FLAG_FORCE=true;;
 		nobuild)FLAG_BUILD=false;;
+		autotest)FLAG_AUTOTEST=true;;
 		help) print_usage; exit 2;;
 		*) 
 		if [ ! "${flag%%:*}" == "${flag}" ] && [ "${flag%%:*}" == "rls" ]; then
@@ -390,6 +393,10 @@ if [ "$FLAG_PUBLISH" = "true" ]; then
 	echo "Project:$PRODUCT_NAME" > $LAST_BUILD &&
 	echo "Build-Num:$BUILD_NUM" >> $LAST_BUILD &&
 	echo "Package:$PUBLISH_DIR" >> $LAST_BUILD 
+fi &&
+
+if [ "$FLAG_PUBLISH" = "true" ] && [ "$FLAG_TEMP" = "false" ] && [ "$FLAG_AUTOTEST" = "true" ]; then
+	perl tools/submitBuildInfo.pl -link \\\\$(get_publish_server_ip)${PUBLISH_DIR//\//\\} 2>&1 | tee -a $STD_LOG
 fi
 
 if [ $? -ne 0 ]; then #auto build fail, send an email
@@ -407,7 +414,6 @@ else
 		echo "    sending email notification..." 2>&1 | tee -a $STD_LOG
 		send_success_notification
 	fi
-	perl tools/submitBuildInfo.pl -link \\\\$(get_publish_server_ip)${PUBLISH_DIR//\//\\} 2>&1 | tee -a $STD_LOG
 fi
 
 
