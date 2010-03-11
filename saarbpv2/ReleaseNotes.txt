@@ -147,7 +147,7 @@ Linux-2.6.29
  $ mkdir [android_dir]
  $ cd [android_dir]
  $ repo init -u git://android.git.kernel.org/platform/manifest -b master
- $ cp [installed_directory]/src/marvell_manifest.xml .repo/manifest/
+ $ cp [installed_directory]/src/marvell_manifest.xml .repo/manifests/
  $ repo init -m marvell_manifest.xml
  $ repo sync
  $ cd [installed_directory]/src
