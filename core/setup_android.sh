@@ -20,6 +20,7 @@ install_android_source()
 	cd $android_working_dir &&
 	files=$(find . -type f -name mrvl_base_src.tgz ) &&
 	for tarfile in $files; do
+		echo "    uncompressing tarfile:$tarfile ..."
 		cd $(dirname $tarfile) &&
 		tar xzvf mrvl_base_src.tgz &&
 		rm mrvl_base_src.tgz &&
@@ -49,6 +50,7 @@ apply_android_patches()
 	android_patch_list=$(find . -type f -name "*.patch" | sort) &&
 	for android_patch in $android_patch_list; do
 		android_project=$(dirname $android_patch)
+		echo "    applying patches on $android_project ..."
 		cd $android_working_dir/$android_project 
 		if [ $? -ne 0 ]; then
 			echo "$android_project does not exist in android_working_dir:$android_working_dir"
@@ -94,7 +96,7 @@ apply_kernel_patches()
 	tar xzvf $PKG_KERNELPATCH 
 	check_result
 
-	echo "  applying patches ..." 
+	echo "  applying kernel patches ..." 
 	cd kernel_patches &&
 	patch_root_dir=$(pwd) &&
 	patch_list=$(find . -type f -name "*.patch" | sort) &&
@@ -140,7 +142,7 @@ apply_uboot_patches()
 	tar xzvf $PKG_UBOOTPATCH 
 	check_result
 
-	echo "  applying patches ..." 
+	echo "  applying uboot patches ..." 
 	cd uboot_patches &&
 	patch_root_dir=$(pwd) &&
 	patch_list=$(find . -type f -name "*.patch" | sort) &&
@@ -190,7 +192,7 @@ if [ $? -ne 0 ]
 then
 	echo
 	echo
-	echo "FAIL: Install is aborted"
+	echo "FAIL: Install is aborted. Current working dir:$(pwd)"
 	echo	
 	exit 1
 fi
