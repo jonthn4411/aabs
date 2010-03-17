@@ -19,7 +19,7 @@ build_uboot_$(1):
 	make $$(UBOOT_CONFIG) && \
 	make 
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(UBOOT_SRC_DIR)/u-boot.bin $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(UBOOT_SRC_DIR)/out/u-boot.bin $$(OUTPUT_DIR)/$(1)
 	$$(log) "  done."
 endef
 
