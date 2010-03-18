@@ -49,7 +49,7 @@ get_new_publish_dir()
 	  fi
 	  index=$(( index + 1 ))
 	  BUILD_NUM=${DATE}_${index}
-	  PUBLISH_DIR=$PUBLISH_DIR_BASE/${BUILD_NUM}_${PRODUCT_CODE}
+	  PUBLISH_DIR=$PUBLISH_DIR_BASE/${BUILD_NUM}_${PRODUCT_CODE}${RLS_SUFFIX}
 	done
 }
 #$1: changelog.build
