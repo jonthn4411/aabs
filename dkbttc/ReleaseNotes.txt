@@ -354,9 +354,9 @@ Note: Please make uboot before making obm
         TTC_LINUX_NTOBM.bin             --> flash address 0x20000
         u-boot.bin                      --> flash address 0x40000
         ramdisk.img                     --> flash address 0xc0000
-        ReliableData.bin	         	--> flash address 0x100000
+        ReliableData.bin	        --> flash address 0x100000
         Arbel.bin                       --> flash address 0x120000
-        TTC1_M05_A0_AI_Flash.bin        --> flash address 0x820000
+        TTC1_M05_AI_A0_Flash.bin        --> flash address 0x820000
 
 3.4.3 Start your favorite terminal emulator with the appropriate 
       COM port set to 115200,8N1. Power on the board and wait for TTC_DKB>> prompt to appear
