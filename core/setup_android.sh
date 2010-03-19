@@ -25,7 +25,7 @@ install_android_source()
 		tar xzvf mrvl_base_src.tgz &&
 		rm mrvl_base_src.tgz &&
 		git init &&
-		git add * &&
+		git add ./. -f &&
 		git commit -s -m "init code from marvell"
 		check_result
 		cd -
@@ -78,7 +78,7 @@ install_kernel_source()
 	cp -p -r kernel $android_working_dir/kernel/ &&
 	cd $android_working_dir/kernel/kernel &&
 	git init &&
-	git add * &&
+	git add ./. -f &&
 	git commit -s -m "base code from marvell" 
 	
 	check_result
@@ -124,7 +124,7 @@ install_uboot_source()
 	cp -p -r uboot $android_working_dir/boot/ &&
 	cd $android_working_dir/boot/uboot &&
 	git init &&
-	git add * &&
+	git add ./. -f &&
 	git commit -s -m "base code from marvell" 
 	
 	check_result
@@ -170,7 +170,7 @@ install_obm_source()
 	cp -p -r obm $android_working_dir/boot/ &&
 	cd $android_working_dir/boot/obm &&
 	git init &&
-	git add * &&
+	git add ./. -f &&
 	git commit -s -m "base code from marvell" 
 	
 	check_result
