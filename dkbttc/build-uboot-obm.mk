@@ -8,8 +8,8 @@ define define-build-uboot-obm
 #m:means mandatory
 #o:means optional
 #md5: need to generate md5 sum
-PUBLISHING_FILES_$(1)+=$(1)/NTIM_OBM_UBOOT.bin:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/TTC_LINUX_NTOBM.bin:m:md5
+#PUBLISHING_FILES_$(1)+=$(1)/NTIM_OBM_UBOOT.bin:m:md5
+#PUBLISHING_FILES_$(1)+=$(1)/TTC_LINUX_NTOBM.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/Arbel.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/TTC1_M05_AI_A0_Flash.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/u-boot.bin:m:md5
@@ -20,7 +20,7 @@ PUBLISHING_FILES_$(1)+=$(1)/Arbel_NVM.mdb:m:md5
 .PHONY:build_uboot_obm_$(1)
 build_uboot_obm_$(1):
 	$$(hide)cd $$(SRC_DIR)/boot && \
-	make uboot obm
+	make uboot
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
 	$$(log) "start to copy obm and CP image files"
 	$$(hide)cp $$(SRC_DIR)/boot/out/* $$(OUTPUT_DIR)/$(1)
@@ -37,9 +37,9 @@ $(foreach bv, $(BUILD_VARIANTS), $(eval $(call define-build-uboot-obm,$(bv)) ) )
 
 .PHONY:clean_uboot_obm
 clean_uboot_obm:
-	$(log) "cleaning obm and uboot..."
+	$(log) "cleaning and uboot..."
 	$(hide)cd $(SRC_DIR)/boot && \
-	make clean_obm clean_uboot
-	$(log) "  clean obm and uboot  done."
+	make clean_uboot
+	$(log) "  clean and uboot  done."
 
 
