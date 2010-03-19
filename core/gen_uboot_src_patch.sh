@@ -28,10 +28,6 @@ cd .. &&
 mv uboot_src.tgz $output_dir &&
 rm -fr uboot &&
 cd $output_dir &&
-tar czf uboot_patches.tgz uboot_patches &&
-
-
-
-
+tar czf uboot_patches.tgz uboot_patches
 
 
