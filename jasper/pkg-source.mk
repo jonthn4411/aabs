@@ -29,8 +29,8 @@ pkgsrc: output_dir get_source_for_pkg
 	$(hide)echo "  package kernel source code..."
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_kernel_src_patch.sh $(KERNEL_BASE_COMMIT)
 
-#	$(hide)echo "  package uboot obm source code..."
-#	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_uboot_obm_src_patch.sh $(UBOOT_BASE_COMMIT)
+	$(hide)echo "  package uboot obm source code..."
+	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_uboot_src_patch.sh $(UBOOT_BASE_COMMIT)
 
 	$(hide)echo "  package android source code..."
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(TOP_DIR)/core
