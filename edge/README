@@ -101,17 +101,24 @@ Setup Android on NAND(MLC)
 Follow the below process and address to burn the zImage and system_ubi and userdata_ubi images.
 Boot the device with console, after uboot start up to console, stop autoboot by typing anything on console
 
+Edge>> tftp 0x1000000 u-boot.bin
+Edge>> sf erase 0x40000 0x40000
+Edge>> sf write 0x1000000 0x40000 0x40000 
+
+Edge>> tftp 0x1000000 zImage.android.mlc
+Edge>> sf erase 0x100000 0x300000
+Edge>> sf write 0x1000000 0x100000 0x300000 
+
 Edge>> nand device 0 
 Edge>> bbt init nand new
-Edge>> tftp 0x1000000 zImage.android.mlc
-Edge>> nand erase 0xA00000 0x380000
-Edge>> nand write 0x1000000 0xA00000 0x380000 
 Edge>> tftp 0x1000000 system_ubi.img
 Edge>> nand erase 0x1180000 0xEE80000
 Edge>> nand write 0x1000000 0x1180000 <size of loaded UBI image>
+
 Edge>> tftp 0x1000000 userdata_ubi.img
 Edge>> nand erase 0x10000000 0x70000000
 Edge>> nand write 0x1000000 0x10000000 <size of loaded UBI image>
+
 Edge>> setenv bootargs ubi.mtd=3 ubi.mtd=4 rootfstype=ubifs ip=192.168.1.101:192.168.1.100::255.255.255.0::usb0:on console=ttyS1,115200 mem=512M uart_dma pxastorage=4G init=/init android
 Edge>> saveenv
 
