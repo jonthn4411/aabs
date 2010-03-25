@@ -27,8 +27,8 @@ build_uboot_obm_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/Arbel.bin $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/Arbel_DIAG.mdb $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/Arbel_NVM.mdb $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/TTC1_M05_AI_A0_Flash.bin $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/ReliableData.bin $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/TTC1_M05_A0_AI_Flash.bin $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/reliabledata_trusted.rnd $$(OUTPUT_DIR)/$(1)
 	$$(log) "cp OBM and CP images  done."
 
 endef
