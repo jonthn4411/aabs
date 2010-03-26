@@ -204,8 +204,8 @@ After a short while, the binary will be generated under [android]/boot/out/TAVOR
 3.4.3 Enter the following command to upload the kernel into the RAM and burn into flash:
 For OneNAND flash, issue the following commands:
 TavorPV2>>tftp zImage
-TavorPV2>>onenand erase 0xa00000 0x400000
-TavorPV2>>onenand write 0x80800000 0xa00000 0x400000
+TavorPV2>>onenand erase 0x920000 0x300000
+TavorPV2>>onenand write 0x80800000 0x920000 0x300000
 
 Note 1: You need to configure the host network interface:
    # ifconfig usb0 192.168.1.100 (for USB)
@@ -217,20 +217,20 @@ Note: uboot configures ethernet download as default. please use 'TavorPV2>>sw' t
 
 For OneNAND flash, issue the following commands:
 TavorPV2>>tftp system.img
-TavorPV2>>onenand erase 0x0e40000 0x7000000
-TavorPV2>>onenand write.yaffs 0x80800000 0x0e40000 <actual-image-size>(Note: ony hex supported)
+TavorPV2>>onenand erase 0x0c20000 0x7000000
+TavorPV2>>onenand write.yaffs 0x80800000 0x0c20000 <actual-image-size>(Note: ony hex supported)
 
 3.4.5 Enter the following command to upload the userata.img into the RAM and burn into flash:
 For OneNAND flash, issue the following commands:
 TavorPV2>>tftp userdata.img
-TavorPV2>>onenand erase 0x7e40000 0x66c0000
-TavorPV2>>onenand write.yaffs 0x80800000 0x7e40000 <actual-image-size>(Note: ony hex supported)
+TavorPV2>>onenand erase 0x7c20000 0x7000000
+TavorPV2>>onenand write.yaffs 0x80800000 0x7c20000 <actual-image-size>(Note: ony hex supported)
 
 3.4.6 Enter the following command to upload the ramdisk.img into the RAM and burn into flash:
 For OneNAND flash, issue the following commands:
 TavorPV2>>tftp ramdisk.img
-TavorPV2>>onenand erase 0xe00000 0x40000
-TavorPV2>>onenand write 0x80800000 0xe00000 0x40000
+TavorPV2>>onenand erase 0xc0000 0x40000
+TavorPV2>>onenand write 0x80800000 0xc0000 0x40000
 Reboot the system.
 
 4. Known issues and workarounds
