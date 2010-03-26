@@ -11,9 +11,9 @@ define define-build-uboot-obm
 #PUBLISHING_FILES_$(1)+=$(1)/NTIM_OBM_UBOOT.bin:m:md5
 #PUBLISHING_FILES_$(1)+=$(1)/TTC_LINUX_NTOBM.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/Arbel.bin:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/TTC1_M05_AI_A0_Flash.bin:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/TTC1_M05_A0_AI_Flash.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/u-boot.bin:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/ReliableData.bin:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/reliabledata_trusted.rnd:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/Arbel_DIAG.mdb:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/Arbel_NVM.mdb:m:md5
 
