@@ -103,7 +103,7 @@ Linux-2.6.29
   - SDIO
     - Support WiFi SDIO card
 - WLAN
-  - Support SD8688
+  - Support SD8787
   - Support WPA 
 - Power supply
   - Support battery temperature measurement
