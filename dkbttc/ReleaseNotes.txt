@@ -342,6 +342,11 @@ After a short while, the binary will be generated under [android]/boot/out/u-boo
 3.4.1 CP version
         TTC Beta1                    --> TTC_CP_03.00.013
 3.4.2 Burn following binaries to flash by using Software Downloader. Please see <TTC2_DKB3_0_SWDownloader_GUI_User_Guide.doc>.
+1)       Please check your board, if the nand ID is JY504 (CS1), you can choose the configuration file:
+TTC2_DKB3_0_Linux_JY504_JY454.blf
+2)       Otherwise, if the nand ID is JY345(CS2), you can choose the configuration file:
+TTC2_DKB3_0_Linux_JW345.blf
+
         TTC2_DKB3_0_Loader_3_2_13_LINUX.bin  	                --> flash address 0x20000
         u-boot.bin                      			--> flash address 0x40000
         ramdisk.img                     			--> flash address 0xc0000
