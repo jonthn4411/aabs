@@ -17,6 +17,7 @@ Last update: 01/27/2010
 1.2 BSP features
 Uboot
 - Boot from Nand/Onenand
+- Boot from EMMC
 - Bownload from USB ethernet
 - Burn image into Nand/Onenand
 - Flash Bad block management
@@ -26,6 +27,7 @@ Linux-2.6.29
 - MTD devices
   - Support Nand
   - Support Onenand
+  - Support EMMC
   - Support Fash Bad block management
   - Support JFSS2
   - Support YAFFS
@@ -127,6 +129,7 @@ Linux-2.6.29
 2. System Requirements
 2.1 Hardware requirements
 - OneNAND flash 256-MB large block
+- EMMC
 - DDR SDRAM 128 MB
 - PXA950 SAARB Board
 
@@ -184,47 +187,49 @@ After a short while, the binary will be generated under [android]/boot/out/u-boo
 3.3.5 Building OBM
  $ cd [android_dir]/boot
  $ make obm
-After a short while, the binary will be generated under [android]/boot/out/TAVOR_SAAR_PV_NTOBM_ONENAND_MODE1.bin
+After a short while, the binary will be generated under [android]/boot/out/TAVOR_LINUX_NTOBM.bin
 
-3.4 Flashing images and boot system (128MB is set as default)
-3.4.1 Burn following binaries to flash by using the Marvell eXtreme Debugger.
-	TAVOR_SAAR_PV_NTOBM_ONENAND_MODE1.bin		--> flash address 0x00000
-	u-boot.bin					--> flash address 0x80000
+3.4 Burn images and boot system
+3.4.1 Burn following binaries to EMMC by using the Marvell eXtreme Debugger 5.0.
+	TAVOR_LINUX_NTOBM.bin				--> address 0x00000
+	u-boot.bin					--> address 0x80000
 
 3.4.2 Start your favorite terminal emulator with the appropriate 
       COM port set to 115200,8N1. Power on the board and wait for TavorPV2>> prompt to appear
 
-3.4.3 Enter the following command to upload the kernel into the RAM and burn into flash:
-For OneNAND flash, issue the following commands:
+3.4.3 Enter the following command to upload the kernel image into the RAM and burn into flash:
+For EMMC, issue the following commands:
 TavorPV2>>tftp zImage
-TavorPV2>>onenand erase 0x920000 0x300000
-TavorPV2>>onenand write 0x80800000 0x920000 0x300000
+TavorPV2>>mmc write 0x4908 0x17f8
 
 Note 1: You need to configure the host network interface:
    # ifconfig usb0 192.168.1.100 (for USB)
    # ifconfig eth0 192.168.1.100 (for Ethernet)
 Note 2: uboot configures ethernet download as default. please use TavorPV2>> sw to switch to USB 
 
-3.4.4 Enter the following command to upload the system.img into the RAM and burn into flash:
+3.4.4 Enter the following command to upload the system image into the RAM and burn into flash:
 Note: uboot configures ethernet download as default. please use 'TavorPV2>>sw' to switch to USB 
 
-For OneNAND flash, issue the following commands:
-TavorPV2>>tftp system.img
-TavorPV2>>onenand erase 0x0c20000 0x7000000
-TavorPV2>>onenand write.yaffs 0x80800000 0x0c20000 <actual-image-size>(Note: ony hex supported)
+For EMMC, issue the following commands:
+TavorPV2>>tftp system_ext3.img
+TavorPV2>>mmc write 0x6100 0x2d000
 
-3.4.5 Enter the following command to upload the userata.img into the RAM and burn into flash:
-For OneNAND flash, issue the following commands:
-TavorPV2>>tftp userdata.img
-TavorPV2>>onenand erase 0x7c20000 0x7000000
-TavorPV2>>onenand write.yaffs 0x80800000 0x7c20000 <actual-image-size>(Note: ony hex supported)
+3.4.5 Enter the following command to upload the userata image into the RAM and burn into flash:
+For EMMC, issue the following commands:
+TavorPV2>>tftp userdata_ext3.img
+TavorPV2>>mmc write 0x33100 0x2d000
 
-3.4.6 Enter the following command to upload the ramdisk.img into the RAM and burn into flash:
-For OneNAND flash, issue the following commands:
+3.4.6 Enter the following command to upload the ramdisk image into the RAM and burn into flash:
+For EMMC, issue the following commands:
 TavorPV2>>tftp ramdisk.img
-TavorPV2>>onenand erase 0xc0000 0x40000
-TavorPV2>>onenand write 0x80800000 0xc0000 0x40000
+TavorPV2>>mmc write 0x600 0x200
+
+3.4.7 Enter the following command to upload the mbr into the RAM and burn into flash:
+For EMMC, issue the following commands:
+TavorPV2>>tftp mbr
+TavorPV2>>mmc write 0x4900 0x1
 Reboot the system.
+
 
 4. Known issues and workarounds
 4.1 How to disable GC500?
