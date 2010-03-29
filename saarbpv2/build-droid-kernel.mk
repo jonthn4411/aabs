@@ -54,12 +54,12 @@ build_droid_root_$(1): output_dir
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/root $$(OUTPUT_DIR)/$(1) 
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext3.img $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext3.img $$(OUTPUT_DIR)/$(1)
 	$(log) "  done"
 ##!!## first time publish: all for two
-PUBLISHING_FILES_$(1)+=$(1)/userdata.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/system.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/userdata_ext3.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/system_ext3.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
 endef
 
@@ -134,8 +134,8 @@ package_droid_slc_$(1)_$(2):
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS) && \
 	echo "    copy  image files..." && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(2)/system.img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(2)/userdata.img 
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext3.img $$(OUTPUT_DIR)/$(2)/system_ext3.img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext3.img $$(OUTPUT_DIR)/$(2)/userdata_ext3.img 
 	$$(log) "  done for package_droid_slc_$(1)_$(2)."
 
 ##!!## second time publish: all for two
