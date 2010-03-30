@@ -35,6 +35,11 @@ function get_account_to_use()
 		return
 	fi
 
+	if [ "$1" == "wtptp_pxa930git" ]; then
+		echo "ptkadm"
+		return
+	fi
+
 	if [ "$1" == "origin" ]; then
 		echo "androidadm"
 		return
