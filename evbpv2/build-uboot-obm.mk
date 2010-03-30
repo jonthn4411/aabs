@@ -17,7 +17,7 @@ define define-build-uboot-obm
 #m:means mandatory
 #o:means optional
 #md5: need to generate md5 sum
-PUBLISHING_FILES+=$(1)/u-boot.bin:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/u-boot.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_1):m:md5
 #PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTLOADER_1):m:md5
 
