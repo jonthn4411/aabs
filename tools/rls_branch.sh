@@ -35,7 +35,7 @@ function get_account_to_use()
 		return
 	fi
 
-	if [ "$1" == "wtptp_pxa930git" ]; then
+	if [ "$1" == "ptkgit" ]; then
 		echo "ptkadm"
 		return
 	fi
