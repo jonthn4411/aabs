@@ -176,7 +176,7 @@ After a short while, the binaries will be generated under [android]/kernel/out/m
  $ export ANDROID_PREBUILT_MODULES=[android_dir]/kernel/out/modules
  $ make -j4
 Note: If there is no modules, Please export ANDROID_PREBUILT_MODULES=no_kernel_modules
-Note: The binaries will be generated under src/android/out/target/product/evbpv2/.
+Note: The binaries will be generated under src/android/out/target/product/saarbpv2/.
 Note: Currently we use Android default toolchain to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for google arm-eabi toolchain. Please donot pecify other android toolchain version. 
 
 3.3.4 Building uboot
@@ -191,8 +191,11 @@ After a short while, the binary will be generated under [android]/boot/out/TAVOR
 
 3.4 Burn images and boot system
 3.4.1 Burn following binaries to EMMC by using the Marvell eXtreme Debugger 5.0.
-	TAVOR_LINUX_NTOBM.bin				--> address 0x00000
-	u-boot.bin					--> address 0x80000
+Notes:
+Configuration:CPU-JTAG->Target Connection: (usb:).
+JTAG->SOC->PXA9xx->PXA950_CPU.xdb->Burn Flash, EMMC.
+	TAVOR_LINUX_NTOBM.bin	    --> address 0x00000
+	u-boot.bin		    --> address 0x80000
 
 3.4.2 Start your favorite terminal emulator with the appropriate 
       COM port set to 115200,8N1. Power on the board and wait for TavorPV2>> prompt to appear
