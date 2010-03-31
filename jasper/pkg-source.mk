@@ -31,7 +31,7 @@ pkgsrc: output_dir get_source_for_pkg
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_kernel_src_patch.sh $(KERNEL_BASE_COMMIT)
 
 	$(hide)echo "  package uboot obm source code..."
-	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_uboot_src_patch.sh $(UBOOT_BASE_COMMIT)
+	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_uboot_obm_src_patch.sh $(UBOOT_BASE_COMMIT)
 
 	$(hide)echo "  package android source code..."
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(TOP_DIR)/core
@@ -52,7 +52,7 @@ PUBLISHING_FILES+=kernel_src.tgz:m:md5
 PUBLISHING_FILES+=kernel_patches.tgz:m:md5 
 PUBLISHING_FILES+=uboot_src.tgz:m:md5 
 PUBLISHING_FILES+=uboot_patches.tgz:m:md5 
-#PUBLISHING_FILES+=obm_src.tgz:m:md5 
+PUBLISHING_FILES+=obm_src.tgz:m:md5 
 PUBLISHING_FILES+=marvell_manifest.xml:m
 PUBLISHING_FILES+=setup_android.sh:m
 PUBLISHING_FILES+=ReleaseNotes.doc:m
