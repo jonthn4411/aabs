@@ -16,6 +16,7 @@ PUBLISHING_FILES_$(1)+=$(1)/u-boot.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/reliabledata_trusted.rnd:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/Arbel_DIAG.mdb:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/Arbel_NVM.mdb:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/ramdisk_no_gui.img:m:md5
 
 .PHONY:build_uboot_obm_$(1)
 build_uboot_obm_$(1):
@@ -29,6 +30,7 @@ build_uboot_obm_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/Arbel_NVM.mdb $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/TTC1_M05_A0_AI_Flash.bin $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/reliabledata_trusted.rnd $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/ramdisk_no_gui.img $$(OUTPUT_DIR)/$(1)
 	$$(log) "cp OBM and CP images  done."
 
 endef
