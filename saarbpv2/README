@@ -21,29 +21,33 @@ Files in this folder
  If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
  
 -OBM and UBoot
+    TAVOR_LINUX_NTOBM.bin		uboot for saarbpv2
+    u-boot.bin				NTLoader image
  
-  u-boot.bin				uboot for saarbpv2
-  TAVOR_SAAR_PV_NTOBM_ONENAND_MODE1.bin NTLoader image
-  
 -Kernel and Modules for Android [Currently for saarbpv2, zImage.android.slc and zImage.android.mmc is same]
-  zImage.android.slc	Kernel image to boot android from SLC. A root file system is built in. 
-  zImage.android.mmc    Kernel image for mmc and nfs usage
+  zImage.android	Kernel image to boot android from EMMC. A root file system is built in. 
 
 -Android File Systems
-  system.img		 Android system image for  file system.
-  userdata.img		 Android userdata image for  file system.
-  ramdisk.img		 Android root image for file system.
+  system.img_ext3	    Android system image for  file system.
+  userdata.img_ext3	    Android userdata image for  file system.
+  ramdisk.img		    Android root image for file system.
 
 saarbpv2 Flashing images and boot system
 
 Install OBM and Uboot
 ============================
-1. install XDB EMU 2.1 from: \\sh1sbak009\Product_Integration\Tools\EMU 2.1, configuration file: ttc_ptap_mhk.xsf
+3.4.1 Burn following binaries to EMMC by using the
+Notes:
+Configuration:CPU-JTAG->Target Connection: (usb:).
+JTAG->SOC->PXA9xx->PXA950_CPU.xdb->Burn Flash, EMMC.
+1. install XDB EMU 2.1 from: \\sh1sbak009\Product_Integration\Tools\ Marvell eXtreme Debugger 5.0.
+Configuration:CPU-JTAG->Target Connection: (usb:).
+JTAG->SOC->PXA9xx->PXA950_CPU.xdb->Burn Flash, EMMC.
 2.Burn following binaries to flash by using the Marvell eXtreme Debugger.
-	TAVOR_SAAR_PV_NTOBM_ONENAND_MODE1.bin		--> flash address 0x00000
-	u-boot.bin					--> flash address 0x80000
+	TAVOR_LINUX_NTOBM.bin	    --> address 0x00000
+	u-boot.bin		    --> address 0x80000
 	
-Setup Android on OneNAND
+Setup Android on EMMC
 ===========================
 1.Start your favorite terminal emulator with the appropriate 
 	COM port set to 115200,8N1. Power on hte board and wait for TavorPV2>> prompt to appear
@@ -52,32 +56,34 @@ Setup Android on OneNAND
 For NAND flash, issue the following commands:
 Use tftp to down load images:
 
+For EMMC, issue the following commands:
 TavorPV2>>tftp zImage
-TavorPV2>>onenand erase 0x920000 0x300000
-TavorPV2>>onenand write 0x80800000 0x920000 0x300000
+TavorPV2>>mmc write 0x4908 0x17f8
+
+TavorPV2>>tftp system_ext3.img
+TavorPV2>>mmc write 0x6100 0x2d000
+
+TavorPV2>>tftp userdata_ext3.img
+TavorPV2>>mmc write 0x33100 0x2d000
 
 TavorPV2>>tftp ramdisk.img
-TavorPV2>>onenand erase 0xc0000 0x40000
-TavorPV2>>onenand write 0x80800000 0xc0000 0x40000
+TavorPV2>>mmc write 0x600 0x200
 
-TavorPV2>>tftp system.img
-TavorPV2>>onenand erase 0x0c20000 0x7000000
-TavorPV2>onenand write.yaffs 0x80800000 0x0c20000 <actual-image-size>(Note: ony hex supported)
+TavorPV2>>tftp mbr
+TavorPV2>>mmc write 0x4900 0x1
+Reboot the system.
 
-TavorPV2>>tftp userdata.img
-TavorPV2>>onenand erase 0x7c20000 0x7000000
-TavorPV2>>onenand write.yaffs 0x80800000 0x7c20000 <actual-image-size>(Note: ony hex supported)
 
 Note 1: All the following images should copy to the host tftp share directory:
 	zImage
-	system.img
-	userdata.img
+	system.img_ext3
+	userdata.img_ext3
 	ramdisk.img
-Note 2: You need to first input "sw" to switch to usb eth, and then, input "tftp 0x1000000 zImage", then connect the USB micro-line between the host PC and the saarb board
+Note 2: You need to first input "sw" to switch to usb eth, and then, input "tftp zImage", then connect the USB micro-line between the host PC and the saarb board
 Note 3: You need to configure the host network interface:
 	# ifconfig usb0 192.168.1.100 
 
-Setup Android on OneNAND
+Setup Android on NFS
 ===========================
 1)  Burn all images except for ramdisk.img. [zImage.android.mmc can be used]
 2)  Setup nfs on host. Host ip is 192.168.1.100 and android rootfs should be put to /nfs/android
@@ -89,7 +95,7 @@ FAQ
 
 +Kernel failed to bootup
 ----------------------------------------------------------------
-Update your uboot image and try again.
+Update your obm/uboot image and try again.
 
 
 +How to disable GC500 completly
