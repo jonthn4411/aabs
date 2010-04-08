@@ -6,7 +6,7 @@ Last update: 04/02/2010
 
 1. Platform features
 1.1 Supported Components
-- Rebase to google android eclair branch
+- Rebase to google android eclair 2.1_r2 branch
 - Do key pad mapping, touch for PXA920 DKB platform
 - HIFI playback on headset and speaker
 - Audio routing for phone earpiece and headset
@@ -90,7 +90,7 @@ Linux-2.6.29
   - Support 2.5mm Jack
   - Support headset and MICIN detection. (The audio server application will setup the audio path base on the detection event automatically)
   - Support on-board mic
-- Touch screen (TPO touch)
+- Touch screen (ELAN and TPO touch)
   - Support pen attach, move, detach and time stamp. 
 - Keypad
   - Support Key down, up, repeat and time stamp. 
@@ -146,6 +146,7 @@ Linux-2.6.29
 	- Port flow control
 	- Ring buffer flow control
 	- send/receive Msocket data
+	- Msocket Priority control
 - DIAG	
 	- ACAT-Diag over USB
 	- ACAT-Diag over SD card
@@ -294,13 +295,13 @@ Linux-2.6.29
  $ mkdir [android_dir]
  $ cd [android_dir]
  $ repo init -u git://android.git.kernel.org/platform/manifest -b master
- $ cp [installed_directory]/src/marvell_manifest.xml .repo/manifest/
+ $ cp [installed_directory]/src/marvell_manifest.xml .repo/manifests/
  $ repo init -m marvell_manifest.xml
  $ repo sync
  $ cd [installed_directory]/src
  $ ./setup_android.sh [android_dir]
 
-3.3 Building Android,Linux Kernel,Uboot and OBM
+3.3 Building Android,Linux Kernel,Uboot
 
 3.3.1 Build Linux Kernel
  $ cd [android_dir]/kernel
@@ -345,7 +346,7 @@ TVTD_DKB3_0_Linux_JW345.blf
 
         TVTD_DKB3_0_Loader_3_2_13_LINUX.bin  	                --> flash address 0x20000
         u-boot.bin                      			--> flash address 0x40000
-        ramdisk.img                     			--> flash address 0xc0000
+        ramdisk.img                     			--> flash address 0xc0000 [ramdisk_no_gui.img --> flash address 0xc0000: used for audio/RF calibration]
         reliabledata_trusted.rnd        			--> flash address 0x100000
         Arbel.bin                       			--> flash address 0x120000
         TTC1_M06_AI_A0_Flash.bin        			--> flash address 0x820000
