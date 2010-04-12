@@ -36,17 +36,20 @@ saarbpv2 Flashing images and boot system
 
 Install OBM and Uboot
 ============================
-3.4.1 Burn following binaries to EMMC by using the
-Notes:
+Burn following binaries to EMMC using Marvell eXtreme Debugger 5.0(XDB_5_0_Beta2-20100324)
 Configuration:CPU-JTAG->Target Connection: (usb:).
-JTAG->SOC->PXA9xx->PXA950_CPU.xdb->Burn Flash, EMMC.
-1. install XDB EMU 2.1 from: \\sh1sbak009\Product_Integration\Tools\ Marvell eXtreme Debugger 5.0.
-Configuration:CPU-JTAG->Target Connection: (usb:).
-JTAG->SOC->PXA9xx->PXA950_CPU.xdb->Burn Flash, EMMC.
-2.Burn following binaries to flash by using the Marvell eXtreme Debugger.
+JTAG->SOC->PXA9xx->PXA950_CPU.xdb->Burn Flash->
+    Board:pxa950
+    Flash:EMMC
+    Burn as binary File
+    Erase affected blocks
+    Enable new BBM
+Choose partition 0 & 1
 	TAVOR_LINUX_NTOBM.bin	    --> address 0x00000
+Choose partition 0
 	u-boot.bin		    --> address 0x80000
-	
+
+
 Setup Android on EMMC
 ===========================
 1.Start your favorite terminal emulator with the appropriate 

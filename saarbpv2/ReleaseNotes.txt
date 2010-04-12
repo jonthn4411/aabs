@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA950 Android Platform Release for Linux 
 Platform ReleaseNotes
-Last update: 01/27/2010
+Last update: 04/13/2010
 ==============================================================================
 
 1. Platform features
@@ -191,11 +191,18 @@ Notes: kernel should be built before uboot as uboot will get cmd info from kerne
 After a short while, the binary will be generated under [android]/boot/out/TAVOR_LINUX_NTOBM.bin
 
 3.4 Burn images and boot system
-3.4.1 Burn following binaries to EMMC by using the Marvell eXtreme Debugger 5.0.
+3.4.1 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.0(XDB_5_0_Beta2-20100324)
 Notes:
 Configuration:CPU-JTAG->Target Connection: (usb:).
-JTAG->SOC->PXA9xx->PXA950_CPU.xdb->Burn Flash, EMMC.
+JTAG->SOC->PXA9xx->PXA950_CPU.xdb->Burn Flash->
+    Board:pxa950
+    Flash:EMMC
+    Burn as binary File
+    Erase affected blocks
+    Enable new BBM
+Choose partition 0 & 1
 	TAVOR_LINUX_NTOBM.bin	    --> address 0x00000
+Choose partition 0
 	u-boot.bin		    --> address 0x80000
 
 3.4.2 Start your favorite terminal emulator with the appropriate 
