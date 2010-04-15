@@ -204,6 +204,7 @@ kernel_configs+=android:slc:pxa950_defconfig
 endif
 ifeq ($(ABS_PRODUCT_NAME),saarbmg1)
 kernel_configs:=android:mmc:pxa968_defconfig
+kernel_configs+=android:slc:pxa968_defconfig
 endif
 
 export KERNEL_TOOLCHAIN_PREFIX
