@@ -4,9 +4,11 @@ BOOT_SRC_DIR:=boot
 BOOT_OUT_DIR:=$(BOOT_SRC_DIR)/out
 UBOOT:=u-boot.bin
 OBM_NTIM_1:=ntim_mmp2_nand_bbu_ddr.bin
-OBM_DESC_1:=ntim_mmp2_nand_bbu_ddr_elipda_512m.txt
+OBM_DESC_1:=ntim_mmp2_emmc_ddr_elipda_512m.txt
 OBM_NTLOADER_1:=MMP2_NTLOADER_3_2_15.bin
 WTM:=WtmUnresetPJ4.bin
+PARTITION_BIN:=partition.bin
+PARTITION_DESC:=partition.txt
 
 
 #$1:build variant
@@ -20,6 +22,9 @@ PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTLOADER_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(OBM_DESC_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(WTM):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(PARTITION_BIN):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(PARTITION_DESC):m:md5
+
 
 .PHONY:build_uboot_obm_$(1)
 build_uboot_obm_$(1):
@@ -34,6 +39,8 @@ build_uboot_obm_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_DESC_1) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(WTM) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(PARTITION_BIN) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(PARTITION_DESC) $$(OUTPUT_DIR)/$(1) 
 	$$(log) "  done."
 
 endef
