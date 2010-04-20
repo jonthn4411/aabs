@@ -61,6 +61,18 @@ function gen_log_lastbuild()
 			i=$(( $i + 1 ))
 		done	
 		echo >> $output_file
+	else
+		#If the HEAD's SHA1 is not equal to the commit, and there is no log generated,
+		#in this case we shall still generate a log and force the build to continue.
+		#This can be a) the commit is lost due to force update the branch. b) the commit is later than HEAD.
+		head_commit=$(git rev-parse HEAD)
+		if [ ! "${commit}" == "${head_commit}" ]; then
+			echo "----------------" >> $output_file
+			echo "-prj:$CURRENT_PRJNAME:+the project's branch was force updated. Need attention! [$CURRENT_PRJORG]" >> $output_file
+			echo "----------------" >> $output_file
+
+			echo "    *Last commit:${commit}; current HEAD's commit:${head_commit}" >> $output_file
+		fi 
 	fi
 }
 
