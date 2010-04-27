@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA910 Android Platform Release for Linux 
 Platform README 
-Last update: 03/23/2010
+Last update: 04/27/2010
 ==============================================================================
 
 1. Platform features
@@ -29,7 +29,7 @@ Last update: 03/23/2010
 1.2 BSP features
 Uboot
 - Boot from Nand/Onenand
-- Bownload from USB ethernet
+- Download from USB ethernet
 - Burn image into Nand/Onenand
 - Flash Bad block management
 - Boot kernel with kernel command line
@@ -71,11 +71,6 @@ Linux-2.6.29
   - Support JPEG format
   - Support YUV420Planar, YUV422Planar and YUV422Packed format. 
   - Support to accept framebuf from user application.
-- OV7670 
-  - Support to config pixel format
-  - Support to switch image/video mode 
-  - Support still image with QVGA, VGA and HVGA resolution. 
-  - Support video with QVGA, VGA and HVGA resolution. 
 - OV3640
   - Support to config pixel format
   - Support to switch image/video mode 
@@ -125,17 +120,17 @@ Linux-2.6.29
   - SDIO
     - Support WiFi SDIO card
 - WLAN
-  - Support SD8688
+  - Support SD8787
   - Support WPA 
 - BT
   - Support SD8787
   - Support A2DP profile
 - Power supply
-  - Support battery temperature measurement
   - Support battery capacity measurement. (it is not accurate.)
   - Support USB supply
   - Support USB charging
   - Support poweroff. (NOTE: if the system is not poweroff normally, the next boot time will be longer for the filesystem scan. )
+  - Support reboot.
 - Sensors
   - g sensor (lis3lv02d)
 - MISC
@@ -256,9 +251,10 @@ Linux-2.6.29
 
 1.4 Release package contents
 - ReleaseNotes.txt                                   :This readme.txt(include how to setup Android dir,build and burn flash)
-- PXA910_Android_Platform_Beta1_prebuilt_bin.zip  :Pre-built bin binaries
-- PXA910_Android_Platform_Beta1_src.tgz           :Source code tarball (patch mode)
-  - setup_android.sh                                 :Script help to setup Android code base from the xxx_src.tgz and xxx_patches.tgz
+- PXA910_Android_Platform_Beta1.1_prebuilt_bin.zip   :Pre-built bin binaries
+- PXA910_Android_Platform_Beta1.1_src.tgz00          :Source code tarball (patch mode),part1
+- PXA910_Android_Platform_Beta1.1_src.tgz01          :Source code tarball (patch mode),part2
+  - setup_android.sh                                 :Script help to setup Android code base
   - android_patches.tgz                              :Marvell patches to Android Projects
   - android_src.tgz                                  :Source code for projects added by Marvell
   - marvell_manifest.xml                             :Manifest xml file to download Android eclair as a base
@@ -266,8 +262,8 @@ Linux-2.6.29
   - kernel_src.tgz                                   :Kernel base source code
   - uboot_patches.tgz                                :Marvell patches to uboot_src.tgz
   - uboot_src.tgz                                    :Uboot base source code
-- OBM_source.rar                                     :OBM source code(windows version)
-- SWD_GUI_1.5_RC3.rar                                :Software downloader  
+  - obm_src.tgz                                      :OBM source code
+- SWD_GUI_2.0_RC4_linux.zip                          :Software downloader  
 
 2. System Requirements
 2.1 Hardware requirements
@@ -285,12 +281,14 @@ Linux-2.6.29
 3. Usage of this package 
 3.1 Install this package
 3.1.1 Download the Marvell packages:
-----PXA910_Android_Platform_Beta1_src.tgz  
-----PXA910_Android_Platform_Beta1_prebuilt_bin.zip
+----PXA910_Android_Platform_Beta1.1_src.tgz00  
+----PXA910_Android_Platform_Beta1.1_src.tgz01  
+----PXA910_Android_Platform_Beta1.1_prebuilt_bin.zip
+ $ cat PXA910_Android_Platform_Beta1.1_src.tgz00 PXA910_Android_Platform_Beta1.1_src.tgz01 > PXA910_Android_Platform_Beta1.1_src.tgz
 3.1.2 Type the following command to install:
  $ mkdir [installed_directory]
  $ cd [installed_directory]
- $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA910_Android_Platform_Beta1_src.tgz
+ $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA910_Android_Platform_Beta1.1_src.tgz
 
 3.2 Setup Android directory
  $ mkdir [android_dir]
@@ -336,9 +334,16 @@ After a short while, the binary will be generated under [android]/kernel/out/tel
  $ make uboot
 After a short while, the binary will be generated under [android]/boot/out/u-boot.bin
 
+3.3.6 Building obm
+ $ cd [android_dir]/boot
+ $ make obm
+After a short while, the binary and configuration will be generated under [android]/boot/out/SWD_GUI_2.0
+You can copy all the files to overwrite [SW_Downloader_Dir] on the host PC.
+
+
 3.4 Flashing images and boot system (256MB is set as default)
 3.4.1 CP version
-        TTC Beta1                    --> TTC_CP_03.00.013
+        TTC Beta1.1                    --> TTC_CP_03.00.016
 3.4.2 Burn following binaries to flash by using Software Downloader. Please see <TTC2_DKB3_0_SWDownloader_GUI_User_Guide.doc>.
 1)       Please check your board, if the nand ID is JY504 (CS1), you can choose the configuration file:
 TTC2_DKB3_0_Linux_JY504_JY454.blf
