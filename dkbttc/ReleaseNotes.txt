@@ -11,12 +11,13 @@ Last update: 04/27/2010
 - HIFI playback on headset and speaker
 - Audio routing for phone earpiece and headset
 - Audio recorder for built-in Mic and headset Mic
-- Camera preview and still image capture by OV3640
+- Camera preview, still image capture and camcorder by OV3640
 - Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC500
-- Integrate IPP H.264 decoder for media player
-- Integrate IPP MPEG-4 decoder for media player
-- Integrate IPP AAC version decoder for media player
-- Integrate IPP MP3 version decoder for media player
+- Integrate 8787 WIFI and BT, including A2DP etc profiles
+- Integrate IPP C&M H.264 baseline profile decoder for media player
+- Integrate IPP C&M MPEG-4 simple profile decoder for media player
+- Integrate IPP AAC decoder for media player
+- Integrate IPP MP3 decoder for media player
 - Integrate Marvell RIL and telephony baseband
   - Support 2G vioce call and data call
   - Support 3G vioce call and data call
@@ -124,7 +125,7 @@ Linux-2.6.29
   - Support WPA 
 - BT
   - Support SD8787
-  - Support A2DP profile
+  - Support A2DP profile (BT on UART is not support. Only SDIO interface is enabled. )
 - Power supply
   - Support battery capacity measurement. (it is not accurate.)
   - Support USB supply
@@ -135,7 +136,33 @@ Linux-2.6.29
   - g sensor (lis3lv02d)
 - MISC
 
-1.3 Telephony
+1.3 Multimedia features
+- IPP C&M based video codecs	
+	- H.264 BP decoder
+	- MPEG-4 SP decoder
+- IPP WMMX optimized video codecs	
+	- H.264 BP decoder
+	- H.263 P0/P3 decoder
+	- MPEG-4 SP/ASP decoder
+	- MPEG-2 MP decoder
+	- WMV/VC-1 SP/MP decoder
+	- H.264 BP encoder
+	- H.263 P0/P3 encoder
+	- MPEG-4 SP encoder
+- IPP WMMX optimized image codecs		
+	- JPEG baseline/progressive decoder
+	- JPEG baseline/progressive encoder
+- IPP WMMX optimized audio and speech codecs		
+	- MP3 decoder
+	- AAC decoder
+	- WMA decoder
+	- AAC LC encoder
+	- AMR-WB decoder
+	- AMR-WB encoder
+	- AMR-NB decoder
+	- AMR-NB encoder
+	
+1.4 Telephony
 - Msocket(shared memory + ACIPC)	
 	- Share memory mechanism(2 ring buffer)
 	- Handshake mechanism(ACIPC)
@@ -249,7 +276,7 @@ Linux-2.6.29
 	  - Send SMS
 	  - Make voice call
 
-1.4 Release package contents
+1.5 Release package contents
 - ReleaseNotes.txt                                   :This readme.txt(include how to setup Android dir,build and burn flash)
 - PXA910_Android_Platform_Beta1.1_prebuilt_bin.zip   :Pre-built bin binaries
 - PXA910_Android_Platform_Beta1.1_src.tgz00          :Source code tarball (patch mode),part1
