@@ -196,7 +196,7 @@ After a short while, the binary will be generated under [android]/boot/out/TAVOR
 3.4 Flashing images and boot system (128MB is set as default)
 3.4.1 Burn following binaries to flash by using the Marvell eXtreme Debugger.
 	TAVOR_LINUX_NTOBM.bin 		--> flash address 0x00000
-	u-boot.bin			--> flash address 0x80000
+	u-boot.bin			--> flash address 0x140000
 
 3.4.2 Start your favorite terminal emulator with the appropriate 
       COM port set to 115200,8N1. Power on the board and wait for TavorPV2>> prompt to appear
