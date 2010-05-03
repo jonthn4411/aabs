@@ -40,7 +40,7 @@ Install OBM and Uboot
 1. install XDB EMU 2.1 from: \\sh1sbak009\Product_Integration\Tools\EMU 2.1, configuration file: ttc_ptap_mhk.xsf
 2.Burn following binaries to flash by using the Marvell eXtreme Debugger.
     TAVOR_LINUX_NTOBM.bin 	--> flash address 0x00000
-    u-boot.bin			--> flash address 0x80000
+    u-boot.bin			--> flash address 0x140000
 	
 Setup Android on OneNAND
 ===========================
