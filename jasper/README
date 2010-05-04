@@ -117,7 +117,7 @@ MMP2>> mmc write 0x6400 0x4000 0x1100000
 MMP2>> t system_ext2.img
 MMP2>> mmc write 0xA400 0x3C000 0x1100000
 MMP2>> t userdata_ext2.img
-MMP2>> mmc write 0x46400 0x32000 0x1100000 
+MMP2>> mmc write 0x46400 0x4B000 0x1100000 
 
 when you done, power off mmp2, and power again to boot it from emmc.
 Note : Reboot is not workable.
