@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA950 Android Platform Release for Linux 
 Platform ReleaseNotes
-Last update: 04/13/2010
+Last update: 05/05/2010
 ==============================================================================
 
 1. Platform features
@@ -11,22 +11,20 @@ Last update: 04/13/2010
 - Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC500
 - Integrate IPP/MVED H.264 decoder for media player
 - Integrate IPP/MVED MPEG-4 decoder for media player
-- Integrate IPP/MVED AAC version decoder for media player
-- Integrate IPP/MVED MP3 version decoder for media player
+- Integrate IPP AAC version decoder for media player
+- Integrate IPP MP3 version decoder for media player
 
 1.2 BSP features
 Uboot
-- Boot from Nand/Onenand
+- 4K page Onenand
 - Boot from EMMC
 - Bownload from USB ethernet
 - Burn image into Nand/Onenand
 - Flash Bad block management
 - Boot kernel with kernel command line
-- Voltage/Frequency change
 Linux-2.6.29
 - MTD devices
-  - Support Nand
-  - Support Onenand
+  - Support 4K page Onenand
   - Support EMMC
   - Support Fash Bad block management
   - Support JFSS2
@@ -49,7 +47,7 @@ Linux-2.6.29
   - Support backlight control
   - Support FB interface
   - Support pan display
-  - Support HVGA resolution display
+  - Support VGA resolution display
   - Support RGB565, RGB888Packed, RGB888Unpacked, YUV420planar, YUV422planar and YUV422Packed format. 
 - Camera (CCIC)
   - Support V4L2 interface
@@ -57,8 +55,12 @@ Linux-2.6.29
   - Support JPEG format
   - Support YUV420Planar, YUV422Planar and YUV422Packed format. 
   - Support to accept framebuf from user application.
+  - Support Camera Sensor: OmniVision 7690, 5642
 - SSP
   - Support to config it as I2S to transfer audio PCM data to outside code. 
+- ABU
+  - ABU D0 Record/Playback
+  - ABU D1 Playback is not supported
 - Audio (use levante as outside audio codec)
   - Support ALSA interface
   - Support to playback Audio
@@ -90,16 +92,15 @@ Linux-2.6.29
     - HNP and SRP are NOT support
   - Client
     - Support ethernet, mass storage, adb and diag drivers.
-    - Support composite devie.
+    - Support composite device (ADB+Mass storage).
     - Support hot attach and detach
 - MMC/SD
   - MMC4.3/SD2.0
     - Support partition
     - Support hot plug-in and remove
-    - Support lock and unlock
-    - Support write protect switch
   - SDIO
-    - Support WiFi SDIO card
+    - Support BT/WiFi SDIO card (8787)
+- Bluetooth/WLAN: 8787 stamp card.
 - Power supply
   - Support battery temperature measurement
   - Support battery capacity measurement. (it is not accurate.)
@@ -110,7 +111,7 @@ Linux-2.6.29
 1.3 Telephony
 
 
-<VERSION>=
+<VERSION>=ul4.1d
 ===========================================================================================
 1.4 Release package contents
 - ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
@@ -245,6 +246,8 @@ Reboot the system.
 4. Known issues and workarounds
 4.1 How to disable GC500?
 	-remove system/lib/egl/egl.cfg from android rootfs
+4.2 The screen will drifted when unlock screen or drag the start menu.
+	-it is caused by GC500 issue and to be fixed in next release
 
 
 ----------------------------
