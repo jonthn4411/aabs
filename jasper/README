@@ -87,17 +87,28 @@ Install Adobe Flash plugin
   
 Burning OBM and UBoot
 =====================
-1. install XDB 4.1.1 from: \\sh1sbak009\debugger_public\Engineering_Release\EMU_AddOn\EMU 2.1
-2. Get binary from \\sh1sbak009\embedded_os\Temp\mhu4\eMMC
-3. Burn OBM and U-boot by XDB
-   1) Use flash burn tool: flash --> burn flash, use default config
-   2) Initial a new flash
-   3) Erase all blocks
-   4) Make sure NOT select "erase affected blocks"
-   5) Burn ntim_mmp2_nand_bbu_ddr.bin to 0x0
-   6) Burn MMP2_JASPER_Loader_3_2_13.bin to 0x80000
-   7) Burn WtmUnresetPJ4.bin to 0xc0000
-   8) Burn u-boot.bin to 0x100000
+1. install XDB 5.0 alpha2 from: \\sh1sbak009\debugger_public\Official_Release\eXtreme_Debugger_v5.0_Beta2
+2. Get nand or emmc version binary from autobuild server
+3. Flashing OBM and U-boot into NAND using XDB
+   1)Use flash burn tool: flash --> burn flash
+   2)Initialize a new flash and Erase all blocks
+   3)burn file "ntim_mmp2_nand_bbu_ddr.bin"  		address --> 0x0
+   4)burn file "MMP2_JASPER_Loader_3_2_15.bin"		address --> 0x80000
+   5)burn file "WtmUnresetPJ4.bin"		        address --> 0xc0000
+   6)burn file "u-boot.bin"				address --> 0x100000
+
+4. Flashing OBM and U-boot into EMMC using XDB
+   1)Use flash burn tool: flash --> burn flash
+   2)Choose flash: NAND Flash
+   3)Erase All Blocks to erase the nand autoboot obm
+   4)Choose flash: EMMC flash and click Detect button to detect emmc partition
+   5)Choose partition 0x1
+      a)Burn file “ntim_mmp2_nand_bbu_ddr.bin”		address --> 0x0
+      b)Burn file “partition.bin”			address --> 0x600
+   6)Choose partition 0x0
+      c)burn file "MMP2_NTLOADER_3_2_15.bin"		address --> 0x80000
+      d)burn file "WtmUnresetPJ4.bin"	              	address --> 0xc0000
+      e)burn file "u-boot.bin"				address --> 0x100000
 
 Setup Android on NAND(emmc)
 =========================
