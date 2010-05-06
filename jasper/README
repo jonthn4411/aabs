@@ -103,8 +103,8 @@ Burning OBM and UBoot
    3)Erase All Blocks to erase the nand autoboot obm
    4)Choose flash: EMMC flash and click Detect button to detect emmc partition
    5)Choose partition 0x1
-      a)Burn file “ntim_mmp2_nand_bbu_ddr.bin”		address --> 0x0
-      b)Burn file “partition.bin”			address --> 0x600
+      a)Burn file "ntim_mmp2_nand_bbu_ddr.bin"		address --> 0x0
+      b)Burn file "partition.bin"			address --> 0x600
    6)Choose partition 0x0
       c)burn file "MMP2_NTLOADER_3_2_15.bin"		address --> 0x80000
       d)burn file "WtmUnresetPJ4.bin"	              	address --> 0xc0000
