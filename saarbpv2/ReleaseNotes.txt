@@ -192,7 +192,8 @@ Notes: kernel should be built before uboot as uboot will get cmd info from kerne
 After a short while, the binary will be generated under [android]/boot/out/TAVOR_LINUX_NTOBM.bin
 
 3.4 Burn images and boot system
-3.4.1 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.0(XDB_5_0_Beta2-20100324)
+3.4.1 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.0
+(\\sh1sbak009\Debugger_public\Official_Release\eXtreme_Debugger_v5.0_Beta2)
 Notes:
 Configuration:CPU-JTAG->Target Connection: (usb:).
 JTAG->SOC->PXA9xx->PXA950_CPU.xdb->Burn Flash->

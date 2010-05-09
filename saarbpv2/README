@@ -36,7 +36,8 @@ saarbpv2 Flashing images and boot system
 
 Install OBM and Uboot
 ============================
-Burn following binaries to EMMC using Marvell eXtreme Debugger 5.0(XDB_5_0_Beta2-20100324)
+Burn following binaries to EMMC using Marvell eXtreme Debugger 5.0
+(\\sh1sbak009\Debugger_public\Official_Release\eXtreme_Debugger_v5.0_Beta2)
 Configuration:CPU-JTAG->Target Connection: (usb:).
 JTAG->SOC->PXA9xx->PXA950_CPU.xdb->Burn Flash->
     Board:pxa950
