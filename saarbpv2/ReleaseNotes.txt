@@ -241,8 +241,12 @@ TavorPV2>>mmc write 0x600 0x200
 For EMMC, issue the following commands:
 TavorPV2>>tftp mbr
 TavorPV2>>mmc write 0x4900 0x1
-Reboot the system.
 
+3.4.8 Enter the following command to upload the pxafs image into the RAM and burn into flash:
+For EMMC, issue the following commands:
+TavorPV2>>tftp pxafs_ext2.img
+TavorPV2>>mmc write 0x60100 0x2d000
+Reboot the system.
 
 4. Known issues and workarounds
 4.1 How to disable GC500?

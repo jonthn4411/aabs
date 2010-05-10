@@ -76,6 +76,9 @@ TavorPV2>>mmc write 0x600 0x200
 
 TavorPV2>>tftp mbr
 TavorPV2>>mmc write 0x4900 0x1
+
+TavorPV2>>tftp pxafs_ext2.img
+TavorPV2>>mmc write 0x60100 0x2d000
 Reboot the system.
 
 
