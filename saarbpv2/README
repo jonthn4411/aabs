@@ -38,7 +38,8 @@ Install OBM and Uboot
 ============================
 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.0
 (\\sh1sbak009\Debugger_public\Official_Release\eXtreme_Debugger_v5.0_Beta2)
-Configuration:CPU-JTAG->Target Connection: (usb:).
+Configuration:
+Setting->CPU-JTAG->Target Connection: (usb:).
 JTAG->SOC->PXA9xx->PXA950_CPU.xdb->Burn Flash->
     Board:pxa950
     Flash:EMMC
