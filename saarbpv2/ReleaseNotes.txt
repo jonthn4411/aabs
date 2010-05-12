@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA950 Android Platform Release for Linux 
 Platform ReleaseNotes
-Last update: 05/05/2010
+Last update: 05/13/2010
 ==============================================================================
 
 1. Platform features
@@ -179,6 +179,12 @@ After a short while, the binaries will be generated under [android]/kernel/out/m
 Note: If there is no modules, Please export ANDROID_PREBUILT_MODULES=no_kernel_modules
 Note: The binaries will be generated under src/android/out/target/product/saarbpv2/.
 Note: Currently we use Android default toolchain to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for google arm-eabi toolchain. Please donot pecify other android toolchain version. 
+
+3.3.4 Building telephony
+ $ cd [android_dir]/kernel
+ $ make telephony
+Note: Please make android before making telephony
+After a short while, the binary will be generated under [android]/kernel/out/telephony/pxafs_ext2.img
 
 3.3.4 Building uboot
  $ cd [android_dir]/boot
