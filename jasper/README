@@ -110,6 +110,11 @@ Burning OBM and UBoot
       d)burn file "WtmUnresetPJ4.bin"	              	address --> 0xc0000
       e)burn file "u-boot.bin"				address --> 0x100000
 
+How to Disable GC800
+=====================
+remove or rename egl.cfg which located in /system/lib/egl/
+
+
 Setup Android on NAND(emmc)
 =========================
 
@@ -146,8 +151,7 @@ Second, burning the zImage.android.mmc image.
 Boot the device with console,
 MMP2>> sw         // Set the interface to u2o-eth
 MMP2>> t zImage.android
-MMP2>> nand erase 0x980000 0x300000
-MMP2>> nand write 0x1100000 0x980000 0x300000 
+MMP2>> mmc write 0x4c00 0x1800 0x1100000
 
 Note : erase ramdisk first if you want to boot from sdcard
 
