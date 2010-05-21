@@ -36,19 +36,31 @@ function gen_log()
 
 #$1: output file
 #$2: commit
+#$3: milestone: milestone log which shows commits in both branches.
 function gen_log_lastbuild()
 {
 	local output_file=${1}
 	local commit=${2}
+	local ms=${3}
 
 	declare -a COMMITS
 	local len=0
-	while read line; do
-		if [ ! -z "$line" ]; then
-			COMMITS[$len]=$line
-			len=$(( $len + 1 ))
-		fi
-	done < <(git --no-pager log ${commit}..HEAD --pretty="format:%s [%an][%h][%ci]%n")
+
+	if [ -z "$ms" ]; then
+		while read line; do
+			if [ ! -z "$line" ]; then
+				COMMITS[$len]=$line
+				len=$(( $len + 1 ))
+			fi
+		done < <(git --no-pager log ${commit}..HEAD --pretty="format:%s [%an][%h][%ci]%n")
+	else
+		while read line; do
+			if [ ! -z "$line" ]; then
+				COMMITS[$len]=$line
+				len=$(( $len + 1 ))
+			fi
+		done < <(git --no-pager log ${commit}...HEAD --left-right --boundary --cherry-pick --topo-order --pretty="format:%m%s [%an][%h][%ci]%n")
+	fi
 
 	if [ $len -gt 0 ]; then
 		echo "----------------" >> $output_file
@@ -146,6 +158,50 @@ function parse_lastrel_file()
   fi
 }
 
+function parse_last_ms1_file()
+{
+  local line
+  line=$(grep "[:blank:]*Package:" $1)
+  LAST_MS1_PACKAGE=${line##*Package:}
+
+  line=$(grep "[:blank:]*Version:" $1)
+  LAST_MS1_VERSION=${line##*Version:}
+
+  line=$(grep "[:blank:]*Build-Num:" $1)
+  LAST_MS1_BUILDNUM=${line##*Build-Num:}
+
+  if [ -z "$LAST_MS1_PACKAGE" ] || [ -z "$LAST_MS1_VERSION" ] || [ -z "$LAST_MS1_BUILDNUM" ]; then
+    echo "Invalid format of LAST_MS1 file: $1"
+    return 2
+  fi
+  if [ ! -r "$LAST_MS1_PACKAGE/manifest.xml" ] || [ ! -r "$LAST_MS1_PACKAGE/abs.commit" ]; then
+    echo "Can't read manifest.xml or abs.commit in LAST_MS1_PACKAGE:$LAST_MS1_PACKAGE"
+    return 3
+  fi
+}
+
+function parse_last_ms2_file()
+{
+  local line
+  line=$(grep "[:blank:]*Package:" $1)
+  LAST_MS2_PACKAGE=${line##*Package:}
+
+  line=$(grep "[:blank:]*Version:" $1)
+  LAST_MS2_VERSION=${line##*Version:}
+
+  line=$(grep "[:blank:]*Build-Num:" $1)
+  LAST_MS2_BUILDNUM=${line##*Build-Num:}
+
+  if [ -z "$LAST_MS2_PACKAGE" ] || [ -z "$LAST_MS2_VERSION" ] || [ -z "$LAST_MS2_BUILDNUM" ]; then
+    echo "Invalid format of LAST_MS2 file: $1"
+    return 2
+  fi
+  if [ ! -r "$LAST_MS2_PACKAGE/manifest.xml" ] || [ ! -r "$LAST_MS2_PACKAGE/abs.commit" ]; then
+    echo "Can't read manifest.xml or abs.commit in LAST_MS2_PACKAGE:$LAST_MS2_PACKAGE"
+    return 3
+  fi
+}
+
 OUTPUT_DIR=$1
 SRC_DIR=$2
 MANIFEST_BRANCH=$3
@@ -153,9 +209,18 @@ LAST_BUILD_LOC=$4
 
 LAST_BUILD_PACKAGE=
 LAST_BUILD_BUILDNUM=
+
 LAST_REL_PACKAGE=
 LAST_REL_VERSION=
 LAST_REL_BUILDNUM=
+
+LAST_MS1_PACKAGE=
+LAST_MS1_VERSION=
+LAST_MS1_BUILDNUM=
+
+LAST_MS2_PACKAGE=
+LAST_MS2_VERSION=
+LAST_MS2_BUILDNUM=
 
 THIS_APP=$0
 #assuming that get_rev.sh app locates at the same folder of this script.
@@ -195,6 +260,8 @@ fi
 
 LAST_BUILD_FILE=LAST_BUILD.${MANIFEST_BRANCH}
 LAST_REL_FILE=LAST_REL.${MANIFEST_BRANCH}
+LAST_MS1_FILE=LAST_MS1.${MANIFEST_BRANCH}
+LAST_MS2_FILE=LAST_MS2.${MANIFEST_BRANCH}
 
 if [ ! -z "$LAST_BUILD_LOC" ]; then
   if [ -e $LAST_BUILD_LOC/${LAST_BUILD_FILE} ]; then
@@ -217,7 +284,34 @@ if [ ! -z "$LAST_BUILD_LOC" ]; then
     echo "The last release package can be found at: $LAST_REL_PACKAGE" >> "$OUTPUT_DIR/changelog.rel"
     echo "==============================================================" >> "$OUTPUT_DIR/changelog.rel"
     echo >> "$OUTPUT_DIR/changelog.rel"
+  fi &&
+
+  if [ -e $LAST_BUILD_LOC/${LAST_MS1_FILE} ]; then
+    parse_last_ms1_file $LAST_BUILD_LOC/${LAST_MS1_FILE} &&
+    echo -n > "$OUTPUT_DIR/changelog.ms1"
+    echo "Change logs since last milestone: $LAST_MS1_VERSION" >> "$OUTPUT_DIR/changelog.ms1"
+	echo 'Notes: commit begin with > is the change in current release' >> "$OUTPUT_DIR/changelog.ms1"
+	echo '       commit begin with < is the change in [$LAST_MS1_VERSION]' >> "$OUTPUT_DIR/changelog.ms1"
+	echo '       commit begin with - is the diverse point' >> "$OUTPUT_DIR/changelog.ms1"
+	echo "" >> "$OUTPUT_DIR/changelog.ms1"
+    echo "The last release package can be found at: $LAST_MS1_PACKAGE" >> "$OUTPUT_DIR/changelog.ms1"
+    echo "==============================================================" >> "$OUTPUT_DIR/changelog.ms1"
+    echo >> "$OUTPUT_DIR/changelog.ms1"
+  fi &&
+
+  if [ -e $LAST_BUILD_LOC/${LAST_MS2_FILE} ]; then
+    parse_last_ms2_file $LAST_BUILD_LOC/${LAST_MS2_FILE} &&
+    echo -n > "$OUTPUT_DIR/changelog.ms2"
+    echo "Change logs since last milestone: $LAST_MS2_VERSION" >> "$OUTPUT_DIR/changelog.ms2"
+	echo 'Notes: commit begin with > is the change in current release' >> "$OUTPUT_DIR/changelog.ms2"
+	echo '       commit begin with < is the change in [$LAST_MS1_VERSION]' >> "$OUTPUT_DIR/changelog.ms2"
+	echo '       commit begin with - is the diverse point' >> "$OUTPUT_DIR/changelog.ms2"
+	echo "" >> "$OUTPUT_DIR/changelog.ms2"
+    echo "The last release package can be found at: $LAST_MS2_PACKAGE" >> "$OUTPUT_DIR/changelog.ms2"
+    echo "==============================================================" >> "$OUTPUT_DIR/changelog.ms2"
+    echo >> "$OUTPUT_DIR/changelog.ms2"
   fi
+
 fi &&
 
 CURRENT_PRJNAME=aabs &&
@@ -235,6 +329,16 @@ fi &&
 if [ ! -z "$LAST_REL_PACKAGE" ]; then
   commit=$(cat $LAST_REL_PACKAGE/abs.commit) &&
   gen_log_lastbuild $OUTPUT_DIR/changelog.rel $commit
+fi &&
+
+if [ ! -z "$LAST_MS1_PACKAGE" ]; then
+  commit=$(cat $LAST_MS1_PACKAGE/abs.commit) &&
+  gen_log_lastbuild $OUTPUT_DIR/changelog.ms1 $commit milestone
+fi &&
+
+if [ ! -z "$LAST_MS2_PACKAGE" ]; then
+  commit=$(cat $LAST_MS2_PACKAGE/abs.commit) &&
+  gen_log_lastbuild $OUTPUT_DIR/changelog.ms2 $commit milestone
 fi &&
 
 cd $SRC_DIR &&
@@ -272,6 +376,25 @@ do
       gen_log_lastbuild $OUTPUT_DIR/changelog.rel $commit
     fi
   fi &&
+
+  if [ ! -z "$LAST_MS1_PACKAGE" ]; then
+    commit=$(${GET_REV_APP} -m $LAST_MS1_PACKAGE/manifest.xml $CURRENT_PRJNAME 2>/dev/null) 
+    if [ -z "$commit" ]; then
+      gen_log_lastbuild_newprj $OUTPUT_DIR/changelog.ms1 "3 months ago"
+    else
+      gen_log_lastbuild $OUTPUT_DIR/changelog.ms1 $commit milestone
+    fi
+  fi &&
+
+  if [ ! -z "$LAST_MS2_PACKAGE" ]; then
+    commit=$(${GET_REV_APP} -m $LAST_MS2_PACKAGE/manifest.xml $CURRENT_PRJNAME 2>/dev/null) 
+    if [ -z "$commit" ]; then
+      gen_log_lastbuild_newprj $OUTPUT_DIR/changelog.ms2 "3 months ago"
+    else
+      gen_log_lastbuild $OUTPUT_DIR/changelog.ms2 $commit milestone
+    fi
+  fi &&
+
   cd - >/dev/null
 done
 

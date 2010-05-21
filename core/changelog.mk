@@ -13,6 +13,8 @@ PUBLISHING_FILES+=changelog.biweek:m
 PUBLISHING_FILES+=changelog.month:m
 PUBLISHING_FILES+=changelog.build:m
 PUBLISHING_FILES+=changelog.rel:o
+PUBLISHING_FILES+=changelog.ms1:o
+PUBLISHING_FILES+=changelog.ms2:o
 
 ifeq ($(strip $(LAST_BUILD_LOC)),)
 ifneq ($(filter changelog, $(MAKECMDGOALS)),)
