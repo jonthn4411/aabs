@@ -216,9 +216,7 @@ if [ ! -z "$LAST_BUILD_LOC" ]; then
 	echo "" >> "$OUTPUT_DIR/changelog.rel"
     echo "The last release package can be found at: $LAST_REL_PACKAGE" >> "$OUTPUT_DIR/changelog.rel"
     echo "==============================================================" >> "$OUTPUT_DIR/changelog.rel"
-    echo >> "$OUTPUT_DIR/changelog.build"
-  else
-    echo "${LAST_REL_FILE} is not found at $LAST_BUILD_LOC. This is the first release." > "$OUTPUT_DIR/changelog.rel"
+    echo >> "$OUTPUT_DIR/changelog.rel"
   fi
 fi &&
 
@@ -273,8 +271,6 @@ do
     else
       gen_log_lastbuild $OUTPUT_DIR/changelog.rel $commit
     fi
-  else
-    gen_log_lastbuild_newprj $OUTPUT_DIR/changelog.rel "3 months ago"
   fi &&
   cd - >/dev/null
 done
