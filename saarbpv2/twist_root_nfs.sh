@@ -63,10 +63,11 @@ chmod 0755 init.nfs.sh &&
 
 #don't mount sdcard in vold for NFS
 echo "  disable mount sdcard in vold.conf"
-sed -i '/^[ tab]*volume_sdcard/,/\}/ s/\(.*\)/#\1/' system/etc/vold.conf 
+sed -i '/^[ tab]*volume_sdcard/,/\}/ s/\(.*\)/#\1/' system/etc/vold.conf &&
 #disable adb in NFS
-
-sed -i 's/^/#/g' marvell/tel/usb_switch.sh
+if [ -f marvell/tel/usb_switch.sh ]; then
+    sed -i 's/^/#/g' marvell/tel/usb_switch.sh
+fi
 
 if [ $? -ne 0 ]; then
   exit 1
