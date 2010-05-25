@@ -28,7 +28,7 @@ function gen_init_nfs_sh()
 }
 
 echo "  modifying init.rc..." &&
-sed -i "/^[ tab]*mount[ tab]*.\+[ tab]*\(\/system\|\/data\|\/cache\)/ s/mount/#(for nfs)mount/" init.rc &&
+sed -i "/^[ tab]*mount[ tab]*.\+[ tab]*\(\/system\|\/data\|\/cache\|\/marvell\)/ s/mount/#(for nfs)mount/" init.rc &&
 sed -i "/^[ tab]*mount rootfs rootfs/ s/mount/#(for nfs)mount/" init.rc &&
 sed -i '/^[ tab]*mkdir \/sdcard 0000 system system/ {
 s/mkdir/#(for nfs)mkdir/ 
@@ -63,7 +63,11 @@ chmod 0755 init.nfs.sh &&
 
 #don't mount sdcard in vold for NFS
 echo "  disable mount sdcard in vold.conf"
-sed -i '/^[ tab]*volume_sdcard/,/\}/ s/\(.*\)/#\1/' system/etc/vold.conf 
+sed -i '/^[ tab]*volume_sdcard/,/\}/ s/\(.*\)/#\1/' system/etc/vold.conf &&
+#disable adb in NFS
+if [ -f marvell/tel/usb_switch.sh ]; then
+    sed -i 's/^/#/g' marvell/tel/usb_switch.sh
+fi
 
 if [ $? -ne 0 ]; then
   exit 1
