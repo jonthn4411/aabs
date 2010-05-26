@@ -88,7 +88,7 @@ Install Adobe Flash plugin
 Burning OBM and UBoot
 =====================
 1. install XDB 5.0 alpha2 from: \\sh1sbak009\debugger_public\Official_Release\eXtreme_Debugger_v5.0_Beta2
-2. Get nand or emmc version binary from autobuild server
+2. Get nand or emmc version binary from autobuild server, you only need do one of step 3 or 4 to bring up board
 3. Flashing OBM and U-boot into NAND using XDB
    1)Use flash burn tool: flash --> burn flash
    2)Initialize a new flash and Erase all blocks
@@ -105,10 +105,9 @@ Burning OBM and UBoot
    5)Choose partition 0x1
       a)Burn file "ntim_mmp2_nand_bbu_ddr.bin"		address --> 0x0
       b)Burn file "partition.bin"			address --> 0x600
-   6)Choose partition 0x0
-      c)burn file "MMP2_NTLOADER_3_2_15.bin"		address --> 0x80000
-      d)burn file "WtmUnresetPJ4.bin"	              	address --> 0xc0000
-      e)burn file "u-boot.bin"				address --> 0x100000
+      c)burn file "WtmUnresetPJ4.bin"	              	address --> 0x1000
+      d)burn file "MMP2_NTLOADER_3_2_15.bin"		address --> 0x32000
+      e)burn file "u-boot.bin"				address --> 0x52000
 
 How to Disable GC800
 =====================
@@ -120,7 +119,8 @@ Setup Android on NAND(emmc)
 
 Boot the device with console
 
-first burn zImage
+first burn zImage, ensure choose mmc paritition 0
+MMP2>> mmc sw_part 0             // if you see "switch to partition #0, OK", then switch is ok
 MMP2>> sw
 MMP2>> t zImage.android
 MMP2>> mmc write 0x4c00 0x1800 0x1100000
