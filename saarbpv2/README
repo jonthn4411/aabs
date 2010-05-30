@@ -105,7 +105,22 @@ FAQ
 ----------------------------------------------------------------
 Update your obm/uboot image and try again.
 
-
 +How to disable GC500 completly
 ----------------------------------------------------------------
 You can do this by: rm /system/lib/egl/egl.cfg, so android UI and 3D applications will use SW version instead of GC500. To save 16MB from GC500 low level driver, you can: rm /system/lib/modules/galcore.ko
+
++Adb devices/shell fail to list the android device?
+----------------------------------------------------------------
+    -config usb setting
+	marvell setting -> usb setting -> adb (or and)
+    	reboot system
+    	use 'ps' to check if adbd is runing
+    	use 'lsmod' to check if g_android.ko is inserted
+    -restart udevd
+	% sudo /etc/init.d/udev restart
+    -restart adb-server
+	% adb kill-server
+	% adb start-server
+    -connect adb
+	% adb devices
+	% adb shell
