@@ -13,13 +13,18 @@ Last update: 05/13/2010
 - Integrate IPP/MVED MPEG-4 decoder for media player
 - Integrate IPP AAC version decoder for media player
 - Integrate IPP MP3 version decoder for media player
+- Integrate IPP WMV/MVED and WMA GST decoder plugin for media player
+- Integrate IPP/MVED H.264 encoder for camcorder
+- Integrate IPP AAC encoder for camcorder
+- Integrate IPP Camera Engine for preview, still capture & camcorder
+
 
 1.2 BSP features
 Uboot
 - 4K page Onenand
 - Boot from EMMC
 - Bownload from USB ethernet
-- Burn image into Nand/Onenand
+- Burn image into Nand/Onenand/eMMC
 - Flash Bad block management
 - Boot kernel with kernel command line
 Linux-2.6.29
@@ -131,7 +136,7 @@ Linux-2.6.29
 2.1 Hardware requirements
 - OneNAND flash 256-MB large block
 - EMMC
-- DDR SDRAM 128 MB
+- DDR SDRAM 256 MB
 - PXA950 SAARB Board
 
 2.2 Software requirements
