@@ -5,11 +5,23 @@ Files in this folder
   changelog.week	GIT change log of each project since last week.
   changelog.biweek 	GIT change log of each project since 2 weeks ago.
   changelog.month	GIT change log of each project since a month ago.
+  changelog.build	GIT change log of each project since last build
 
   checksums.md5		This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
 
 -Source codes
   manifest.xml		Saving the GIT commit number of each project used in this build.
+
+-Android package mode tarball
+  - setup_android.sh                                 :Script help to setup Android code base
+  - android_patches.tgz                              :Marvell patches to Android Projects
+  - android_src.tgz                                  :Source code for projects added by Marvell
+  - marvell_manifest.xml                             :Manifest xml file to download Android eclair as a base
+  - kernel_patches.tgz                               :Marvell patches to kernel_src.tgz 
+  - kernel_src.tgz                                   :Kernel base source code
+  - uboot_patches.tgz                                :Marvell patches to uboot_src.tgz
+  - uboot_src.tgz                                    :Uboot base source code 
+  - obm_src.tgz                                      :OBM source code
 
 -droid-gcc folder
  Files under droid-gcc folder are built with android-toolchain.
@@ -23,11 +35,9 @@ Files in this folder
 -OBM and UBoot
  
   u-boot.bin				uboot for dkb
-  NTIM_OBM_UBOOT.bin			NTIM image
-  TTC_LINUX_NTOBM.bin			NTLoader image
   Arbel.bin				CP Arbel image
   TTC1_M05_A0_AI_Flash.bin		CP MSA image
-  reliabledata_trusted.rnd		IMEI
+  ReliableData.bin                      IMEI
   
 -Kernel and Modules for Android [Currently for TTC/TD, zImage.android.slc and zImage.android.mmc is same]
   zImage.android.slc	Kernel image to boot android from SLC. A root file system is built in. 
@@ -38,40 +48,59 @@ Files in this folder
   userdata.img		 Android userdata image for  file system.
   ramdisk.img		 Android root image for file system.
   pxafs.img		 AP telephony image.
+  ramdisk-recovery.img   Recovery ramdisk
 
+-Software_Downloader.zip                            :Software downloader
 
-ttc_dkb Flashing images and boot system (256MB is set as default)
+Burn binaries with SWD
+======================
+Burn following binaries to flash by using Software Downloader. Please see <TTC2_DKB3_0_SWDownloader_GUI_User_Guide.doc>
+. Please see next part to know how to enter software downloader mode.
+1)       Please check your board, if the nand ID is JY504 (CS1), you can choose the configuration file:
+TTC2_DKB3_0_Linux_Beta3_JY504_JY454.blf
+2)       Otherwise, if the nand ID is JY345(CS2), you can choose the configuration file:
+TTC2_DKB3_0_Linux_Beta3_JW345.blf
+3)       if the nand ID is Hynix 4G, you can choose the configuration file:
+TTC2_DKB3_0_Linux_Beta3_Hynix4G.blf
+4)       if the nand ID is Micron 4G, you can choose the configuration file:
+TTC2_DKB3_0_Linux_Beta3_Micron4G.blf
 
-Install OBM and Uboot
-============================
-1. install XDB EMU 2.1 from: \\sh1sbak009\Product_Integration\Tools\EMU 2.1, configuration file: ttc_ptap_mhk.xsf
-2. Choose
-	Board:TavorL
-	Flash:OneNand Flash
-	Edit Boards: (the button on the top right)
-	Flash Name	Flash Type	Start Address
-	OneNand Flash	GP_PXA930_NAND	0x80000000
-	Load Burn Algorithm to Target RAM Address: 0xd1000000
+        TTC2_DKB3_0_Loader_3_2_13_LINUX.bin                     --> flash address 0x40000
+        u-boot.bin                                              --> flash address 0x80000
+        ramdisk.img                                             --> flash address 0x100000 [ramdisk_no_gui.img --> flash addr
+ess 0x100000: used for audio/RF calibration]
+        ReliableData.bin                                        --> flash address 0x140000
+        Arbel.bin                                               --> flash address 0x180000
+        TTC1_M05_A0_AI_Flash.bin                                --> flash address 0x880000
+        zImage                                                  --> flash address 0x980000
+        system.img                                              --> flash address 0x3bc0000
+        userdata.img                                            --> flash address 0xabc0000
+        pxafs.img                                               --> flash address 0xebc0000
 
-3.Burn following binaries to flash by using the Marvell eXtreme Debugger.
-	NTIM_OBM_UBOOT.bin 		--> flash address 0x00000
-	TTC_LINUX_NTOBM.bin 		--> flash address 0x20000
-	u-boot.bin			--> flash address 0x40000
-	ramdisk.img			--> flash address 0xc0000
-	reliabledata_trusted.rnd	--> flash address 0x100000
-	Arbel.bin			--> flash address 0x120000
-	TTC1_M05_A0_AI_Flash.bin	--> flash address 0x820000
+If you want recovery to be functional, you have to burn the below images together:
+        ramdisk-recovery.img                                    --> flash address 0xf80000
+        zImage-mt                                               --> flash address 0xc80000 [Currently zImage-mt is same with 
+zImage, so you can get a copy of zImage and rename to "zImage-mt"]
++You'd better make a clean erase of nand flash before burning.
+
+Boot Android or enter different mode
+====================================
+1) default. No key is pressed when power on, enter normal Android
+2) HOME+POWER -->Enter Recovery Mode
+3) CAM1+POWER -->Enter Fastboot Mode
+4) BACK+POWER -->Enter Software Downloader Mode
+
+Use TFTP to erase or reburn specific binaries 
+=============================================
 	
-Setup Android on OneNAND
-===========================
 1.Start your favorite terminal emulator with the appropriate 
       COM port set to 115200,8N1. Power on hte board and wait for TTC_DKB>> prompt to appear
 
 2.Enter the following command to upload the kernel into the RAM and burn into flash:
 For NAND flash, issue the following commands:
-TTC_DKB>>onenand erase 0x920000 0x300000
+TTC_DKB>>nand erase 0x980000 0x300000
 TTC_DKB>>tftp 0x1000000 zImage
-TTC_DKB>>onenand write 0x1000000 0x920000 0x300000
+TTC_DKB>>nand write 0x1000000 0x980000 0x300000
 Note 1: All the following images should copy to the host tftp share directory:
 	zImage
 	system.img
@@ -82,27 +111,27 @@ Note 3: You need to configure the host network interface:
    # ifconfig usb0 192.168.1.100 
 Note 4: If you want to boot from nand flash. You have to burn ramdisk. Otherwise if will boot from MMC or NFS
 	You can burn ramdisk by tftp too.
-TTC_DKB>>onenand erase 0xc0000 0x40000
+TTC_DKB>>nand erase 0x100000 0x40000
 TTC_DKB>>tftp 0x1000000 ramdisk.img
-TTC_DKB>>onenand write 0x1000000 0xc0000 0x40000
+TTC_DKB>>nand write 0x1000000 0x100000 0x40000
 
 3.Enter the following command to upload the system.img into the RAM and burn into flash:
 For NAND flash, issue the following commands:
-TTC_DKB>>onenand erase 0x0c20000 0x7000000
+TTC_DKB>>nand erase 0x03bc0000 0x7000000
 TTC_DKB>>tftp 0x1000000 system.img
-TTC_DKB>>onenand write.yaffs 0x1000000 0x0c20000 <system.img actual length> (Note: ony hex supported)
+TTC_DKB>>nand write.yaffs 0x1000000 0x03bc0000 <system.img actual length> (Note: ony hex supported)
 
 4.Enter the following command to upload the userata.img into the RAM and burn into flash:
 For NAND flash, issue the following commands:
-TTC_DKB>>onenand erase 0x7c20000 0x7000000
+TTC_DKB>>nand erase 0x0abc0000 0x4000000
 TTC_DKB>>tftp 0x1000000 userdata.img
-TTC_DKB>>onenand write.yaffs 0x1000000 0x7c20000 <userdata.img actual length> (Note: ony hex supported)
+TTC_DKB>>nand write.yaffs 0x1000000 0x0abc0000 <userdata.img actual length> (Note: ony hex supported)
 
 5.Enter the following command to upload the marvell data into the RAM and burn into flash:
 For NAND flash, issue the following commands:
-TTC_DKB>>onenand erase 0xec20000 0x1000000
+TTC_DKB>>nand erase 0xebc0000 0xf40000
 TTC_DKB>>tftp 0x1000000  pxafs.img
-TTC_DKB>>onenand write.yaffs 0x1000000 0xec20000 <pxafs.img actual length> (Note: ony hex supported)
+TTC_DKB>>nand write.yaffs 0x1000000 0xebc0000 <pxafs.img actual length> (Note: ony hex supported)
 
 6.How to setup nfs
 1)  Burn all images except for ramdisk.img. [zImage.android.mmc can be used]

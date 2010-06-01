@@ -299,7 +299,7 @@ Linux-2.6.29
   - uboot_patches.tgz                                :Marvell patches to uboot_src.tgz
   - uboot_src.tgz                                    :Uboot base source code
   - obm_src.tgz                                      :OBM source code
-- SWD_GUI_2.0_RC5_linux.zip                          :Software downloader  
+- Software_Downloader.zip                            :Software downloader  
 
 2. System Requirements
 2.1 Hardware requirements
