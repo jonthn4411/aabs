@@ -380,7 +380,7 @@ You can copy all the files to overwrite [SW_Downloader_Dir] on the host PC.
 3.4 Flashing images and boot system (256MB is set as default)
 Important Notes: Partition table is changed since beta3 release, please erase all, and use SW download in this package instead of old ones; also SW download method are changed, please refer the user guide in SW download package
 3.4.1 CP version
-        TD Beta3                       --> TVRTD_CP01.06.019
+        TD Beta3                       --> TVRTD_CP01.06.020
 3.4.2 Burn following binaries to flash by using Software Downloader. Please see <TVTD_DKB3_0_SWDownloader_GUI_User_Guide.doc>. Please see 4.0 how to enter software downloader mode.
 1)       Please check your board, if the nand ID is JY504 (CS1), you can choose the configuration file:
 TVTD_DKB3_0_Linux_Beta3_JY504_JY454.blf
