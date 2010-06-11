@@ -1,43 +1,36 @@
 ==============================================================================
-Marvell PXA968 Android Platform Release for Linux
+Marvell PXA955 Android Platform Release for Linux
 Platform ReleaseNotes
-Last update: 04/16/2010
+Last update: 06/10/2010
 ==============================================================================
 
 1. Platform features
 1.1 Supported Components
 - Rebase to google android eclair branch
-- Do key pad mapping, touch for PXA968 SAARB platform
-- Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC500
-- Integrate IPP/MVED H.264 decoder for media player
-- Integrate IPP/MVED MPEG-4 decoder for media player
-- Integrate IPP/MVED AAC version decoder for media player
-- Integrate IPP/MVED MP3 version decoder for media player
+- Do key pad mapping, touch for PXA955 SAARB platform
+- Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC800
+- Integrate IPP Vmeta-based H.264 decoder for media player
+- Integrate IPP AAC decoder for media player
 
 1.2 BSP features
 Uboot
-- Boot from Nand/Onenand
 - Boot from EMMC
 - Bownload from USB ethernet
 - Burn image into Nand/Onenand
 - Flash Bad block management
 - Boot kernel with kernel command line
-- Voltage/Frequency change
 Linux-2.6.29
 - MTD devices
-  - Support Nand
-  - Support Onenand
   - Support EMMC
   - Support Fash Bad block management
-  - Support JFSS2
-  - Support YAFFS
+  - Support EXTFS3
   - Support Partition
 - WMMX
   - Support context switch
 - IMM
-  - SRAM is maintained by IMM. (audio driver occupy all the SRAM maintained by IMM.)
+  - SRAM is maintained by IMM. 
 - Power Management
-  - Support D1/D2/D0CS/CG idle
+  - Support D1/D2/D0CS/CG idle (when GC800 disabled)
   - Support to use Keypad to wake up system
   - Support to use RTC to wake up system
   - Support to switch OP by "echo" command to sysfs
@@ -49,31 +42,31 @@ Linux-2.6.29
   - Support backlight control
   - Support FB interface
   - Support pan display
-  - Support HVGA resolution display
+  - Support VGA resolution display
   - Support RGB565, RGB888Packed, RGB888Unpacked, YUV420planar, YUV422planar and YUV422Packed format. 
 - Camera (CCIC)
   - Support V4L2 interface
-  - Support Parallel and MIPI interface.
+  - Support Parallel (via MIPI-bridge) and MIPI interface.
   - Support JPEG format
   - Support YUV420Planar, YUV422Planar and YUV422Packed format. 
   - Support to accept framebuf from user application.
+  - Support user point.
 - SSP
   - Support to config it as I2S to transfer audio PCM data to outside code. 
 - Audio (use levante as outside audio codec)
   - Support ALSA interface
   - Support to playback Audio
   - Support to Recodrd Audio 
-  - Support to playback and record simultaneously. (The codec native sample rate will locked as 48K for both playback and record. And the alsa lib will handle the sample rate conversion automaitically)
+  - Support to playback and record simultaneously. 
   - Support 2.5mm Jack
-  - Support headset and MICIN detection. (The audio server application will setup the audio path base on the detection event automatically)
+  - Support headset and MICIN detection. 
   - Support on-board mic
-- Touch screen (TPO touch)
+- Touch screen 
   - Support pen attach, move, detach and time stamp. 
 - Keypad
   - Support Key down, up, repeat and time stamp. 
 - I2C (two i2c busses)
   - Share/Arbitrate the busses for multi devies.
-  - Support RIPC to share the bus with other CPUs.
 - UART (FFUART, BTUART)
   - Support tty interface
   - Support tty console
@@ -85,7 +78,7 @@ Linux-2.6.29
     - Support to access USB mass storage device
     - Support hot plug-in and remove
     - Support USB hub
-  - OTG
+  - OTG (disabled by default)
     - Support dual role device
     - HNP and SRP are NOT support
   - Client
@@ -96,26 +89,40 @@ Linux-2.6.29
   - MMC4.3/SD2.0
     - Support partition
     - Support hot plug-in and remove
-    - Support lock and unlock
-    - Support write protect switch
   - SDIO
     - Support WiFi SDIO card
 - Power supply
   - Support battery temperature measurement
-  - Support battery capacity measurement. (it is not accurate.)
+  - Support battery capacity measurement. 
   - Support USB supply
   - Support USB charging
   - Support poweroff. (NOTE: if the system is not poweroff normally, the next boot time will be longer for the filesystem scan. )
 
 1.3 Telephony
 
+1.4 Graphics features
+  - Fully support OpenGL ES 1.1
+  - Fully support OpenGL ES 2.0
+  - Fully support EGL 1.4
+  - EGL extension supported:
+		EGL_KHR_image_base  
+		EGL_KHR_image_pixmap  
+		GL_OES_EGL_image  
+		EGL_KHR_gl_texture_2D_image  
+		EGL_KHR_gl_texture_cubemap_image   
+		EGL_KHR_gl_renderbuffer_image  
+		EGL_KHR_reusable_sync 
+		EGL_KHR_lock_surface  
+		GL_OES_draw_texture  
+		GL_EXT_texture_format_BGRA8888  
 
-<VERSION>=ml4d
+
+<VERSION>=master
 ===========================================================================================
 1.4 Release package contents
 - ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
-- PXA968_Android_Platform_<VERSION>_prebuilt_bin.zip	:Pre-built bin binaries
-- PXA968_Android_Platform_<VERSION>_src.tgz        	:Source code tarball (patch mode)
+- PXA955_Android_Platform_<VERSION>_prebuilt_bin.zip	:Pre-built bin binaries
+- PXA955_Android_Platform_<VERSION>_src.tgz        	:Source code tarball (patch mode)
   - setup_android.sh                                 	:Script help to setup Android code base from the xxx_src.tgz and xxx_patches.tgz
   - android_patches.tgz                              	:Marvell patches to Android Projects
   - android_src.tgz                                  	:Source code for projects added by Marvell
@@ -125,13 +132,13 @@ Linux-2.6.29
   - uboot_patches.tgz                                	:Marvell patches to uboot_src.tgz
   - uboot_src.tgz                                    	:Uboot base source code
   - obm_src.tgz                                      	:OBM source code
+  - Software_Downloader.zip				:Software downloader for Microsfot Windows
 
 2. System Requirements
 2.1 Hardware requirements
-- OneNAND flash 256-MB large block
 - EMMC
-- DDR SDRAM 128 MB
-- PXA968 SAARB Board
+- DDR SDRAM 512 MB
+- PXA955 SAARB Board
 
 2.2 Software requirements
 - Host PC with operating system Ubuntu 6.06 or above
@@ -139,12 +146,12 @@ Linux-2.6.29
 3. Usage of this package 
 3.1 Install this package
 3.1.1 Download the Marvell packages:
-----PXA968_Android_Platform_<VERSION>_src.tgz  
-----PXA968_Android_Platform_<VERSION>_prebuilt_bin
+----PXA955_Android_Platform_<VERSION>_src.tgz  
+----PXA955_Android_Platform_<VERSION>_prebuilt_bin
 3.1.2 Type the following command to install:
  $ mkdir [installed_directory]
  $ cd [installed_directory]
- $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA968_Android_Platform_<VERSION>_src.tgz
+ $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA955_Android_Platform_<VERSION>_src.tgz
 
 3.2 Setup Android directory
  $ mkdir [android_dir]
@@ -172,11 +179,11 @@ After a short while, the binaries will be generated under [android]/kernel/out/m
 3.3.3 Buid PXA Android by:
  $ cd [android_dir]
  $ . build/envsetup.sh
- $ chooseproduct saarbpv2
+ $ chooseproduct saarbmg1
  $ export ANDROID_PREBUILT_MODULES=[android_dir]/kernel/out/modules
  $ make -j4
 Note: If there is no modules, Please export ANDROID_PREBUILT_MODULES=no_kernel_modules
-Note: The binaries will be generated under src/android/out/target/product/saarbpv2/.
+Note: The binaries will be generated under src/android/out/target/product/saarbmg1/.
 Note: Currently we use Android default toolchain to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for google arm-eabi toolchain. Please donot pecify other android toolchain version. 
 
 3.3.4 Building uboot
@@ -191,60 +198,67 @@ Notes: kernel should be built before uboot as uboot will get cmd info from kerne
 After a short while, the binary will be generated under [android]/boot/out/TAVOR_LINUX_NTOBM.bin
 
 3.4 Burn images and boot system
-3.4.1 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.0(XDB_5_0_Beta2)
+3.4.1 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.1
 Notes:
 Configuration:CPU-JTAG->Target Connection: (usb:).
-JTAG->SOC->PXA9xx->PXA955_B0_CS.xdb->Burn Flash->
-    Board:PXA968
+JTAG->SOC->PXA9xx->PXA955_B0.xdb->Burn Flash->
+    Board:PXA955
     Flash:EMMC
     Burn as binary File
     Erase affected blocks
     Enable new BBM
 Choose partition 0 & 1
-	TAVOR_SAAR_NTOBM_EMMC_MODE1.bin.rnd	--> address 0x00000
+	TAVOR_LINUX_NTOBM.bin	--> address 0x00000
 Choose partition 0
-	u-boot.bin		    --> address 0x80000
+	u-boot.bin		--> address 0x80000
 
 3.4.2 Start your favorite terminal emulator with the appropriate 
-      COM port set to 115200,8N1. Power on the board and wait for TavorPV2>> prompt to appear
+      COM port set to 115200,8N1. Power on the board and wait for SAARB>> prompt to appear
 
-3.4.3 Enter the following command to upload the kernel image into the RAM and burn into flash:
+
+3.4.3 Software downloader
+Software downloader is a tool for the images burning. 
+Burn the OBM by JTAG at firt time. unzip the Software_Downloader.zip, and read the "saarbpv2-mg1 readme.txt"
+
+3.4.4 Command line images burning
+3.4.4.1 Enter the following command to upload the kernel image into the RAM and burn into flash:
 For EMMC, issue the following commands:
-TavorPV2>>tftp zImage
-TavorPV2>>mmc write 0x4908 0x17f8
+SAARB>>tftp zImage
+SAARB>>mmc write 0x4908 0x17f8
 
 Note 1: You need to configure the host network interface:
    # ifconfig usb0 192.168.1.100 (for USB)
    # ifconfig eth0 192.168.1.100 (for Ethernet)
-Note 2: uboot configures ethernet download as default. please use TavorPV2>> sw to switch to USB 
+Note 2: uboot configures ethernet download as default. please use SAARB>> sw to switch to USB 
 
-3.4.4 Enter the following command to upload the system image into the RAM and burn into flash:
-Note: uboot configures ethernet download as default. please use 'TavorPV2>>sw' to switch to USB 
+3.4.4.2 Enter the following command to upload the system image into the RAM and burn into flash:
+Note: uboot configures ethernet download as default. please use 'SAARB>>sw' to switch to USB 
 
 For EMMC, issue the following commands:
-TavorPV2>>tftp system_ext3.img
-TavorPV2>>mmc write 0x6100 0x2d000
+SAARB>>tftp system_ext3.img
+SAARB>>mmc write 0x6100 0x2d000
 
-3.4.5 Enter the following command to upload the userata image into the RAM and burn into flash:
+3.4.4.3 Enter the following command to upload the userata image into the RAM and burn into flash:
 For EMMC, issue the following commands:
-TavorPV2>>tftp userdata_ext3.img
-TavorPV2>>mmc write 0x33100 0x2d000
+SAARB>>tftp userdata_ext3.img
+SAARB>>mmc write 0x33100 0x2d000
 
-3.4.6 Enter the following command to upload the ramdisk image into the RAM and burn into flash:
+3.4.4.4 Enter the following command to upload the ramdisk image into the RAM and burn into flash:
 For EMMC, issue the following commands:
-TavorPV2>>tftp ramdisk.img
-TavorPV2>>mmc write 0x600 0x200
+SAARB>>tftp ramdisk.img
+SAARB>>mmc write 0x600 0x200
 
-3.4.7 Enter the following command to upload the mbr into the RAM and burn into flash:
+3.4.4.5 Enter the following command to upload the mbr into the RAM and burn into flash:
 For EMMC, issue the following commands:
-TavorPV2>>tftp mbr
-TavorPV2>>mmc write 0x4900 0x1
+SAARB>>tftp mbr
+SAARB>>mmc write 0x4900 0x1
 Reboot the system.
 
-
 4. Known issues and workarounds
-4.1 How to disable GC500?
-	-remove system/lib/egl/egl.cfg from android rootfs
+4.1 How to disable GC800?
+	-remove /system/lib/egl/egl.cfg from android rootfs
+4.2 How to disable vmeta
+	-remove /system/etc/mrvl.cfg from android rootfs
 
 
 ----------------------------
