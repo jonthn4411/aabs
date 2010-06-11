@@ -2,6 +2,7 @@ include core/pkg-source.mk
 
 INTERNAL_PROJECTS :=vendor/marvell/external/helix
 INTERNAL_PROJECTS +=vendor/marvell/external/flash
+INTERNAL_PROJECTS +=vendor/marvell/generic/ipplib/.git
 INTERNAL_PROJECTS +=vendor/marvell/generic/ipplib/cameraengine/src
 #INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbPlayer
 #INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbStack
