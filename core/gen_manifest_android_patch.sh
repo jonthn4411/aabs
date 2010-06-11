@@ -27,7 +27,12 @@ else
 	#tar the source code as .mrvl_base_src.tgz and remove all the source code.
 
 	#the output is expecting to be the manifest file so redirect it to /dev/null
-	git archive --format=tar HEAD |gzip > ../mrvl_base_src.tgz &&
+	if [ -d ".git" ]; then
+		git archive --format=tar HEAD |gzip > ../mrvl_base_src.tgz 
+	else
+		tar czvf ../mrvl_base_src.tgz ./
+	fi
+
 	rm -fr * &&
 	mv ../mrvl_base_src.tgz .
 fi
