@@ -10,6 +10,8 @@ OBM_NTIM_1:=TAVOR_LINUX_NTOBM.bin
 #OBM_NTIM_2:=ntim_a0_avengers-a_1.6F_256mb_400mhz_mode3_pm_spi.bin
 
 MBR_BIN:=mbr
+ARBEL_BIN:=Arbel.bin
+TAVOR_FLASH_BIN:=TAVOR_PV2_B0_M07_AI_Flash.bin
 
 
 #$1:build variant
@@ -22,20 +24,29 @@ PUBLISHING_FILES_$(1)+=$(1)/u-boot.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_1):m:md5
 #PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTLOADER_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(MBR_BIN):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(ARBEL_BIN):o:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(TAVOR_FLASH_BIN):o:md5
 
 
 .PHONY:build_uboot_obm_$(1)
 build_uboot_obm_$(1):
-	$$(log) "starting($(1)) to build uboot and obm"
+	$$(log) "starting to build uboot and obm"
 	$$(hide)cd $$(SRC_DIR)/$$(BOOT_SRC_DIR) && \
 	make all
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
 
-	$$(log) "start to copy uboot and obm files"
+	$$(log) "start to copy uboot and $(OBM_NTIM_1) files"
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot.bin $$(OUTPUT_DIR)/$(1)
 	#$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTLOADER_1) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
+
+	$$(log) "start to copy mbr"
 	$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(MBR_BIN) $$(OUTPUT_DIR)/$(1)
+
+	$$(log) "start to copy $(ARBEL_BIN) & $(TAVOR_FLASH_BIN)"
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(ARBEL_BIN) ]; then cp -p -r $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(ARBEL_BIN) $$(OUTPUT_DIR)/$(1)
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(TAVOR_FLASH_BIN) ]; then cp -p -r $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(TAVOR_FLASH_BIN) $$(OUTPUT_DIR)/$(1)
+
 	$$(log) "  done."
 
 endef
