@@ -232,7 +232,7 @@ Choose partition 0
 3.4.3 Enter the following command to upload the kernel image into the RAM and burn into flash:
 For EMMC, issue the following commands:
 TavorPV2>>tftp zImage
-TavorPV2>>mmc write 0x5000 0x17f8
+TavorPV2>>mmc write 0x5000 0x2000
 
 Note 1: You need to configure the host network interface:
    # ifconfig usb0 192.168.1.100 (for USB)
@@ -249,7 +249,7 @@ TavorPV2>>mmc write 0x7200 0x2d000
 3.4.5 Enter the following command to upload the userata image into the RAM and burn into flash:
 For EMMC, issue the following commands:
 TavorPV2>>tftp userdata_ext3.img
-TavorPV2>>mmc write 0x33100 0x2d000
+TavorPV2>>mmc write 0x34200 0x2d000
 
 3.4.6 Enter the following command to upload the ramdisk image into the RAM and burn into flash:
 For EMMC, issue the following commands:
@@ -264,7 +264,7 @@ TavorPV2>>mmc write 0x00 0x1
 3.4.8 Enter the following command to upload the pxafs image into the RAM and burn into flash:
 For EMMC, issue the following commands:
 TavorPV2>>tftp pxafs_ext2.img
-TavorPV2>>mmc write 0x60100 0x2d000
+TavorPV2>>mmc write 0x61200 0x2d000
 
 3.4.9 Enter the following command to upload the Arbel image into the RAM and burn into flash:
 For EMMC, issue the following commands:

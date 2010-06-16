@@ -68,13 +68,13 @@ Use tftp to down load images:
 
 For EMMC, issue the following commands:
 TavorPV2>>tftp zImage
-TavorPV2>>mmc write 0x5000 0x17f8
+TavorPV2>>mmc write 0x5000 0x2000
 
 TavorPV2>>tftp system_ext3.img
 TavorPV2>>mmc write 0x7200 0x2d000
 
 TavorPV2>>tftp userdata_ext3.img
-TavorPV2>>mmc write 0x33100 0x2d000
+TavorPV2>>mmc write 0x34200 0x2d000
 
 TavorPV2>>tftp ramdisk.img
 TavorPV2>>mmc write 0x7000 0x200
@@ -83,7 +83,7 @@ TavorPV2>>tftp mbr
 TavorPV2>>mmc write 0x00 0x1
 
 TavorPV2>>tftp pxafs_ext2.img
-TavorPV2>>mmc write 0x60100 0x2d000
+TavorPV2>>mmc write 0x61200 0x2d000
 
 TavorPV2>>tftp Arbel.bin
 TavorPV2>>mmc write 0x1000 <download size in hex>
