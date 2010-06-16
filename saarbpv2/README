@@ -36,6 +36,11 @@ saarbpv2 Flashing images and boot system
 
 Install OBM and Uboot
 ============================
+You can burn the images by Softwaredownloader or tftp download.
+
+Software downloader is a tool for the images burning. 
+Burn the OBM by JTAG at firt time. unzip the Software_Downloader.zip, and read the "saarbpv2-mg1 readme.txt"
+
 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.0
 (\\sh1sbak009\Debugger_public\Official_Release\eXtreme_Debugger_v5.0_Beta2)
 Configuration:
@@ -49,7 +54,7 @@ JTAG->SOC->PXA9xx->PXA950_CPU.xdb->Burn Flash->
 Choose partition 0 & 1
 	TAVOR_LINUX_NTOBM.bin	    --> address 0x00000
 Choose partition 0
-	u-boot.bin		    --> address 0x80000
+	u-boot.bin		    --> address 0x140000
 
 
 Setup Android on EMMC
@@ -63,22 +68,29 @@ Use tftp to down load images:
 
 For EMMC, issue the following commands:
 TavorPV2>>tftp zImage
-TavorPV2>>mmc write 0x4908 0x17f8
+TavorPV2>>mmc write 0x5000 0x17f8
 
 TavorPV2>>tftp system_ext3.img
-TavorPV2>>mmc write 0x6100 0x2d000
+TavorPV2>>mmc write 0x7200 0x2d000
 
 TavorPV2>>tftp userdata_ext3.img
 TavorPV2>>mmc write 0x33100 0x2d000
 
 TavorPV2>>tftp ramdisk.img
-TavorPV2>>mmc write 0x600 0x200
+TavorPV2>>mmc write 0x7000 0x200
 
 TavorPV2>>tftp mbr
-TavorPV2>>mmc write 0x4900 0x1
+TavorPV2>>mmc write 0x00 0x1
 
 TavorPV2>>tftp pxafs_ext2.img
 TavorPV2>>mmc write 0x60100 0x2d000
+
+TavorPV2>>tftp Arbel.bin
+TavorPV2>>mmc write 0x1000 <download size in hex>
+
+TavorPV2>>tftp TAVOR_PV2_B0_M07_AI_Flash.bin
+TavorPV2>>mmc write 0x4000 <download size in hex>
+
 Reboot the system.
 
 
@@ -87,6 +99,10 @@ Note 1: All the following images should copy to the host tftp share directory:
 	system.img_ext3
 	userdata.img_ext3
 	ramdisk.img
+	pxafs_ext2.img
+	Arbel.bin
+	TAVOR_PV2_B0_M07_AI_Flash.bin
+
 Note 2: You need to first input "sw" to switch to usb eth, and then, input "tftp zImage", then connect the USB micro-line between the host PC and the saarb board
 Note 3: You need to configure the host network interface:
 	# ifconfig usb0 192.168.1.100 
