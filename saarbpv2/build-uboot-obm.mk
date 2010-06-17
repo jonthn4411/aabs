@@ -44,8 +44,8 @@ build_uboot_obm_$(1):
 	$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(MBR_BIN) $$(OUTPUT_DIR)/$(1)
 
 	$$(log) "start to copy $(ARBEL_BIN) & $(TAVOR_FLASH_BIN)"
-	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(ARBEL_BIN) ]; then cp -p -r $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(ARBEL_BIN) $$(OUTPUT_DIR)/$(1)
-	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(TAVOR_FLASH_BIN) ]; then cp -p -r $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(TAVOR_FLASH_BIN) $$(OUTPUT_DIR)/$(1)
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(ARBEL_BIN) ]; then cp -p -r $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(ARBEL_BIN) $$(OUTPUT_DIR)/$(1)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(TAVOR_FLASH_BIN) ]; then cp -p -r $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(TAVOR_FLASH_BIN) $$(OUTPUT_DIR)/$(1); fi
 
 	$$(log) "  done."
 
