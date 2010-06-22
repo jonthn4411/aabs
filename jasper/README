@@ -2,9 +2,9 @@ Files in this folder
 ====================
 -Change logs and checksum file
   changelog.day		GIT change log of each project since yesterday.
-  changelog.week		GIT change log of each project since last week.
+  changelog.week	GIT change log of each project since last week.
   changelog.biweek 	GIT change log of each project since 2 weeks ago.
-  changelog.month		GIT change log of each project since a month ago.
+  changelog.month	GIT change log of each project since a month ago.
 
   checksums.md5		This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
 
@@ -128,15 +128,15 @@ MMP2>> mmc write 0x4c00 0x2000 0x1100000
 sencond, burning mbr, ramdisk, system and userdata img
 MMP2>> t mbr
 MMP2>> mmc write 0x4800 0x1 0x1100000
-MMP2>> t ramdisk_ext2.img
+MMP2>> t ramdisk_ext3.img
 MMP2>> mmc write 0x8C00 0x4000 0x1100000
-MMP2>> t system_ext2.img
+MMP2>> t system_ext3.img
 MMP2>> mmc write 0xCC00 0x3C000 0x1100000
-MMP2>> t userdata_ext2.img
+MMP2>> t userdata_ext3.img
 MMP2>> mmc write 0x48C00 0x4B000 0x1100000 
 
 when you done, power off mmp2, and power again to boot it from emmc.
-Note : Reboot is not workable.
+Note : Reboot is not workable, remember to mmc sw_part 0 before boot.
 
 Setup Android on SD Card
 ========================
@@ -150,6 +150,7 @@ Follow the below process to make a SD card with Android root file system install
 Second, burning the zImage.android.mmc image.
 Boot the device with console,
 MMP2>> sw         // Set the interface to u2o-eth
+MMP2>> mmc sw_part 0
 MMP2>> t zImage.android
 MMP2>> mmc write 0x4c00 0x1800 0x1100000
 
@@ -161,16 +162,17 @@ Setup Android on NFS
 1) Installed the NFS server on PC host.
 2) mkdir /nfs and /nfs/android
 3) add below line to /etc/exports
-  /srv            *(rw,sync,no_root_squash,no_subtree_check)
+  /nfs/android            *(rw,sync,no_root_squash,no_subtree_check)
   Notes: be sure you specify all the optional paramters above.
 4) tar xvf root_nfs.tgz /tmp/
 5) mv /tmp/root_nfs/* /nfs/android
 
 Last, you should use zImage to boot the kernel and then set the bootargs variable in UBoot.
 (Notes:if adb is enabled in the kernel, this way doesn't work as the usb net won't work as the usb is used for adb)
-
-Avengers>>t zImage.android
-Avengers>>bo
+MMP2>> sw
+MMP2>> mmc sw_part 0
+MMP2>> t zImage.android
+MMP2>> bo
 
 Note : erase ramdisk first if you want to boot from sdcard
 
