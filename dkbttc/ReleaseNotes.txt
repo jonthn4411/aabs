@@ -1,8 +1,8 @@
 ==============================================================================
 Marvell PXA910 Android Platform Release for Linux 
 Platform README 
-Last update: 05/25/2010
-Version: DKBTTC elair Beta3
+Last update: 06/22/2010
+Version: DKBTTC elair Beta4
 ==============================================================================
 
 1. Platform features
@@ -292,9 +292,9 @@ Linux-2.6.29
 
 1.5 Release package contents
 - ReleaseNotes.txt                                   :This readme.txt(include how to setup Android dir,build and burn flash)
-- PXA910_Android_Platform_Beta3_prebuilt_bin.zip   :Pre-built bin binaries
-- PXA910_Android_Platform_Beta3_src.tgz00          :Source code tarball (patch mode),part1
-- PXA910_Android_Platform_Beta3_src.tgz01          :Source code tarball (patch mode),part2
+- PXA910_Android_Platform_Beta4_prebuilt_bin.zip   :Pre-built bin binaries
+- PXA910_Android_Platform_Beta4_src.tgz00          :Source code tarball (patch mode),part1
+- PXA910_Android_Platform_Beta4_src.tgz01          :Source code tarball (patch mode),part2
   - setup_android.sh                                 :Script help to setup Android code base
   - android_patches.tgz                              :Marvell patches to Android Projects
   - android_src.tgz                                  :Source code for projects added by Marvell
@@ -322,14 +322,14 @@ Linux-2.6.29
 3. Usage of this package 
 3.1 Install this package
 3.1.1 Download the Marvell packages:
-----PXA910_Android_Platform_Beta3_src.tgz00  
-----PXA910_Android_Platform_Beta3_src.tgz01  
-----PXA910_Android_Platform_Beta3_prebuilt_bin.zip
- $ cat PXA910_Android_Platform_Beta3_src.tgz00 PXA910_Android_Platform_Beta3_src.tgz01 > PXA910_Android_Platform_Beta3_src.tgz
+----PXA910_Android_Platform_Beta4_src.tgz00  
+----PXA910_Android_Platform_Beta4_src.tgz01  
+----PXA910_Android_Platform_Beta4_prebuilt_bin.zip
+ $ cat PXA910_Android_Platform_Beta4_src.tgz00 PXA910_Android_Platform_Beta4_src.tgz01 > PXA910_Android_Platform_Beta4_src.tgz
 3.1.2 Type the following command to install:
  $ mkdir [installed_directory]
  $ cd [installed_directory]
- $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA910_Android_Platform_Beta3_src.tgz
+ $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA910_Android_Platform_Beta4_src.tgz
 
 3.2 Setup Android directory
  $ mkdir [android_dir]
