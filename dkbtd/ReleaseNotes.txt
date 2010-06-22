@@ -70,6 +70,11 @@ Linux-2.6.29
   - Support pan display
   - Support HVGA resolution display
   - Support RGB565, RGB888Packed, RGB888Unpacked, YUV420planar, YUV422planar and YUV422Packed format. 
+- LCD (Smart panel)
+  - Support base display
+  - Support pan display
+  - Support VGA resolution display
+  - Support RGB565 format. 
 - IRE
   - Support YUV420 90 degree clockwise rotation
 - Camera (CCIC)
@@ -179,6 +184,7 @@ Linux-2.6.29
 	- Ring buffer flow control
 	- send/receive Msocket data
 	- Msocket Priority control
+        - Test Port support
 - DIAG	
 	- ACAT-Diag over USB
 	- ACAT-Diag over SD card
@@ -357,7 +363,7 @@ After a short while, the binaries will be generated under [android]/kernel/out/m
  $ make -j4
 Note : If there is no modules, Please export ANDROID_PREBUILT_MODULES=no_kernel_modules
 After a while (30~60 minutes), the binaries will be generated under [android_dir]/out/target/product/dkbtd/.
-Note: Currently we use Android default toolchain version: arm-eabi-4.2.1 to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for arm-eabi-4.2.1. Please don¡¯t specify other android toolchain version. 
+Note: Currently we use Android default toolchain version: arm-eabi-4.4.0 to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for arm-eabi-4.4.0. Please don¡¯t specify other android toolchain version. 
 
 3.3.4 Building telephony
  $ cd [android_dir]/kernel
@@ -373,14 +379,14 @@ After a short while, the binary will be generated under [android]/boot/out/u-boo
 3.3.6 Building obm
  $ cd [android_dir]/boot
  $ make obm
-After a short while, the binary and configuration will be generated under [android]/boot/out/SWD_GUI_2.5
+After a short while, the binary and configuration will be generated under [android]/boot/out/
 You can copy all the files to overwrite [SW_Downloader_Dir] on the host PC.
 
 
 3.4 Flashing images and boot system (256MB is set as default)
 Important Notes: Partition table is changed since beta3 release, please erase all, and use SW download in this package instead of old ones; also SW download method are changed, please refer the user guide in SW download package
 3.4.1 CP version
-        TD Beta3                       --> TVRTD_CP01.06.020
+        TD Beta4                       --> TVRTD_CP01.06.022
 3.4.2 Burn following binaries to flash by using Software Downloader. Please see <TVTD_DKB3_0_SWDownloader_GUI_User_Guide.doc>. Please see 4.0 how to enter software downloader mode.
 1)       Please check your board, if the nand ID is JY504 (CS1), you can choose the configuration file:
 TVTD_DKB3_0_Linux_Beta3_JY504_JY454.blf
