@@ -118,19 +118,19 @@ package_droid_mlc_$(1)_$(2):
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS) && \
-	echo "    copy ext2 image files..." && \
+	echo "    copy ext3 image files..." && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/mbr $$(OUTPUT_DIR)/$(2)/mbr && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk_ext2.img $$(OUTPUT_DIR)/$(2)/ramdisk_ext2.img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext2.img $$(OUTPUT_DIR)/$(2)/system_ext2_$(1).img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext2.img $$(OUTPUT_DIR)/$(2)/userdata_ext2_$(1).img 
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk_ext3.img $$(OUTPUT_DIR)/$(2)/ramdisk_ext3.img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext3.img $$(OUTPUT_DIR)/$(2)/system_ext3_$(1).img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext3.img $$(OUTPUT_DIR)/$(2)/userdata_ext3_$(1).img 
 	$$(log) "  done for package_droid_mlc_$(1)$(2)."
 
 ifeq ($(1),internal)
 PUBLISHING_FILES_$(2)+=$(2)/mbr:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/ramdisk_ext2.img:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/ramdisk_ext3.img:m:md5
 endif
-PUBLISHING_FILES_$(2)+=$(2)/system_ext2_$(1).img:m:md5 
-PUBLISHING_FILES_$(2)+=$(2)/userdata_ext2_$(1).img:m:md5 
+PUBLISHING_FILES_$(2)+=$(2)/system_ext3_$(1).img:m:md5 
+PUBLISHING_FILES_$(2)+=$(2)/userdata_ext3_$(1).img:m:md5 
 endef
 
 #$1:internal or external
