@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA950 Android Platform Release for Linux 
 Platform ReleaseNotes
-Last update: 06/17/2010
+Last update: 06/29/2010
 ==============================================================================
 
 1. Platform features
@@ -201,7 +201,7 @@ Notes: kernel should be built before uboot as uboot will get cmd info from kerne
 3.3.5 Building OBM
  $ cd [android_dir]/boot
  $ make obm
-After a short while, the binary will be generated under [android]/boot/out/TAVOR_LINUX_NTOBM.bin
+After a short while, the binary will be generated under [android]/boot/out/TAVOR_LINUX_TOBM.bin
 
 3.4 Burn images and boot system
     You can burn the images by Softwaredownloader or tftp download.
@@ -221,7 +221,7 @@ JTAG->SOC->PXA9xx->PXA950_CPU.xdb->Burn Flash->
     Erase affected blocks
     Enable new BBM
 Choose partition 1
-	TAVOR_LINUX_NTOBM.bin	    --> address 0x00000
+	TAVOR_LINUX_TOBM.bin	    --> address 0x00000
 Choose partition 0
 	u-boot.bin		    --> address 0x140000
 

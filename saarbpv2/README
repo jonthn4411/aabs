@@ -21,7 +21,7 @@ Files in this folder
  If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
  
 -OBM and UBoot
-    TAVOR_LINUX_NTOBM.bin		uboot for saarbpv2
+    TAVOR_LINUX_TOBM.bin		uboot for saarbpv2
     u-boot.bin				NTLoader image
  
 -Kernel and Modules for Android [Currently for saarbpv2, zImage.android.slc and zImage.android.mmc is same]
@@ -52,7 +52,7 @@ JTAG->SOC->PXA9xx->PXA950_CPU.xdb->Burn Flash->
     Erase affected blocks
     Enable new BBM
 Choose partition 0 & 1
-	TAVOR_LINUX_NTOBM.bin	    --> address 0x00000
+	TAVOR_LINUX_TOBM.bin	    --> address 0x00000
 Choose partition 0
 	u-boot.bin		    --> address 0x140000
 
