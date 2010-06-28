@@ -32,9 +32,11 @@ tar czf uboot_patches.tgz uboot_patches &&
 
 cd $boot_dir &&
 echo "  packaging obm source code:" &&
-cd obm &&
-git archive --format=tar --prefix=obm/ HEAD |gzip > ../obm_src.tgz &&
-cd - &&
+if [ -d ".git" ]; then
+    cd obm && git archive --format=tar --prefix=obm/ HEAD |gzip > ../obm_src.tgz && cd - 
+else
+    tar czvf obm_src.tgz ./obm
+fi &&
 mv obm_src.tgz $output_dir &&
 rm -fr obm 
 
