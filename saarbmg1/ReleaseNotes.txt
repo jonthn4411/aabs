@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA955 Android Platform Release for Linux
 Platform ReleaseNotes
-Last update: 06/10/2010
+Last update: 06/28/2010
 ==============================================================================
 
 1. Platform features
@@ -207,10 +207,10 @@ JTAG->SOC->PXA9xx->PXA955_B0.xdb->Burn Flash->
     Burn as binary File
     Erase affected blocks
     Enable new BBM
-Choose partition 0 & 1
-	TAVOR_LINUX_NTOBM.bin	--> address 0x00000
+Choose partition 1
+	TAVOR_LINUX_TOBM.bin	--> address 0x00000
 Choose partition 0
-	u-boot.bin		--> address 0x80000
+	u-boot.bin		--> address 0x140000
 
 3.4.2 Start your favorite terminal emulator with the appropriate 
       COM port set to 115200,8N1. Power on the board and wait for SAARB>> prompt to appear
@@ -224,7 +224,7 @@ Burn the OBM by JTAG at firt time. unzip the Software_Downloader.zip, and read t
 3.4.4.1 Enter the following command to upload the kernel image into the RAM and burn into flash:
 For EMMC, issue the following commands:
 SAARB>>tftp zImage
-SAARB>>mmc write 0x4908 0x17f8
+SAARB>>mmc write 0x5000 0x2000
 
 Note 1: You need to configure the host network interface:
    # ifconfig usb0 192.168.1.100 (for USB)
@@ -236,22 +236,22 @@ Note: uboot configures ethernet download as default. please use 'SAARB>>sw' to s
 
 For EMMC, issue the following commands:
 SAARB>>tftp system_ext3.img
-SAARB>>mmc write 0x6100 0x2d000
+SAARB>>mmc write 0x7200 0x2d000
 
 3.4.4.3 Enter the following command to upload the userata image into the RAM and burn into flash:
 For EMMC, issue the following commands:
 SAARB>>tftp userdata_ext3.img
-SAARB>>mmc write 0x33100 0x2d000
+SAARB>>mmc write 0x34200 0x2d000
 
 3.4.4.4 Enter the following command to upload the ramdisk image into the RAM and burn into flash:
 For EMMC, issue the following commands:
 SAARB>>tftp ramdisk.img
-SAARB>>mmc write 0x600 0x200
+SAARB>>mmc write 0x7000 0x200
 
 3.4.4.5 Enter the following command to upload the mbr into the RAM and burn into flash:
 For EMMC, issue the following commands:
 SAARB>>tftp mbr
-SAARB>>mmc write 0x4900 0x1
+SAARB>>mmc write 0x0 0x1
 Reboot the system.
 
 4. Known issues and workarounds
