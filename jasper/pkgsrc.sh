@@ -31,6 +31,7 @@ cd $OUTPUT_DIR/source &&
   rm -fr kernel &&
 
   echo "  packaging uboot and obm source code:" &&
+  rm -rf boot/obm/binaries/WtmUnresetPJ4.bin &&
   tar czf boot_src.tgz $EXCLUDE_VCS boot/ &&
   mv boot_src.tgz $OUTPUT_DIR &&
   rm -fr boot 
