@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA910 Android Platform Release for Linux 
 Platform README 
-Last update: 06/22/2010
+Last update: 06/29/2010
 Version: DKBTTC elair Beta4
 ==============================================================================
 
@@ -133,7 +133,8 @@ Linux-2.6.29
     - Support WiFi SDIO card
 - WLAN
   - Support SD8787
-  - Support WPA 
+  - Support WPA
+  - WiFi FM version:SD-UAPSTA-BT-FM-8787-LINUX2629-PXA920-14.57.5.p16-M2614111_W1A0-GPL 
 - BT
   - Support SD8787
   - Support A2DP profile (BT on UART is not support. Only SDIO interface is enabled. )
@@ -154,6 +155,7 @@ Linux-2.6.29
 	- H.264 BP encoder
 	- H.263 P0/P3 encoder
 	- MPEG-4 SP encoder
+	- C&M H263 decdoer
 - IPP WMMX optimized video codecs	
 	- H.264 BP decoder
 	- H.263 P0/P3 decoder
