@@ -16,7 +16,11 @@ UBOOT_BASE_COMMIT:=aced78d852d0b009e8aaa1445af8cb40861ee549
 ifeq ($(ANDROID_VERSION),donut)
 	DROID_BASE:=shgit/donut-release
 else
+ifeq ($(ANDROID_VERSION),eclair)
 	DROID_BASE:=android-2.1_r2
+else
+	DROID_BASE:=shgit/froyo
+endif
 endif
 
 .PHONY:pkgsrc
