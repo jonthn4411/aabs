@@ -4,7 +4,11 @@
 DEMO_MEDIA_DIR:=/autobuild/demomedia
 MY_SCRIPT_DIR:=$(TOP_DIR)/dkbtd
 
-DROID_PRODUCT:=dkbtd
+ifeq ($(ANDROID_VERSION),eclair)
+       DROID_PRODUCT:=dkbtd
+else
+       DROID_PRODUCT:=dkb
+endif
 DROID_TYPE:=release
 DROID_VARIANT:=eng
 
