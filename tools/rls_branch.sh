@@ -21,27 +21,27 @@ function print_usage()
 function get_account_to_use()
 {
 	if [ "$1" == "shgit" ]; then
-		echo "androidadm"
+		echo "releaseadm"
 		return
 	fi
 
 	if [ "$1" == "osegit" ]; then
-		echo "oseadm"
+		echo "releaseadm"
 		return
 	fi
 
 	if [ "$1" == "piegit" ]; then
-		echo "pieadm"
+		echo "releaseadm"
 		return
 	fi
 
 	if [ "$1" == "ptkgit" ]; then
-		echo "ptkadm"
+		echo "releaseadm"
 		return
 	fi
 
 	if [ "$1" == "origin" ]; then
-		echo "androidadm"
+		echo "releaseadm"
 		return
 	fi
 	return
