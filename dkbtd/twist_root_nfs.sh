@@ -62,8 +62,14 @@ gen_init_nfs_sh init.nfs.sh &&
 chmod 0755 init.nfs.sh &&
 
 #don't mount sdcard in vold for NFS
-echo "  disable mount sdcard in vold.conf"
-sed -i '/^[ tab]*volume_sdcard/,/\}/ s/\(.*\)/#\1/' system/etc/vold.conf 
+if [ -e "system/etc/vold.conf" ]; then
+sed -i '/^[ tab]*volume_sdcard/,/\}/ s/\(.*\)/#\1/' system/etc/vold.conf
+else
+if [ -e "system/etc/vold.fstab" ]; then
+sed -i '/[ tab]*dev_mount sdcard \/mnt\/sdcard/ s/dev_mount/#(for nfs)dev_mount/' system/etc/vold.fstab
+fi
+fi
+
 #disable adb in NFS
 sed -i "s/insmod g_android.ko/#insmod g_android.ko/g" marvell/tel/run_adb.sh
 sed -i "s/setprop/#setprop/g" marvell/tel/run_adb.sh
