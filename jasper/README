@@ -152,7 +152,7 @@ Boot the device with console,
 MMP2>> sw         // Set the interface to u2o-eth
 MMP2>> mmc sw_part 0
 MMP2>> t zImage.android
-MMP2>> mmc write 0x4c00 0x1800 0x1100000
+MMP2>> mmc write 0x4c00 0x2000 0x1100000
 
 Note : erase ramdisk first if you want to boot from sdcard
 
