@@ -70,6 +70,10 @@ sed -i '/[ tab]*dev_mount sdcard \/mnt\/sdcard/ s/dev_mount/#(for nfs)dev_mount/
 fi
 fi
 
+if [ -e "system/etc/dhcpcd/dhcpcd-run-hooks" ]; then
+chmod +x system/etc/dhcpcd/dhcpcd-run-hooks
+fi
+
 if [ $? -ne 0 ]; then
   exit 1
 else
