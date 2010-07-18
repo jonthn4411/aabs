@@ -3,11 +3,8 @@ include core/pkg-source.mk
 INTERNAL_PROJECTS :=vendor/marvell/external/helix
 INTERNAL_PROJECTS +=vendor/marvell/external/gps_sirf
 INTERNAL_PROJECTS +=vendor/marvell/external/flash
-INTERNAL_PROJECTS +=vendor/marvell/generic/ipplib/.git
-INTERNAL_PROJECTS +=vendor/marvell/generic/ipplib/cameraengine/src
 INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbPlayer
 INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbStack
-CHECKIN_PREBUILTLIB:=libcameraengine
 
 EXCLUDE_VCS=--exclude-vcs --exclude=.repo
 
@@ -35,9 +32,6 @@ pkgsrc: output_dir get_source_for_pkg
 
 	$(hide)echo "  remove internal source code..."
 	$(hide)cd $(OUTPUT_DIR)/source && for prj in $(INTERNAL_PROJECTS); do rm -fr $$prj; done
-
-	$(hide)echo "  check in prebuilt libs..."
-	$(hide)cp $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/obj/STATIC_LIBRARIES/$(CHECKIN_PREBUILTLIB)_intermediates/$(CHECKIN_PREBUILTLIB).a $(OUTPUT_DIR)/source/vendor/marvell/generic/ipplib/cameraengine/
 
 	$(hide)echo "  package all source code..."
 	$(hide)cd $(OUTPUT_DIR) && tar czf droid_all_src.tgz $(EXCLUDE_VCS) source/
