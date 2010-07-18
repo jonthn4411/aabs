@@ -2,6 +2,15 @@
 $(call check-variables,BUILD_VARIANTS)
 TEL_SRC_DIR:=kernel/out/telephony/
 
+DKBTTC_UBOOT:=u-boot.bin
+DKBTTC_CP1:=Arbel_DIGRF3.bin
+DKBTTC_CP2:=Arbel_DIGRF3_DIAG.mdb
+DKBTTC_CP3:=Arbel_DIGRF3_NVM.mdb
+DKBTTC_CP4:=TTC1_M05_AI_A1_Flash.bin
+DKBTTC_IMEI:=ReliableData.bin
+DKBTTC_SWD:=Software_Downloader.zip
+DKBTTC_NO_GUI_RAMDISK:=ramdisk_no_gui.img
+
 #$1:build variant
 define define-build-uboot-obm
 #format: <file name>:[m|o]:[md5]
@@ -10,14 +19,14 @@ define define-build-uboot-obm
 #md5: need to generate md5 sum
 #PUBLISHING_FILES_$(1)+=$(1)/NTIM_OBM_UBOOT.bin:m:md5
 #PUBLISHING_FILES_$(1)+=$(1)/TTC_LINUX_NTOBM.bin:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/Arbel.bin:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/TTC1_M05_A0_AI_Flash.bin:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/u-boot.bin:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/ReliableData.bin:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/Arbel_DIAG.mdb:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/Arbel_NVM.mdb:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/ramdisk_no_gui.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/Software_Downloader.zip:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_UBOOT):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_CP1):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_CP2):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_CP3):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_CP4):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_IMEI):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_SWD):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_NO_GUI_RAMDISK):m:md5
 
 .PHONY:build_uboot_obm_$(1)
 build_uboot_obm_$(1):
@@ -26,12 +35,12 @@ build_uboot_obm_$(1):
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
 	$$(log) "start to copy obm and CP image files"
 	$$(hide)cp -r $$(SRC_DIR)/boot/out/* $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/Arbel.bin $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/Arbel_DIAG.mdb $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/Arbel_NVM.mdb $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/TTC1_M05_A0_AI_Flash.bin $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/ReliableData.bin $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/ramdisk_no_gui.img $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP1) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP2) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP3) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP4) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_IMEI) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_NO_GUI_RAMDISK) $$(OUTPUT_DIR)/$(1)
 	$$(log) "cp OBM and CP images  done."
 
 endef
