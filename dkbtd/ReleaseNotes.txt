@@ -155,9 +155,9 @@ Linux-2.6.29
 	- H.264 BP decoder
 	- MPEG-4 SP decoder
 	- H.264 BP encoder
-	- H.263 P0/P3 encoder
 	- MPEG-4 SP encoder
 	- C&M H263 decdoer
+	- WMV/VC-1 main profile decoder
 - IPP WMMX optimized video codecs	
 	- H.264 BP decoder
 	- H.263 P0/P3 decoder
