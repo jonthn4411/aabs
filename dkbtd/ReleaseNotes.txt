@@ -201,9 +201,16 @@ Linux-2.6.32
 - DIAG	
 	- ACAT-Diag over USB
 	- ACAT-Diag over SD card
+	- ACAT-Diag over Uart
 	- ACAT-AT commands through Diag
 - EEH(Error handler)	       
 	- Report
+	- CP Silent Reset
+	(Notes: How to configure CP silent reset:
+	1. Launch ACAT
+	2. Menu Utilities -> Flash Explorer -> Select Communication Core type -> Select EEHandlerConfig_Linux.nvm
+	3. Modify finalAction to EE_RESET_COMM_SILENT)
+
 - NVM	
 	- Flasher explorer support for AP/CP
 	- FDI(Read/Write/Open/Close files)
@@ -433,6 +440,8 @@ You'd better make a clean erase of nand flash before burning.
 2) HOME+POWER -->Enter Recovery Mode
 3) CAM1+POWER -->Enter Fastboot Mode
 4) BACK+POWER -->Enter Software Downloader Mode
+5) SEND+POWER -->Enter No GUI BSP Mode [Used for RF or Audio calibration]
+6) END +POWER -->Enter launching kernel without Uart Mode
 
 5.0 Known issues and workarounds
 
