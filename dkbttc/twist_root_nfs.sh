@@ -13,7 +13,8 @@ function gen_init_nfs_sh()
 	chmod 0777 /sdcard
 	chmod 0444 /sdcard/*.*
 	setprop EXTERNAL_STORAGE_STATE mounted
-	
+
+	setprop fake.sdcard.state true
 	#touch the directory. A trick for NFS
 	ls /sdcard >/dev/null	
 	sleep 2s
