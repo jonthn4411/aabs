@@ -50,6 +50,31 @@ Files in this folder
    helix.tgz    Helix libraries. Refer to below for installing helix libraries.
    flash.tgz    Adobe Flash plugin library. Refer to below for installing adobe flash plugin.
 
+How to build kernel and android image
+=====================================
+  1. build kernel and modules
+     $ cd <android_working_dir>
+     $ cd kernel
+     $ make all
+
+  zImage is located at kernel/out, modules is located at kernel/out/modules
+
+  2. build android
+     $ cd <android_working_dir>
+     $ . build/envsetup.sh
+     $ chooseproduct jasper
+     $ export ANDROID_PREBUILT_MODULES=kernel/out/modules
+     $ make
+
+  The android mbr, ramdisk_ext3.img, system_ext3.img and userdata_ext3.img are located at out/target/product/jasper
+
+  3. build uboot and obm
+     $ cd <android_working_dir>
+     $ cd boot
+     $ make all
+
+  The uboot bin is located at boot/out, nand auto boot version obm is located at boot/out/nand, emmc auto boot version obm is located at boot/out/emmc
+
 Install Helix Libraries
 =======================
 . Android is running from SD card
