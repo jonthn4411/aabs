@@ -14,9 +14,9 @@ Version: DKBTTC Froyo Beta5.1
 - Audio recorder for built-in Mic and headset Mic
 - Camera preview and still image capture by OV3640
 - Integrate Android Recovery Mode (POWER+HOME)
-- Enable JIT and V8 
+- Explicitly JIT and V8 
 - Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC500
-- Integrate 8787 WIFI and BT, including A2DP etc profiles
+- Integrate 8787 WIFI and BT, including A2DP HFP HSP AVRCP OPP PBAP SPP profiles
 - Integrate IPP C&M H.264 baseline profile decoder for media player
 - Integrate IPP C&M MPEG-4 simple profile decoder for media player
 - Integrate IPP H.264 BP, H.263 P0/P3 and MPEG-4 SP encoder
@@ -42,6 +42,7 @@ Uboot
 - Set the flash partition table with kernel command line
 - Support Android recovery mode (POWER + HOME)
 - Support fastboot (POWER + CAM1)
+- Support NO GUI kernel launch (POWER + SEND)
 Linux-2.6.32
 - MTD devices
   - Support Nand
@@ -195,10 +196,11 @@ Linux-2.6.32
 	- Ring buffer flow control
 	- send/receive Msocket data
 	- Msocket Priority control
+        - Test Port support
 - DIAG	
 	- ACAT-Diag over USB
 	- ACAT-Diag over SD card
-	- ACAT-Diag over Uart
+	- ACAT-Diag over Uart (Notes: Need to launch kernel without Uart using END+POWER)
 	- ACAT-AT commands through Diag
 - EEH(Error handler)	       
 	- Report
@@ -206,7 +208,8 @@ Linux-2.6.32
 	(Notes: How to configure CP silent reset:
 	1. Launch ACAT
 	2. Menu Utilities -> Flash Explorer -> Select Communication Core type -> Select EEHandlerConfig_Linux.nvm
-	3. Modify finalAction to EE_RESET_COMM_SILENT)
+	3. Modify finalAction to EE_RESET_COMM_SILENT
+	4. Burn to flash)
 
 - NVM	
 	- Flasher explorer support for AP/CP
@@ -222,8 +225,10 @@ Linux-2.6.32
 	    - automatic attach/detach
 	    - manual attach/detach
 	- RAT selection
-			- 2G only
-			- 3G only
+		- 2G only
+		- 3G only
+		- Dual RAT (3G Prefer)
+		- Dual RAT (2G Prefer)
 - Voice Call related	
 	- Call Control for 2G/3G
 	    - MO call
@@ -274,7 +279,7 @@ Linux-2.6.32
 	  - Connection Establish (PPP)
 	  - Disconnect (PPP)
 	- CSD Data Call
-	  - CSD PPP
+	  - CSD 64K
 - SMS/MMS related	
 	- SMS related
 	  - Write SMS to Message storage
