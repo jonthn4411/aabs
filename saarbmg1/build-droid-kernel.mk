@@ -222,6 +222,8 @@ root:=$$(word 4, $$(tw) )
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
 #PUBLISHING_FILES_$(2):=$(PUBLISHING_FILES_$(2)) $(2)/zImage.$$(os).$$(storage):m:md5
 PUBLISHING_FILES_$(2)+=$(2)/zImage.$$(os).$$(storage):m:md5
+PUBLISHING_FILES_$(2)+=$(2)/vmlinux:o:md5
+PUBLISHING_FILES_$(2)+=$(2)/System.map:o:md5
 #PUBLISHING_FILES_$(2)+=$(2)/modules_$$(os)_$$(storage).tgz:m:md5
 
 ifneq ($(filter $(ABS_PRODUCT_NAME),td_jil td_dkb ttc_jil ttc_dkb dkbttc),)
