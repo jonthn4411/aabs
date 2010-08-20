@@ -1,25 +1,29 @@
 ==============================================================================
 Marvell PXA955 Android Platform Release for Linux
 Platform ReleaseNotes
-Last update: 06/28/2010
+Last update: 08/11/2010
 ==============================================================================
 
 1. Platform features
 1.1 Supported Components
-- Rebase to google android eclair branch
+- Rebase to google android froyo branch
 - Do key pad mapping, touch for PXA955 SAARB platform
+- Wi-Fi/BT support
+- Light sensor, proximity sensor and G-sensor support
+- Camera preview, still image capture and camcorder support
 - Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC800
-- Integrate IPP Vmeta-based H.264 decoder for media player
-- Integrate IPP AAC decoder for media player
+- Integrate OpenCORE-based video playback for media player
+- Integrate GStreamer-based video playback for media player
+- Integrate OpenCORE-based camcorder
 
 1.2 BSP features
 Uboot
 - Boot from EMMC
 - Bownload from USB ethernet
-- Burn image into Nand/Onenand
+- Burn image into Onenand
 - Flash Bad block management
 - Boot kernel with kernel command line
-Linux-2.6.29
+Linux-2.6.32.9
 - MTD devices
   - Support EMMC
   - Support Fash Bad block management
@@ -27,10 +31,8 @@ Linux-2.6.29
   - Support Partition
 - WMMX
   - Support context switch
-- IMM
-  - SRAM is maintained by IMM. 
 - Power Management
-  - Support D1/D2/D0CS/CG idle (when GC800 disabled)
+  - Support D1/D2/D0CS/CG idle
   - Support to use Keypad to wake up system
   - Support to use RTC to wake up system
   - Support to switch OP by "echo" command to sysfs
@@ -45,7 +47,7 @@ Linux-2.6.29
   - Support VGA resolution display
   - Support RGB565, RGB888Packed, RGB888Unpacked, YUV420planar, YUV422planar and YUV422Packed format. 
 - Camera (CCIC)
-  - Support V4L2 interface
+  - Support V4L2 interface with Preview, Still Image capture, Camcorder
   - Support Parallel (via MIPI-bridge) and MIPI interface.
   - Support JPEG format
   - Support YUV420Planar, YUV422Planar and YUV422Packed format. 
@@ -89,8 +91,14 @@ Linux-2.6.29
   - MMC4.3/SD2.0
     - Support partition
     - Support hot plug-in and remove
+  - eMMC
   - SDIO
-    - Support WiFi SDIO card
+    - Support TY 8787 Stamp card 
+- 8787
+  - Support TY 8787 Stamp card via SDIO
+  - Bluetooth
+  - WIFI
+  - FM Radio
 - Power supply
   - Support battery temperature measurement
   - Support battery capacity measurement. 
@@ -116,23 +124,64 @@ Linux-2.6.29
 		GL_OES_draw_texture  
 		GL_EXT_texture_format_BGRA8888  
 
+1.5 Multimedia features
+- IPP Vmeta-based video codecs	
+	- H.264 BP/MP/HP decoder
+	- H.263 P0/P3 decoder
+	- MPEG-4 SP/ASP decoder
+	- MPEG-2 MP decoder
+	- WMV/VC-1 SP/MP/AP decoder
+	- H.264 BP encoder
+	- H.263 P0 encoder
+        - MPEG-4 SP encoder        
+- IPP WMMX-optimized video codecs	
+	- H.264 BP decoder
+	- H.263 P0/P3 decoder
+	- MPEG-4 SP/ASP decoder
+	- MPEG-2 MP decoder
+	- WMV/VC-1 SP/MP decoder
+	- H.264 BP encoder
+	- H.263 P0/P3 encoder
+	- MPEG-4 SP encoder
+- IPP WMMX-optimized image codecs		
+	- JPEG baseline/progressive decoder
+	- JPEG baseline/progressive encoder
+- IPP WMMX-optimized audio and speech codecs		
+	- MP3 decoder
+	- AAC decoder
+	- WMA decoder
+	- AAC LC encoder
+	- AMR-WB decoder
+	- AMR-WB encoder
+	- AMR-NB decoder
+	- AMR-NB encoder
+- IPP supported multimedia container format
+        - MP3      (OpenCore Path)
+        - AAC      (OpenCore Path)
+        - AMR      (OpenCore Path)
+        - 3GP/3GPP (OpenCore Path)
+        - MP4      (OpenCore Path)
+        - AVI      (GStreamer Path)
+        - ASF      (GStreamer Path)
+        - WMV      (GStreamer Path)
+        - WMA      (GStreamer Path)
 
 <VERSION>=master
 ===========================================================================================
-1.4 Release package contents
+1.6 Release package contents
 - ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
 - PXA955_Android_Platform_<VERSION>_prebuilt_bin.zip	:Pre-built bin binaries
 - PXA955_Android_Platform_<VERSION>_src.tgz        	:Source code tarball (patch mode)
   - setup_android.sh                                 	:Script help to setup Android code base from the xxx_src.tgz and xxx_patches.tgz
   - android_patches.tgz                              	:Marvell patches to Android Projects
   - android_src.tgz                                  	:Source code for projects added by Marvell
-  - marvell_manifest.xml                             	:Manifest xml file to download Android eclair as a base
+  - marvell_manifest.xml                             	:Manifest xml file to download Android froyo as a base
   - kernel_patches.tgz                               	:Marvell patches to kernel_src.tgz 
   - kernel_src.tgz                                   	:Kernel base source code
   - uboot_patches.tgz                                	:Marvell patches to uboot_src.tgz
   - uboot_src.tgz                                    	:Uboot base source code
-  - obm_src.tgz                                      	:OBM source code
-  - Software_Downloader.zip				:Software downloader for Microsfot Windows
+- obm_src.tgz                                      	:OBM source code
+- Software_Downloader.zip				:Software downloader for Microsfot Windows
 
 2. System Requirements
 2.1 Hardware requirements
@@ -195,7 +244,7 @@ Notes: kernel should be built before uboot as uboot will get cmd info from kerne
 3.3.5 Building OBM
  $ cd [android_dir]/boot
  $ make obm
-After a short while, the binary will be generated under [android]/boot/out/TAVOR_LINUX_NTOBM.bin
+After a short while, the binary will be generated under [android]/boot/out/TAVOR_LINUX_TOBM.bin
 
 3.4 Burn images and boot system
 3.4.1 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.1
