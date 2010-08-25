@@ -32,6 +32,7 @@ Version: DKBTD Froyo Beta6
   - Support Modem function
   - Support DIAG
   - Support SS/USSD
+  - Support AGPS(Sirf GSD4t)
 
 1.2 BSP features
 Uboot
@@ -151,6 +152,9 @@ Linux-2.6.32
 - Sensors
   - g sensor (lis3lv02d)
 - MISC
+- DVFM
+  - PP2/PP3/PP4/PP14 
+  - Support PP14(780MHz) booting up
 
 1.3 Multimedia features
 - IPP C&M based video codecs	
@@ -316,6 +320,9 @@ Linux-2.6.32
 	  - Display information
 	  - Send SMS
 	  - Make voice call
+- AGPS (Sirf GSD4t)
+	  - Standalone
+	  - SUPL
 
 1.5 Release package contents
 - ReleaseNotes.txt                                   :This readme.txt(include how to setup Android dir,build and burn flash)
@@ -337,7 +344,7 @@ Linux-2.6.32
 
 2. System Requirements
 2.1 Hardware requirements
-- NAND flash 256-MB large block
+- NAND flash 256 MB or larger
 - DDR SDRAM 256 MB or larger
 - PXA920 DKB Board
   - Debug board: TD_DKB_DEBUG PCB070110 REV3.0 
@@ -433,7 +440,6 @@ TVTD_DKB3_0_Linux_Beta_Micron4G.blf
 	ReliableData.bin	        			--> flash address 0x140000
 	Arbel_DKB_SKWS.bin                    			--> flash address 0x180000
 	TTD_M06_AI_A0_Flash.bin	        			--> flash address 0x880000 [for TD A0]
-	TTD_M06_AI_Y0_Flash.bin					--> flash address 0x880000 [for TD Y1]
 	zImage							--> flash address 0x980000
 	system.img						--> flash address 0x3bc0000
 	userdata.img						--> flash address 0xabc0000
