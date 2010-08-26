@@ -1,43 +1,35 @@
 Files in this folder
 ====================
 -Change logs and checksum file
-  changelog.build   GIT change log of each project since last build.
-  changelog.msN     GIT change log of each project since last milestone release.
-  changelog.day		GIT change log of each project since yesterday.
+  changelog.build       GIT change log of each project since last build.
+  changelog.msN         GIT change log of each project since last milestone release.
+  changelog.day	GIT change log of each project since yesterday.
   changelog.week	GIT change log of each project since last week.
   changelog.biweek 	GIT change log of each project since 2 weeks ago.
   changelog.month	GIT change log of each project since a month ago.
 
-  checksums.md5		This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
+  checksums.md5	This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
 
 -Source codes
  -Internal Use
-  manifest.xml		Saving the GIT commit number of each project used in this
-  build. This is for internal use only.
-  droid_all_src.tgz Completing source code tar ball, including everything, such
-  as kernel, uboot, obm, android. This is for internal use only.
+  manifest.xml	Saving the GIT commit number of each project used in this build. This is for internal use only.
+  droid_all_src.tgz     Completing source code tar ball, including everything, such as kernel, uboot, obm, android. This is for internal use only.
 
- -External Uses: the below files will be in the release package. To restore the 
- complete source code that is used to build this package, please follow the
- intructions in Release Notes.
+ -External Uses: the below files will be in the release package. To restore the complete source code that is used to build this package, please follow the intructions in Release Notes.
 
-  setup_android.sh  The script that is used to setup the code base of this build
-  from the below tarball. For details about this, please refer to release notes.
+  setup_android.sh  The script that is used to setup the code base of this build from the below tarball. For details about this, please refer to release notes.
 
   kernel_src.tgz	Kernel base source code tar ball.
-  kernel_patches.tgz Kernel patches that are applied on kernel base source.
+  kernel_patches.tgz    Kernel patches that are applied on kernel base source.
 
-  marvell_manifest.xml The manifest file used to download base android source
-  code from google. 
-  android_src.tgz   The source code of projects that are introduced by Marvell.
-  Not including the projects introduced by Google.
-  android_patches.tgz The patches that applied to android projects introduced by
-  Google. 
+  marvell_manifest.xml  The manifest file used to download base android source code from google. 
+  android_src.tgz       The source code of projects that are introduced by Marvell. Not including the projects introduced by Google.
+  android_patches.tgz   The patches that applied to android projects introduced by Google. 
 
-  uboot_src.tgz     Uboot base source code tar ball. 
-  uboot_patches.tgz The patches that applied to uboot base source.
+  uboot_src.tgz         Uboot base source code tar ball. 
+  uboot_patches.tgz     The patches that applied to uboot base source.
 
-  obm_src.tgz      OBM source code tar ball. Will be released.
+  obm_src.tgz           OBM source code tar ball. Will be released.
 
 -droid-gcc folder
  Files under droid-gcc folder are built with android-toolchain.
@@ -48,18 +40,18 @@ Files in this folder
  If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
  
 -MBR and UBoot
- mbr:   master boot record
- uboot.bin  the uboot
+ mbr:         master boot record
+ uboot.bin    the uboot
 
 -Kernel and Modules for Android
-  zImage.android: The kernel image
-  modules_android_mmc.tgz Kernel modules that built along with zImage.android
+  zImage.android           The kernel image
+  modules_android_mmc.tgz  Kernel modules that built along with zImage.android
 
 -Android File Systems
-  root_nfs_xxx.tgz		Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package. 
+  root_nfs_xxx.tgz	Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package. 
  
-  system_ext3_xxx.img		Android system image for UBI file system.
-  userdata_ext3_xxx.img	    Android userdata image for UBI file system.
+  system_ext3_xxx.img	Android system image for UBI file system.
+  userdata_ext3_xxx.img	Android userdata image for UBI file system.
 
   if xxx is "internal" means everything is built in the package, and should be used internally.
 
