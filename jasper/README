@@ -61,6 +61,13 @@ Files in this folder
    helix.tgz    Helix libraries. Refer to below for installing helix libraries.
    flash.tgz    Adobe Flash plugin library. Refer to below for installing adobe flash plugin.
 
+How to get source code from git server
+=====================================
+  1. repo init -u ssh://shgit.marvell.com/git/android/platform/manifest -b <branch-name>
+  2. repo sync
+
+  <branch-name> : for example jasper-froyo jasper-eclair
+
 How to build kernel and android image
 =====================================
   1. build kernel and modules
