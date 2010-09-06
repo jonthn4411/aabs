@@ -9,7 +9,7 @@ DKBTTC_CP3:=Arbel_DIGRF3_NVM.mdb
 DKBTTC_CP4:=TTC1_M05_AI_A1_Flash.bin
 DKBTTC_IMEI:=ReliableData.bin
 DKBTTC_SWD:=Software_Downloader.zip
-DKBTTC_NO_GUI_RAMDISK:=ramdisk_no_gui.img
+#DKBTTC_NO_GUI_RAMDISK:=ramdisk_no_gui.img
 
 #$1:build variant
 define define-build-uboot-obm
@@ -26,7 +26,7 @@ PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_CP3):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_CP4):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_IMEI):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_SWD):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_NO_GUI_RAMDISK):m:md5
+#PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_NO_GUI_RAMDISK):m:md5
 
 .PHONY:build_uboot_obm_$(1)
 build_uboot_obm_$(1):
@@ -40,7 +40,7 @@ build_uboot_obm_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP3) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP4) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_IMEI) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_NO_GUI_RAMDISK) $$(OUTPUT_DIR)/$(1)
+#	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_NO_GUI_RAMDISK) $$(OUTPUT_DIR)/$(1)
 	$$(log) "cp OBM and CP images  done."
 
 endef
