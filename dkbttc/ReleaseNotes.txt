@@ -1,8 +1,8 @@
 ==============================================================================
 Marvell PXA910 Android Platform Release for Linux 
 Platform README 
-Last update: 08/25/2010
-Version: DKBTTC Froyo Beta6
+Last update: 09/16/2010
+Version: DKBTTC Froyo Beta7
 ==============================================================================
 
 1. Platform features
@@ -14,7 +14,7 @@ Version: DKBTTC Froyo Beta6
 - Audio recorder for built-in Mic and headset Mic
 - Camera preview, still image capture and camcorder by OV3640
 - Integrate Android Recovery Mode (POWER+HOME and from UI)
-- Explicitly JIT and V8 
+- Explicitly add JIT/V8 
 - Integrate Pixiu
 - Integrate PowerSetting
 - Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC500
@@ -32,6 +32,10 @@ Version: DKBTTC Froyo Beta6
   - Support Modem function
   - Support DIAG
   - Support SS/USSD
+  - Support AGPS(Sirf GSD4t)
+- Integrate FMRadio and FMStack
+- Integrate VT call/record
+- Integrate WAPI
 
 1.2 BSP features
 Uboot
@@ -317,48 +321,46 @@ Linux-2.6.32
 
 1.5 Release package contents
 - ReleaseNotes.txt                                   :This readme.txt(include how to setup Android dir,build and burn flash)
-- PXA910_Android_Platform_Beta6_prebuilt_bin.zip   :Pre-built bin binaries
-- PXA910_Android_Platform_Beta6_src.tgz00          :Source code tarball (patch mode),part1
-- PXA910_Android_Platform_Beta6_src.tgz01          :Source code tarball (patch mode),part2
-- PXA910_Android_Platform_Beta6_src.tgz02          :Source code tarball (patch mode),part3
+- PXA910_Android_Platform_Beta7_prebuilt_bin.zip   :Pre-built bin binaries
+- PXA910_Android_Platform_Beta7_src.tgz00          :Source code tarball (patch mode),part1
+- PXA910_Android_Platform_Beta7_src.tgz01          :Source code tarball (patch mode),part2
   - setup_android.sh                                 :Script help to setup Android code base
   - android_patches.tgz                              :Marvell patches to Android Projects
   - android_src.tgz                                  :Source code for projects added by Marvell
-  - marvell_manifest.xml                             :Manifest xml file to download Android eclair as a base
+  - marvell_manifest.xml                             :Manifest xml file to download Google Android as a base
   - kernel_patches.tgz                               :Marvell patches to kernel_src.tgz 
   - kernel_src.tgz                                   :Kernel base source code
   - uboot_patches.tgz                                :Marvell patches to uboot_src.tgz
   - uboot_src.tgz                                    :Uboot base source code
   - obm_src.tgz                                      :OBM source code
 - Software_Downloader.zip                            :Software downloader  
-- PHS_CTHall_0_18_6.zip                              :CTHALL from PHS
+- PHS_CTHall.zip                                     :CTHALL from PHS
 
 2. System Requirements
 2.1 Hardware requirements
-- NAND flash 256-MB large block
-- DDR SDRAM 256 MB or larger
+- NAND flash 256/512 MB or larger
+- DDR SDRAM 256/512 MB or larger
 - PXA910 DKB Board
-  - Debug board: TD_DKB_DEBUG PCB100709 REV1.0 / TTC_DKB_DEBUG PCB080409 REV2.0
-  - Core board: TTC_DKB_CORE PCB171209 REV3.0
+  - Debug board: TD_TTC_DEBUG PCB070110 REV3.0
+  - Core board: TTC_DKB_CORE PCB300610 REV3.1 
   - RF board: TTC_DKB_RF REV3.2
-  - MMI board: TD_DKB_MMI PCB170709 REV1.0 / TD_DKB_MMI PCB240909 REV2.0
+  - MMI board: TD_DKB_MMI PCB170709 REV2.0 / TD_DKB_MMI PCB240909 REV2.1
 
 2.2 Software requirements
-- Host PC with operating system Ubuntu 6.06 or above
+- Host PC with operating system Ubuntu 8.04 or above
 - GIT version: 1.6 or above
 
 3. Usage of this package 
 3.1 Install this package
 3.1.1 Download the Marvell packages:
-----PXA910_Android_Platform_Beta6_src.tgz00  
-----PXA910_Android_Platform_Beta6_src.tgz01  
-----PXA910_Android_Platform_Beta6_src.tgz02
-----PXA910_Android_Platform_Beta6_prebuilt_bin.zip
- $ cat PXA910_Android_Platform_Beta6_src.tgz00 PXA910_Android_Platform_Beta6_src.tgz01 PXA910_Android_Platform_Beta6_src.tgz02 > PXA910_Android_Platform_Beta6_src.tgz
+----PXA910_Android_Platform_Beta7_src.tgz00  
+----PXA910_Android_Platform_Beta7_src.tgz01  
+----PXA910_Android_Platform_Beta7_prebuilt_bin.zip
+ $ cat PXA910_Android_Platform_Beta7_src.tgz00 PXA910_Android_Platform_Beta7_src.tgz01 > PXA910_Android_Platform_Beta7_src.tgz
 3.1.2 Type the following command to install:
  $ mkdir [installed_directory]
  $ cd [installed_directory]
- $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA910_Android_Platform_Beta6_src.tgz
+ $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA910_Android_Platform_Beta7_src.tgz
 
 3.2 Setup Android directory
  $ mkdir [android_dir]
@@ -414,7 +416,7 @@ You can copy all the files to overwrite [SW_Downloader_Dir] on the host PC.
 3.4 Flashing images and boot system (256MB is set as default)
 Important Notes: Partition table is changed since beta3 release, please erase all, and use SW download in this package instead of old ones; also SW download method are changed, please refer the user guide in SW download package
 3.4.1 CP version
-        TTC Beta6                    --> TTC_CP_03.00.017_POR303_S021
+        TTC Beta7                    --> TTC_CP03.00.026
 3.4.2 Burn following binaries to flash by using Software Downloader. Please see <TTC2_DKB3_0_SWDownloader_GUI_User_Guide.doc>. Please see 4.0 how to enter software downloader mode.
 1)       Please check your board, if the nand ID is JY504 (CS1), you can choose the configuration file:
 TTC2_DKB3_0_Linux_Beta_JY504_JY454.blf
@@ -439,7 +441,7 @@ TTC2_DKB3_0_Linux_Beta_Micron4G.blf
 If you want recovery to be functional, you have to burn the below images together:
 	ramdisk-recovery.img					--> flash address 0xf80000
 	zImage-mt						--> flash address 0xc80000 [Currently zImage-mt is same with zImage, so you can get a copy of zImage and rename to "zImage-mt"]
-+You'd better make a clean erase of nand flash before burning.
+You'd better make a clean erase of nand flash before burning.
 
 4.0 Boot Android or enter different mode
 1) default. No key is pressed when power on, enter normal Android
