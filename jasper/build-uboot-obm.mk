@@ -13,6 +13,17 @@ OBM_NTIM_2:=ntim_mmp2_nand_bbu_ddr.bin
 OBM_DESC_2:=ntim_mmp2_nand_bbu_ddr_elipda_512m.txt
 OBM_NTLOADER_2:=MMP2_NTLOADER_3_2_15.bin
 WTM_2:=WtmUnresetPJ4.bin
+OBM_NTIM_3:=ntim_mmp2_nand_bbu_ddr.bin
+OBM_DESC_3:=ntim_mmp2_emmc_ddr_elipda_512m.txt
+OBM_NTLOADER_3:=MMP2_NTLOADER_3_2_17.bin
+WTM_3:=WtmUnresetPJ4.bin
+PARTITION_BIN_2:=partition.bin
+PARTITION_DESC_2:=partition.txt
+OBM_NTIM_4:=ntim_mmp2_nand_bbu_ddr.bin
+OBM_DESC_4:=ntim_mmp2_nand_bbu_ddr_elipda_512m.txt
+OBM_NTLOADER_4:=MMP2_NTLOADER_3_2_17.bin
+WTM_4:=WtmUnresetPJ4.bin
+
 
 #$1:build variant
 define define-build-uboot-obm
@@ -31,6 +42,16 @@ PUBLISHING_FILES_$(1)+=$(1)/nand/$(OBM_NTLOADER_2):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nand/$(OBM_NTIM_2):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nand/$(OBM_DESC_2):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nand/$(WTM_2):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/emmc-3.2.18/$(OBM_NTLOADER_3):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/emmc-3.2.18/$(OBM_NTIM_3):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/emmc-3.2.18/$(OBM_DESC_3):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/emmc-3.2.18/$(WTM_3):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/emmc-3.2.18/$(PARTITION_BIN_2):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/emmc-3.2.18/$(PARTITION_DESC_2):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/nand-3.2.18/$(OBM_NTLOADER_4):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/nand-3.2.18/$(OBM_NTIM_4):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/nand-3.2.18/$(OBM_DESC_4):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/nand-3.2.18/$(WTM_4):m:md5
 
 
 
@@ -55,6 +76,16 @@ build_uboot_obm_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/nand/$$(OBM_NTIM_2) $$(OUTPUT_DIR)/$(1)/nand
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/nand/$$(OBM_DESC_2) $$(OUTPUT_DIR)/$(1)/nand
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/nand/$$(WTM_2) $$(OUTPUT_DIR)/$(1)/nand
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc-3.2.18/$$(OBM_NTLOADER_3) $$(OUTPUT_DIR)/$(1)/emmc-3.2.18
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc-3.2.18/$$(OBM_NTIM_3) $$(OUTPUT_DIR)/$(1)/emmc-3.2.18
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc-3.2.18/$$(OBM_DESC_3) $$(OUTPUT_DIR)/$(1)/emmc-3.2.18
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc-3.2.18/$$(WTM_3) $$(OUTPUT_DIR)/$(1)/emmc-3.2.18
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc-3.2.18/$$(PARTITION_BIN_2) $$(OUTPUT_DIR)/$(1)/emmc-3.2.18
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc-3.2.18/$$(PARTITION_DESC_2) $$(OUTPUT_DIR)/$(1)/emmc-3.2.18
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/nand-3.2.18/$$(OBM_NTLOADER_4) $$(OUTPUT_DIR)/$(1)/nand-3.2.18
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/nand-3.2.18/$$(OBM_NTIM_4) $$(OUTPUT_DIR)/$(1)/nand-3.2.18
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/nand-3.2.18/$$(OBM_DESC_4) $$(OUTPUT_DIR)/$(1)/nand-3.2.18
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/nand-3.2.18/$$(WTM_4) $$(OUTPUT_DIR)/$(1)/nand-3.2.18
 	$$(log) "  done."
 
 endef
