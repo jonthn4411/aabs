@@ -42,8 +42,6 @@ build_uboot_obm_$(1):
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)/nand
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)/emmc
-	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)/emmc-3.2.18
-	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)/nand-3.2.18	
 
 	$$(log) "start to copy uboot and obm files"
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot.bin $$(OUTPUT_DIR)/$(1)
