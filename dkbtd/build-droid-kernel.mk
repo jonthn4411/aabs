@@ -65,6 +65,7 @@ PUBLISHING_FILES_$(1)+=$(1)/userdata.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/system.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk-recovery.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
 endef
 
 
@@ -140,6 +141,8 @@ package_droid_slc_$(1)_$(2):
 	echo "    copy  image files..." && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(2)/system.img && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(2)/userdata.img 
+	$$(hide)cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(2)/
+	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf symbols_lib.tgz lib && rm lib -rf
 	$$(log) "  done for package_droid_slc_$(1)$(2)."
 
 #PUBLISHING_FILES_$(2)+=$(2)/system_ubi_$(1).img:m:md5 
