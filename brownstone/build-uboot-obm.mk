@@ -21,13 +21,13 @@ define define-build-uboot-obm
 #o:means optional
 #md5: need to generate md5 sum
 PUBLISHING_FILES+=$(1)/$(UBOOT):m:md5
-#PUBLISHING_FILES_$(1)+=$(1)/emmc/$(OBM_NTLOADER_1):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/emmc/$(OBM_NTLOADER_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc/$(OBM_NTIM_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc/$(OBM_DESC_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc/$(WTM_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc/$(PARTITION_BIN):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc/$(PARTITION_DESC):m:md5
-#PUBLISHING_FILES_$(1)+=$(1)/nand/$(OBM_NTLOADER_2):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/nand/$(OBM_NTLOADER_2):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nand/$(OBM_NTIM_2):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nand/$(OBM_DESC_2):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nand/$(WTM_2):m:md5
