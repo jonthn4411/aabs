@@ -385,7 +385,7 @@ Linux-2.6.32
 3.3.1 Build Linux Kernel
  $ cd [android_dir]/kernel
  $ make kernel
-After a short while, the binaries will be generated under [android]/kernel/out/zImage
+After a short while, the binaries will be generated under [android]/kernel/out/uImage
 
 3.3.2 Build Modules
  $ cd [android_dir]/kernel
@@ -441,14 +441,14 @@ TVTD_DKB3_0_Linux_Beta_Micron4G.blf
 	ReliableData.bin	        			--> flash address 0x140000
 	Arbel_DKB_SKWS.bin                    			--> flash address 0x180000
 	TTD_M06_AI_A0_Flash.bin	        			--> flash address 0x880000 [for TD A0]
-	zImage							--> flash address 0x980000
+	uImage							--> flash address 0x980000
 	system.img						--> flash address 0x3bc0000
 	userdata.img						--> flash address 0xabc0000
 	pxafs.img						--> flash address 0xebc0000
 
 If you want recovery to be functional, you have to burn the below images together:
 	ramdisk-recovery.img					--> flash address 0xf80000
-	zImage-mt						--> flash address 0xc80000 [Currently zImage-mt is same with zImage, so you can get a copy of zImage and rename to "zImage-mt"]
+	uImage-mt						--> flash address 0xc80000 [Currently uImage-mt is same with uImage, so you can get a copy of uImage and rename to "uImage-mt"]
 You'd better make a clean erase of nand flash before burning.
 
 4.0 Boot Android or enter different mode
