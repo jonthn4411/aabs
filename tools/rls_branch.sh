@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #This script is used to create or delete release branch. It should be excuted in the root directory of android source code.
 #When you delete a release branch, make sure you do want to delete the release branch.
 #Before you run this script, make sure you have do the following configuration on your dev machine:
@@ -8,8 +8,7 @@
 #$2: release branch name
 #$3: actual-run
 
-function print_usage()
-{
+print_usage() {
 	echo "    Usage: rls_branch.sh <create|delete> <release-branch-name> <actual-run>"
 	echo "    action: create or delete the release branch"
 	echo "    release-branch-name: it should take the below format:"
@@ -18,29 +17,28 @@ function print_usage()
 	echo "    actual-run: by default it just dry-runs, so everything is doen except updating the branch on server. By specifying actual-run, the server is updated"
 }
 
-function get_account_to_use()
-{
-	if [ "$1" == "shgit" ]; then
+get_account_to_use() {
+	if [ "$1" = "shgit" ]; then
 		echo "releaseadm"
 		return
 	fi
 
-	if [ "$1" == "osegit" ]; then
+	if [ "$1" = "osegit" ]; then
 		echo "releaseadm"
 		return
 	fi
 
-	if [ "$1" == "piegit" ]; then
+	if [ "$1" = "piegit" ]; then
 		echo "releaseadm"
 		return
 	fi
 
-	if [ "$1" == "ptkgit" ]; then
+	if [ "$1" = "ptkgit" ]; then
 		echo "releaseadm"
 		return
 	fi
 
-	if [ "$1" == "origin" ]; then
+	if [ "$1" = "origin" ]; then
 		echo "releaseadm"
 		return
 	fi
@@ -52,7 +50,7 @@ if [ -z "$1" ] || [ -z "$2" ]; then
 	exit 1
 fi
 
-if [ "$1" == "create" ] || [ "$1" == "delete" ]; then
+if [ "$1" = "create" ] || [ "$1" = "delete" ]; then
 	action=$1
 else
 	echo "The first argument is inavlid:$1."
@@ -62,7 +60,7 @@ fi
 
 dryrun_flag=--dry-run
 if [ ! -z "$3" ]; then
-	if [ "$3" == "actual-run" ]; then
+	if [ "$3" = "actual-run" ]; then
 		dryrun_flag=
 	else
 		echo "Invalid argument: $3."
@@ -113,7 +111,7 @@ for prj in $projects; do
 		echo "unreconized remote:$rmt"
 		exit -1
 	fi
-	if [ "$action" == "create" ]; then
+	if [ "$action" = "create" ]; then
 		head=HEAD
 	else
 		head=
@@ -130,7 +128,7 @@ done
 
 echo "Update manifest branch..."
 manifest_prj="${CWD}/.repo/manifests"
-if [ "$action" == "create" ]; then
+if [ "$action" = "create" ]; then
 	cd ${manifest_prj}
 	if [ -z "$dryrun_flag" ]; then
 		sed -i "/revision=\"[^[:blank:]]*\"/s/revision=\"[^[:blank:]]*\"/revision=\"${rls_branch}\"/"  ./default.xml  &&
