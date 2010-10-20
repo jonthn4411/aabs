@@ -45,6 +45,31 @@ get_account_to_use() {
 	return
 }
 
+branch_to_remote() {
+	local branches="$(git branch -r)"
+	local target_found=0
+	local br
+
+	for br in $branches
+	do
+		br=$(echo $br | awk -F/ '{ print $2 }')
+		if [ "$br" = "$rls_branch" ]; then
+			target_found=1
+			break
+		fi
+	done
+	if [ "$1" = "create" ]; then
+		head=HEAD
+	elif [ "$1" = "delete" ] && [ $target_found -ne 0 ]; then
+		head=
+	else
+		return 0
+	fi
+
+	GIT_SSH=$HOME/bin/git-ssh GIT_SSH_USER=$account git push $dryrun_flag $rmt $head:refs/heads/$rls_branch
+	return $?
+}
+
 if [ -z "$1" ] || [ -z "$2" ]; then
 	print_usage
 	exit 1
@@ -111,14 +136,7 @@ for prj in $projects; do
 		echo "unreconized remote:$rmt"
 		exit -1
 	fi
-	if [ "$action" = "create" ]; then
-		head=HEAD
-	else
-		head=
-	fi
-
-	GIT_SSH=$HOME/bin/git-ssh GIT_SSH_USER=$account git push $dryrun_flag $rmt $head:refs/heads/$rls_branch
-
+	branch_to_remote $action
 	if [ $? -ne 0 ]; then
 		echo "git push error."
 		exit -1
@@ -150,9 +168,7 @@ if [ "$action" = "create" ]; then
 else
 	cd ${manifest_prj} 
 	rmt=origin
-	account=$(get_account_to_use $rmt)
-	GIT_SSH=$HOME/bin/git-ssh GIT_SSH_USER=$account git push $dryrun_flag $rmt :refs/heads/$rls_branch
-
+	branch_to_remote $action
 	if [ $? -ne 0 ]; then
 		if [ -z "$dryrun_flag" ]; then
 			echo "deleting manifest branch failed, please do it manually, branch name ${rls_branch}."
