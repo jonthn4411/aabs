@@ -2,21 +2,23 @@
 #
 #
 
-function get_date()
+get_date()
 {
   echo $(date "+%Y-%m-%d %H:%M:%S")
 }
 
-function print_usage()
+print_usage()
 {
 	echo
 	echo "Usage: $0 <platform>[:release-name] [no-checkout] [dry-run] [help]"
-	echo "    platform: should take the form like avlite-donut avlite-eclair etc. release-name can be like beta1, alpha2"
+	echo "    The scrip will checkout the master branch to build the dev build and rls_<platform>_<release-name> branch to build the rls build."
+	echo ""
+	echo "    <platform>: should take the form like avlite-donut avlite-eclair etc. release-name can be like beta1, alpha2"
 	echo "       if release-name is not specified, platform is used as the manifest branch name"
 	echo "       if release-name is specified, rls_<platform>_<release-name> is used as the manifest branch name, the - in platform name is replaced with _"
-	echo "    no-checkout: don't checkout aabs project for build. this should be used for testing."
-    echo "    dry-run: don't actully run the build, this should be used for testing."
-    echo "    help: show this message"
+	echo "    [no-checkout]: don't checkout aabs project for build. this should be used for testing this script."
+    echo "    [dry-run]: don't actully run the build, this should be used for testing this script."
+    echo "    [help]: show this message"
 }
 
 LOG=build_platforms.log
@@ -31,6 +33,7 @@ all_flags=
 platforms=
 dryrun_flag=false
 no_checkout=false
+all_params=$*
 for flag in $@; do
 	case $flag in
 		dry-run) dryrun_flag=true; all_flags="$all_flags $flag";;
@@ -64,32 +67,43 @@ if [ ! ${platform%%:*} == "$platform" ]; then
 fi
 
 if [ "$no_checkout" = "false" ]; then
-	echo "[aabs]=========" | tee -a $LOG
-	echo "[aabs]Checkout AABS,branch: $aabs_branch" | tee -a $LOG
-	echo "[aabs]=========" | tee -a $LOG
-
 	echo "[aabs][$(get_date)]:start to fetch AABS itself..." | tee -a $LOG
 	git fetch origin 2>&1 | tee -a $LOG
 	if [ $? -ne 0 ]; then
 		echo "[aabs]git fetch fail, check the git server." | tee -a $LOG
-		exit 1
+		exit 10
 	fi
 	echo "[aabs][$(get_date)]:done" | tee -a $LOG
 
-
-	echo "[aabs][$(get_date)]:start to checkout origin/$aabs_branch..." | tee -a $LOG
-	git checkout origin/$aabs_branch 2>&1 | tee -a $LOG
+	current_head=$(git rev-parse HEAD)
 	if [ $? -ne 0 ]; then
-		echo "[aabs]git checkout branch:$aabs_branch failed, check if the branch is created." | tee -a $LOG
-		exit 1
+		echo "[aabs]git rev-parse HEAD:returns error." | tee -a $LOG
+		exit 20
 	fi
-	echo "[aabs][$(get_date)]:done" | tee -a $LOG
+	new_head=$(git rev-parse origin/$aabs_branch)
+	if [ $? -ne 0 ]; then
+		echo "[aabs]git rev-parse $aabs_branch:returns error, check if the branch is created" | tee -a $LOG
+		exit 30
+	fi
 
-	echo "[aabs][$(get_date)]:restart the build_platforms.sh as $0 $platform $all_flags no-checkout" | tee -a $LOG
-	exec $0 $platform $all_flags no-checkout
+	if [ ! "$current_head" = "$new_head" ]; then
+		echo "[aabs]==================" | tee -a $LOG
+		echo "[aabs][$(get_date)]:start to checkout origin/$aabs_branch..." | tee -a $LOG
+		echo "[aabs]==================" | tee -a $LOG
+		git checkout origin/$aabs_branch 2>&1 | tee -a $LOG
+		if [ $? -ne 0 ]; then
+			echo "[aabs]git checkout branch:$aabs_branch failed, check if the branch is created." | tee -a $LOG
+			exit 40
+		fi
+		echo "[aabs][$(get_date)]:done" | tee -a $LOG
+
+		echo "[aabs][$(get_date)]:restart the build_platforms.sh as $0 $all_params" | tee -a $LOG
+		echo | tee -a $LOG
+		exec $0 $all_params
+	else
+		echo "[aabs][$(get_date)]:aabs is up to date to commit:$current_head" | tee -a $LOG
+	fi
 fi
-
-echo | tee -a $LOG
 
 echo "[aabs][$(get_date)]:start to build:$platform $rlsname" | tee -a $LOG
 if [ -x build-${platform}.sh ]; then
