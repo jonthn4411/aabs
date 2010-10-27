@@ -8,7 +8,7 @@ INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbStack
 
 EXCLUDE_VCS=--exclude-vcs --exclude=.repo
 
-UBOOT_BASE_COMMIT:=aced78d852d0b009e8aaa1445af8cb40861ee549
+UBOOT_BASE_COMMIT:=1a2d9b30e31e2b7ed0acb64bfb2290911e3c9efb
 ifeq ($(ANDROID_VERSION),eclair)
         KERNEL_BASE_COMMIT:=8e0ee43bc2c3e19db56a4adaa9a9b04ce885cd84
 else
