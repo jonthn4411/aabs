@@ -139,6 +139,39 @@ TTC_DKB>>nand write.yaffs 0x1000000 0xebc0000 <pxafs.img actual length> (Note: o
 3)  unzip root_nfs_internal.tgz to /nfs/android
 4)  reboot
 
+Use fastboot to erase or reburn specific binaries
+=============================================
+1.Start your favorite terminal emulator with the appropriate COM port set to 115200,8N1.
+
+2.Make the board enter fastboot mode
+There are 2 methods to enter fastboot mode:
+(1)Power on the board using CAM1+POWER
+(2)Power on the board and wait for TTC_TD>> prompt to appear, then enter the following command:
+TTC_TD>>fb
+
+3.Enter the directory containg fastboot (In host PC)
+cd <platform>/out/host/linux-x86/bin
+
+4.Enter the following command to burn kernel into flash: (In host PC)
+For NAND flash, issue the following commands:
+sudo fastboot erase kernel
+sudo fastboot flash kernel <image path>
+
+5.Enter the following command to burn system.img into flash: (In host PC)
+For NAND flash, issue the following commands:
+sudo fastboot erase system
+sudo fastboot oem onfly system
+sudo fastboot flash system <image path>
+
+6.Enter the following command to burn userdata.img into flash: (In host PC)
+For NAND flash, issue the following commands:
+sudo fastboot erase userdata
+sudo fastboot flash userdata <image path>
+
+7.Enter the following command to burn pxafs.img into flash: (In host PC)
+For NAND flash, issue the following commands:
+sudo fastboot erase telephony
+sudo fastboot flash telephony <image path>
 
 FAQ
 =====
@@ -165,3 +198,7 @@ WIFI need to be powered on to enable CP phone call, please enable WIFI by "setti
 +How to disable GC500 completly
 ----------------------------------------------------------------
 You can do this by: rm /system/lib/egl/egl.cfg, so android UI and 3D applications will use SW version instead of GC500. To save 16MB from GC500 low level driver, you can: rm /system/lib/modules/galcore.ko
+
++"waiting for device" error when using fastboot to burn images
+----------------------------------------------------------------
+You should use root permission to execute fastboot, e.g.: sudo fastboot erase kernel
