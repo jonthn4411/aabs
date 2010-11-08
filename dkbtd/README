@@ -149,29 +149,29 @@ There are 2 methods to enter fastboot mode:
 (2)Power on the board and wait for TTC_TD>> prompt to appear, then enter the following command:
 TTC_TD>>fb
 
-3.Enter the directory containg fastboot (In host PC)
+3.Enter the directory containing fastboot (In host PC)
 cd <platform>/out/host/linux-x86/bin
 
 4.Enter the following command to burn kernel into flash: (In host PC)
 For NAND flash, issue the following commands:
-sudo fastboot erase kernel
-sudo fastboot flash kernel <image path>
+sudo ./fastboot erase kernel
+sudo ./fastboot flash kernel <image path>
 
 5.Enter the following command to burn system.img into flash: (In host PC)
 For NAND flash, issue the following commands:
-sudo fastboot erase system
-sudo fastboot oem onfly system
-sudo fastboot flash system <image path>
+sudo ./fastboot erase system
+sudo ./fastboot oem onfly system
+sudo ./fastboot flash system <image path>
 
 6.Enter the following command to burn userdata.img into flash: (In host PC)
 For NAND flash, issue the following commands:
-sudo fastboot erase userdata
-sudo fastboot flash userdata <image path>
+sudo ./fastboot erase userdata
+sudo ./fastboot flash userdata <image path>
 
 7.Enter the following command to burn pxafs.img into flash: (In host PC)
 For NAND flash, issue the following commands:
-sudo fastboot erase telephony
-sudo fastboot flash telephony <image path>
+sudo ./fastboot erase telephony
+sudo ./fastboot flash telephony <image path>
 
 FAQ
 =====
