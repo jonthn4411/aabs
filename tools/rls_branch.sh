@@ -172,6 +172,20 @@ echo "Update manifest branch..."
 manifest_prj="${CWD}/.repo/manifests"
 if [ "$action" = "create" ]; then
 	cd ${manifest_prj}
+	act="/s/revision=\"[^[:blank:]]*\"/revision=\"${rls_branch}\"/p"
+	if [ -z "$dryrun_flag" ]; then
+		sopt="-i"
+	else
+		sopt="-n"
+	fi
+	if [ -z "$prj_list" ]; then
+		sed $sopt "/revision=\"[^[:blank:]]*\"$act"  ./default.xml
+	else
+		for prj in $prj_list
+		do
+			sed $sopt "/path=\"$prj\"$act"  ./default.xml
+		done
+	fi
 	if [ -z "$dryrun_flag" ]; then
 		sopt="-i"
 		act="s/revision=\"[^[:blank:]]*\"/revision=\"${rls_branch}\"/"
