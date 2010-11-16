@@ -9,12 +9,13 @@
 #$3: actual-run
 
 print_usage() {
-	echo "    Usage: rls_branch.sh <create|delete> <release-branch-name> <actual-run>"
+	echo "    Usage: rls_branch.sh <create|delete> <release-branch-name> <actual-run> [<project> ...]"
 	echo "    action: create or delete the release branch"
 	echo "    release-branch-name: it should take the below format:"
 	echo "        rls_<board>_<android version>_<ver> "
 	echo "    e.g: rls_ttcdkb_eclair_alpha1"
 	echo "    actual-run: by default it just dry-runs, so everything is doen except updating the branch on server. By specifying actual-run, the server is updated"
+	echo "    projectX: only the given projects are impacted"
 }
 
 get_account_to_use() {
@@ -83,24 +84,42 @@ else
 	exit 1
 fi
 
+projects=$(repo forall -c 'echo $(pwd):$REPO_REMOTE' | sort)
+if [ -z "$projects" ]; then
+	echo "You should run this script in the root directory of android source code."
+	exit 2
+fi
+CWD=$(pwd)
+rls_branch=$2
+
 dryrun_flag=--dry-run
 if [ ! -z "$3" ]; then
 	if [ "$3" = "actual-run" ]; then
 		dryrun_flag=
-	else
-		echo "Invalid argument: $3."
-		print_usage
-		exit 1
+		if [ $# -gt 3 ]; then
+			shift
+		fi
 	fi
-fi
+	shift 2
 
-CWD=$(pwd)
-rls_branch=$2
-projects=$(repo forall -c "echo \$(pwd):\$REPO_REMOTE" | sort)
-
-if [ -z "$projects" ]; then
-	echo "You should run this script in the root directory of android source code."
-	exit 2
+	projects=
+	prj_list=
+	i=$#
+	while [ $i -gt 0 ]
+	do
+		prj=$(repo forall $1 -c 'echo $(pwd):$REPO_REMOTE')
+		if [ -z "$prj" ]; then
+			echo "Invalid project: $(($i))."
+			print_usage
+			exit 1
+		else
+			projects=$prj" "$projects
+			prj_path=$(echo $1 | sed 's/\//\\\//g' | sed 's/\/$//g')
+			prj_list=$prj_path" "$prj_list
+		fi
+		i=$(($i-1))
+		shift
+	done
 fi
 
 if [ ! -z "$dryrun_flag" ]; then
@@ -114,13 +133,18 @@ else
 	echo
 fi
 
+if [ ! -d $HOME/bin ]; then
 #hack for specifying user name in ssh
-mkdir -p $HOME/bin
-cat >$HOME/bin/git-ssh <<-EOF
-	#!/bin/sh
-	ssh -l \$GIT_SSH_USER "\$@"
+	mkdir -p $HOME/bin
+fi
+
+if [ ! -f $HOME/bin/git-ssh ]; then
+	cat >$HOME/bin/git-ssh <<-EOF
+#!/bin/sh
+ssh -l \$GIT_SSH_USER "\$@"
 EOF
-chmod a+x $HOME/bin/git-ssh
+	chmod a+x $HOME/bin/git-ssh
+fi
 
 for prj in $projects; do
 	prj_path=${prj%%:*}
@@ -148,8 +172,21 @@ echo "Update manifest branch..."
 manifest_prj="${CWD}/.repo/manifests"
 if [ "$action" = "create" ]; then
 	cd ${manifest_prj}
+	act="/s/revision=\"[^[:blank:]]*\"/revision=\"${rls_branch}\"/p"
 	if [ -z "$dryrun_flag" ]; then
-		sed -i "/revision=\"[^[:blank:]]*\"/s/revision=\"[^[:blank:]]*\"/revision=\"${rls_branch}\"/"  ./default.xml  &&
+		sopt="-i"
+	else
+		sopt="-n"
+	fi
+	if [ -z "$prj_list" ]; then
+		sed $sopt "/revision=\"[^[:blank:]]*\"$act"  ./default.xml
+	else
+		for prj in $prj_list
+		do
+			sed $sopt "/path=\"$prj\"$act"  ./default.xml
+		done
+	fi
+	if [ -z "$dryrun_flag" ]; then
 		git add ./default.xml &&
 		git commit -s -m "${rls_branch}:enter release cycle"
 	fi
