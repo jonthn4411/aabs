@@ -1,8 +1,8 @@
 ==============================================================================
 Marvell PXA910 Android Platform Release for Linux 
 Platform README 
-Last update: 09/16/2010
-Version: DKBTTC Froyo Beta7
+Last update: 11/22/2010
+Version: DKBTTC Froyo Beta9
 ==============================================================================
 
 1. Platform features
@@ -12,7 +12,7 @@ Version: DKBTTC Froyo Beta7
 - HIFI playback on headset and speaker
 - Audio routing for phone earpiece and headset
 - Audio recorder for built-in Mic and headset Mic
-- Camera preview, still image capture and camcorder by OV3640
+- Camera preview, still image capture and camcorder by OV3640/OV5642
 - Integrate Android Recovery Mode (POWER+HOME and from UI)
 - Explicitly add JIT/V8 
 - Integrate Pixiu
@@ -321,9 +321,9 @@ Linux-2.6.32
 
 1.5 Release package contents
 - ReleaseNotes.txt                                   :This readme.txt(include how to setup Android dir,build and burn flash)
-- PXA910_Android_Platform_Beta7_prebuilt_bin.zip   :Pre-built bin binaries
-- PXA910_Android_Platform_Beta7_src.tgz00          :Source code tarball (patch mode),part1
-- PXA910_Android_Platform_Beta7_src.tgz01          :Source code tarball (patch mode),part2
+- PXA910_Android_Platform_Beta9_prebuilt_bin.zip   :Pre-built bin binaries
+- PXA910_Android_Platform_Beta9_src.tgz00          :Source code tarball (patch mode),part1
+- PXA910_Android_Platform_Beta9_src.tgz01          :Source code tarball (patch mode),part2
   - setup_android.sh                                 :Script help to setup Android code base
   - android_patches.tgz                              :Marvell patches to Android Projects
   - android_src.tgz                                  :Source code for projects added by Marvell
@@ -353,14 +353,14 @@ Linux-2.6.32
 3. Usage of this package 
 3.1 Install this package
 3.1.1 Download the Marvell packages:
-----PXA910_Android_Platform_Beta7_src.tgz00  
-----PXA910_Android_Platform_Beta7_src.tgz01  
-----PXA910_Android_Platform_Beta7_prebuilt_bin.zip
- $ cat PXA910_Android_Platform_Beta7_src.tgz00 PXA910_Android_Platform_Beta7_src.tgz01 > PXA910_Android_Platform_Beta7_src.tgz
+----PXA910_Android_Platform_Beta9_src.tgz00  
+----PXA910_Android_Platform_Beta9_src.tgz01  
+----PXA910_Android_Platform_Beta9_prebuilt_bin.zip
+ $ cat PXA910_Android_Platform_Beta9_src.tgz00 PXA910_Android_Platform_Beta9_src.tgz01 > PXA910_Android_Platform_Beta9_src.tgz
 3.1.2 Type the following command to install:
  $ mkdir [installed_directory]
  $ cd [installed_directory]
- $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA910_Android_Platform_Beta7_src.tgz
+ $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA910_Android_Platform_Beta9_src.tgz
 
 3.2 Setup Android directory
  $ mkdir [android_dir]
@@ -416,7 +416,7 @@ You can copy all the files to overwrite [SW_Downloader_Dir] on the host PC.
 3.4 Flashing images and boot system (256MB is set as default)
 Important Notes: Partition table is changed since beta3 release, please erase all, and use SW download in this package instead of old ones; also SW download method are changed, please refer the user guide in SW download package
 3.4.1 CP version
-        TTC Beta7                    --> TTC_CP03.00.026
+        TTC Beta9                    --> TTC_CP_04.00.032
 3.4.2 Burn following binaries to flash by using Software Downloader. Please see <TTC2_DKB3_0_SWDownloader_GUI_User_Guide.doc>. Please see 4.0 how to enter software downloader mode.
 1)       Please check your board, if the nand ID is JY504 (CS1), you can choose the configuration file:
 TTC2_DKB3_0_Linux_Beta_JY504_JY454.blf
