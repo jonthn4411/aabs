@@ -10,7 +10,7 @@ else
        DROID_PRODUCT:=dkb
 endif
 DROID_TYPE:=release
-DROID_VARIANT:=eng
+DROID_VARIANT:=user
 
 KERNELSRC_TOPDIR:=kernel
 
