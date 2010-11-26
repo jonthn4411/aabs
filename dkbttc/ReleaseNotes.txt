@@ -389,6 +389,7 @@ After a short while, the binaries will be generated under [android]/kernel/out/m
  $ cd [android_dir]
  $ . build/envsetup.sh
  $ chooseproduct dkb
+ $ choosevariant user
  $ export ANDROID_PREBUILT_MODULES=[android_dir]/kernel/out/modules
  $ make -j4
 Note : If there is no modules, Please export ANDROID_PREBUILT_MODULES=no_kernel_modules
