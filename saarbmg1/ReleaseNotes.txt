@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA955 Android Platform Release for Linux
 Platform ReleaseNotes
-Last update: 08/11/2010
+Last update: 11/30/2010
 ==============================================================================
 
 1. Platform features
@@ -9,12 +9,15 @@ Last update: 08/11/2010
 - Rebase to google android froyo branch
 - Do key pad mapping, touch for PXA955 SAARB platform
 - Wi-Fi/BT support
+- FM radio support
 - Light sensor, proximity sensor and G-sensor support
 - Camera preview, still image capture and camcorder support
+- Second camera sensor support
 - Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC800
 - Integrate OpenCORE-based video playback for media player
 - Integrate GStreamer-based video playback for media player
 - Integrate OpenCORE-based camcorder
+- Support iAnywhere Bluetooth stack
 
 1.2 BSP features
 Uboot
@@ -23,6 +26,7 @@ Uboot
 - Burn image into Onenand
 - Flash Bad block management
 - Boot kernel with kernel command line
+- Dump RAM content to SD card when system kernel panic and reboot
 Linux-2.6.32.9
 - MTD devices
   - Support EMMC
@@ -38,14 +42,18 @@ Linux-2.6.32.9
   - Support to switch OP by "echo" command to sysfs
   - Support dynamic frequency and voltage change base on power policy maker in kernel. 
 - LCD (Dump panel)
+  - Support DSI and parallel display panel
   - Support base display
   - Support overlay display
   - Support scaling
   - Support backlight control
   - Support FB interface
   - Support pan display
-  - Support VGA resolution display
-  - Support RGB565, RGB888Packed, RGB888Unpacked, YUV420planar, YUV422planar and YUV422Packed format. 
+  - Support VGA resolution display for panel and 720p for HDMI
+  - Support RGB565, RGB888Packed, RGB888Unpacked, YUV420planar, YUV422planar and YUV422Packed format.
+- HDMI
+  - Support up to 720p video output
+  - Support dynamic switching between HDMI output and LCD panel output
 - Camera (CCIC)
   - Support V4L2 interface with Preview, Still Image capture, Camcorder
   - Support Parallel (via MIPI-bridge) and MIPI interface.
@@ -53,6 +61,8 @@ Linux-2.6.32.9
   - Support YUV420Planar, YUV422Planar and YUV422Packed format. 
   - Support to accept framebuf from user application.
   - Support user point.
+  - Support second camera sensor
+  - Support camera flash
 - SSP
   - Support to config it as I2S to transfer audio PCM data to outside code. 
 - Audio (use levante as outside audio codec)
@@ -67,7 +77,7 @@ Linux-2.6.32.9
   - Support pen attach, move, detach and time stamp. 
 - Keypad
   - Support Key down, up, repeat and time stamp. 
-- I2C (two i2c busses)
+- I2C (three i2c busses)
   - Share/Arbitrate the busses for multi devies.
 - UART (FFUART, BTUART)
   - Support tty interface
@@ -85,6 +95,7 @@ Linux-2.6.32.9
     - HNP and SRP are NOT support
   - Client
     - Support ethernet, mass storage, adb and diag drivers.
+    - Support RNDIS , ACM, adb and mass storage for Windows host
     - Support composite devie.
     - Support hot attach and detach
 - MMC/SD
@@ -99,6 +110,10 @@ Linux-2.6.32.9
   - Bluetooth
   - WIFI
   - FM Radio
+ - Sensor
+  - Support G-sensor
+  - Support proximity sensor
+  - Support light sensor
 - Power supply
   - Support battery temperature measurement
   - Support battery capacity measurement. 
@@ -181,7 +196,9 @@ Linux-2.6.32.9
   - uboot_patches.tgz                                	:Marvell patches to uboot_src.tgz
   - uboot_src.tgz                                    	:Uboot base source code
 - obm_src.tgz                                      	:OBM source code
+- manifest.xml						:Marvell manifest
 - Software_Downloader.zip				:Software downloader for Microsfot Windows
+- rls_ianywhere_ml6d.tgz				:iAnywhere Bluetooth stack patches for Android (Optional)
 
 2. System Requirements
 2.1 Hardware requirements
@@ -211,9 +228,12 @@ Linux-2.6.32.9
  $ repo sync
  $ cd [installed_directory]/src
  $ ./setup_android.sh [android_dir]
+ If you use the iAnywhere Bluetook stack instead of BlueZ in Android, apply the iAnywhere patches and BlueZ will be removed. Or skip following three steps.
+ $ tar xvf rls_ianywhere_ml6d.tgz
+ $ cd rls_ianywhere_ml6d/installdir
+ $ ./patch_ianywhere.sh [android_dir]
 
 3.3 Building Android,Linux Kernel,Uboot and OBM
-
 3.3.1 Build Linux Kernel
  $ cd [android_dir]/kernel
  $ make kernel
@@ -229,6 +249,7 @@ After a short while, the binaries will be generated under [android]/kernel/out/m
  $ cd [android_dir]
  $ . build/envsetup.sh
  $ chooseproduct saarbmg1
+ $ choosevariant user
  $ export ANDROID_PREBUILT_MODULES=[android_dir]/kernel/out/modules
  $ make -j4
 Note: If there is no modules, Please export ANDROID_PREBUILT_MODULES=no_kernel_modules
