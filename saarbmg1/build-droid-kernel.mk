@@ -56,10 +56,14 @@ build_droid_root_$(1): output_dir
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext3.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext3.img $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_onenand.img $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_onenand.img $$(OUTPUT_DIR)/$(1)
 	$(log) "  done"
 ##!!## first time publish: all for two
 PUBLISHING_FILES_$(1)+=$(1)/userdata_ext3.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/system_ext3.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/userdata_onenand.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/system_onenand.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
 endef
@@ -136,7 +140,9 @@ package_droid_slc_$(1)_$(2):
 	make -j$$(MAKE_JOBS) && \
 	echo "    copy  image files..." && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext3.img $$(OUTPUT_DIR)/$(2)/system_ext3.img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext3.img $$(OUTPUT_DIR)/$(2)/userdata_ext3.img 
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext3.img $$(OUTPUT_DIR)/$(2)/userdata_ext3.img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_onenand.img $$(OUTPUT_DIR)/$(2)/system_onenand.img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_onenand.img $$(OUTPUT_DIR)/$(2)/userdata_onenand.img
 	$$(hide)cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(2)/
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf symbols_lib.tgz lib && rm lib -rf
 	$$(log) "  done for package_droid_slc_$(1)_$(2)."
