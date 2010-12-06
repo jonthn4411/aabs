@@ -4,16 +4,22 @@ INTERNAL_PROJECTS :=vendor/marvell/external/helix
 INTERNAL_PROJECTS +=vendor/marvell/external/flash
 INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbPlayer
 INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbStack
+INTERNAL_PROJECTS +=boot/obm/.git
+INTERNAL_PROJECTS +=boot/obm/binaries/WtmUnresetPJ4.bin
 
 EXCLUDE_VCS=--exclude-vcs --exclude=.repo
 
-KERNEL_BASE_COMMIT:=c3a8e0eaafb438d5a7e6ca55c09b921291fcc1b1
-#UBOOT_BASE_COMMIT:=aced78d852d0b009e8aaa1445af8cb40861ee549
+KERNEL_BASE_COMMIT:=f6320db51173e3b94f54b87944b88d3b363c4487
+UBOOT_BASE_COMMIT:=aced78d852d0b009e8aaa1445af8cb40861ee549
 
 ifeq ($(ANDROID_VERSION),donut)
 	DROID_BASE:=shgit/donut-release
 else
-	DROID_BASE:=shgit/$(ANDROID_VERSION)
+ifeq ($(ANDROID_VERSION),eclair)
+	DROID_BASE:=android-2.1_r2
+else
+	DROID_BASE:=android-2.2.1_r1
+endif
 endif
 
 .PHONY:pkgsrc
@@ -30,14 +36,14 @@ pkgsrc: output_dir get_source_for_pkg
 	$(hide)echo "  package kernel source code..."
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_kernel_src_patch.sh $(KERNEL_BASE_COMMIT)
 
-#	$(hide)echo "  package uboot obm source code..."
-#	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_uboot_obm_src_patch.sh $(UBOOT_BASE_COMMIT)
+	$(hide)echo "  package uboot obm source code..."
+	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_uboot_obm_src_patch.sh $(UBOOT_BASE_COMMIT)
 
 	$(hide)echo "  package android source code..."
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(TOP_DIR)/core
 
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
-#	$(hide)cp $(BOARD)/ReleaseNotes.txt $(OUTPUT_DIR)
+	$(hide)cp $(BOARD)/ReleaseNotes.doc $(OUTPUT_DIR)
 	$(log) "  done."
 
 
@@ -50,11 +56,10 @@ PUBLISHING_FILES+=android_src.tgz:m:md5
 PUBLISHING_FILES+=android_patches.tgz:m:md5 
 PUBLISHING_FILES+=kernel_src.tgz:m:md5 
 PUBLISHING_FILES+=kernel_patches.tgz:m:md5 
-#PUBLISHING_FILES+=uboot_src.tgz:m:md5 
-#PUBLISHING_FILES+=uboot_patches.tgz:m:md5 
-#PUBLISHING_FILES+=obm_src.tgz:m:md5 
+PUBLISHING_FILES+=uboot_src.tgz:m:md5 
+PUBLISHING_FILES+=uboot_patches.tgz:m:md5 
+PUBLISHING_FILES+=obm_src.tgz:m:md5 
 PUBLISHING_FILES+=marvell_manifest.xml:m
 PUBLISHING_FILES+=setup_android.sh:m
-#PUBLISHING_FILES+=ReleaseNotes.txt:m
-
+PUBLISHING_FILES+=ReleaseNotes.doc:m
 
