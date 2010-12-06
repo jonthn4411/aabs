@@ -13,9 +13,9 @@ function gen_init_nfs_sh()
 	chmod 0777 /sdcard
 	chmod 0444 /sdcard/*.*
 	setprop EXTERNAL_STORAGE_STATE mounted
-	
+	setprop fake.sdcard.state true	
 	#touch the directory. A trick for NFS
-	ls -l /sdcard/* >/dev/null	
+	ls /sdcard >/dev/null	
 	sleep 2s
 	am broadcast -a android.intent.action.MEDIA_MOUNTED --ez read-only false -d file:///sdcard
 
@@ -61,7 +61,18 @@ chmod 0755 init.nfs.sh &&
 
 #don't mount sdcard in vold for NFS
 echo "  disable mount sdcard in vold.conf"
-sed -i '/^[ tab]*volume_sdcard/,/\}/ s/\(.*\)/#\1/' system/etc/vold.conf 
+
+if [ -e "system/etc/vold.conf" ]; then
+sed -i '/^[ tab]*volume_sdcard/,/\}/ s/\(.*\)/#\1/' system/etc/vold.conf
+else
+if [ -e "system/etc/vold.fstab" ]; then
+sed -i '/[ tab]*dev_mount sdcard \/mnt\/sdcard/ s/dev_mount/#(for nfs)dev_mount/' system/etc/vold.fstab
+fi
+fi
+
+if [ -e "system/etc/dhcpcd/dhcpcd-run-hooks" ]; then
+chmod +x system/etc/dhcpcd/dhcpcd-run-hooks
+fi
 
 if [ $? -ne 0 ]; then
   exit 1

@@ -15,7 +15,7 @@ build_uboot_$(1):
 	$$(log) "starting($(1)) to build uboot"
 	$$(hide)cd $$(SRC_DIR)/$$(UBOOT_SRC_DIR) && \
 	export ARCH=arm && \
-	export CROSS_COMPILE="$$(KERNEL_TOOLCHAIN_PREFIX)" && \
+	export CROSS_COMPILE="$$(SRC_DIR)/vendor/marvell/generic/toolchain/arm-marvell-linux-gnueabi-vfp-4.2.0/bin/arm-marvell-linux-gnueabi-" && \
 	make $$(UBOOT_CONFIG) && \
 	make 
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
