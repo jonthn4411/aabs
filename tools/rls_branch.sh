@@ -104,6 +104,7 @@ if [ ! -z "$3" ]; then
 
 	prj_list=
 	i=$#
+	prjs_num=$i
 	while [ $i -gt 0 ]
 	do
 		prj=$(repo forall $1 -c 'echo $(pwd):$REPO_REMOTE')
@@ -112,7 +113,7 @@ if [ ! -z "$3" ]; then
 			print_usage
 			exit 1
 		else
-			if [ $i = $# ]; then
+			if [ $i = $prjs_num ]; then
 				projects=$prj
 			else
 				projects=$projects" "$prj
