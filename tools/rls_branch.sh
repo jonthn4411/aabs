@@ -179,16 +179,19 @@ if [ "$action" = "create" ]; then
 	if [ -z "$dryrun_flag" ]; then
 		sopt="-i"
 		act="s/revision=\"[^[:blank:]]*\"/revision=\"${rls_branch}\"/"
+		act1="s/\/>/revision=\"${rls_branch}\" \/>/"
 	else
 		sopt="-n"
 		act="s/revision=\"[^[:blank:]]*\"/revision=\"${rls_branch}\"/p"
+		act1="s/\/>/revision=\"${rls_branch}\" \/>/p"
 	fi
 	if [ -z "$prj_list" ]; then
 		sed $sopt "/revision=\"[^[:blank:]]*\"/$act"  ./default.xml
 	else
 		for prj in $prj_list
 		do
-			sed $sopt "/path=\"$prj\"/$act"  ./default.xml
+			sed $sopt -e "/path=\"$prj\"/$act" -e ta \
+				-e "/path=\"$prj\"/$act1" -e :a ./default.xml
 		done
 	fi
 	if [ -z "$dryrun_flag" ]; then
