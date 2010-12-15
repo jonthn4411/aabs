@@ -80,11 +80,11 @@ How to build kernel and android image
   2. build android
      $ cd <android_working_dir>
      $ . build/envsetup.sh
-     $ chooseproduct jasper
+     $ chooseproduct brownstone
      $ export ANDROID_PREBUILT_MODULES=kernel/out/modules
      $ make
 
-  The android mbr, ramdisk_ext3.img, system_ext3.img and userdata_ext3.img are located at out/target/product/jasper
+  The android mbr, ramdisk_ext3.img, system_ext3.img and userdata_ext3.img are located at out/target/product/brownstone
 
   3. build uboot and obm
      $ cd <android_working_dir>
@@ -219,7 +219,7 @@ MMP2>> bo
 
 Note : erase ramdisk first if you want to boot from sdcard
 
-Notes:we used one kernel binary solution, the boot sequence is nand --> mmc --> nfs, now nand is not supported, so remove sdcard first if you want to boot from nfs. And the nfs server is fixed as 192.168.1.100:/nfs/android. if you want to change it, modify vendor/marvell/jasper/roodir/rdinit and build the kernel again
+Notes:we used one kernel binary solution, the boot sequence is nand --> mmc --> nfs, now nand is not supported, so remove sdcard first if you want to boot from nfs. And the nfs server is fixed as 192.168.1.100:/nfs/android. if you want to change it, modify vendor/marvell/brownstone/roodir/rdinit and build the kernel again
 
 Notes:You only need use setenv and savenv command one time. Next time UBoot will load the environment variable from NAND automaticllay. But later if you want use zImage.android.mmc to boot Android from SD card, you should clear the "bootargs" environment variable. You can do this by:
 
@@ -288,9 +288,4 @@ If the battery service reports wrong battery status, Android power off the syste
 
 Open /init.rc, add the below line before class_start default:
 setprop battery.fake_ac true
-
-
-
-
-
 
