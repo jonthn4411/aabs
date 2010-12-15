@@ -43,7 +43,7 @@ pkgsrc: output_dir get_source_for_pkg
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(TOP_DIR)/core
 
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
-	$(hide)cp $(BOARD)/ReleaseNotes.doc $(OUTPUT_DIR)
+	$(hide)cp $(BOARD)/MV-S302001-00_MMP2_Android_Brownstone_Beta_RN.pdf $(OUTPUT_DIR)
 	$(log) "  done."
 
 
