@@ -61,5 +61,5 @@ PUBLISHING_FILES+=uboot_patches.tgz:m:md5
 PUBLISHING_FILES+=obm_src.tgz:m:md5 
 PUBLISHING_FILES+=marvell_manifest.xml:m
 PUBLISHING_FILES+=setup_android.sh:m
-PUBLISHING_FILES+=ReleaseNotes.doc:m
+PUBLISHING_FILES+=MV-S302001-00_MMP2_Android_Brownstone_Beta_RN.pdf:=m
 
