@@ -21,7 +21,11 @@ else
 ifeq ($(ANDROID_VERSION),eclair)
 	DROID_BASE:=android-2.1_r2
 else
+ifeq ($(ANDROID_VERSION),froyo)
 	DROID_BASE:=android-2.2.1_r1
+else
+	DROID_BASE:=android-2.3_r1
+endif
 endif
 endif
 
