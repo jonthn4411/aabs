@@ -130,14 +130,14 @@ Install Adobe Flash plugin
   
 Burning OBM and UBoot
 =====================
-1. install XDB 5.0 alpha2 from: \\sh1sbak009\debugger_public\Official_Release\eXtreme_Debugger_v5.0_Beta2
+1. install XDB 5.0 beta2 from: \\sh1sbak009\debugger_public\Official_Release\eXtreme_Debugger_v5.0_Beta2
 2. Get nand or emmc version binary from autobuild server, you only need do one of step 3 or 4 to bring up board
 3. Flashing OBM and U-boot into NAND using XDB
    1)Use flash burn tool: flash --> burn flash
    2)Initialize a new flash and Erase all blocks
    3)burn file "ntim_mmp2_nand_bbu_ddr.bin"  		address --> 0x0
-   4)burn file "MMP2_JASPER_Loader_3_2_15.bin"		address --> 0x80000
-   5)burn file "WtmUnresetPJ4.bin"		        address --> 0xc0000
+   4)burn file "MMP2_JASPER_Loader_3_2_17.bin"		address --> 0x80000
+   5)burn file "Wtm_rel_mmp2.bin"		        address --> 0xc0000
    6)burn file "u-boot.bin"				address --> 0x100000
 
 4. Flashing OBM and U-boot into EMMC using XDB
@@ -148,8 +148,8 @@ Burning OBM and UBoot
    5)Choose partition 0x1
       a)Burn file "ntim_mmp2_nand_bbu_ddr.bin"		address --> 0x0
       b)Burn file "partition.bin"			address --> 0x600
-      c)burn file "WtmUnresetPJ4.bin"	              	address --> 0x1000
-      d)burn file "MMP2_NTLOADER_3_2_15.bin"		address --> 0x32000
+      c)burn file "Wtm_rel_mmp2.bin"	              	address --> 0x1000
+      d)burn file "MMP2_NTLOADER_3_2_17.bin"		address --> 0x32000
       e)burn file "u-boot.bin"				address --> 0x52000
 
 How to Disable GC800

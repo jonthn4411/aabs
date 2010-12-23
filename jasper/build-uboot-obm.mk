@@ -6,13 +6,13 @@ UBOOT:=u-boot.bin
 OBM_NTIM_1:=ntim_mmp2_nand_bbu_ddr.bin
 OBM_DESC_1:=ntim_mmp2_emmc_ddr_elipda_512m.txt
 OBM_NTLOADER_1:=MMP2_NTLOADER_3_2_17.bin
-WTM_1:=WtmUnresetPJ4.bin
+WTM_1:=Wtm_rel_mmp2.bin
 PARTITION_BIN:=partition.bin
 PARTITION_DESC:=partition.txt
 OBM_NTIM_2:=ntim_mmp2_nand_bbu_ddr.bin
 OBM_DESC_2:=ntim_mmp2_nand_bbu_ddr_elipda_512m.txt
 OBM_NTLOADER_2:=MMP2_NTLOADER_3_2_17.bin
-WTM_2:=WtmUnresetPJ4.bin
+WTM_2:=Wtm_rel_mmp2.bin
 
 #$1:build variant
 define define-build-uboot-obm
