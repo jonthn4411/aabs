@@ -14,7 +14,11 @@ UBOOT_BASE_COMMIT:=aced78d852d0b009e8aaa1445af8cb40861ee549
 ifeq ($(ANDROID_VERSION),eclair)
 	KERNEL_BASE_COMMIT:=8e0ee43bc2c3e19db56a4adaa9a9b04ce885cd84
 else
+ifeq ($(ANDROID_VERSION),froyo)
 	KERNEL_BASE_COMMIT:=f6320db51173e3b94f54b87944b88d3b363c4487
+else
+	KERNEL_BASE_COMMIT:=49e8954d66ce9ccf75f951a5adb217209ae6f78f
+endif
 endif
 
 ifeq ($(ANDROID_VERSION),donut)
@@ -23,7 +27,11 @@ else
 ifeq ($(ANDROID_VERSION),eclair)
 	DROID_BASE:=android-2.1_r2
 else
+ifeq ($(ANDROID_VERSION),froyo)
 	DROID_BASE:=android-2.2.1_r1
+else
+	DROID_BASE:=android-2.3_r1
+endif
 endif
 endif
 
