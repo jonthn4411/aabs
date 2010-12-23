@@ -60,8 +60,7 @@ build_droid_root_$(1): output_dir
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(1)
-	$$(hide)if [ $(ANDROID_VERSION) -ne $(ANDROID_VERSION_WO_RECOVERY) ]; then cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery.img
-$$(OUTPUT_DIR)/$(1); fi
+	$$(hide)if [ $(ANDROID_VERSION) -ne $(ANDROID_VERSION_WO_RECOVERY) ]; then cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery.img $$(OUTPUT_DIR)/$(1); fi
 	$(log) "  done"
 
 PUBLISHING_FILES_$(1)+=$(1)/userdata.img:m:md5
