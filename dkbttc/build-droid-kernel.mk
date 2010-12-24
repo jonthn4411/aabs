@@ -61,7 +61,7 @@ build_droid_root_$(1): output_dir
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(1)
-	$$(hide)if [ $(ANDROID_VERSION) -ne $(ANDROID_VERSION_WO_RECOVERY) ]; then cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery.img $$(OUTPUT_DIR)/$(1); fi
+	$$(hide)if [ $(ANDROID_VERSION) != $(ANDROID_VERSION_WO_RECOVERY) ]; then cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery.img $$(OUTPUT_DIR)/$(1); fi
 	$(log) "  done"
 
 PUBLISHING_FILES_$(1)+=$(1)/userdata.img:m:md5
@@ -164,12 +164,12 @@ package_droid_mmc_$(1)_$(2):
 	$$(hide)cp -r -p $$(OUTPUT_DIR)/$(2)/root $$(OUTPUT_DIR)/$(2)/root_nfs && \
 	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system $$(OUTPUT_DIR)/$(2)/root_nfs && \
 	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/data $$(OUTPUT_DIR)/$(2)/root_nfs
-	if [ $(ANDROID_VERSION) -ne $(ANDROID_VERSION_WO_TELEPHONY) ]; then cp -rfp $$(SRC_DIR)/vendor/marvell/generic/ttc_telephony/drivers/output/marvell $$(OUTPUT_DIR)/$(2)/root_nfs; fi
+	$$(hide)if [ $(ANDROID_VERSION) != $(ANDROID_VERSION_WO_TELEPHONY) ]; then cp -rfp $$(SRC_DIR)/vendor/marvell/generic/ttc_telephony/drivers/output/marvell $$(OUTPUT_DIR)/$(2)/root_nfs; fi
 	$$(log) "  updating the modules..."
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar xzf modules_android_mmc.tgz && cp -r modules $$(OUTPUT_DIR)/$(2)/root_nfs/system/lib/
 	$$(log) "  modifying root nfs folder..."
-	$$(hide)cd $$(OUTPUT_DIR)/$(2)/root_nfs && $$(MY_SCRIPT_DIR)/twist_root_nfs.sh 
+	$$(hide)if [ $(ANDROID_VERSION) != $(ANDROID_VERSION_WO_TELEPHONY) ]; then cd $$(OUTPUT_DIR)/$(2)/root_nfs && $$(MY_SCRIPT_DIR)/twist_root_nfs.sh; fi
 	$$(log) "copy demo media files to /sdcard if there are demo media files..."
 	$$(hide)if [ -d "$$(DEMO_MEDIA_DIR)" ]; then \
 			mkdir -p $$(OUTPUT_DIR)/$(2)/root_nfs/sdcard && \
