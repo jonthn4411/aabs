@@ -15,7 +15,6 @@ DROID_VARIANT:=user
 KERNELSRC_TOPDIR:=kernel
 
 ANDROID_VERSION_WO_RECOVERY:=gingerbread
-ANDROID_VERSION_WO_TELEPHONY:=gingerbread
 
 .PHONY:clean_droid_kernel
 clean_droid_kernel: clean_droid clean_kernel
@@ -164,12 +163,12 @@ package_droid_mmc_$(1)_$(2):
 	$$(hide)cp -r -p $$(OUTPUT_DIR)/$(2)/root $$(OUTPUT_DIR)/$(2)/root_nfs && \
 	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system $$(OUTPUT_DIR)/$(2)/root_nfs && \
 	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/data $$(OUTPUT_DIR)/$(2)/root_nfs
-	$$(hide)if [ $(ANDROID_VERSION) != $(ANDROID_VERSION_WO_TELEPHONY) ]; then cp -rfp $$(SRC_DIR)/vendor/marvell/generic/ttc_telephony/drivers/output/marvell $$(OUTPUT_DIR)/$(2)/root_nfs; fi
+	$$(hide)cp -rfp $$(SRC_DIR)/vendor/marvell/generic/ttc_telephony/drivers/output/marvell $$(OUTPUT_DIR)/$(2)/root_nfs
 	$$(log) "  updating the modules..."
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar xzf modules_android_mmc.tgz && cp -r modules $$(OUTPUT_DIR)/$(2)/root_nfs/system/lib/
 	$$(log) "  modifying root nfs folder..."
-	$$(hide)if [ $(ANDROID_VERSION) != $(ANDROID_VERSION_WO_TELEPHONY) ]; then cd $$(OUTPUT_DIR)/$(2)/root_nfs && $$(MY_SCRIPT_DIR)/twist_root_nfs.sh; fi
+	$$(hide)cd $$(OUTPUT_DIR)/$(2)/root_nfs && $$(MY_SCRIPT_DIR)/twist_root_nfs.sh
 	$$(log) "copy demo media files to /sdcard if there are demo media files..."
 	$$(hide)if [ -d "$$(DEMO_MEDIA_DIR)" ]; then \
 			mkdir -p $$(OUTPUT_DIR)/$(2)/root_nfs/sdcard && \
