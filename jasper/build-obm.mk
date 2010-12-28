@@ -5,7 +5,7 @@ OBM_NTIM_1:=ntim_mmp2_nand_bbu_ddr.bin
 OBM_DESC_1:=ntim_mmp2_nand_bbu_ddr_elipda_512m.txt
 
 OBM_NTLOADER_1:=MMP2_NTLOADER_3_2_15.bin
-WTM:=WtmUnresetPJ4.bin
+WTM:=Wtm_rel_mmp2.bin
 
 OBM_BIN_DIR:=binaries/BootLoader
 #$1:build variant
