@@ -5,7 +5,7 @@ INTERNAL_PROJECTS +=vendor/marvell/external/flash
 INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbPlayer
 INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbStack
 INTERNAL_PROJECTS +=boot/obm/.git
-INTERNAL_PROJECTS +=boot/obm/binaries/WtmUnresetPJ4.bin
+INTERNAL_PROJECTS +=boot/obm/binaries/Wtm_rel_mmp2.bin
 
 EXCLUDE_VCS=--exclude-vcs --exclude=.repo
 

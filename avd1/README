@@ -80,7 +80,7 @@ How to build kernel and android image
   2. build android
      $ cd <android_working_dir>
      $ . build/envsetup.sh
-     $ chooseproduct jasper
+     $ chooseproduct avd1 
      $ export ANDROID_PREBUILT_MODULES=kernel/out/modules
      $ make
 
@@ -137,7 +137,7 @@ Burning OBM and UBoot
    2)Initialize a new flash and Erase all blocks
    3)burn file "ntim_mmp2_nand_bbu_ddr.bin"  		address --> 0x0
    4)burn file "MMP2_NTLOADER_3_2_17.bin"               address --> 0x80000
-   5)burn file "WtmUnresetPJ4.bin"		        address --> 0xc0000
+   5)burn file "Wtm_rel_mmp2.bin"		        address --> 0xc0000
    6)burn file "u-boot.bin"				address --> 0x100000
 
 4. Flashing OBM and U-boot into EMMC using XDB
@@ -148,7 +148,7 @@ Burning OBM and UBoot
    5)Choose partition 0x1
       a)Burn file "ntim_mmp2_nand_bbu_ddr.bin"		address --> 0x0
       b)Burn file "partition.bin"			address --> 0x600
-      c)burn file "WtmUnresetPJ4.bin"	              	address --> 0x1000
+      c)burn file "Wtm_rel_mmp2.bin"	              	address --> 0x1000
       d)burn file "MMP2_NTLOADER_3_2_17.bin"            address --> 0x32000
       e)burn file "u-boot.bin"				address --> 0x52000
 
