@@ -14,8 +14,6 @@ DROID_VARIANT:=user
 
 KERNELSRC_TOPDIR:=kernel
 
-ANDROID_VERSION_WO_RECOVERY:=gingerbread
-
 .PHONY:clean_droid_kernel
 clean_droid_kernel: clean_droid clean_kernel
 
@@ -60,15 +58,13 @@ build_droid_root_$(1): output_dir
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(1)
-	$$(hide)if [ $(ANDROID_VERSION) != $(ANDROID_VERSION_WO_RECOVERY) ]; then cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery.img $$(OUTPUT_DIR)/$(1); fi
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery.img $$(OUTPUT_DIR)/$(1)
 	$(log) "  done"
 
 PUBLISHING_FILES_$(1)+=$(1)/userdata.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/system.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
-ifneq ($(ANDROID_VERSION),$(ANDROID_VERSION_WO_RECOVERY))
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk-recovery.img:m:md5
-endif
 PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
 endef
 
