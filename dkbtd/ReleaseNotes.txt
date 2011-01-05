@@ -400,6 +400,7 @@ After a short while, the binaries will be generated under [android]/kernel/out/m
  $ choosevariant user
  $ export ANDROID_PREBUILT_MODULES=[android_dir]/kernel/out/modules
  $ make -j4
+Attention: Gingerbread need JDK1.6, please export JDK path before making (export PATH=<JDK1.6 path>/bin:$PATH)
 Note : If there is no modules, Please export ANDROID_PREBUILT_MODULES=no_kernel_modules
 After a while (30~60 minutes), the binaries will be generated under [android_dir]/out/target/product/dkb/.
 Note: Currently we use Android default toolchain version: arm-eabi-4.4.0 to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for arm-eabi-4.4.0. Please don¡¯t specify other android toolchain version. 
