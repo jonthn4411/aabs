@@ -164,7 +164,6 @@ Boot the device with console
 
 first burn zImage, ensure choose mmc paritition 0
 MMP2>> mmc sw_part 0             // if you see "switch to partition #0, OK", then switch is ok
-MMP2>> sw
 MMP2>> t zImage.android
 MMP2>> mmc write 0x4c00 0x2000 0x1100000
 
@@ -192,7 +191,6 @@ Follow the below process to make a SD card with Android root file system install
 
 Second, burning the zImage.android.mmc image.
 Boot the device with console,
-MMP2>> sw         // Set the interface to u2o-eth
 MMP2>> mmc sw_part 0
 MMP2>> t zImage.android
 MMP2>> mmc write 0x4c00 0x2000 0x1100000
@@ -212,8 +210,6 @@ Setup Android on NFS
 
 Last, you should use zImage to boot the kernel and then set the bootargs variable in UBoot.
 (Notes:if adb is enabled in the kernel, this way doesn't work as the usb net won't work as the usb is used for adb)
-MMP2>> sw
-MMP2>> mmc sw_part 0
 MMP2>> t zImage.android
 MMP2>> bo
 
