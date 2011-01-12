@@ -1,0 +1,32 @@
+#!/bin/bash
+# Written by Horace Hsieh for android 2.2/2.3 build
+
+if [ -n "$ANDROID_PRE_BUILD_PATHS" ] ; then
+    export PATH=${PATH/$ANDROID_PRE_BUILD_PATHS:/}
+    ANDROID_PRE_BUILD_PATHS=
+fi
+unset JAVA_HOME
+unset CLASSPATH
+
+if [ -f ./build/envsetup.sh ]; then
+    . ./build/envsetup.sh
+else
+    echo "Please run me at the top of REPO!"
+    exit
+fi
+if [ $# -gt 0 ]
+then
+    chooseproduct $1
+else
+    chooseproduct
+fi
+
+export ANDROID_JAVA_HOME=$JAVA_HOME
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+if [ -z "$ANDROID_PRE_BUILD_PATHS" ]; then
+    export ANDROID_PRE_BUILD_PATHS=$JAVA_HOME/bin 
+    export PATH=$ANDROID_PRE_BUILD_PATHS:$PATH
+fi
+
+# Marvell specific macros
+export ANDROID_PREBUILT_MODULES=kernel/out/modules/
