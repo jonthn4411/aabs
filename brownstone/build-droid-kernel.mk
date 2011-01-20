@@ -86,7 +86,7 @@ rebuild_droid_$(1)_$(2):
 	$$(hide)cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-	ANDROID_PREBUILT_MODULES=no_kernel_modules make -j$$(MAKE_JOBS)
+	WITH_DEXPREOPT=true ANDROID_PREBUILT_MODULES=no_kernel_modules make -j$$(MAKE_JOBS)
 	$$(log) "    packaging helix libraries and flash library..."
 	$$(hide)if [ "$(1)" == "internal" ]; then \
 	cd $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib &&\
@@ -117,7 +117,7 @@ package_droid_mlc_$(1)_$(2):
 	cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-	make -j$$(MAKE_JOBS) && \
+	WITH_DEXPREOPT=true make -j$$(MAKE_JOBS) && \
 	echo "    copy ext3 image files..." && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/mbr $$(OUTPUT_DIR)/$(2)/mbr && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk_ext3.img $$(OUTPUT_DIR)/$(2)/ramdisk_ext3.img && \
