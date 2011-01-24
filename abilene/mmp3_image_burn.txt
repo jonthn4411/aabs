@@ -1,0 +1,27 @@
+A. Build Kernel
+1. Kenel base is at GIT:
+ssh://shgit.marvell.com/git/ose/linux/mrvl-2.6.git
+2. checkout the branch "mrvl-35"
+3. Build the kernel with mmp3_defconfig
+
+B. Use xdb files under XDB to load the uboot, rootfs, bootstrap and zImage to the device.  You may need to modify the directories in the xdb files.
+1 Modify mmp3_linux.xdb
+    1.1 comment out line 12 "load /bin/address =0x01100000 of "D:\MMP3\zImage""
+    1.2 enable line 14 "load /bin/address =0x01000000 of "D:\MMP3\system.img""
+2 Run "MMP3_LPDDR2_CH1_DDR_400MHz_Core_800MHz_PLL1_Kapil.xdb" so as to load rootfs to 0x01000000.
+3 Boot to uboot
+4 Use "nand erase 0x2e00000 0x9600000" and "nand write.yaffs 0x1000000 0x2e00000 <sizeofimage>" to load write rootfs to NAND.
+  sizeofimage = (ceil)( sizeof(D:\MMP3\system.img) / 0x1080 ) * 0x1080
+5 Modify mmp3_linux.xdb
+    5.1 comment out line 14 "load /bin/address =0x01000000 of "D:\MMP3\system.img""
+    5.2 enable line 15 "load /bin/address =0x01000000 of "D:\MMP3\userdata.img""
+6 Run "MMP3_LPDDR2_CH1_DDR_400MHz_Core_800MHz_PLL1_Kapil.xdb" so as to load rootfs to 0x01000000.
+7 Boot to uboot
+8 Use "nand erase 0xc600000 0x17800000" and "nand write.yaffs 0x1000000 0xc600000 <sizeofimage>" to load write rootfs to NAND.
+  sizeofimage = (ceil)( sizeof(D:\MMP3\userdata.img) / 0x1080 ) * 0x1080
+6 Modify mmp3_linux.xdb
+    5.1 enable line 12 "load /bin/address =0x01100000 of "D:\MMP3\zImage""
+    5.2 comment out line 15 "load /bin/address =0x01000000 of "D:\MMP3\userdata.img""
+7 Reboot and Run "MMP3_LPDDR2_CH1_DDR_400MHz_Core_800MHz_PLL1_Kapil.xdb" so as to load zImage to 0x01100000.
+8 Boot to uboot
+9 Type "boot" in uboot to load the zImage at 0x01100000.  The Linux should start up after this step.
