@@ -62,7 +62,7 @@ pkgsrc: output_dir get_source_for_pkg
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(TOP_DIR)/core
 
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
-	$(hide)cp $(BOARD)/ReleaseNotes.txt $(OUTPUT_DIR)
+	$(hide)cp $(BOARD)/ReleaseNotes-$(ANDROID_VERSION).txt $(OUTPUT_DIR)/ReleaseNotes.txt
 	$(log) "  done."
 
 
