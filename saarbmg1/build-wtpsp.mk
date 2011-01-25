@@ -16,7 +16,7 @@ define define-build-wtpsp
 .PHONY:build_wtpsp_$(1)
 build_wtpsp_$(1):
 	$$(log) "starting($(1)) to build WTPSP"
-	rm -rf $(SRC_DIR)/$(WTPSP_DIR) && mkdir -p $(SRC_DIR)/$(WTPSP_DIR) && \
+	rm -rf $(SRC_DIR)/$(WTPSP_DIR) && \
 	git clone $(GIT_PROJECT) $(SRC_DIR)/$(WTPSP_DIR) && \
 	cd $(SRC_DIR)/$(WTPSP_DIR)/drv/src && \
 	make KDIR=$(KERNEL_DIR) ARCH=arm CROSS_COMPILE=$(CROSS_TOOL) && \
