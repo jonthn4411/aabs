@@ -166,7 +166,7 @@ endef
 # os: the operating system
 # storage: the OS will startup from which storage
 # kernel_cfg:kernel config file used to build the kernel
-# root: optional. If specified, indicating that the kernel zImage has a root RAM file system.
+# root: optional. If specified, indicating that the kernel Image has a root RAM file system.
 #example: android:mlc:pxa168_android_mlc_defconfig:root
 # kernel_configs:=
 #
@@ -185,8 +185,8 @@ kernel_cfg:=$$(word 3, $$(tw) )
 root:=$$(word 4, $$(tw) )
 
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
-#PUBLISHING_FILES_$(2):=$(PUBLISHING_FILES_$(2)) $(2)/zImage.$$(os):m:md5
-PUBLISHING_FILES_$(2)+=$(2)/zImage.$$(os):m:md5
+#PUBLISHING_FILES_$(2):=$(PUBLISHING_FILES_$(2)) $(2)/uImage.$$(os):m:md5
+PUBLISHING_FILES_$(2)+=$(2)/uImage.$$(os):m:md5
 PUBLISHING_FILES_$(2)+=$(2)/vmlinux:o:md5
 PUBLISHING_FILES_$(2)+=$(2)/System.map:o:md5
 PUBLISHING_FILES_$(2)+=$(2)/modules_$$(os)_$$(storage).tgz:m:md5
