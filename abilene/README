@@ -1,0 +1,67 @@
+How to get source code from git server
+=====================================
+  1. repo init -u ssh://shgit.marvell.com/git/android/platform/manifest -b abilene-gingerbread
+  2. repo sync
+
+How to get and build Uboot
+=====================================
+  1. git clone ssh://shgit.marvell.com/git/ose/linux/uboot.git
+  2. Use the branch m2010.09
+  3. make abilene_config
+  4. make 
+
+How to build kernel and android image
+=====================================
+  1. build kernel and modules
+     $ cd <android_working_dir>
+     $ cd kernel
+     $ make all
+
+  uImage is located at kernel/out, modules is located at kernel/out/modules
+
+  2. build android
+     $ cd <android_working_dir>
+     $ export ANDROID_JAVA_HOME=[PATH_TO_JAVA_HOME]
+     $ source build/envsetup.sh
+     $ chooseproduct abilene
+     $ export ANDROID_PREBUILT_MODULES=kernel/out/modules
+     $ make
+
+  The android ramdisk.img, system.img and userdata.img are located at out/target/product/abilene
+
+How to enable autoboot and update uboot (Still in debug)
+=====================================
+Use XDB to burn uboot binary:
+   1. Set the file "MMP3_LPDDR2_CH1_5.xdb" as the init batch file. 
+   2. Use xdb files under "<XDB INSTALL FOLDER>\xdb\configuration\jtag\soc\mmp3\mmp3_v6_ten.xsf" to launch the board.
+   3. Open "Flash: Burn Flash". Choose Board "ARMADA628" and Flash "EMMC Flash".
+   4. Check the box "Enable new BBM". Burn u-boot.bin to 0x0 in "partition 0".
+   5. Choose "partition 1". Burn tim binary to 0x0 and burn loop.bin to 0x60000.
+
+How to boot up the board
+=====================================
+
+Launch Uboot (Just the workaround before autoboot is ready)
+---------------
+Currently Uboot autoboot has not been ready. Just use XDB to launch uboot.
+   0. Before launching XDB, make sure the location of uboot binary is correct in scripts "mmp3_uboot.xdb".
+   1. Launch the batch file "MMP3_LPDDR2_CH1_DDR_400MHz_Core_800MHz_PLL1_Kapil.xdb" in XDB. 
+   2. Type "run" in XDB command window and the device will enter uboot menu.
+
+Use NFS for rootfs boot up
+----------------
+   1. Generate the rootfs package.
+	$ cd <android_working_dir>
+	$ cd out/target/product/avd1
+	$ mkdir rootfs
+	$ cp -rf root/* rootfs/
+	$ cp -rf system/* rootfs/system/
+	$ cp -rf data/* rootfs/data/
+	$ chmod 777 rootfs/data
+	$ chown -R root.root rootfs
+	$ chmod -R 777 rootfs/system/usr/keylayout/ rootfs/system/usr/keychars/
+	Then use folder rootfs as the NFS rootfs package.
+
+   2. In uboot menu:
+	Abilene>> tftp uImage
+	Abilene>> bootm 1200000
