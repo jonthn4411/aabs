@@ -10,7 +10,7 @@ INTERNAL_PROJECTS +=boot/obm/binaries/Wtm_rel_mmp2.bin
 EXCLUDE_VCS=--exclude-vcs --exclude=.repo
 
 KERNEL_BASE_COMMIT:=7754c0f695fea81fcf63f61f83d305d389908de5
-UBOOT_BASE_COMMIT:=aced78d852d0b009e8aaa1445af8cb40861ee549
+UBOOT_BASE_COMMIT:=1d4b28457dfcef99869dffa5142273c180351191
 
 ifeq ($(ANDROID_VERSION),donut)
 	DROID_BASE:=shgit/donut-release
