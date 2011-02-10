@@ -84,7 +84,7 @@ How to build kernel and android image
      $ export ANDROID_PREBUILT_MODULES=kernel/out/modules
      $ make
 
-  The android mbr, ramdisk_ext3.img, system_ext3.img and userdata_ext3.img are located at out/target/product/brownstone
+  The android mbr, ramdisk_ext4.img, system_ext4.img and userdata_ext4.img are located at out/target/product/brownstone
 
   3. build uboot and obm
      $ cd <android_working_dir>
@@ -170,11 +170,11 @@ MMP2>> mmc write 0x4c00 0x2000 0x1100000
 sencond, burning mbr, ramdisk, system and userdata img
 MMP2>> t mbr
 MMP2>> mmc write 0x4800 0x1 0x1100000
-MMP2>> t ramdisk_ext3.img
+MMP2>> t ramdisk_ext4.img
 MMP2>> mmc write 0x8C00 0x4000 0x1100000
-MMP2>> t system_ext3.img
+MMP2>> t system_ext4.img
 MMP2>> mmc write 0xCC00 0x3C000 0x1100000
-MMP2>> t userdata_ext3.img
+MMP2>> t userdata_ext4.img
 MMP2>> mmc write 0x48C00 0x4B000 0x1100000 
 
 when you done, power off mmp2, and power again to boot it from emmc.
@@ -184,7 +184,7 @@ Setup Android on SD Card
 ========================
 Follow the below process to make a SD card with Android root file system installed.
 1) Plug a SD card to the PC
-2) mkfs.ext3 /dev/sdc #your SD card maybe mounted at the other sd device, such as /dev/sdb
+2) mkfs.ext4 /dev/sdc #your SD card maybe mounted at the other sd device, such as /dev/sdb
 3) mount /dev/sdc /mnt/disk
 4) tar xvf root_nfs.tgz /tmp; cp -p -r /tmp/root_nfs/* /mnt/disk/;
 5) umount /dev/sdc
