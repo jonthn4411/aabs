@@ -84,7 +84,7 @@ How to build kernel and android image
      $ export ANDROID_PREBUILT_MODULES=kernel/out/modules
      $ make
 
-  The android mbr, ramdisk_ext4.img, system_ext4.img and userdata_ext4.img are located at out/target/product/brownstone
+  The android mbr, ramdisk.img, system_ext4.img and userdata_ext4.img are located at out/target/product/brownstone
 
   3. build uboot and obm
      $ cd <android_working_dir>
@@ -170,7 +170,7 @@ MMP2>> mmc write 0x4c00 0x2000 0x1100000
 sencond, burning mbr, ramdisk, system and userdata img
 MMP2>> t mbr
 MMP2>> mmc write 0x4800 0x1 0x1100000
-MMP2>> t ramdisk_ext4.img
+MMP2>> t ramdisk.img
 MMP2>> mmc write 0x8C00 0x4000 0x1100000
 MMP2>> t system_ext4.img
 MMP2>> mmc write 0xCC00 0x3C000 0x1100000
