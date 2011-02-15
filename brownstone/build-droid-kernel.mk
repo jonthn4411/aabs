@@ -33,7 +33,7 @@ clean_kernel:
 #$1:build variant
 define define-build-droid-kernel
 .PHONY:build_droid_kernel_$(1)
-build_droid_kernel_$(1): build_droid_root_$(1) build_kernel_$(1) build_droid_pkgs_$(1) 
+build_droid_kernel_$(1): build_droid_root_$(1) build_kernel_$(1) build_recovery_kernel_$(1) build_droid_pkgs_$(1)
 endef
 
 #$1:build variant
@@ -119,18 +119,25 @@ package_droid_mlc_$(1)_$(2):
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS) && \
 	echo "    copy ext4 image files..." && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/mbr $$(OUTPUT_DIR)/$(2)/mbr && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/primary_gpt $$(OUTPUT_DIR)/$(2)/primary_gpt && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/secondary_gpt $$(OUTPUT_DIR)/$(2)/secondary_gpt && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img $$(OUTPUT_DIR)/$(2)/ramdisk.img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk_recovery.img $$(OUTPUT_DIR)/$(2)/ramdisk_recovery.img && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext4.img $$(OUTPUT_DIR)/$(2)/system_ext4_$(1).img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(2)/userdata_ext4_$(1).img
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(2)/userdata_ext4_$(1).img \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/cache_ext4.img $$(OUTPUT_DIR)/$(2)/cache_ext4_$(1).img
+
 	$$(log) "  done for package_droid_mlc_$(1)$(2)."
 
 ifeq ($(1),internal)
-PUBLISHING_FILES_$(2)+=$(2)/mbr:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/primary_gpt:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/secondary_gpt:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/ramdisk.img:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/ramdisk_recovery.img:m:md5
 endif
 PUBLISHING_FILES_$(2)+=$(2)/system_ext4_$(1).img:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/userdata_ext4_$(1).img:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/cache_ext4_$(1).img:m:md5
 endef
 
 #$1:internal or external
@@ -187,6 +194,7 @@ root:=$$(word 4, $$(tw) )
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
 #PUBLISHING_FILES_$(2):=$(PUBLISHING_FILES_$(2)) $(2)/zImage.$$(os):m:md5
 PUBLISHING_FILES_$(2)+=$(2)/zImage.$$(os):m:md5
+PUBLISHING_FILES_$(2)+=$(2)/zImage_recovery.$$(os):m:md5
 PUBLISHING_FILES_$(2)+=$(2)/vmlinux:o:md5
 PUBLISHING_FILES_$(2)+=$(2)/System.map:o:md5
 PUBLISHING_FILES_$(2)+=$(2)/modules_$$(os)_$$(storage).tgz:m:md5
@@ -205,6 +213,7 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)
 	$$(log) "    copy kernel and module files ..."
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage $$(OUTPUT_DIR)/$(2)/zImage.$$(private_os)
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage_recovery $$(OUTPUT_DIR)/$(2)/zImage_recovery.$$(private_os)
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/vmlinux $$(OUTPUT_DIR)/$(2)
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/System.map $$(OUTPUT_DIR)/$(2)
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi &&\
