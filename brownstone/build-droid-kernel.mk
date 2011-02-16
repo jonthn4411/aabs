@@ -47,7 +47,7 @@ build_droid_root_$(1): output_dir
 	$$(hide)cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-	make -j$$(MAKE_JOBS) 
+	make -j$$(MAKE_JOBS)
 	echo "    copy image files..." && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/primary_gpt $$(OUTPUT_DIR)/$(1)/ && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/secondary_gpt $$(OUTPUT_DIR)/$(1)/ && \
@@ -63,6 +63,7 @@ build_droid_root_$(1): output_dir
 	PUBLISHING_FILES_$(1)+=$(1)/system_ext4.img:m:md5
 	PUBLISHING_FILES_$(1)+=$(1)/userdata_ext4.img:m:md5
 	PUBLISHING_FILES_$(1)+=$(1)/cache_ext4.img:m:md5
+	$$(hide)cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(1)/
 	$(log) "  done"
 endef
 
@@ -152,7 +153,6 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	mkdir -p $$(OUTPUT_DIR)/$(2)/modules
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules/* $$(OUTPUT_DIR)/$(2)/modules
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf modules_$$(private_os)_$$(private_storage).tgz modules/ 
-	$$(hide)cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(2)/
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf symbols_lib.tgz lib && rm lib -rf
 	$(log) "  done."
 
