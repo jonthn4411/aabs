@@ -28,12 +28,10 @@ clean_kernel:
 	$(hide)cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && make clean
 	$(log) "    done"
 
-# we first build the whole android and then we can do incremental build to save time.
-
 #$1:build variant
 define define-build-droid-kernel
 .PHONY:build_droid_kernel_$(1)
-build_droid_kernel_$(1): build_droid_root_$(1) build_kernel_$(1) build_droid_pkgs_$(1)
+build_droid_kernel_$(1): build_kernel_$(1) build_droid_root_$(1) build_droid_pkgs_$(1)
 endef
 
 #$1:build variant
@@ -41,12 +39,31 @@ define define-build-droid-root
 .PHONY: build_droid_root_$(1) 
 build_droid_root_$(1): output_dir
 	$$(log) "[$(1)]building android source code ..."
+	$$(log) "  updating the modules..."
+	$$(hide)rm -fr $$(OUTPUT_DIR)/$(1)/modules
+	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
+	$$(hide)cd $$(OUTPUT_DIR)/$(1) && tar xzf modules_android_mmc.tgz
+	$$(hide)export ANDROID_PREBUILT_MODULES=$$(OUTPUT_DIR)/$(1)/modules && \
 	$$(hide)cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-	ANDROID_PREBUILT_MODULES=no_kernel_modules make -j$$(MAKE_JOBS) 
+	make -j$$(MAKE_JOBS) 
+	echo "    copy image files..." && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/primary_gpt $$(OUTPUT_DIR)/$(1)/ && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/secondary_gpt $$(OUTPUT_DIR)/$(1)/ && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img $$(OUTPUT_DIR)/$(1)/ && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk_recovery.img $$(OUTPUT_DIR)/$(1)/ && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext4.img $$(OUTPUT_DIR)/$(1)/ && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(1)/ \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/cache_ext4.img $$(OUTPUT_DIR)/$(1)/
+	PUBLISHING_FILES_$(1)+=$(1)/primary_gpt:m:md5
+	PUBLISHING_FILES_$(1)+=$(1)/secondary_gpt:m:md5
+	PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
+	PUBLISHING_FILES_$(1)+=$(1)/ramdisk_recovery.img:m:md5
+	PUBLISHING_FILES_$(1)+=$(1)/system_ext4.img:m:md5
+	PUBLISHING_FILES_$(1)+=$(1)/userdata_ext4.img:m:md5
+	PUBLISHING_FILES_$(1)+=$(1)/cache_ext4.img:m:md5
 	$(log) "  done"
-
 endef
 
 #$1:build variant
@@ -55,96 +72,11 @@ define define-build-droid-pkgs
 build_droid_pkgs_$(1): 
 endef
 
-#$1: build variant
-#$2: internal or external
-define define-build-droid-config
-.PHONY: build_droid_$(2)_$(1) 
-build_droid_$(2)_$(1): rebuild_droid_$(2)_$(1) package_droid_mlc_$(2)_$(1) package_droid_mmc_$(2)_$(1)
-	$$(log) "build_droid_$(2)_$(1) is done, reseting the source code."
-	$$(hide)cd $$(SRC_DIR)/vendor/marvell/$$(DROID_PRODUCT)/ &&\
-	git reset --hard
-	$$(log) "  done"
-
-build_droid_pkgs_$(1): build_droid_$(2)_$(1)
-endef
-
 #$1:internal or external
 #$2:build variant
-define rebuild-droid-config
-.PHONY:rebuild_droid_$(1)_$(2)
-
-#for external build, we should remove helix and adobe flash libraries.
-rebuild_droid_$(1)_$(2): nolib_config:=$$(if $$(findstring $(1),external),true,false)
-rebuild_droid_$(1)_$(2):
-	$$(log) "[$(2)]rebuild android for $(1)..."
-	$$(hide)cd $$(SRC_DIR)/vendor/marvell/$$(DROID_PRODUCT) && \
-	sed -i "/^[ tab]*BOARD_NO_HELIX_LIBS[ tab]*:=/ s/:=.*/:= $$(nolib_config)/" BoardConfig.mk && \
-	sed -i "/^[ tab]*BOARD_NO_FLASH_PLUGIN[ tab]*:=/ s/:=.*/:= $$(nolib_config)/" BoardConfig.mk
-	$$(hide)rm -fr $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib/helix
-	$$(hide)rm -f $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib/netscape/libflashplayer.so
-	$$(hide)rm -f $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/*.img
-	$$(hide)cd $$(SRC_DIR) && \
-	source ./build/envsetup.sh && \
-	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-	ANDROID_PREBUILT_MODULES=no_kernel_modules make -j$$(MAKE_JOBS)
-	$$(log) "    packaging helix libraries and flash library..."
-	$$(hide)if [ "$(1)" == "internal" ]; then \
-	cd $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib &&\
-	mkdir -p helix &&\
-	tar czf $$(OUTPUT_DIR)/$(2)/helix.tgz helix/ && \
-	mkdir -p netscape &&\
-	tar czf $$(OUTPUT_DIR)/$(2)/flash.tgz netscape/; \
-	fi
-	$$(log) "  done for rebuild_droid_$(1)_$(2)"
-
-ifeq ($(1),internal)
-PUBLISHING_FILES_$(2)+=$(2)/helix.tgz:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/flash.tgz:m:md5
-endif
-endef
-
-#$1:internal or external
-#$2:build variant
-define package-droid-mlc-config
-.PHONY:package_droid_mlc_$(1)_$(2)
-package_droid_mlc_$(1)_$(2):
-	$$(log) "[$(2)]package file system for booting android from MLC for $(1)..."
-	$$(log) "  updating the modules..."
-	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi
-	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)
-	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar xzf modules_android_mmc.tgz
-	$$(hide)export ANDROID_PREBUILT_MODULES=$$(OUTPUT_DIR)/$(2)/modules && \
-	cd $$(SRC_DIR) && \
-	source ./build/envsetup.sh && \
-	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-	make -j$$(MAKE_JOBS) && \
-	echo "    copy ext4 image files..." && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/primary_gpt $$(OUTPUT_DIR)/$(2)/primary_gpt && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/secondary_gpt $$(OUTPUT_DIR)/$(2)/secondary_gpt && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img $$(OUTPUT_DIR)/$(2)/ramdisk.img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk_recovery.img $$(OUTPUT_DIR)/$(2)/ramdisk_recovery.img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext4.img $$(OUTPUT_DIR)/$(2)/system_ext4_$(1).img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(2)/userdata_ext4_$(1).img \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/cache_ext4.img $$(OUTPUT_DIR)/$(2)/cache_ext4_$(1).img
-
-	$$(log) "  done for package_droid_mlc_$(1)$(2)."
-
-ifeq ($(1),internal)
-PUBLISHING_FILES_$(2)+=$(2)/primary_gpt:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/secondary_gpt:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/ramdisk.img:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/ramdisk_recovery.img:m:md5
-endif
-PUBLISHING_FILES_$(2)+=$(2)/system_ext4_$(1).img:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/userdata_ext4_$(1).img:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/cache_ext4_$(1).img:m:md5
-endef
-
-#$1:internal or external
-#$2:build variant
-define package-droid-mmc-config
-.PHONY: package_droid_mmc_$(1)_$(2)
-package_droid_mmc_$(1)_$(2):
+define package-droid-nfs-config
+.PHONY: package_droid_nfs_$(1)_$(2)
+package_droid_nfs_$(1)_$(2):
 	$$(log) "[$(2)]package root file system for booting android from SD card or NFS for $(1)."
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/root_nfs ]; then rm -fr $$(OUTPUT_DIR)/$(2)/root_nfs; fi
 	$$(hide)cp -r -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/root $$(OUTPUT_DIR)/$(2)/root_nfs && \
@@ -164,7 +96,7 @@ package_droid_mmc_$(1)_$(2):
 		   fi
 	$$(log) "  packaging the root_nfs.tgz..."
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf root_nfs_$(1).tgz root_nfs/
-	$$(log) "  done for package_droid_mmc_$(1)_$(2)."
+	$$(log) "  done for package_droid_nfs_$(1)_$(2)."
 
 PUBLISHING_FILES_$(2)+=$(2)/root_nfs_$(1).tgz:m:md5 
 endef
@@ -228,17 +160,11 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 build_kernel_$(2): build_kernel_$$(os)_$$(storage)_$(2)
 endef
 
-$(foreach bv,$(BUILD_VARIANTS), $(eval $(call define-build-droid-kernel,$(bv)) ) \
-								$(eval $(call define-build-droid-root,$(bv)) ) \
-								$(eval $(call define-build-droid-pkgs,$(bv)) ) \
-								$(eval $(call define-build-droid-config,$(bv),internal) ) \
-								$(eval $(call define-build-droid-config,$(bv),external) ) \
-								$(eval $(call rebuild-droid-config,internal,$(bv)) )\
-								$(eval $(call rebuild-droid-config,external,$(bv)) )\
-								$(eval $(call package-droid-mlc-config,internal,$(bv)) )\
-								$(eval $(call package-droid-mlc-config,external,$(bv)) )\
-								$(eval $(call package-droid-mmc-config,internal,$(bv)) )\
-								$(eval $(call package-droid-mmc-config,external,$(bv)) ) \
-								$(foreach kc, $(kernel_configs),$(eval $(call define-kernel-target,$(kc),$(bv)) ) )\
+$(foreach bv,$(BUILD_VARIANTS), \
+	$(eval $(call define-build-droid-kernel,$(bv)) ) \
+	$(foreach kc, $(kernel_configs), \
+		$(eval $(call define-kernel-target,$(kc),$(bv)) ) ) \
+	$(eval $(call define-build-droid-root,$(bv)) ) \
+	$(eval $(call define-build-droid-pkgs,$(bv)) ) \
+	$(eval $(call package-droid-nfs-config,internal,$(bv)) ) \
 )
-
