@@ -56,6 +56,8 @@ build_droid_root_$(1): output_dir
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext4.img $$(OUTPUT_DIR)/$(1)/ && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(1)/ \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/cache_ext4.img $$(OUTPUT_DIR)/$(1)/
+	$$(hide)cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(1)/
+	$$(hide)cd $$(OUTPUT_DIR)/$(1) && tar czf symbols_lib.tgz lib && rm lib -rf
 	PUBLISHING_FILES_$(1)+=$(1)/primary_gpt:m:md5
 	PUBLISHING_FILES_$(1)+=$(1)/secondary_gpt:m:md5
 	PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
@@ -63,6 +65,7 @@ build_droid_root_$(1): output_dir
 	PUBLISHING_FILES_$(1)+=$(1)/system_ext4.img:m:md5
 	PUBLISHING_FILES_$(1)+=$(1)/userdata_ext4.img:m:md5
 	PUBLISHING_FILES_$(1)+=$(1)/cache_ext4.img:m:md5
+	PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
 	$(log) "  done"
 endef
 
@@ -130,7 +133,6 @@ PUBLISHING_FILES_$(2)+=$(2)/zImage_recovery.$$(os):m:md5
 PUBLISHING_FILES_$(2)+=$(2)/vmlinux:o:md5
 PUBLISHING_FILES_$(2)+=$(2)/System.map:o:md5
 PUBLISHING_FILES_$(2)+=$(2)/modules_$$(os)_$$(storage).tgz:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/symbols_lib.tgz:o:md5
 
 build_kernel_$$(os)_$$(storage)_$(2): private_os:=$$(os)
 build_kernel_$$(os)_$$(storage)_$(2): private_storage:=$$(storage)
@@ -152,8 +154,6 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	mkdir -p $$(OUTPUT_DIR)/$(2)/modules
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules/* $$(OUTPUT_DIR)/$(2)/modules
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf modules_$$(private_os)_$$(private_storage).tgz modules/ 
-	$$(hide)cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(2)/
-	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf symbols_lib.tgz lib && rm lib -rf
 	$(log) "  done."
 
 .PHONY: build_kernel_$$(os)_$$(storage)_$(2)
