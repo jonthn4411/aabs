@@ -44,7 +44,7 @@ build_droid_root_$(1): output_dir
 	$$(hide)cd $$(OUTPUT_DIR)/$(1) && tar xzf modules_android_mmc.tgz
 	$$(log) "[$(1)]building android source code ..."
 	$$(hide)export ANDROID_PREBUILT_MODULES=$$(OUTPUT_DIR)/$(1)/modules && \
-	$$(hide)cd $$(SRC_DIR) && \
+	cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS)
