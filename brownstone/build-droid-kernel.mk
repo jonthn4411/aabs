@@ -33,7 +33,7 @@ clean_kernel:
 #$1:build variant
 define define-build-droid-kernel
 .PHONY:build_droid_kernel_$(1)
-build_droid_kernel_$(1): build_droid_root_$(1) build_kernel_$(1) build_recovery_kernel_$(1) build_droid_pkgs_$(1)
+build_droid_kernel_$(1): build_droid_root_$(1) build_kernel_$(1) build_droid_pkgs_$(1)
 endef
 
 #$1:build variant
