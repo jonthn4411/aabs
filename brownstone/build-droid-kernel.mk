@@ -38,16 +38,16 @@ endef
 define define-build-droid-root
 .PHONY: build_droid_root_$(1) 
 build_droid_root_$(1): output_dir
-	$$(log) "[$(1)]building android source code ..."
-	$$(log) "  updating the modules..."
+	$$(log) "[$(1)]updating the modules..."
 	$$(hide)rm -fr $$(OUTPUT_DIR)/$(1)/modules
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
 	$$(hide)cd $$(OUTPUT_DIR)/$(1) && tar xzf modules_android_mmc.tgz
+	$$(log) "[$(1)]building android source code ..."
 	$$(hide)export ANDROID_PREBUILT_MODULES=$$(OUTPUT_DIR)/$(1)/modules && \
 	$$(hide)cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-	make -j$$(MAKE_JOBS) 
+	make -j$$(MAKE_JOBS)
 	echo "    copy image files..." && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/primary_gpt $$(OUTPUT_DIR)/$(1)/ && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/secondary_gpt $$(OUTPUT_DIR)/$(1)/ && \
@@ -56,6 +56,7 @@ build_droid_root_$(1): output_dir
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext4.img $$(OUTPUT_DIR)/$(1)/ && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(1)/ \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/cache_ext4.img $$(OUTPUT_DIR)/$(1)/
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_droid.zip $$(OUTPUT_DIR)/$(1)/
 	$$(hide)cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(1)/
 	$$(hide)cd $$(OUTPUT_DIR)/$(1) && tar czf symbols_lib.tgz lib && rm lib -rf
 	PUBLISHING_FILES_$(1)+=$(1)/primary_gpt:m:md5
@@ -65,6 +66,7 @@ build_droid_root_$(1): output_dir
 	PUBLISHING_FILES_$(1)+=$(1)/system_ext4.img:m:md5
 	PUBLISHING_FILES_$(1)+=$(1)/userdata_ext4.img:m:md5
 	PUBLISHING_FILES_$(1)+=$(1)/cache_ext4.img:m:md5
+	PUBLISHING_FILES_$(1)+=$(1)/update_droid.zip:m:md5
 	PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
 	$(log) "  done"
 endef

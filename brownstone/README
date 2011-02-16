@@ -50,10 +50,15 @@ Files in this folder
   modules_android_mmc.tgz  Kernel modules that built along with zImage.android and zImage_recovery.android
 
 -Android File Systems
-  root_nfs_xxx.tgz		Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package. 
+  root_nfs_xxx.tgz         Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package. 
  
-  system_ubi_xxx.img		Android system image for UBI file system.
-  userdata_ubi_xxx.img	    Android userdata image for UBI file system.
+  ramdisk.img              Android ramdisk image.
+  ramdisk_recovery.img     Android ramdisk image in recovery mode.
+  system_ext4.img          Android system image for ext4 file system.
+  userdata_ext4.img        Android userdata image for ext4 file system.
+  cache_ext4.img           cache partition used to store recovery relevant files for ext4 file system.
+
+  update_droid.zip         that is a update package including kernel, ramdisk and system folder.
 
   if xxx is "internal" means everything is built in the package, and should be used internally.
 
@@ -235,7 +240,7 @@ FAQ
 =====
 +Wifi can't be enabled if I use a zImage built at the other day.
 ----------------------------------------------------------------
-The wifi kernel module in root_nfs.tgz or system_ubi.img may not comply with zImages built at the other day. Please use the zImage and root_nfs.tgz or system_ubi.img built at the same day.
+The wifi kernel module in root_nfs.tgz or system_xxx.img may not comply with zImages built at the other day. Please use the zImage and root_nfs.tgz or system_xxx.img built at the same day.
 
 
 +How can I disable GC300 copybit engine completely?
@@ -250,10 +255,10 @@ If the property is set to 'gc', it will allocate memory from PMEM and expect GC 
 If the property is set to 'overlay', it will use the overlay engine to output the video.
 If it is other values, it will use software color conversion and let surfaceflinger to output the video frame.
 
-+How to modify the files after the system_ubi.img has been burned to the flash?
++How to modify the files after the system_xxx.img has been burned to the flash?
 -------------------------------------------------------------------------------
 In the console mode, you can remount the /system folder by
-$mount -o remount -t ubifs ubi0_0 /system
+$mount -o remount -t xxx /system
 
 +How to enable the video playback profiling?
 --------------------------------------------
