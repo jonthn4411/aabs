@@ -63,16 +63,17 @@ build_droid_root_$(1): output_dir
 	echo "    generating symbols_lib.tgz..." && \
 		cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(1)/ && \
 		cd $$(OUTPUT_DIR)/$(1) && tar czf symbols_lib.tgz lib && rm lib -rf
-	PUBLISHING_FILES_$(1)+=$(1)/primary_gpt:m:md5
-	PUBLISHING_FILES_$(1)+=$(1)/secondary_gpt:m:md5
-	PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
-	PUBLISHING_FILES_$(1)+=$(1)/ramdisk_recovery.img:m:md5
-	PUBLISHING_FILES_$(1)+=$(1)/system_ext4.img:m:md5
-	PUBLISHING_FILES_$(1)+=$(1)/userdata_ext4.img:m:md5
-	PUBLISHING_FILES_$(1)+=$(1)/cache_ext4.img:m:md5
-	PUBLISHING_FILES_$(1)+=$(1)/update_droid.zip:m:md5
-	PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
 	$(log) "  done"
+
+PUBLISHING_FILES_$(1)+=$(1)/primary_gpt:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/secondary_gpt:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/ramdisk_recovery.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/system_ext4.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/userdata_ext4.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/cache_ext4.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/update_droid.zip:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
 endef
 
 #$1:build variant
