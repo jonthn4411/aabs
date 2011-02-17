@@ -82,6 +82,19 @@ define define-build-droid-pkgs
 build_droid_pkgs_$(1): 
 endef
 
+#$1: build variant
+#$2: internal or external
+define define-build-droid-config
+.PHONY: build_droid_$(2)_$(1)
+build_droid_$(2)_$(1): package_droid_nfs_$(2)_$(1)
+	$$(log) "build_droid_$(2)_$(1) is done, reseting the source code."
+	$$(hide)cd $$(SRC_DIR)/vendor/marvell/$$(DROID_PRODUCT)/ &&\
+		git reset --hard
+	$$(log) "  done"
+
+build_droid_pkgs_$(1): build_droid_$(2)_$(1)
+endef
+
 #$1:internal or external
 #$2:build variant
 define package-droid-nfs-config
@@ -173,5 +186,6 @@ $(foreach bv,$(BUILD_VARIANTS), \
 		$(eval $(call define-kernel-target,$(kc),$(bv)) ) ) \
 	$(eval $(call define-build-droid-root,$(bv)) ) \
 	$(eval $(call define-build-droid-pkgs,$(bv)) ) \
+	$(eval $(call define-build-droid-config,internal,$(bv)) ) \
 	$(eval $(call package-droid-nfs-config,internal,$(bv)) ) \
 )
