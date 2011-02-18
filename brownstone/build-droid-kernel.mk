@@ -85,43 +85,43 @@ endef
 #$1: build variant
 #$2: internal or external
 define define-build-droid-config
-.PHONY: build_droid_$(2)_$(1)
-build_droid_$(2)_$(1): package_droid_nfs_$(2)_$(1)
-	$$(log) "build_droid_$(2)_$(1) is done, reseting the source code."
+.PHONY: build_droid_$(1)_$(2)
+build_droid_$(1)_$(2): package_droid_nfs_$(1)_$(2)
+	$$(log) "build_droid_$(1)_$(2) is done, reseting the source code."
 	$$(hide)cd $$(SRC_DIR)/vendor/marvell/$$(DROID_PRODUCT)/ &&\
 		git reset --hard
 	$$(log) "  done"
 
-build_droid_pkgs_$(1): build_droid_$(2)_$(1)
+build_droid_pkgs_$(1): build_droid_$(1)_$(2)
 endef
 
 #$1:internal or external
 #$2:build variant
 define package-droid-nfs-config
-.PHONY: package_droid_nfs_$(2)_$(1)
-package_droid_nfs_$(2)_$(1):
-	$$(log) "[$(2)]package root file system for booting android from SD card or NFS for $(1)."
-	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/root_nfs ]; then rm -fr $$(OUTPUT_DIR)/$(2)/root_nfs; fi
-	$$(hide)cp -r -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/root $$(OUTPUT_DIR)/$(2)/root_nfs && \
-	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system $$(OUTPUT_DIR)/$(2)/root_nfs
+.PHONY: package_droid_nfs_$(1)_$(2)
+package_droid_nfs_$(1)_$(2):
+	$$(log) "[$(1)]package root file system for booting android from SD card or NFS for $(2)."
+	$$(hide)if [ -d $$(OUTPUT_DIR)/$(1)/root_nfs ]; then rm -fr $$(OUTPUT_DIR)/$(1)/root_nfs; fi
+	$$(hide)cp -r -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/root $$(OUTPUT_DIR)/$(1)/root_nfs && \
+	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system $$(OUTPUT_DIR)/$(1)/root_nfs
 	$$(log) "  updating the modules..."
-	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi
-	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar xzf modules_android_mmc.tgz && cp -r modules $$(OUTPUT_DIR)/$(2)/root_nfs/system/lib/
+	$$(hide)if [ -d $$(OUTPUT_DIR)/$(1)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(1)/modules; fi
+	$$(hide)cd $$(OUTPUT_DIR)/$(1) && tar xzf modules_android_mmc.tgz && cp -r modules $$(OUTPUT_DIR)/$(1)/root_nfs/system/lib/
 	$$(log) "  modifying root nfs folder..."
-	$$(hide)cd $$(OUTPUT_DIR)/$(2)/root_nfs && $$(MY_SCRIPT_DIR)/twist_root_nfs.sh 
+	$$(hide)cd $$(OUTPUT_DIR)/$(1)/root_nfs && $$(MY_SCRIPT_DIR)/twist_root_nfs.sh
 	$$(log) "copy demo media files to /sdcard if there are demo media files..."
 	$$(hide)if [ -d "$$(DEMO_MEDIA_DIR)" ]; then \
-			mkdir -p $$(OUTPUT_DIR)/$(2)/root_nfs/sdcard && \
-			cp -r $$(DEMO_MEDIA_DIR)/* $$(OUTPUT_DIR)/$(2)/root_nfs/sdcard/ && \
+			mkdir -p $$(OUTPUT_DIR)/$(1)/root_nfs/sdcard && \
+			cp -r $$(DEMO_MEDIA_DIR)/* $$(OUTPUT_DIR)/$(1)/root_nfs/sdcard/ && \
 			echo "  done."; \
 		   else \
 			echo "    !!!demo media is not found."; \
 		   fi
 	$$(log) "  packaging the root_nfs.tgz..."
-	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf root_nfs_$(1).tgz root_nfs/
+	$$(hide)cd $$(OUTPUT_DIR)/$(1) && tar czf root_nfs_$(2).tgz root_nfs/
 	$$(log) "  done for package_droid_nfs_$(1)_$(2)."
 
-PUBLISHING_FILES_$(2)+=$(2)/root_nfs_$(1).tgz:m:md5 
+PUBLISHING_FILES_$(1)+=$(1)/root_nfs_$(2).tgz:m:md5
 endef
 
 #<os>:<storage>:<kernel_cfg>:<root>
@@ -147,7 +147,6 @@ kernel_cfg:=$$(word 3, $$(tw) )
 root:=$$(word 4, $$(tw) )
 
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
-#PUBLISHING_FILES_$(2):=$(PUBLISHING_FILES_$(2)) $(2)/zImage.$$(os):m:md5
 PUBLISHING_FILES_$(2)+=$(2)/zImage.$$(os):m:md5
 PUBLISHING_FILES_$(2)+=$(2)/zImage_recovery.$$(os):m:md5
 PUBLISHING_FILES_$(2)+=$(2)/vmlinux:o:md5
@@ -186,6 +185,6 @@ $(foreach bv,$(BUILD_VARIANTS), \
 		$(eval $(call define-kernel-target,$(kc),$(bv)) ) ) \
 	$(eval $(call define-build-droid-root,$(bv)) ) \
 	$(eval $(call define-build-droid-pkgs,$(bv)) ) \
-	$(eval $(call define-build-droid-config,internal,$(bv)) ) \
-	$(eval $(call package-droid-nfs-config,internal,$(bv)) ) \
+	$(eval $(call define-build-droid-config,$(bv)),internal ) \
+	$(eval $(call package-droid-nfs-config,$(bv)),internal ) \
 )
