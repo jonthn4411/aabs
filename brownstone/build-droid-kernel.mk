@@ -185,6 +185,6 @@ $(foreach bv,$(BUILD_VARIANTS), \
 		$(eval $(call define-kernel-target,$(kc),$(bv)) ) ) \
 	$(eval $(call define-build-droid-root,$(bv)) ) \
 	$(eval $(call define-build-droid-pkgs,$(bv)) ) \
-	$(eval $(call define-build-droid-config,$(bv)),internal ) \
-	$(eval $(call package-droid-nfs-config,$(bv)),internal ) \
+	$(eval $(call define-build-droid-config,$(bv),internal) ) \
+	$(eval $(call package-droid-nfs-config,$(bv),internal) ) \
 )
