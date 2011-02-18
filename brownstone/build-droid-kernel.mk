@@ -98,8 +98,8 @@ endef
 #$1:internal or external
 #$2:build variant
 define package-droid-nfs-config
-.PHONY: package_droid_nfs_$(1)_$(2)
-package_droid_nfs_$(1)_$(2):
+.PHONY: package_droid_nfs_$(2)_$(1)
+package_droid_nfs_$(2)_$(1):
 	$$(log) "[$(2)]package root file system for booting android from SD card or NFS for $(1)."
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/root_nfs ]; then rm -fr $$(OUTPUT_DIR)/$(2)/root_nfs; fi
 	$$(hide)cp -r -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/root $$(OUTPUT_DIR)/$(2)/root_nfs && \
