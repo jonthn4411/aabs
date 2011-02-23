@@ -9,7 +9,7 @@ INTERNAL_PROJECTS +=boot/obm/binaries/Wtm_rel_mmp2.bin
 
 EXCLUDE_VCS=--exclude-vcs --exclude=.repo
 
-KERNEL_BASE_COMMIT:=7754c0f695fea81fcf63f61f83d305d389908de5
+KERNEL_BASE_COMMIT:=2f335ee1d83da389756edce8e13d282ad761d40e
 UBOOT_BASE_COMMIT:=1d4b28457dfcef99869dffa5142273c180351191
 
 ifeq ($(ANDROID_VERSION),donut)
@@ -22,7 +22,7 @@ ifeq ($(ANDROID_VERSION),froyo)
 	DROID_BASE:=android-2.2.1_r1
 else
 	DROID_BASE:=android-2.3.1_r1
-	KERNEL_BASE_COMMIT:=7754c0f695fea81fcf63f61f83d305d389908de5
+	KERNEL_BASE_COMMIT:=2f335ee1d83da389756edce8e13d282ad761d40e
 endif
 endif
 endif
