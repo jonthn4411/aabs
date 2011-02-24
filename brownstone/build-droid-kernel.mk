@@ -1,6 +1,11 @@
 #check if the required variables have been set.
 #$(call check-variables,BUILD_VARIANTS)
 
+#
+# Include goal for build UBoot and obm
+#
+include $(BOARD)/build-uboot-obm.mk
+
 DEMO_MEDIA_DIR:=/autobuild/demomedia
 MY_SCRIPT_DIR:=$(TOP_DIR)/brownstone
 
@@ -31,7 +36,7 @@ clean_kernel:
 #$1:build variant
 define define-build-droid-kernel
 .PHONY:build_droid_kernel_$(1)
-build_droid_kernel_$(1): build_kernel_$(1) build_droid_root_$(1) build_droid_pkgs_$(1)
+build_droid_kernel_$(1): build_uboot_obm_$(1) build_kernel_$(1) build_droid_root_$(1) build_droid_pkgs_$(1)
 endef
 
 #$1:build variant
