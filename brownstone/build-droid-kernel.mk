@@ -63,9 +63,8 @@ build_droid_root_$(1): output_dir
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext4.img $$(OUTPUT_DIR)/$(1)/ && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(1)/ && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/cache_ext4.img $$(OUTPUT_DIR)/$(1)/
-	echo "    copy update packages..." && \
-		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_droid.zip $$(OUTPUT_DIR)/$(1)/ && \
-		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_bootloader.zip $$(OUTPUT_DIR)/$(1)/
+	echo "    copy ext4 filesystem files..." && \
+		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_droid.zip $$(OUTPUT_DIR)/$(1)/
 	echo "    generating symbols_lib.tgz..." && \
 		cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(1)/ && \
 		cd $$(OUTPUT_DIR)/$(1) && tar czf symbols_lib.tgz lib && rm lib -rf
@@ -79,7 +78,6 @@ PUBLISHING_FILES_$(1)+=$(1)/system_ext4.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/userdata_ext4.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/cache_ext4.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/update_droid.zip:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/update_bootloader.zip:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
 endef
 
