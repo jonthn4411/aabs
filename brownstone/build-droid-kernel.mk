@@ -180,6 +180,7 @@ build_kernel_$(2): build_kernel_$$(os)_$$(storage)_$(2)
 endef
 
 $(foreach bv,$(BUILD_VARIANTS), \
+	$(eval $(call define-build-uboot-obm,$(bv)) ) \
 	$(eval $(call define-build-droid-kernel,$(bv)) ) \
 	$(foreach kc, $(kernel_configs), \
 		$(eval $(call define-kernel-target,$(kc),$(bv)) ) ) \

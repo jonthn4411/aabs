@@ -32,8 +32,6 @@ PUBLISHING_FILES_$(1)+=$(1)/nand/$(OBM_NTIM_2):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nand/$(OBM_DESC_2):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nand/$(WTM_2):m:md5
 
-
-
 .PHONY:build_uboot_obm_$(1)
 build_uboot_obm_$(1):
 	$$(log) "starting($(1)) to build uboot and obm"
@@ -56,10 +54,7 @@ build_uboot_obm_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/nand/$$(OBM_DESC_2) $$(OUTPUT_DIR)/$(1)/nand
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/nand/$$(WTM_2) $$(OUTPUT_DIR)/$(1)/nand
 	$$(log) "  done."
-
 endef
-
-$(foreach bv, $(BUILD_VARIANTS), $(eval $(call define-build-uboot-obm,$(bv)) ) )
 
 .PHONY:clean_uboot_obm
 clean_uboot_obm:
