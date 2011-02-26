@@ -238,16 +238,6 @@ Known Issues about running Android on NFS
 
 FAQ
 =====
-+Wifi can't be enabled if I use a zImage built at the other day.
-----------------------------------------------------------------
-The wifi kernel module in root_nfs.tgz or system_xxx.img may not comply with zImages built at the other day. Please use the zImage and root_nfs.tgz or system_xxx.img built at the same day.
-
-
-+How can I disable GC300 copybit engine completely?
----------------------------------------------------
-You can do this by: rm /system/lib/hw/copybit.default.so, so that Android GUI system won't use GC300 copybit engine. 
-But the built-in media playback engine will still try to use GC300 copybit engine to do resizing and color conversion. Check the topic "How can I disable GC300 copybit engine on video playback?".
-
 +How can I configure video output path?
 ---------------------------------------------------------------
 The opencore,GStreamer and Helix engine uses the property video.accelerate.hw to determine the video output path.
@@ -257,8 +247,8 @@ If it is other values, it will use software color conversion and let surfaceflin
 
 +How to modify the files after the system_xxx.img has been burned to the flash?
 -------------------------------------------------------------------------------
-In the console mode, you can remount the /system folder by
-$mount -o remount -t xxx /system
+Please remount the system partition with rw mode by
+$adb remount
 
 +How to enable the video playback profiling?
 --------------------------------------------
