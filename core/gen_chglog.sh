@@ -291,7 +291,7 @@ if [ ! -z "$LAST_BUILD_LOC" ]; then
     echo -n > "$OUTPUT_DIR/changelog.ms1"
     echo "Change logs since last milestone: $LAST_MS1_VERSION" >> "$OUTPUT_DIR/changelog.ms1"
 	echo 'Notes: commit begin with > is the change in current release' >> "$OUTPUT_DIR/changelog.ms1"
-	echo '       commit begin with < is the change in [$LAST_MS1_VERSION]' >> "$OUTPUT_DIR/changelog.ms1"
+	echo "       commit begin with < is the change in [$LAST_MS1_VERSION]" >> "$OUTPUT_DIR/changelog.ms1"
 	echo '       commit begin with - is the diverse point' >> "$OUTPUT_DIR/changelog.ms1"
 	echo "" >> "$OUTPUT_DIR/changelog.ms1"
     echo "The last release package can be found at: $LAST_MS1_PACKAGE" >> "$OUTPUT_DIR/changelog.ms1"
