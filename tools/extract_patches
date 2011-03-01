@@ -1,0 +1,67 @@
+#!/bin/sh
+
+print_usage() {
+    echo "Usage: extract_patches <output> <changelog> [-e exclude list ]"
+    echo "Please run me in the root directory of android source code.    "
+}
+
+if [ $# -lt 2 ] || [ ! -f $2 ] || [ $# -gt 2 -a "$3" != "-e" ]; then
+    print_usage
+    exit 1
+fi
+
+OUTPUT=$1
+CHGLOG=$2
+shift 2
+if [ $# -gt 0 ]; then
+    shift
+fi
+
+while [ $# -gt 0 ]
+do
+    if [ $# -eq 1 ]; then
+	exclude_prjs=$1
+    else
+	exclude_prjs=$exclude_prjs" "$1
+    fi
+    shift
+done
+
+patches=$(awk -v elist="$exclude_prjs" -F[ ' \
+         BEGIN  {  split(elist, excluded, " ") } \
+         /prj:/ {  ignored=0; \
+                   gpath=gensub(/-prj:/, "\\1", 1, $1); \
+                   for (i in excluded) { \
+                       if (excluded[i]": " == gpath) { \
+                           ignored=1; \
+                           break; \
+                       } \
+                   } \
+	           sub(" ", "", gpath); \
+                   pset=""; \
+                 } \
+         /*>/ { if (ignored == 0) { \
+                    patch=gpath""gensub(/]/, "\\1", 1, $(NF-1)); \
+                    pset=patch" "pset; \
+                } \
+              } \
+         /*-/ { if (ignored == 0) print pset } ' \
+    $CHGLOG)
+
+for p in $patches
+do
+    prj=`echo $p | awk -F: '{ print $1 }'`
+    if [ "$prj" != "$prev_prj" ]; then
+	prev_prj=$prj
+	num=1
+	path=`repo forall $prj -c 'echo $(pwd)'`
+	if [ -z "$path" ]; then
+	    echo "Invalid project: $prj."
+	    continue;
+	fi
+	mkdir -p $OUTPUT/$prj
+	cd $path;
+    fi
+    echo $p | awk -F: '{ print $2 }' | xargs git format-patch -o $OUTPUT/$prj -1 --start-number $num
+    num=$((num+1))
+done
