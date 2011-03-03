@@ -46,7 +46,6 @@ pkgsrc: output_dir get_source_for_pkg
 	$(hide)echo "  package android source code..."
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(TOP_DIR)/core
 
-	$(hide)echo "  done, check changelog.ms1 ..."
 	$(hide)if [ -f $(OUTPUT_DIR)/changelog.ms1 ]; then \
 		echo "  extract delta patches since ms1..." && \
 		rm -rf $(OUTPUT_DIR)/delta_patches && \
