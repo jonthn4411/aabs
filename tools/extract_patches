@@ -30,22 +30,24 @@ done
 patches=$(awk -v elist="$exclude_prjs" -F[ ' \
          BEGIN  {  split(elist, excluded, " ") } \
          /prj:/ {  ignored=0; \
-                   gpath=gensub(/-prj:/, "\\1", 1, $1); \
+                   gpath=$1; \
+                   gsub(/(-prj:)| /, "", gpath); \
                    for (i in excluded) { \
-                       if (excluded[i]": " == gpath) { \
+                       if (excluded[i]":" == gpath) { \
                            ignored=1; \
                            break; \
                        } \
                    } \
-	           sub(" ", "", gpath); \
                    pset=""; \
                  } \
-         /*>/ { if (ignored == 0) { \
-                    patch=gpath""gensub(/]/, "\\1", 1, $(NF-1)); \
+         /\*>/ { if (ignored == 0) { \
+                    patch=$(NF-1); \
+                    gsub(/]/, "", patch); \
+                    patch=gpath""patch; \
                     pset=patch" "pset; \
                 } \
               } \
-         /*-/ { if (ignored == 0) print pset } ' \
+         /\*-/ { if (ignored == 0) print pset } ' \
     $CHGLOG)
 
 for p in $patches
