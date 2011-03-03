@@ -74,4 +74,5 @@ PUBLISHING_FILES+=uboot_patches.tgz:m:md5
 PUBLISHING_FILES+=obm_src.tgz:m:md5 
 PUBLISHING_FILES+=marvell_manifest.xml:m
 PUBLISHING_FILES+=setup_android.sh:m
+PUBLISHING_FILES+=delta_patches.tgz:o
 PUBLISHING_FILES+=$(ANDROID_VERSION)_RN.pdf:o
