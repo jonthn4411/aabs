@@ -46,15 +46,6 @@ pkgsrc: output_dir get_source_for_pkg
 	$(hide)echo "  package android source code..."
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(TOP_DIR)/core
 
-	$(hide)if [ -f $(OUTPUT_DIR)/changelog.ms1 ]; then \
-		echo "  extract delta patches since ms1..." && \
-		rm -rf $(OUTPUT_DIR)/delta_patches && \
-		cd $(DROID_BASE) && \
-		$(TOP_DIR)/tools/extract_patches $(OUTPUT_DIR)/delta_patches $(OUTPUT_DIR)/changelog.ms1 -e aabs && \
-		tar czf $(OUTPUT_DIR)/delta_patches.tgz $(OUTPUT_DIR)/delta_patches && \
-		rm -rf $(OUTPUT_DIR)/delta_patches \
-	fi
-
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
 	$(hide)cp $(BOARD)/$(ANDROID_VERSION)_RN.pdf $(OUTPUT_DIR)
 	$(log) "  done."
