@@ -54,9 +54,9 @@ Files in this folder
  
   ramdisk.img              Android ramdisk image.
   ramdisk_recovery.img     Android ramdisk image in recovery mode.
-  system_ext4.img          Android system image for ext4 file system.
-  userdata_ext4.img        Android userdata image for ext4 file system.
-  cache_ext4.img           cache partition used to store recovery relevant files for ext4 file system.
+  system.img               Android system image.
+  userdata.img             Android userdata image.
+  cache.img                Cache partition used to store recovery relevant files.
 
   update_droid.zip         that is a update package including kernel, ramdisk and system folder.
   update_bootloader.zip    that is a update package including uboot and obm.
@@ -91,7 +91,7 @@ How to build kernel and android image
      $ export ANDROID_PREBUILT_MODULES=kernel/out/modules
      $ make
 
-  The android GPTs, ramdisk.img, system_ext4.img and userdata_ext4.img are located at out/target/product/brownstone
+  The android GPTs, ramdisk.img, system.img and userdata.img are located at out/target/product/brownstone
 
   3. build uboot and obm
      $ cd <android_working_dir>
@@ -153,11 +153,11 @@ MMP2>> t ramdisk.img
 MMP2>> mmc write 0x8c00 0x800 0x1100000
 
 5) system
-MMP2>> t system_ext4.img
+MMP2>> t system.img
 MMP2>> mmc write 0xcc00 0x4b000 0x1100000
 
 6) data
-MMP2>> t userdata_ext4.img
+MMP2>> t userdata.img
 MMP2>> mmc write 0x57c00 0x4b000 0x1100000
 
 7) recovery
@@ -166,7 +166,7 @@ MMP2>> t zImage_recovery.android
 MMP2>> mmc write 0xa2c00 0x2000 0x1100000
 MMP2>> t ramdisk_recovery.img
 MMP2>> mmc write 0xa6c00 0x800 0x1100000
-MMP2>> t cache_ext4.img
+MMP2>> t cache.img
 MMP2>> mmc write 0xab000 0x4b000 0x1100000
 
 After done, power-off and power-on again to boot mmp2 from emmc.
