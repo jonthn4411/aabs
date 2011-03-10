@@ -21,7 +21,7 @@ else
 ifeq ($(ANDROID_VERSION),froyo)
 	DROID_BASE:=android-2.2.1_r1
 else
-	DROID_BASE:=android-2.3.1_r1
+	DROID_BASE:=android-2.3.3_r1a
 	KERNEL_BASE_COMMIT:=7754c0f695fea81fcf63f61f83d305d389908de5
 endif
 endif
