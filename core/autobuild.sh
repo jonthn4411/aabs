@@ -81,6 +81,8 @@ generate_error_notification_email()
 	
 	===========================================================
 
+	Complete Time: $(date)
+	Build Host: $(hostname)
 	---
 	Team of $PRODUCT_CODE
 	EOF
@@ -115,6 +117,8 @@ generate_error_log_email()
 	
 	===========================================================
 
+	Complete Time: $(date)
+	Build Host: $(hostname)
 	---
 	Team of $PRODUCT_CODE
 	EOF
