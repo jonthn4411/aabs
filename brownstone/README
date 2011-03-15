@@ -100,25 +100,24 @@ How to build kernel and android image
 Burning OBM and UBoot
 =====================
 1. Install XDB 5.0 Gold from: \\sh1sbak009\debugger_public\Official_Release\eXtreme_Debugger_v5.0_Gold
-2. After getting nand or emmc version binary from autobuild server, please follow either step 3 or 4 to bring up board
-3. Flash OBM and U-boot into NAND using XDB
-   1)Use flash burn tool: flash --> burn flash
-   2)Initialize a new flash and Erase all blocks
-   3)burn file "ntim_mmp2_nand_bbu_ddr.bin"  		address --> 0x0
-   4)burn file "MMP2_NTLOADER_3_2_17.bin"               address --> 0x80000
-   5)burn file "Wtm_rel_mmp2.bin"		        address --> 0xc0000
-   6)burn file "u-boot.bin"				address --> 0x100000
-
-4. Flash OBM and U-boot into EMMC using XDB
+2. Get a trusted or non-trusted set of boot binaries (uboot & obm) from autobuild server
+3. Flash OBM and U-boot into EMMC using XDB
    1)Use flash burn tool: flash --> burn flash
    2)Choose flash: NAND Flash
    3)Erase All Blocks to erase the nand autoboot obm
    4)Choose flash: EMMC flash and click Detect button to detect emmc partition
    5)Choose partition 0x1
+	Trusted boot
+      a)Burn file "tim_mmp2_nand_bbu_ddr.bin"		address --> 0x0
+      b)Burn file "partition.bin"			address --> 0x600
+      c)burn file "Wtm_rel_mmp2.bin"			address --> 0x1000
+      d)burn file "MMP2_TLOADER_3_2_19.bin"		address --> 0x32000
+      e)burn file "u-boot.bin"				address --> 0x52000
+	Non-Trusted boot
       a)Burn file "ntim_mmp2_nand_bbu_ddr.bin"		address --> 0x0
       b)Burn file "partition.bin"			address --> 0x600
-      c)burn file "Wtm_rel_mmp2.bin"	              	address --> 0x1000
-      d)burn file "MMP2_NTLOADER_3_2_17.bin"            address --> 0x32000
+      c)burn file "Wtm_rel_mmp2.bin"			address --> 0x1000
+      d)burn file "MMP2_NTLOADER_3_2_19.bin"		address --> 0x32000
       e)burn file "u-boot.bin"				address --> 0x52000
 
 How to Disable GC800
