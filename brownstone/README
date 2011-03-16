@@ -57,7 +57,6 @@ Files in this folder
   system.img               Android system image.
 
   update_droid.zip         that is a update package including kernel, ramdisk and system folder.
-  update_bootloader.zip    that is a update package including uboot and obm.
 
   if xxx is "internal" means everything is built in the package, and should be used internally.
 
