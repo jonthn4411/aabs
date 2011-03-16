@@ -20,14 +20,14 @@ define define-build-uboot-obm
 #o:means optional
 #md5: need to generate md5 sum
 PUBLISHING_FILES+=$(1)/$(UBOOT):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/trusted/$(OBM_NTLOADER_1):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/trusted/$(OBM_NTIM_1):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/trusted/$(OBM_NTIM_DESC_1):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/trusted/$(OBM_TLOADER_1):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/trusted/$(OBM_TIM_1):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/trusted/$(OBM_TIM_DESC_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/trusted/$(PARTITION_BIN):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/trusted/$(PARTITION_DESC):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/nontrusted/$(OBM_TLOADER_1):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/nontrusted/$(OBM_TIM_1):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/nontrusted/$(OBM_TIM_DESC_1):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/nontrusted/$(OBM_NTLOADER_1):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/nontrusted/$(OBM_NTIM_1):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/nontrusted/$(OBM_NTIM_DESC_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nontrusted/$(PARTITION_BIN):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nontrusted/$(PARTITION_DESC):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(WTM_1):m:md5
