@@ -161,6 +161,9 @@ MMP2>> mmc write 0xa6c00 0x800 0x1100000
 
 After done, power-off and power-on again to boot mmp2 from emmc.
 
+Note : If your system has been installed with any previous version,
+We suggest removing all files in user data partition by 'rm -r /data'.
+
 Setup Android on SD Card
 ========================
 Follow the below process to make a SD card with Android root file system installed.
