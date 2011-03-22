@@ -95,7 +95,8 @@ How to build kernel and android image
      $ cd boot
      $ make all
 
-  The uboot bin is located at boot/out, nand auto boot version obm is located at boot/out/nand, emmc auto boot version obm is located at boot/out/emmc
+  The uboot bin and obm are located at boot/out/trusted and boot/out/nontrusted,
+while the unified WTM is located at boot/out.
 
 Burning OBM and UBoot
 =====================
@@ -108,17 +109,17 @@ Burning OBM and UBoot
    4)Choose flash: EMMC flash and click Detect button to detect emmc partition
    5)Choose partition 0x1
 	Trusted boot
-      a)Burn file "tim_mmp2_nand_bbu_ddr.bin"		address --> 0x0
-      b)Burn file "partition.bin"			address --> 0x600
-      c)burn file "Wtm_rel_mmp2.bin"			address --> 0x1000
-      d)burn file "MMP2_TLOADER_3_2_19.bin"		address --> 0x32000
-      e)burn file "u-boot.bin"				address --> 0x52000
+      a)Burn "tim_mmp2_nand_bbu_ddr.bin"	address [0x0, 0x4000)
+      b)Burn "Wtm_rel_mmp2.bin"			address [0x4000, 0x20000)
+      c)Burn "MMP2_TLOADER_3_2_19.bin"		address [0x20000, 0x60000)
+      d)Burn "u-boot.bin"			address [0x60000, 0xB0000)
+      e)Burn "u-boot.bin" as recovery u-boot	address [0xB0000, 0x100000)
 	Non-Trusted boot
-      a)Burn file "ntim_mmp2_nand_bbu_ddr.bin"		address --> 0x0
-      b)Burn file "partition.bin"			address --> 0x600
-      c)burn file "Wtm_rel_mmp2.bin"			address --> 0x1000
-      d)burn file "MMP2_NTLOADER_3_2_19.bin"		address --> 0x32000
-      e)burn file "u-boot.bin"				address --> 0x52000
+      a)Burn "ntim_mmp2_nand_bbu_ddr.bin"	address [0x0, 0x4000)
+      b)Burn "Wtm_rel_mmp2.bin"			address [0x4000, 0x20000)
+      c)Burn "MMP2_NTLOADER_3_2_19.bin"		address [0x20000, 0x60000)
+      d)Burn "u-boot.bin"			address [0x60000, 0xB0000)
+      e)Burn "u-boot.bin" as recovery u-boot	address [0xB0000, 0x100000)
 
 How to Disable GC800
 =====================
