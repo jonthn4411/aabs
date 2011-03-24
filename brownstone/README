@@ -79,28 +79,28 @@ How to build kernel and android image
      $ cd kernel
      $ make all
 
-  zImage is located at kernel/out, modules is located at kernel/out/modules
+  zImage is at kernel/out, and the modules place at kernel/out/modules
 
-  2. build android
+  2. build uboot and obm
+     $ cd <android_working_dir>
+     $ cd boot
+     $ make all
+
+  The uboot bin and obm are at boot/out/trusted and boot/out/nontrusted,
+while the unified WTM is at boot/out.
+
+  3. build android
      $ cd <android_working_dir>
      $ . build/envsetup.sh
      $ chooseproduct brownstone
      $ export ANDROID_PREBUILT_MODULES=kernel/out/modules
      $ make
 
-  The android GPTs, ramdisk.img, system.img are located at out/target/product/brownstone
-
-  3. build uboot and obm
-     $ cd <android_working_dir>
-     $ cd boot
-     $ make all
-
-  The uboot bin and obm are located at boot/out/trusted and boot/out/nontrusted,
-while the unified WTM is located at boot/out.
+  The android GPTs, ramdisk.img, system.img and update_droid.zip are at out/target/product/brownstone
 
 Burning OBM and UBoot
 =====================
-1. Install XDB 5.0 Gold from: \\sh1sbak009\debugger_public\Official_Release\eXtreme_Debugger_v5.0_Gold
+1. Install XDB 5.1.105 from: \\sh1sbak009\debugger_public\Engineering_Release\XDB_5_1
 2. Get a trusted or non-trusted set of boot binaries (uboot & obm) from autobuild server
 3. Flash OBM and U-boot into EMMC using XDB
    1)Use flash burn tool: flash --> burn flash
@@ -121,7 +121,7 @@ Burning OBM and UBoot
       d)Burn "u-boot.bin"			address [0x60000, 0xB0000)
       e)Burn "u-boot.bin" as recovery u-boot	address [0xB0000, 0x100000)
 
-How to Disable GC800
+How to Disable GC860
 =====================
 remove or rename egl.cfg which located in /system/lib/egl/
 
