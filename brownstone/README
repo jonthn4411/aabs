@@ -166,6 +166,21 @@ MMP2>> mmc write 0xa6c00 0x800 0x1100000
 
 After done, power-off and power-on again to boot mmp2 from emmc.
 
+Setup Android on NAND(emmc) using fastboot
+=========================
+To make use of fastboot, you need the fastboot program compiled for your host computer whose location should be out/host/linux-x86/bin/fastboot. You could use fastboot to burn all images to eMMC flash memory as follows. If the target image is in current path, you could omit the filename option.
+$ fastboot flash kernel [<image path>/zImage.android]
+$ fastboot flash kernel [<image path>/zImage.android]
+$ fastboot flash system [<image path>/system.img]
+$ fastboot flash reckernel [<image path>/zImage_recovery.android]
+$ fastboot flash recovery [<image path>/ramdisk_recovery.img]
+
+Besides, you can put all images in current path and use “flashall” to burn all images with one command.
+$ fastboot flashall
+
+Using the following command to erase Android data partition.
+$ fastboot erase userdata
+
 Setup Android on SD Card
 ========================
 Follow the below process to make a SD card with Android root file system installed.
