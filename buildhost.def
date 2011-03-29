@@ -2,6 +2,7 @@ GIT_SERVER=shgit.marvell.com
 GIT_ANDROID_ROOT=${GIT_SERVER}/git/android
 GIT_MANIFEST=${GIT_ANDROID_ROOT}/platform/manifest.git
 GIT_REPO=${GIT_ANDROID_ROOT}/tools/repo.git
+GIT_LOCAL_MIRROR=/mnt/mirror/default/
 
 OFFICIAL_PUBLISH_DIR_BASE=/autobuild/android
 TEMP_PUBLISH_DIR_BASE=/autobuild/temp

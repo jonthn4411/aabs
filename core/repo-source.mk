@@ -1,5 +1,5 @@
 #check if the required variables have been set.
-$(call check-variables,MANIFEST_BRANCH GIT_MANIFEST GIT_REPO)
+$(call check-variables,MANIFEST_BRANCH GIT_MANIFEST GIT_REPO GIT_LOCAL_MIRROR)
 
 #get source code from GIT by repo
 .PHONY: source
@@ -9,7 +9,7 @@ source: output_dir
 	fi
 	$(log) "starting get source code from GIT server:$(GIT_SERVER), branch:$(MANIFEST_BRANCH) ..."
 	$(hide)cd $(SRC_DIR) && \
-	repo init -u ssh://$(GIT_MANIFEST) -b $(MANIFEST_BRANCH) --repo-url ssh://$(GIT_REPO) && \
+	repo init -u ssh://$(GIT_MANIFEST) -b $(MANIFEST_BRANCH) --repo-url ssh://$(GIT_REPO) --reference $(GIT_LOCAL_MIRROR) && \
 	repo sync
 	$(log) "saving manifest file..."
 	$(hide)cd $(SRC_DIR) && repo manifest -r -o $(OUTPUT_DIR)/manifest.xml
