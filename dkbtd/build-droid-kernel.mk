@@ -61,6 +61,7 @@ build_droid_root_$(1): output_dir
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext3.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext3.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery.img $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/mbr $$(OUTPUT_DIR)/$(1)
 	$(log) "  done"
 
 PUBLISHING_FILES_$(1)+=$(1)/userdata_ext3.img:m:md5
@@ -68,6 +69,7 @@ PUBLISHING_FILES_$(1)+=$(1)/system_ext3.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk-recovery.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/mbr:m:md5
 endef
 
 
