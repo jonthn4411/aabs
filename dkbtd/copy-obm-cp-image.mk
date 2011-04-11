@@ -3,6 +3,7 @@ $(call check-variables,BUILD_VARIANTS)
 TEL_SRC_DIR:=kernel/out/telephony/
 
 DKBTD_UBOOT:=u-boot.bin
+DKBTD_UBOOT_PXA921:=u-boot_emmc.bin
 DKBTD_CP1:=Arbel_DKB_SKWS.bin
 DKBTD_CP2:=Arbel_DKB_SKWS_DIAG.mdb
 DKBTD_CP3:=Arbel_DKB_SKWS_NVM.mdb
@@ -21,6 +22,7 @@ define define-copy-obm-cp-image
 #PUBLISHING_FILES_$(1)+=$(1)/NTIM_OBM_UBOOT.bin:m:md5
 #PUBLISHING_FILES_$(1)+=$(1)/TTC_LINUX_NTOBM.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(DKBTD_UBOOT):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(DKBTD_UBOOT_PXA921):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(DKBTD_CP1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(DKBTD_CP2):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(DKBTD_CP3):m:md5

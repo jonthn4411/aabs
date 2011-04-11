@@ -59,12 +59,16 @@ build_droid_root_$(1): output_dir
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/root $$(OUTPUT_DIR)/$(1) 
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext3.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext3.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery.img $$(OUTPUT_DIR)/$(1)
 	$(log) "  done"
 
 PUBLISHING_FILES_$(1)+=$(1)/userdata.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/userdata_ext3.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/system.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/system_ext3.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk-recovery.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
@@ -240,8 +244,9 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)
 	$$(log) "    copy kernel and module files ..."
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/$(KERNEL_IMAGE) $$(OUTPUT_DIR)/$(2)/$(KERNEL_IMAGE).$$(private_os).$$(private_storage) 
-	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/System.map $$(OUTPUT_DIR)/$(2)/
-	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/vmlinux $$(OUTPUT_DIR)/$(2)/
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/$(KERNEL_IMAGE)_pxa921 $$(OUTPUT_DIR)/$(2)/$(KERNEL_IMAGE).$$(private_os).$$(private_storage)_pxa921
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/System.map* $$(OUTPUT_DIR)/$(2)/
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/vmlinux* $$(OUTPUT_DIR)/$(2)/
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi &&\
 	mkdir -p $$(OUTPUT_DIR)/$(2)/modules
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules/* $$(OUTPUT_DIR)/$(2)/modules
