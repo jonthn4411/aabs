@@ -224,12 +224,16 @@ root:=$$(word 4, $$(tw) )
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
 #PUBLISHING_FILES_$(2):=$(PUBLISHING_FILES_$(2)) $(2)/$(KERNEL_IMAGE).$$(os).$$(storage):m:md5
 PUBLISHING_FILES_$(2)+=$(2)/$(KERNEL_IMAGE).$$(os).$$(storage):m:md5
+PUBLISHING_FILES_$(2)+=$(2)/$(KERNEL_IMAGE).$$(os).$$(storage)_pxa921:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/modules_$$(os)_$$(storage).tgz:m:md5
 
 PUBLISHING_FILES_$(2)+=$(2)/pxafs.img:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/pxafs_ext3.img:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/Boerne_DIAG.mdb.txt:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/vmlinux:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/vmlinux_pxa921:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/System.map:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/System.map_pxa921:m:md5
 
 build_kernel_$$(os)_$$(storage)_$(2): private_os:=$$(os)
 build_kernel_$$(os)_$$(storage)_$(2): private_storage:=$$(storage)
