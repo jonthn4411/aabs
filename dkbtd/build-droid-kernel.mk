@@ -147,7 +147,7 @@ package_droid_slc_$(1)_$(2):
 	echo "    copy  image files..." && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(2)/system.img && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(2)/userdata.img &&\
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_etx3.img $$(OUTPUT_DIR)/$(2)/ && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext3.img $$(OUTPUT_DIR)/$(2)/ && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext3.img $$(OUTPUT_DIR)/$(2)/
 	$$(hide)cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(2)/
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf symbols_lib.tgz lib && rm lib -rf
