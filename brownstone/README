@@ -275,3 +275,35 @@ If the battery service reports wrong battery status, Android power off the syste
 Open /init.rc, add the below line before class_start default:
 setprop battery.fake_ac true
 
+
+Product Distribution
+================================================================
+To distribute final product, we should use customer specific keys to sign APK files and update package instead of test keys.
+
+1) generate keys and collect password
+$ cd <android_working_dir>
+$ development/tools/make_key releasekey '/C=US/ST=California/L=Santa Clara/O=Android/OU=Android/CN=Android/emailAddress=android@marvell.com'
+$ development/tools/make_key platform '/C=US/ST=California/L=Santa Clara/O=Android/OU=Android/CN=Android/emailAddress=android@marvell.com'
+$ development/tools/make_key shared '/C=US/ST=California/L=Santa Clara/O=Android/OU=Android/CN=Android/emailAddress=android@marvell.com'
+$ development/tools/make_key media '/C=US/ST=California/L=Santa Clara/O=Android/OU=Android/CN=Android/emailAddress=android@marvell.com'
+Collect password to a single file "pw" and move all keys and password file to "vendor/marvell/brownstone/security
+
+2) sign all APK files in the target zipfile with customer's keys and produce a new target zipfile
+$ export ANDROID_PW_FILE=vendor/marvell/brownstone/security/pw
+$ target_files=`find out/target/product/brownstone/obj/PACKAGING/target_files_intermediates/ -type f -name "*-target_files-*.*.zip"`
+$ signed_files=out/target/product/brownstone/signed_target_files.zip
+$ signed_folder=out/target/product/brownstone/signed_target_folder
+$ build/tools/releasetools/sign_target_files_apks -o -d vendor/marvell/brownstone/security $target_files $signed_files
+
+3) generate system image containing new signed APK files
+$ mkdir $signed_folder
+$ unzip -o -q $signed_files -d $signed_folder
+$ system/extras/ext4_utils/mkuserimg.sh  $signed_folder/SYSTEM $signed_folder/system.img ext4 system 157286400
+
+4) generate recovery ramdisk containing new public key
+$ out/host/linux-x86/bin/mkbootfs $signed_folder/RECOVERY/RAMDISK | out/host/linux-x86/bin/minigzip > $signed_folder/ramdisk_recovery.img
+
+5) generate update package signed with new key
+$ build/tools/releasetools/ota_from_target_files -v -p out/host/linux-x86 -k vendor/marvell/brownstone/security/releasekey $signed_files $signed_folder/update_droid_signed.zip
+
+We should distribute the new system.img, ramdisk_recovery.img and update_droid_signed.zip instead of the original ones.
