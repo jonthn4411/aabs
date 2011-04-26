@@ -241,6 +241,12 @@ fi
 
 PRODUCT_CODE=${ABS_BOARD}-${ABS_DROID_BRANCH}
 MAKEFILE=${PRODUCT_CODE}.mk
+if [ ! -f "$MAKEFILE" ]; then
+  MAKEFILE=${ABS_BOARD}/board.mk
+  if [ ! -f "$MAKEFILE" ]; then
+    MAKEFILE=common/board.mk
+  fi
+fi
 PRODUCT_NAME="$ABS_PRODUCT_NAME"
 
 PUBLISH_DIR="PUBLISH_DIR-Not-Defined"
