@@ -22,8 +22,8 @@ clean_droid_kernel: clean_droid clean_kernel
 clean_droid:
 	$(log) "clean android ..."
 	$(hide)cd $(SRC_DIR) && \
-	source ./build/envsetup.sh &&
-	chooseproduct $(DROID_PRODUCT) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
+	. $(TOP_DIR)/tools/apb $(DROID_PRODUCT) && \
+	choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	make clean
 	$(log) "    done"
 
@@ -49,8 +49,8 @@ build_droid_root_$(1): output_dir
 	$$(hide)cd $$(OUTPUT_DIR)/$(1) && tar xzf modules_android_mmc.tgz
 	$$(log) "[$(1)]building android source code ..."
 	$$(hide)cd $$(SRC_DIR) && \
-	source ./build/envsetup.sh && \
-	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
+	. $$(TOP_DIR)/tools/apb $$(DROID_PRODUCT) && \
+	choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS)
 	echo "    copy GPT files..." && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/primary_gpt_8g $$(OUTPUT_DIR)/$(1)/ && \
