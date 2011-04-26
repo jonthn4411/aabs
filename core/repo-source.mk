@@ -14,6 +14,9 @@ source: output_dir
 	else \
 		repo init -u ssh://$(GIT_MANIFEST) -b $(MANIFEST_BRANCH) --repo-url ssh://$(GIT_REPO) --reference $(GIT_LOCAL_MIRROR); \
 	fi && \
+	if [ -n "$(MANIFEST_FILE)" ]; then \
+		repo init -m $(MANIFEST_FILE); \
+	fi && \
 	repo sync
 	$(log) "saving manifest file..."
 	$(hide)cd $(SRC_DIR) && repo manifest -r -o $(OUTPUT_DIR)/manifest.xml
