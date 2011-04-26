@@ -19,31 +19,7 @@ print_usage() {
 }
 
 get_account_to_use() {
-	if [ "$1" = "shgit" ]; then
-		echo "releaseadm"
-		return
-	fi
-
-	if [ "$1" = "osegit" ]; then
-		echo "releaseadm"
-		return
-	fi
-
-	if [ "$1" = "piegit" ]; then
-		echo "releaseadm"
-		return
-	fi
-
-	if [ "$1" = "ptkgit" ]; then
-		echo "releaseadm"
-		return
-	fi
-
-	if [ "$1" = "origin" ]; then
-		echo "releaseadm"
-		return
-	fi
-	return
+	echo "releaseadm"
 }
 
 branch_to_remote() {
