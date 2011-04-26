@@ -28,9 +28,6 @@ define check-variables
 $(foreach var, $(1), $(eval $(call check-variable,$(var))))
 endef
 
-#the definitions that specific to this build environment, such as publish dir, git server address etc.
-include buildhost.def
-
 #check if the required variables have been set.
 $(call check-variables, PRODUCT_CODE MANIFEST_BRANCH)
 

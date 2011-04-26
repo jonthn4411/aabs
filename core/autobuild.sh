@@ -229,12 +229,15 @@ print_usage()
 	echo "  help: print this list."
 }
 
-source buildhost.def
-
 if [ -z "$ABS_BOARD" ] || [ -z "$ABS_DROID_BRANCH" ] || [ -z "$ABS_PRODUCT_NAME" ]; then
   echo "Any of the variable:ABS_BOARD,ABS_DROID_BRANCH,ABS_PRODUCT_NAME is not set."
   return 1
 fi
+
+if [ -z "$ABS_BUILDHOST_DEF" ] || [ ! -e $ABS_BUILDHOST_DEF ]; then
+  ABS_BUILDHOST_DEF=buildhost.def
+fi
+. $ABS_BUILDHOST_DEF
 
 PRODUCT_CODE=${ABS_BOARD}-${ABS_DROID_BRANCH}
 MAKEFILE=${PRODUCT_CODE}.mk
