@@ -1,6 +1,0 @@
-MANIFEST_BRANCH:=avd1-eclair
-BOARD:=avd1
-ANDROID_VERSION:=eclair
-PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
-
-include avd1/board.mk

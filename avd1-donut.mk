@@ -1,6 +1,0 @@
-MANIFEST_BRANCH:=avd1-donut
-BOARD:=avd1
-ANDROID_VERSION:=donut
-PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
-
-include avd1/board.mk
