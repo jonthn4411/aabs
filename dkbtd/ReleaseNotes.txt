@@ -57,6 +57,8 @@ Linux-2.6.35
   - Support JFSS2
   - Support YAFFS
   - Support Partition
+  - Support eMMC
+  - Support ext4
 - WMMX
   - Support context switch
 - IMM
@@ -464,6 +466,45 @@ You'd better make a clean erase of nand flash before burning.
 6) END +POWER -->Enter launching kernel without Uart Mode
 
 5.0 Known issues and workarounds
+
+6.0 How to add/adjust partition in swdownloader
+1) Right click at the UI and select the "Add" option; or directly use the "Ctrl+a" to enter the "add partition" UI, and fill the new added partition with proper "Flash Entry Address".
+If your image is a YAFFS image, you also should fill "Erase Size" with the value of the partition size.
+Note your new added partition should not overlap with other partitions.
+2) Directly double click on the exist partition item to enter the "adjust partition" UI.
+Also please note your change should not overlap with other partitions.
+
+Partition change impact for the UBOOT
+1. If you are using NAND, please follow below:
+Search MTDPARTS_DEFAULT/MTDPARTS_MAINT in the include/configs/dkb.h, and update the define string with your proper changes. If your NAND is 512M size, you should change the MTDPARTS_DEFAULT_512M/MTDPARTS_MAINT_512M macro.
+2. If you are using eMMC, please follow below:
+1) Save your partiton arrangement as below as a txt file, for example named as efi_part.txt
+bootloader      0x80000         0x100000
+ramdisk         0x100000        0x140000
+imei            0x140000        0x180000
+arbelbinary     0x180000        0x880000
+msabinary       0x880000        0x980000
+kernel          0x980000        0xd80000
+maintenance     0xd80000        0x1180000
+recovery        0x1180000       0x1680000
+misc            0x1680000       0x16c0000
+cache           0x16c0000       0x6800000
+system          0x6800000       0x10800000
+userdata        0x10800000      0x1e400000
+nvm             0x1e400000      0x1ec00000
+telephony       0x1ec00000      0x1f400000
+massstorage     0x1f400000      0xebf00000
+2) Use the mbrgen which could be gotten from the tools directory after you compile the uboot code.
+By the command: mbrgen [descrition file] [emmc device size]
+You could generate one file named as mbr, which combine the primary and backup EFI MBR table.
+3) You would see follow word after successfully generate the mbr:
+"Please write the gpt first from offset 0 to mmc device offset 0 with the size of 0x22 And write the offset 0x400 to mmc device offset 0x762fdf with the size of 0x21"
+So then what you need to do is write the mbr twice to the eMMC, the first write with the image offset 0 and write to the sector 0 of the eMMC with the size of 0x22 sectors, the second write with the image offset 0x400 and write to the sector, in the example case 0x762fdf, with the size of 0x21 sectors.
+Or you could use dd command in Linux to seperate mbr file into two files as primary_mbr and second_mbr with the offset as mentioned above.
+
+Partitoin change impact for Kernel
+There is no impact for the kernel. It is because for NAND case, the partition is passed by the uboot, while for eMMC case, the partition is based on the EFI partition which already burned in.
+
 
 
 ----------------------------
