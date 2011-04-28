@@ -1,18 +1,18 @@
 ==============================================================================
-Marvell PXA920 Android Platform Release for Linux 
-Platform README 
-Last update: 09/16/2010
-Version: DKBTD Froyo Beta7
+Marvell PXA920 Android Platform Release for Linux
+Platform README
+Last update: 04/28/2011
+Version: DKBTD Gingerbread Beta3
 ==============================================================================
 
 1. Platform features
 1.1 Supported Components
-- Rebase to google android-2.2_r1 branch
+- Rebase to google android-2.3.3_r1 branch
 - Do key pad mapping, touch for PXA920 DKB platform
 - HIFI playback on headset and speaker
 - Audio routing for phone earpiece and headset
 - Audio recorder for built-in Mic and headset Mic
-- Camera preview, still image capture and camcorder by OV3640 
+- Camera preview, still image capture and camcorder by OV3640
 - Integrate Android Recovery Mode (POWER+HOME and from UI)
 - Explicitly add JIT/V8
 - Integrate Pixiu
@@ -49,7 +49,7 @@ Uboot
 - Support Android recovery mode (POWER + HOME)
 - Support fastboot (POWER + CAM1)
 - Support NO GUI kernel launch (POWER + SEND)
-Linux-2.6.32
+Linux-2.6.35
 - MTD devices
   - Support Nand
   - Support Onenand
@@ -75,39 +75,39 @@ Linux-2.6.32
   - Support FB interface
   - Support pan display
   - Support HVGA resolution display
-  - Support RGB565, RGB888Packed, RGB888Unpacked, YUV420planar, YUV422planar and YUV422Packed format. 
+  - Support RGB565, RGB888Packed, RGB888Unpacked, YUV420planar, YUV422planar and YUV422Packed format.
 - LCD (Smart panel)
   - Support base display
   - Support pan display
   - Support VGA resolution display
-  - Support RGB565 format. 
+  - Support RGB565 format.
 - IRE
   - Support YUV420 90 degree clockwise rotation
 - Camera (CCIC)
   - Support V4L2 interface
   - Support Parallel and MIPI interface.
   - Support JPEG format
-  - Support YUV420Planar, YUV422Planar and YUV422Packed format. 
+  - Support YUV420Planar, YUV422Planar and YUV422Packed format.
   - Support to accept framebuf from user application.
 - OV3640
   - Support to config pixel format
-  - Support to switch image/video mode 
-  - Support still image with QVGA and VGA resolution. HVGA and 3M resolutions still have problems. 
-  - Support video with QVGA, VGA and HVGA resolution. 3M resolution still has problem. 
+  - Support to switch image/video mode
+  - Support still image with QVGA and VGA resolution. HVGA and 3M resolutions still have problems.
+  - Support video with QVGA, VGA and HVGA resolution. 3M resolution still has problem.
 - SSP
-  - Support to config it as I2S to transfer audio PCM data to outside code. 
+  - Support to config it as I2S to transfer audio PCM data to outside code.
 - Audio (use levante as outside audio codec)
   - Support ALSA interface
   - Support to playback Audio
-  - Support to Recodrd Audio 
+  - Support to Recodrd Audio
   - Support to playback and record simultaneously. (The codec native sample rate will locked as 48K for both playback and record. And the alsa lib will handle the sample rate conversion automaitically)
   - Support 2.5mm Jack
   - Support headset and MICIN detection.(NOTE: For DKB3.1 and newer, please use Nokia headset; For DKB3.01 and older, please use non-Nokia headset. The audio server application will setup the audio path base on the detection event automatically)
   - Support on-board mic
 - Touch screen (ELAN and TPO touch)
-  - Support pen attach, move, detach and time stamp. 
+  - Support pen attach, move, detach and time stamp.
 - Keypad
-  - Support Key down, up, repeat and time stamp. 
+  - Support Key down, up, repeat and time stamp.
 - I2C (two i2c busses)
   - Share/Arbitrate the busses for multi devies.
   - Support RIPC to share the bus with other CPUs.
@@ -142,7 +142,7 @@ Linux-2.6.32
   - Support WPA
   - Support WAPI PSK (ascii & hex) & WAPI Certificate Mode
   - WiFi FM version:SD-UAPSTA-BT-FM-8787-LINUX2629-PXA920-14.57.5.p21-M2614115_W1A0-GPL
- 
+
 - BT
   - Support SD8787
   - Support A2DP profile (BT on UART is not support. Only SDIO interface is enabled. )
@@ -151,23 +151,23 @@ Linux-2.6.32
   - Support USB supply
   - Support USB charging
   - Support poweroff. (NOTE: if the system is not poweroff normally, the next boot time will be longer for the filesystem scan. )
-  - Support reboot. 
+  - Support reboot.
 - Sensors
   - g sensor (lis3lv02d)
 - MISC
 - DVFM
-  - PP2/PP3/PP4/PP14 
+  - PP2/PP3/PP4/PP14
   - Support PP14(780MHz) booting up
 
 1.3 Multimedia features
-- IPP C&M based video codecs	
+- IPP C&M based video codecs
 	- H.264 BP decoder
 	- MPEG-4 SP decoder
 	- H.264 BP encoder
 	- MPEG-4 SP encoder
 	- C&M H263 decdoer
 	- WMV/VC-1 main profile decoder
-- IPP WMMX optimized video codecs	
+- IPP WMMX optimized video codecs
 	- H.264 BP decoder
 	- H.263 P0/P3 decoder
 	- MPEG-4 SP/ASP decoder
@@ -176,10 +176,10 @@ Linux-2.6.32
 	- H.264 BP encoder
 	- H.263 P0/P3 encoder
 	- MPEG-4 SP encoder
-- IPP WMMX optimized image codecs		
+- IPP WMMX optimized image codecs
 	- JPEG baseline/progressive decoder
 	- JPEG baseline/progressive encoder
-- IPP WMMX optimized audio and speech codecs		
+- IPP WMMX optimized audio and speech codecs
 	- MP3 decoder
 	- AAC decoder
 	- WMA decoder
@@ -200,7 +200,7 @@ Linux-2.6.32
 	- WMA      (GStreamer Path)
 
 1.4 Telephony
-- Msocket(shared memory + ACIPC)	
+- Msocket(shared memory + ACIPC)
 	- Share memory mechanism(2 ring buffer)
 	- Handshake mechanism(ACIPC)
 	- Port flow control
@@ -208,12 +208,12 @@ Linux-2.6.32
 	- send/receive Msocket data
 	- Msocket Priority control
         - Test Port support
-- DIAG	
+- DIAG
 	- ACAT-Diag over USB
 	- ACAT-Diag over SD card
 	- ACAT-Diag over Uart (Notes: Need to launch kernel without Uart using END+POWER)
 	- ACAT-AT commands through Diag
-- EEH(Error handler)	       
+- EEH(Error handler)
 	- Report
 	- CP Silent Reset
 	(Notes: How to configure CP silent reset:
@@ -222,13 +222,13 @@ Linux-2.6.32
 	3. Modify finalAction to EE_RESET_COMM_SILENT
 	4. Burn to flash)
 
-- NVM	
+- NVM
 	- Flasher explorer support for AP/CP
 	- FDI(Read/Write/Open/Close files)
-- Modem	
-	- Modem over USB 
+- Modem
+	- Modem over USB
 	- Modem and Diag USB Composite
-- Network Service related	
+- Network Service related
 	- GSM/WCDMA Network
 	    - automatic register/deregister
 	    - manual register/deregister
@@ -240,17 +240,17 @@ Linux-2.6.32
 		- 3G only
 		- Dual RAT (3G Prefer)
 		- Dual RAT (2G Prefer)
-- Voice Call related	
+- Voice Call related
 	- Call Control for 2G/3G
 	    - MO call
 	    - MT call
 	    - DTMF
 	    - Emergency call
-	    - Call Mute (Near end Mute) 
+	    - Call Mute (Near end Mute)
 	    - Voice Volume Control
 	    - PS Data Call and Voice Call Simultaneously
 	- Call Control related Supplentary Service for 2G/3G
-	    - multiparty call 
+	    - multiparty call
 	    - call holding
 	    - call waiting
 	    - call forwarding
@@ -264,7 +264,7 @@ Linux-2.6.32
 	     - incoming call barring
 	     - outgoing call barring
 	     - change call barring password
-- Audio	
+- Audio
 	- Audio server
 	   - HIFI:
 	      - Playback
@@ -283,15 +283,15 @@ Linux-2.6.32
 	  - ACM control path
 	   - Audio input/output route for voice (handset, earpiece, speaker, BT)
 	   - Audio input/output route for HiFi playback (handset, speaker, BT)
-- Data Call related	
-	- PSD Data Call 
+- Data Call related
+	- PSD Data Call
 	  - Connection Establish (DirectIP)
 	  - Disconnect (DirectIP)
 	  - Connection Establish (PPP)
 	  - Disconnect (PPP)
 	- CSD Data Call
 	  - CSD 64K
-- SMS/MMS related	
+- SMS/MMS related
 	- SMS related
 	  - Write SMS to Message storage
 	  - Delete SMS Message from Message Storage
@@ -299,7 +299,7 @@ Linux-2.6.32
 	  - Send Message from message storage
 	  - Read SMS from Message storage
 	  - Set Message storage
-	  - Set/Read SMS Center address 
+	  - Set/Read SMS Center address
 	  - Query Used memory storages
 	  - Set Preferred Message Storage
 	  - SMS full notification(msg storage status indication)
@@ -308,7 +308,7 @@ Linux-2.6.32
 	- MMS related
 	  - Send MMS
 	  - Receive MMS
-- PhoneBook related	
+- PhoneBook related
 	  - read PB entry from SIM
 	  - write PB entry from SIM
 	  - delete PB entry from SIM
@@ -318,7 +318,7 @@ Linux-2.6.32
 	  - write PB entry from UE
 	  - delete PB entry from UE
 	  - query PB entry from UE
-- STK related	
+- STK related
 	  - Display menu
 	  - Display information
 	  - Send SMS
@@ -336,7 +336,7 @@ Linux-2.6.32
   - android_patches.tgz                              :Marvell patches to Android Projects
   - android_src.tgz                                  :Source code for projects added by Marvell
   - marvell_manifest.xml                             :Manifest xml file to download Google Android as a base
-  - kernel_patches.tgz                               :Marvell patches to kernel_src.tgz 
+  - kernel_patches.tgz                               :Marvell patches to kernel_src.tgz
   - kernel_src.tgz                                   :Kernel base source code
   - uboot_patches.tgz                                :Marvell patches to uboot_src.tgz
   - uboot_src.tgz                                    :Uboot base source code
@@ -346,29 +346,31 @@ Linux-2.6.32
 
 2. System Requirements
 2.1 Hardware requirements
-- NAND flash 256/512 MB or larger
-- DDR SDRAM 256/512 MB or larger
+- NAND flash 512 MB or larger
+- DDR SDRAM 512 MB or larger
 - PXA920 DKB Board
-  - Debug board: TD_TTC_DEBUG PCB070110 REV3.0 
+  - Debug board: TD_TTC_DEBUG PCB070110 REV3.0
   - Core board: TD_DKB_CORE PCB240210 REV3.01 / TD_DKB_CORE PCB110610 REV3.1
   - RF board: TD_DKB_RF REV3.0 / TD_DKB_RF REV3.11
   - MMI board: TD_DKB_MMI PCB240909 REV2.0 / TD_DKB_MMI PCB240909 REV2.1
 
 2.2 Software requirements
-- Host PC with operating system Ubuntu 8.04 or above
-- GIT version: 1.6 or above
+- Host PC with operating system Ubuntu 10.04 or above
+- GIT version: 1.6, or above 1.7.1
+- If you are using Git 1.7.1 or above, please run below command before setup android:
+  git config --global --bool am.keepcr true
 
-3. Usage of this package 
+3. Usage of this package
 3.1 Install this package
 3.1.1 Download the Marvell packages:
-----PXA920_Android_Platform_Beta7_src.tgz00
-----PXA920_Android_Platform_Beta7_src.tgz01
-----PXA920_Android_Platform_Beta7_prebuilt_bin.zip
- $ cat PXA920_Android_Platform_Beta7_src.tgz00 PXA920_Android_Platform_Beta7_src.tgz01 > PXA920_Android_Platform_Beta7_src.tgz
+----PXA920_Android_Platform_Beta3_src.tgz00
+----PXA920_Android_Platform_Beta3_src.tgz01
+----PXA920_Android_Platform_Beta3_prebuilt_bin.zip
+ $ cat PXA920_Android_Platform_Beta3_src.tgz00 PXA920_Android_Platform_Beta3_src.tgz01 > PXA920_Android_Platform_Beta3_src.tgz
 3.1.2 Type the following command to install:
  $ mkdir [installed_directory]
  $ cd [installed_directory]
- $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA920_Android_Platform_Beta7_src.tgz
+ $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA920_Android_Platform_Beta3_src.tgz
 
 3.2 Setup Android directory
  $ mkdir [android_dir]
@@ -403,7 +405,7 @@ After a short while, the binaries will be generated under [android]/kernel/out/m
 Attention: Gingerbread need JDK1.6, please export JDK path before making (export PATH=<JDK1.6 path>/bin:$PATH)
 Note : If there is no modules, Please export ANDROID_PREBUILT_MODULES=no_kernel_modules
 After a while (30~60 minutes), the binaries will be generated under [android_dir]/out/target/product/dkb/.
-Note: Currently we use Android default toolchain version: arm-eabi-4.4.0 to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for arm-eabi-4.4.0. Please don¡¯t specify other android toolchain version. 
+Note: Currently we use Android default toolchain version: arm-eabi-4.4.0 to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for arm-eabi-4.4.0. Please don¡¯t specify other android toolchain version.
 
 3.3.4 Building telephony
  $ cd [android_dir]/kernel
@@ -429,28 +431,28 @@ Important Notes: Partition table is changed since beta3 release, please erase al
         TD Beta7                       --> TVRTD_CP01.06.032
 3.4.2 Burn following binaries to flash by using Software Downloader. Please see <TVTD_DKB3_0_SWDownloader_GUI_User_Guide.doc>. Please see 4.0 how to enter software downloader mode.
 1)       Please check your board, if the nand ID is JY504 (CS1), you can choose the configuration file:
-TVTD_DKB3_0_Linux_Beta_JY504_JY454.blf
+TVTD_DKB3_0_Linux_Beta_JY504_JY454_GB.blf
 2)       if the nand ID is JY345(CS2), you can choose the configuration file:
-TVTD_DKB3_0_Linux_Beta_JW345.blf
+TVTD_DKB3_0_Linux_Beta_JW345_GB.blf
 3) 	 if the nand ID is Hynix 4G, you can choose the configuration file:
-TVTD_DKB3_0_Linux_Beta_Hynix4G.blf (Notes: TD DKB3.1 A0 board should use this configuration file)
+TVTD_DKB3_0_Linux_Beta_Hynix4G_GB.blf (Notes: TD DKB3.1 A0 board should use this configuration file)
 4) 	 if the nand ID is Micron 4G, you can choose the configuration file:
-TVTD_DKB3_0_Linux_Beta_Micron4G.blf
+TVTD_DKB3_0_Linux_Beta_Micron4G_GB.blf
 
 	TVTD_DKB3_0_Loader_3_2_13_LINUX.bin  	                --> flash address 0x40000
 	u-boot.bin                      			--> flash address 0x80000
 	ramdisk.img                     			--> flash address 0x100000 [ramdisk_no_gui.img --> flash address 0x100000: used for audio/RF calibration]
 	ReliableData.bin	        			--> flash address 0x140000
 	Arbel_DKB_SKWS.bin                    			--> flash address 0x180000
-	TTD_M06_AI_A0_Flash.bin	        			--> flash address 0x880000 [for TD A0]
-	uImage							--> flash address 0x980000
-	system.img						--> flash address 0x3bc0000
-	userdata.img						--> flash address 0xabc0000
-	pxafs.img						--> flash address 0xebc0000
+	TTD_M06_AI_A1_Flash.bin	        			--> flash address 0x880000 [for TD A1]
+        zImage                                                  --> flash address 0x980000
+        system.img                                              --> flash address 0x6800000
+        userdata.img                                            --> flash address 0x1080000
+        pxafs.img                                               --> flash address 0x1ec0000
 
 If you want recovery to be functional, you have to burn the below images together:
-	ramdisk-recovery.img					--> flash address 0xf80000
-	uImage-mt						--> flash address 0xc80000 [Currently uImage-mt is same with uImage, so you can get a copy of uImage and rename to "uImage-mt"]
+	ramdisk-recovery.img					--> flash address 0x1180000
+	uImage-mt						--> flash address 0x0d80000 [Currently uImage-mt is same with uImage, so you can get a copy of uImage and rename to "uImage-mt"]
 You'd better make a clean erase of nand flash before burning.
 
 4.0 Boot Android or enter different mode
@@ -469,61 +471,61 @@ You'd better make a clean erase of nand flash before burning.
 ---------------------------------------------------------------------
 Disclaimer and Legal Information:
 ---------------------------------------------------------------------
-No part of this document may be reproduced or transmitted in any 
-form or by any means, electronic or mechanical, including 
-photocopying and recording, for any purpose, without the express 
-written permission of Marvell. Marvell retains the right to make 
-changes to this document at any time, without notice. Marvell makes 
-no warranty of any kind, expressed or implied, with regard to any 
-information contained in this document, including, but not limited 
-to, the implied warranties of merchantability or fitness for any 
-particular purpose. Further, Marvell does not warrant the accuracy 
-or completeness of the information, text, graphics, or other items 
+No part of this document may be reproduced or transmitted in any
+form or by any means, electronic or mechanical, including
+photocopying and recording, for any purpose, without the express
+written permission of Marvell. Marvell retains the right to make
+changes to this document at any time, without notice. Marvell makes
+no warranty of any kind, expressed or implied, with regard to any
+information contained in this document, including, but not limited
+to, the implied warranties of merchantability or fitness for any
+particular purpose. Further, Marvell does not warrant the accuracy
+or completeness of the information, text, graphics, or other items
 contained within this document.
- 
-Marvell products are not designed for use in life-support equipment 
-or applications that would cause a life-threatening situation if 
-any such products failed. Do not use Marvell products in these 
+
+Marvell products are not designed for use in life-support equipment
+or applications that would cause a life-threatening situation if
+any such products failed. Do not use Marvell products in these
 types of equipment or applications.
- 
-With respect to the products described herein, the user or 
-recipient, in the absence of appropriate U.S. government 
+
+With respect to the products described herein, the user or
+recipient, in the absence of appropriate U.S. government
 authorization, agrees:
- 
-1) Not to re-export or release any such information consisting of 
-technology, software or source code controlled for national 
-security reasons by the U.S. Export Control Regulations ("EAR"), 
+
+1) Not to re-export or release any such information consisting of
+technology, software or source code controlled for national
+security reasons by the U.S. Export Control Regulations ("EAR"),
 to a national of EAR Country Groups D:1 or E:2;
- 
-2) Not to export the direct product of such technology or such 
-software, to EAR Country Groups D:1 or E:2, if such technology or 
-software and direct products thereof are controlled for national 
+
+2) Not to export the direct product of such technology or such
+software, to EAR Country Groups D:1 or E:2, if such technology or
+software and direct products thereof are controlled for national
 security reasons by the EAR; and,
- 
-3) In the case of technology controlled for national security 
-reasons under the EAR where the direct product of the technology 
-is a complete plant or component of a plant, not to export to 
-EAR Country Groups D:1 or E:2 the direct product of the plant or 
-major component thereof, if such direct product is controlled for 
-national security reasons by the EAR, or is subject to controls 
+
+3) In the case of technology controlled for national security
+reasons under the EAR where the direct product of the technology
+is a complete plant or component of a plant, not to export to
+EAR Country Groups D:1 or E:2 the direct product of the plant or
+major component thereof, if such direct product is controlled for
+national security reasons by the EAR, or is subject to controls
 under the U.S. Munitions List ("USML").
- 
-At all times hereunder, the recipient of any such information 
-agrees that they shall be deemed to have manually signed this 
+
+At all times hereunder, the recipient of any such information
+agrees that they shall be deemed to have manually signed this
 document in connection with their receipt of any such information.
- 
-Copyright (C) 2008. Marvell International Ltd. All rights reserved. 
-Marvell, the Marvell logo, Moving Forward Faster, Alaska, 
-AnyVoltage, CODECHANNEL, Fastwriter, Datacom Systems on Silicon, 
-DSP Switcher, Feroceon, GalNet, INTERPRINT, Libertas, Link Street, 
-MOBILEPRINT, NetGX, PHYAdvantage, Prestera, Raising The Technology 
-Bar, SUPERPRINT, SUPERQUEUE, The Technology Within, Virtual Cable 
-Tester, Yukon, ZJ, ZSCRIPT, ZX, and ZXSTREAM are registered 
-trademarks of Marvell. Ants,  Discovery, GalTis, Horizon, Marvell 
-Makes It All Possible, RADLAN, UniMAC, and VCT are trademarks of 
+
+Copyright (C) 2008. Marvell International Ltd. All rights reserved.
+Marvell, the Marvell logo, Moving Forward Faster, Alaska,
+AnyVoltage, CODECHANNEL, Fastwriter, Datacom Systems on Silicon,
+DSP Switcher, Feroceon, GalNet, INTERPRINT, Libertas, Link Street,
+MOBILEPRINT, NetGX, PHYAdvantage, Prestera, Raising The Technology
+Bar, SUPERPRINT, SUPERQUEUE, The Technology Within, Virtual Cable
+Tester, Yukon, ZJ, ZSCRIPT, ZX, and ZXSTREAM are registered
+trademarks of Marvell. Ants,  Discovery, GalTis, Horizon, Marvell
+Makes It All Possible, RADLAN, UniMAC, and VCT are trademarks of
 Marvell.
 
-All other trademarks are the property of their respective 
+All other trademarks are the property of their respective
 owners.
 
 Marvell Semiconductor, Inc.
