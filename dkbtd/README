@@ -17,10 +17,10 @@ Files in this folder
   - android_patches.tgz                              :Marvell patches to Android Projects
   - android_src.tgz                                  :Source code for projects added by Marvell
   - marvell_manifest.xml                             :Manifest xml file to download Android eclair as a base
-  - kernel_patches.tgz                               :Marvell patches to kernel_src.tgz 
+  - kernel_patches.tgz                               :Marvell patches to kernel_src.tgz
   - kernel_src.tgz                                   :Kernel base source code
   - uboot_patches.tgz                                :Marvell patches to uboot_src.tgz
-  - uboot_src.tgz                                    :Uboot base source code 
+  - uboot_src.tgz                                    :Uboot base source code
   - obm_src.tgz                                      :OBM source code
 
 -droid-gcc folder
@@ -31,23 +31,26 @@ Files in this folder
 -mrvl-gcc folder
  Files under mrvl-gcc folder are built with marvell gcc toolchain.
  If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
- 
+
 -OBM and UBoot
- 
+
   u-boot.bin				uboot for dkb
   Arbel.bin				CP Arbel image
   TTC1_M06_AI_A0_Flash.bin		CP MSA image
   ReliableData.bin                      IMEI
-  
+
 -Kernel and Modules for Android [Currently for TTC/TD, zImage.android.slc and zImage.android.mmc is same]
-  zImage.android.slc	Kernel image to boot android from SLC. A root file system is built in. 
+  zImage.android.slc	Kernel image to boot android from SLC. A root file system is built in.
   zImage.android.mmc    Kernel image for mmc and nfs usage
 
 -Android File Systems
-  system.img		 Android system image for  file system.
+  system.img		 Android system image for file system.
+  system_ext4.img	 The same as system.img, except the format is EXT4, should be used on eMMC.
   userdata.img		 Android userdata image for  file system.
+  userdata_ext4.img	 The same as userdata.img, except the format is EXT4, should be used on eMMC.
   ramdisk.img		 Android root image for file system.
   pxafs.img		 AP telephony image.
+  pxafs_ext4.img	 The same as pxafs.img, except the format is EXT4, should be used on eMMC.
   ramdisk-recovery.img   Recovery ramdisk
 
 -Software_Downloader.zip                            :Software downloader
@@ -73,13 +76,13 @@ ess 0x100000: used for audio/RF calibration]
         Arbel.bin                                               --> flash address 0x180000
         TTC1_M06_AI_A0_Flash.bin                                --> flash address 0x880000
         zImage                                                  --> flash address 0x980000
-        system.img                                              --> flash address 0x3bc0000
-        userdata.img                                            --> flash address 0xabc0000
-        pxafs.img                                               --> flash address 0xebc0000
+        system.img                                              --> flash address 0x6800000
+        userdata.img                                            --> flash address 0x1080000
+        pxafs.img                                               --> flash address 0x1ec0000
 
 If you want recovery to be functional, you have to burn the below images together:
-        ramdisk-recovery.img                                    --> flash address 0xf80000
-        zImage-mt                                               --> flash address 0xc80000 [Currently zImage-mt is same with
+        ramdisk-recovery.img                                    --> flash address 0x1180000
+        zImage-mt                                               --> flash address 0x0d80000 [Currently zImage-mt is same with
 zImage, so you can get a copy of zImage and rename to "zImage-mt"]
 You'd better make a clean erase of nand flash before burning.
 
@@ -90,10 +93,10 @@ Boot Android or enter different mode
 3) CAM1+POWER -->Enter Fastboot Mode
 4) BACK+POWER -->Enter Software Downloader Mode
 
-Use TFTP to erase or reburn specific binaries 
+Use TFTP to erase or reburn specific binaries
 =============================================
-	
-1.Start your favorite terminal emulator with the appropriate 
+
+1.Start your favorite terminal emulator with the appropriate
       COM port set to 115200,8N1. Power on hte board and wait for TTC_DKB>> prompt to appear
 
 2.Enter the following command to upload the kernel into the RAM and burn into flash:
@@ -108,7 +111,7 @@ Note 1: All the following images should copy to the host tftp share directory:
 	pxafs.img
 Note 2: You need to first input "sw" to switch to usb eth, and then, input "tftp 0x1000000 zImage", then connect the USB micro-line between the host PC and the dkbboard
 Note 3: You need to configure the host network interface:
-   # ifconfig usb0 192.168.1.100 
+   # ifconfig usb0 192.168.1.100
 Note 4: If you want to boot from nand flash. You have to burn ramdisk. Otherwise if will boot from MMC or NFS
 	You can burn ramdisk by tftp too.
 TTC_DKB>>nand erase 0x100000 0x40000
@@ -119,19 +122,19 @@ TTC_DKB>>nand write 0x1000000 0x100000 0x40000
 For NAND flash, issue the following commands:
 TTC_DKB>>nand erase 0x03bc0000 0x7000000
 TTC_DKB>>tftp 0x1000000 system.img
-TTC_DKB>>nand write.yaffs 0x1000000 0x03bc0000 <system.img actual length> (Note: ony hex supported)
+TTC_DKB>>nand write.yaffs 0x1000000 0x06800000 <system.img actual length> (Note: ony hex supported)
 
 4.Enter the following command to upload the userata.img into the RAM and burn into flash:
 For NAND flash, issue the following commands:
 TTC_DKB>>nand erase 0x0abc0000 0x4000000
 TTC_DKB>>tftp 0x1000000 userdata.img
-TTC_DKB>>nand write.yaffs 0x1000000 0x0abc0000 <userdata.img actual length> (Note: ony hex supported)
+TTC_DKB>>nand write.yaffs 0x1000000 0x10800000 <userdata.img actual length> (Note: ony hex supported)
 
 5.Enter the following command to upload the marvell data into the RAM and burn into flash:
 For NAND flash, issue the following commands:
 TTC_DKB>>nand erase 0xebc0000 0xf40000
 TTC_DKB>>tftp 0x1000000  pxafs.img
-TTC_DKB>>nand write.yaffs 0x1000000 0xebc0000 <pxafs.img actual length> (Note: ony hex supported)
+TTC_DKB>>nand write.yaffs 0x1000000 0x1ec00000 <pxafs.img actual length> (Note: ony hex supported)
 
 6.How to setup nfs
 1)  Burn all images except for ramdisk.img. [zImage.android.mmc can be used]
