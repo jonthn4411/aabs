@@ -58,8 +58,12 @@ build_droid_root_$(1): output_dir
 	echo "    copy ramfs files..." && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img $$(OUTPUT_DIR)/$(1)/ && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk_recovery.img $$(OUTPUT_DIR)/$(1)/
-	echo "    copy filesystem files..." && \
+	echo "    copy system.img ..." && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(1)/
+	$$(hide)if [ -f $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img ]; then \
+		echo "    copy userdata.img ..." && \
+		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(1)/; \
+	fi
 	echo "    copy update packages..." && \
 		mkdir -p $$(OUTPUT_DIR)/$(1)/trusted && \
 		mkdir -p $$(OUTPUT_DIR)/$(1)/nontrusted && \
@@ -75,6 +79,7 @@ PUBLISHING_FILES_$(1)+=$(1)/secondary_gpt_8g:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk_recovery.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/system.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/userdata.img:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/trusted/update_droid.zip:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nontrusted/update_droid.zip:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
