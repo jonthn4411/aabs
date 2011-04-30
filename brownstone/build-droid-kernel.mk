@@ -11,7 +11,6 @@ MY_SCRIPT_DIR:=$(TOP_DIR)/brownstone
 
 DROID_PRODUCT:=brownstone
 DROID_TYPE:=release
-DROID_VARIANT:=user
 
 KERNELSRC_TOPDIR:=kernel
 
