@@ -6,7 +6,6 @@
 #
 include $(BOARD)/build-uboot-obm.mk
 
-DEMO_MEDIA_DIR:=/autobuild/demomedia
 MY_SCRIPT_DIR:=$(TOP_DIR)/brownstone
 
 DROID_PRODUCT:=brownstone
@@ -117,14 +116,6 @@ package_droid_nfs_$(1)_$(2):
 	$$(hide)cd $$(OUTPUT_DIR)/$(1) && tar xzf modules_android_mmc.tgz && cp -r modules $$(OUTPUT_DIR)/$(1)/root_nfs/system/lib/
 	$$(log) "  modifying root nfs folder..."
 	$$(hide)cd $$(OUTPUT_DIR)/$(1)/root_nfs && $$(MY_SCRIPT_DIR)/twist_root_nfs.sh
-	$$(log) "copy demo media files to /sdcard if there are demo media files..."
-	$$(hide)if [ -d "$$(DEMO_MEDIA_DIR)" ]; then \
-			mkdir -p $$(OUTPUT_DIR)/$(1)/root_nfs/sdcard && \
-			cp -r $$(DEMO_MEDIA_DIR)/* $$(OUTPUT_DIR)/$(1)/root_nfs/sdcard/ && \
-			echo "  done."; \
-		   else \
-			echo "    !!!demo media is not found."; \
-		   fi
 	$$(log) "  packaging the root_nfs.tgz..."
 	$$(hide)cd $$(OUTPUT_DIR)/$(1) && tar czf root_nfs_$(2).tgz root_nfs/
 	$$(log) "  done for package_droid_nfs_$(1)_$(2)."
