@@ -1,3 +1,54 @@
+Files in this folder
+====================
+-Change logs and checksum file
+  changelog.build       GIT change log of each project since last build.
+  changelog.day         GIT change log of each project since yesterday.
+  changelog.week        GIT change log of each project since last week.
+  changelog.biweek      GIT change log of each project since 2 weeks ago.
+  changelog.month       GIT change log of each project since a month ago.
+
+  checksums.md5 This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
+
+-Source codes
+ -Internal Use
+  manifest.xml          Saving the GIT commit number of each project used in this build. This is for internal use only.
+  droid_all_src.tgz     Completing source code tar ball, including everything, such as kernel, uboot, obm, android. This is for internal use only.
+
+ -External Uses: the below files will be in the release package. To restore the complete source code that is used to build this package, please follow the intructions in Release Notes.
+
+  setup_android.sh  The script that is used to setup the code base of this build from the below tarball. For details about this, please refer to release notes.
+
+  kernel_src.tgz        Kernel base source code tar ball.
+  kernel_patches.tgz    Kernel patches that are applied on kernel base source.
+
+  marvell_manifest.xml  The manifest file used to download base android source code from google.
+  android_src.tgz       The source code of projects that are introduced by Marvell. Not including the projects introduced by Google.
+  android_patches.tgz   The patches that applied to android projects introduced by Google.
+
+  uboot_src.tgz         Uboot base source code tar ball.
+  uboot_patches.tgz     The patches that applied to uboot base source.
+
+  obm_src.tgz           OBM source code tar ball. Will be released.
+
+-droid-gcc folder
+ Files under droid-gcc folder are built with android-toolchain.
+ If this folder is missing, it means that this package wasn't built with google gcc toolchain.
+
+-Kernel and Modules for Android
+  uImage.android           The kernel image
+  modules_android_mmc.tgz  Kernel modules that built along with uImage.android
+
+-Android File Systems
+ root_nfs_xxx.tgz          Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
+
+ ramdisk_ext3.img         Android ramdisk image.
+ system_ext3.img          Android system image.
+ update_droid.zip         that is a update package including kernel, ramdisk and system folder.
+
+  if xxx is "internal" means everything is built in the package, and should be used internally.
+
+  if xxx is "external" means the package can be delivered outside, components with license issue has been removed.
+
 How to get source code from git server
 =====================================
   1. repo init -u ssh://shgit.marvell.com/git/android/platform/manifest -b abilene-gingerbread
@@ -7,7 +58,7 @@ How to get and build Uboot
 =====================================
   1. git clone ssh://shgit.marvell.com/git/ose/linux/uboot.git
   2. Use the branch m2010.09
-  3. make abilene_config
+  3. make abilene_emmc_config
   4. make 
 
 How to build kernel and android image
@@ -29,39 +80,48 @@ How to build kernel and android image
 
   The android ramdisk.img, system.img and userdata.img are located at out/target/product/abilene
 
-How to enable autoboot and update uboot (Still in debug)
+Burning OBM and Uboot
+=====================
+1. Install the latest XDB with version 5.1
+2. Get the boot binaries (uboot & obm) from autobuild server
+3. Flash OBM and U-boot into EMMC using XDB
+   1)Use flash burn tool: flash --> burn flash
+   2)Choose flash: NAND Flash
+   3)Erase All Blocks to erase the nand autoboot obm
+   4)Choose flash: EMMC flash and click Detect button to detect emmc partition
+   5)Choose partition 0x0
+      a)Burn "mbr"                                      address [0x0]
+      b)Burn "uImage.android"                           address [0x980000]
+     Choose partition 0x1
+      c)Burn "ntim_mmp3_v7_mp_emmc_dis_uboot.bin"       address [0x000000]
+            ("ntim_mmp3_v7_mp_emmc_pop_uboot.bin" for pop board)
+      d)Burn "LoopSelf.bin"                             address [0x020000]
+     Choose partition 0x2
+      e)Burn "u-boot.bin"                               address [0x000000]
+
+How to Disable GC2000
+=====================
+remove or rename egl.cfg which located in /system/lib/egl/
+
+Boot up Android on eMMC
 =====================================
-Use XDB to burn uboot binary:
-   1. Set the file "MMP3_LPDDR2_CH1_5.xdb" as the init batch file. 
-   2. Use xdb files under "<XDB INSTALL FOLDER>\xdb\configuration\jtag\soc\mmp3\mmp3_v6_ten.xsf" to launch the board.
-   3. Open "Flash: Burn Flash". Choose Board "ARMADA628" and Flash "EMMC Flash".
-   4. Check the box "Enable new BBM". Burn u-boot.bin to 0x0 in "partition 0".
-   5. Choose "partition 1". Burn tim binary to 0x0 and burn loop.bin to 0x60000.
 
-How to boot up the board
-=====================================
+Boot the device, and enter the uboot menu.
 
-Launch Uboot (Just the workaround before autoboot is ready)
----------------
-Currently Uboot autoboot has not been ready. Just use XDB to launch uboot.
-   0. Before launching XDB, make sure the location of uboot binary is correct in scripts "mmp3_uboot.xdb".
-   1. Launch the batch file "MMP3_LPDDR2_CH1_DDR_400MHz_Core_800MHz_PLL1_Kapil.xdb" in XDB. 
-   2. Type "run" in XDB command window and the device will enter uboot menu.
+0) By default, the initial device is set to eMMC.
+   You can run the following struction to make sure:
+Abilene>> mfpch emmc
 
-Use NFS for rootfs boot up
-----------------
-   1. Generate the rootfs package.
-	$ cd <android_working_dir>
-	$ cd out/target/product/avd1
-	$ mkdir rootfs
-	$ cp -rf root/* rootfs/
-	$ cp -rf system/* rootfs/system/
-	$ cp -rf data/* rootfs/data/
-	$ chmod 777 rootfs/data
-	$ chown -R root.root rootfs
-	$ chmod -R 777 rootfs/system/usr/keylayout/ rootfs/system/usr/keychars/
-	Then use folder rootfs as the NFS rootfs package.
+1) ramdisk
+Abilene>> tftpboot 0x1100000 ramdisk_ext3.img
+Abilene>> mmc write 0 0x1100000 0x8c00 0x4000
 
-   2. In uboot menu:
-	Abilene>> tftp uImage
-	Abilene>> bootm 1200000
+2) system
+Abilene>> tftpboot 0x1100000 system_ext3_internal.img
+Abilene>> mmc write 0 0x1100000 0xcc00 0x3c000
+
+3) user data
+Abilene>> tftpboot 0x1100000 userdata_ext3_internal.img
+Abilene>> mmc write 0 0x1100000 0x48c00 0x4b000
+
+After done, power-off and power-on again to boot mmp3 from emmc.
