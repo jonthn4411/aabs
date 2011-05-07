@@ -36,17 +36,15 @@ log:=@echo $(current-time)
 hide:=@
 space:= #a designated space
 
-ifneq ($(strip $(RELEASE_NAME)),)
-RLS_SUFFIX:=_$(RELEASE_NAME)
-MANIFEST_BRANCH:=rls_$(subst -,_,$(MANIFEST_BRANCH))_$(RELEASE_NAME)
-else
-RLS_SUFFIX:=
-endif
-
 PUBLISHING_FILES:=
 TOP_DIR:=$(shell pwd)
-SRC_DIR:=src.$(PRODUCT_CODE)$(RLS_SUFFIX)
-OUTPUT_DIR:=out.$(PRODUCT_CODE)$(RLS_SUFFIX)
+
+SRC_DIR:=src.$(PRODUCT_CODE)
+OUTPUT_DIR:=out.$(PRODUCT_CODE)
+ifneq ($(strip $(RELEASE_NAME)),)
+SRC_DIR:=$(SRC_DIR).$(RELEASE_NAME)
+OUTPUT_DIR:=$(OUTPUT_DIR).$(RELEASE_NAME)
+endif
 
 #number of concurrent jobs for make
 MAKE_JOBS:=8

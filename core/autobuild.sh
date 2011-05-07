@@ -308,11 +308,16 @@ done
 #enable pipefail so that if make fail the exit of whole command is non-zero value.
 set -o pipefail
 
-#manifest branch name is same as product name if it is not release
-MANIFEST_BRANCH=${PRODUCT_CODE}
-if [ ! -z "$RELEASE_NAME" ]; then
-	MANIFEST_BRANCH=rls_${MANIFEST_BRANCH/-/_}_${RELEASE_NAME}
+if [ -z "$ABS_MANIFEST_BRANCH" ]; then
+	MANIFEST_BRANCH=${PRODUCT_CODE}
+	if [ ! -z "$RELEASE_NAME" ]; then
+		MANIFEST_BRANCH=rls_${MANIFEST_BRANCH/-/_}_${RELEASE_NAME}
+	fi
+else
+	MANIFEST_BRANCH=$ABS_MANIFEST_BRANCH
 fi
+export MANIFEST_BRANCH
+
 LAST_BUILD=LAST_BUILD.${MANIFEST_BRANCH}
 STD_LOG="build-${PRODUCT_CODE}${RLS_SUFFIX}.log"
 
