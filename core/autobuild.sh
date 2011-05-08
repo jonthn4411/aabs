@@ -297,6 +297,9 @@ for flag in $*; do
 			RELEASE_NAME=${flag##*:}
 			RLS_SUFFIX=_${RELEASE_NAME}
 			export RELEASE_NAME
+			if [ -n "$ABS_UNIQUE_MANIFEST_BRANCH" ] && [ -z "$ABS_DROID_MANIFEST" ]; then
+				export ABS_DROID_MANIFEST="${RELEASE_NAME}.xml"
+			fi
 		else
 			echo "Unknown flag: $flag"; 
 			print_usage; 
