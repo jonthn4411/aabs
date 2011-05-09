@@ -6,14 +6,19 @@
 #
 #$1: create or delete
 #$2: release branch name
-#$3: actual-run
+#$3: mode of manifest.git (UNIQUE branch or multiple branches)
+#$4: actual-run
+#$5: project list ...
 
 print_usage() {
-	echo "    Usage: rls_branch.sh <create|delete> <release-branch-name> <actual-run> [<project> ...]"
+	echo "    Usage: rls_branch.sh <create|delete> <release-branch-name> <unique|multiple> [<actual-run>] [<project> ...]"
 	echo "    action: create or delete the release branch"
 	echo "    release-branch-name: it should take the below format:"
 	echo "        rls_<board>_<android version>_<ver> "
 	echo "    e.g: rls_ttcdkb_eclair_alpha1"
+	echo "    mode: the mode of manifest.git:"
+	echo "         unique: there is one branch, and each branch of repo has an individual manifest file."
+	echo "         multiple: each branch of repo takes one branch of manifest, but all of them use the same name of manifest file that default.xml"
 	echo "    actual-run: by default it just dry-runs, so everything is doen except updating the branch on server. By specifying actual-run, the server is updated"
 	echo "    projectX: only the given projects are impacted"
 }
@@ -47,18 +52,13 @@ branch_to_remote() {
 	return $?
 }
 
-if [ -z "$1" ] || [ -z "$2" ]; then
+if [ $# -lt 3 ] || [ "$1" != "create" -a "$1" != "delete" ] || [ "$3" != 'unique' -a "$3" != 'multiple' ]; then
 	print_usage
 	exit 1
 fi
 
-if [ "$1" = "create" ] || [ "$1" = "delete" ]; then
-	action=$1
-else
-	echo "The first argument is inavlid:$1."
-	print_usage
-	exit 1
-fi
+action=$1
+unique=$3
 
 projects=$(repo forall -c 'echo $(pwd):$REPO_REMOTE' | sort)
 if [ -z "$projects" ]; then
@@ -69,14 +69,14 @@ CWD=$(pwd)
 rls_branch=$2
 
 dryrun_flag=--dry-run
-if [ ! -z "$3" ]; then
-	if [ "$3" = "actual-run" ]; then
+if [ ! -z "$4" ]; then
+	if [ "$4" = "actual-run" ]; then
 		dryrun_flag=
-		if [ $# -ge 3 ]; then
+		if [ $# -ge 4 ]; then
 			shift
 		fi
 	fi
-	shift 2
+	shift 3
 
 	prj_list=
 	i=$#
@@ -150,9 +150,21 @@ done
 
 echo "Update manifest branch..."
 manifest_prj="${CWD}/.repo/manifests"
+cd ${manifest_prj}
+rmt=origin
+account=$(get_account_to_use $rmt)
+target="default.xml"
+if [ "$unique" = "unique" ]; then
+	push_target=$(awk '/merge/ { print $NF }' ../manifests.git/config)
+	push_target=HEAD:$push_target
+	target=$(echo $rls_branch | awk -F_ '{ print $NF }')
+	target=$target.xml
+fi
 if [ "$action" = "create" ]; then
-	cd ${manifest_prj}
 	if [ -z "$dryrun_flag" ]; then
+		if [ "$unique" = "unique" ]; then
+			cp -f default.xml $target
+		fi
 		sopt="-i"
 		act="s/revision=\"[^[:blank:]]*\"/revision=\"${rls_branch}\"/"
 		act1="s/\/>/revision=\"${rls_branch}\" \/>/"
@@ -162,21 +174,25 @@ if [ "$action" = "create" ]; then
 		act1="s/\/>/revision=\"${rls_branch}\" \/>/p"
 	fi
 	if [ -z "$prj_list" ]; then
-		sed $sopt "/revision=\"[^[:blank:]]*\"/$act"  ./default.xml
+		sed $sopt "/revision=\"[^[:blank:]]*\"/$act" $target
 	else
 		for prj in $prj_list
 		do
 			sed $sopt -e "/path=\"$prj\"/$act" -e ta \
-				-e "/path=\"$prj\"/$act1" -e :a ./default.xml
+				-e "/path=\"$prj\"/$act1" -e :a $target
 		done
 	fi
-	if [ -z "$dryrun_flag" ]; then
-		git add ./default.xml &&
-		git commit -s -m "${rls_branch}:enter release cycle"
+	if [ "$unique" = "unique" ]; then
+		message="Add $target"
+	else
+		message="${rls_branch}:enter release cycle"
+		push_target=$head:refs/heads/$rls_branch
 	fi
-	rmt=origin
-	account=$(get_account_to_use $rmt)
-	GIT_SSH=$HOME/bin/git-ssh GIT_SSH_USER=$account git push $dryrun_flag $rmt $head:refs/heads/$rls_branch
+	if [ -z "$dryrun_flag" ]; then
+		git add $target
+		git commit -s -m "$message"
+	fi
+	GIT_SSH=$HOME/bin/git-ssh GIT_SSH_USER=$account git push $dryrun_flag $rmt $push_target
 
 	if [ $? -ne 0 ]; then
 		if [ -z "$dryrun_flag" ]; then
@@ -187,9 +203,15 @@ if [ "$action" = "create" ]; then
 		exit -1
 	fi
 else
-	cd ${manifest_prj} 
-	rmt=origin
-	branch_to_remote $action
+	if [ "$unique" = "unique" ]; then
+		if [ -z "$dryrun_flag" ]; then
+			git rm $target
+			git commit -s -m "Remove $target"
+		fi
+		GIT_SSH=$HOME/bin/git-ssh GIT_SSH_USER=$account git push $dryrun_flag $rmt
+	else
+		branch_to_remote $action
+	fi
 	if [ $? -ne 0 ]; then
 		if [ -z "$dryrun_flag" ]; then
 			echo "deleting manifest branch failed, please do it manually, branch name ${rls_branch}."
@@ -201,5 +223,4 @@ else
 fi
 
 echo "Success!"
-
 
