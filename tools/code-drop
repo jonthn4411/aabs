@@ -1,0 +1,194 @@
+#!/bin/sh
+#
+
+print_usage() {
+    echo "Usage: code-drop <CODE_NAME> <REL_NAME> [PHASE] [SUB]"
+    echo ""
+    echo "---- parameters ----"
+    echo "    CODE_NAME:"
+    echo "        The code name of marvell products, e.g. jasper, brownstone, ..."
+    echo "    REL_NAME:"
+    echo "        The release name of Android, e.g. froyo, gingerbread, ..."
+    echo "    PHASE:"
+    echo "        alpha?, beta?, rc?, ..."
+    echo "    SUB:"
+    echo "        sub-phase, rc?"
+    echo ""
+    echo "--- [ micros, default ] can be overriden externally ----"
+    echo ""
+    echo "    [RLS_DATE, today]"
+    echo "    [RLS_KIT, NULL]"
+    echo "    [RLS_OUTER, \"mmp2\"]"
+    echo "    [RLS_INNER, \"MMP2\"]"
+    echo "    [RLS_NAME, \"ARMADA610_ANDROID_\"\$CODE_NAME_\$PHASE]"
+    echo "    [RLS_BIN, \$(RLS_NAME)_PREBULT_BIN]"
+    echo "    [RLS_SRC, \$(RLS_NAME)_SRC]"
+    echo "    [RLS_MODE, 2], 0 -- Local, 1 -- Inner, 2 -- Outer+Inner"
+    echo "    [RLS_PATH, \$(RLS_DATE)_\$(RLS_KIT)_\$(RLS_REV)]"
+}
+
+if [ -z $RLS_DATE ]; then
+    RLS_DATE=$(date +%F)
+fi
+
+if [ -z "$RLS_MODE" ]; then
+  RLS_MODE=2
+else
+  case $RLS_MODE in
+  0|1|2)
+    ;;
+  *)
+    print_usage
+    exit 1
+  esac
+fi
+
+RLS_REV="$1"-"$2"
+if [ -z "$RLS_PATH" ]; then
+  RLS_PATH="$RLS_DATE"
+  if [ -n "$RLS_KIT" ]; then
+    RLS_PATH="$RLS_DATE"_"$RLS_KIT"
+  fi
+  USE_PREDEFINED_RLS_PATH=0
+else
+  USE_PREDEFINED_RLS_PATH=1
+fi
+
+if [ $# -eq 3 -o $# -eq 4 ]; then
+  RLS_REV="$RLS_REV"_"$3"
+  if [ $USE_PREDEFINED_RLS_PATH -eq 0 ]; then
+    RLS_PATH="$RLS_PATH"_"$RLS_REV"
+  fi
+elif [ $# -gt 4 -o $# -lt 2 ]; then
+  print_usage
+  exit 1
+fi
+
+if [ $# -eq 4 ]; then
+    RLS_REV="$RLS_REV"_"$4"
+fi
+
+if [ -z $RLS_OUTER ]; then
+    RLS_OUTER="mmp2"
+fi
+
+if [ -z $RLS_INNER ]; then
+    RLS_INNER="MMP2"
+fi
+
+if [ -z $RLS_NAME ]; then
+    RLS_NAME="ARMADA610_ANDROID_$2_$3"
+    RLS_NAME=$(echo $RLS_NAME | tr '[:lower:]' '[:upper:]')
+fi
+
+if [ -z $RLS_BIN ]; then
+    RLS_BIN="$RLS_NAME""_PREBUILT_BIN"
+fi
+
+if [ -z $RLS_SRC ]; then
+    RLS_SRC="$RLS_NAME""_SRC"
+fi
+
+if [ -z $SMB_BDIR ]; then
+    SMB_BDIR="$HOME/.gvfs/autobuild on 10.38.164.28/android/$1"
+fi
+
+if [ -z $SMB_IDIR ]; then
+    SMB_IDIR="$HOME/.gvfs/apse_release on sh-fs03/Internal_Releases/$RLS_INNER"
+fi
+
+if [ -z $SMB_ODIR ]; then
+    SMB_ODIR="$HOME/.gvfs/apse_release on sh-fs03/External_Release/$RLS_OUTER"
+fi
+
+if [ ! -e bdir ]; then
+  if [ -d "$SMB_BDIR" ]; then
+    ln -sf "$SMB_BDIR" bdir
+  fi
+fi
+
+if [ ! -e b ]; then
+  if [ -d bdir -a -d bdir/"$RLS_PATH" ]; then
+    ln -sf bdir/"$RLS_PATH" b
+  fi
+fi
+
+if [ ! -e inner -a $RLS_MODE -ge 1 ]; then
+  if [ -d "$SMB_IDIR" ]; then
+    ln -sf "$SMB_IDIR" inner
+  fi
+fi
+
+if [ ! -e outer -a $RLS_MODE -eq 2 ]; then
+  if [ -d "$SMB_ODIR" ]; then
+    ln -sf "$SMB_ODIR" outer
+  fi
+fi
+
+if [ ! -e b ]; then
+  echo "nothing to be done ..."
+  exit
+fi
+
+if [ ! -d prebuilt ]; then
+  echo "copying prebuilt ..."
+  mkdir -p prebuilt
+  cp -r b/droid-gcc/* prebuilt
+  rm -f prebuilt/*internal*
+  rm -f prebuilt/*nfs*
+  rm -f prebuilt/*_mmc*
+  find prebuilt -name Wtm* | xargs rm
+fi
+
+if [ ! -d source-by-patch ]; then
+  echo "copying source-by-patch ..."
+  mkdir -p source-by-patch
+  cp b/android_patches.tgz b/android_src.tgz b/kernel_patches.tgz b/kernel_src.tgz b/obm_src.tgz b/uboot_src.tgz b/uboot_patches.tgz b/marvell_manifest.xml b/setup_android.sh source-by-patch/
+fi
+
+if [ ! -d $RLS_REV ]; then
+  echo "packaging ..."
+  if [ ! -e "$RLS_BIN".zip ]; then
+    zip -r "$RLS_BIN".zip prebuilt
+    split -b 100M -d ./"$RLS_BIN".zip ./"$RLS_BIN".
+    rm -f "$RLS_BIN".zip
+  fi
+
+  tar czf "$RLS_SRC".tgz source-by-patch
+  split -b 100M -d ./"$RLS_SRC".tgz ./"$RLS_SRC".
+  rm -f "$RLS_SRC".tgz
+
+  mkdir -p $RLS_REV
+  if [ -d $RLS_REV ]; then
+    cp b/checksums.* $RLS_REV
+    cp b/README $RLS_REV
+    mv "$RLS_NAME"* $RLS_REV
+  fi
+fi
+
+if [ -f b/delta_patches.tgz ]; then
+    echo "backuping delta_patches.tgz to inner_releases ..."
+    cp -f b/changelog.ms1 . &
+    cp -f b/delta_patches.tgz . &
+fi
+find . -type f -a ! -name *.sh | xargs chmod -x
+
+if [ -e inner ]; then
+    echo "backuping the build from autobuild to inner_releases ..."
+    cp -r bdir/"$RLS_PATH" inner &
+fi
+
+if [ $RLS_MODE -gt 0 ]; then
+  echo "publishing to inner_releases..."
+  cp -r $RLS_REV inner &
+  if [ -f delta_patches.tgz ]; then
+      chmod -x changelog.ms1
+      cp -f changelog.ms1 inner/$RLS_REV &
+      chmod -x delta_patches.tgz
+      cp -f delta_patches.tgz inner/$RLS_REV &
+  fi
+fi
+if [ $RLS_MODE -gt 1 ]; then
+  echo "publishing to external_release..."
+  cp -r $RLS_REV outer &
+fi
