@@ -4,10 +4,10 @@ BOOT_SRC_DIR:=boot
 BOOT_OUT_DIR:=$(BOOT_SRC_DIR)/out
 UBOOT:=u-boot.bin
 OBM_NTIM_1:=ntim_mmp2_nand_bbu_ddr.bin
-OBM_NTIM_DESC_1:=ntim_mmp2_emmc_ddr3_elipda_1g.txt
+OBM_NTIM_DESC_1:=ntim_mmp2_emmc_ddr3_elipda_512m.txt
 OBM_NTLOADER_1:=MMP2_NTLOADER_3_2_19.bin
 OBM_TIM_1:=tim_mmp2_nand_bbu_ddr.bin
-OBM_TIM_DESC_1:=tim_mmp2_emmc_ddr3_elipda_1g.txt
+OBM_TIM_DESC_1:=tim_mmp2_emmc_ddr3_elipda_512m.txt
 OBM_TLOADER_1:=MMP2_TLOADER_3_2_19.bin
 WTM_1:=Wtm_rel_mmp2.bin
 
