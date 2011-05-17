@@ -57,13 +57,13 @@ build_uboot_obm_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_NTIM_2) $$(OUTPUT_DIR)/$(1)/emmc
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_DESC_2) $$(OUTPUT_DIR)/$(1)/emmc
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_NTIM_3) $$(OUTPUT_DIR)/$(1)/emmc
-        $$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_DESC_3) $$(OUTPUT_DIR)/$(1)/emmc
-        $$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_NTIM_4) $$(OUTPUT_DIR)/$(1)/emmc
-        $$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_DESC_4) $$(OUTPUT_DIR)/$(1)/emmc
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_DESC_3) $$(OUTPUT_DIR)/$(1)/emmc
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_NTIM_4) $$(OUTPUT_DIR)/$(1)/emmc
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_DESC_4) $$(OUTPUT_DIR)/$(1)/emmc
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_NTIM_5) $$(OUTPUT_DIR)/$(1)/emmc
-        $$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_DESC_5) $$(OUTPUT_DIR)/$(1)/emmc
-        $$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_NTIM_6) $$(OUTPUT_DIR)/$(1)/emmc
-        $$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_DESC_6) $$(OUTPUT_DIR)/$(1)/emmc
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_DESC_5) $$(OUTPUT_DIR)/$(1)/emmc
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_NTIM_6) $$(OUTPUT_DIR)/$(1)/emmc
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_DESC_6) $$(OUTPUT_DIR)/$(1)/emmc
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(WTM_1) $$(OUTPUT_DIR)/$(1)/emmc
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(LOOP_BIN) $$(OUTPUT_DIR)/$(1)/emmc
 	$$(log) "  done."
