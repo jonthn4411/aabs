@@ -10,11 +10,11 @@ Files in this folder
   checksums.md5 This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
 
 -Source codes
- -Internal Use
+ --Internal Use
   manifest.xml          Saving the GIT commit number of each project used in this build. This is for internal use only.
   droid_all_src.tgz     Completing source code tar ball, including everything, such as kernel, uboot, obm, android. This is for internal use only.
 
- -External Uses: the below files will be in the release package. To restore the complete source code that is used to build this package, please follow the intructions in Release Notes.
+ --External Uses: the below files will be in the release package. To restore the complete source code that is used to build this package, please follow the intructions in Release Notes.
 
   setup_android.sh  The script that is used to setup the code base of this build from the below tarball. For details about this, please refer to release notes.
 
@@ -35,15 +35,17 @@ Files in this folder
  If this folder is missing, it means that this package wasn't built with google gcc toolchain.
 
 -Kernel and Modules for Android
-  uImage.android           The kernel image
+  uImage.android           The kernel image for SMP mode
+  uImage.up.android        The kernel image for no SMP mode
   modules_android_mmc.tgz  Kernel modules that built along with uImage.android
 
 -Android File Systems
- root_nfs_xxx.tgz          Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
+  root_nfs_xxx.tgz          Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
 
- ramdisk_ext3.img         Android ramdisk image.
- system_ext3.img          Android system image.
- update_droid.zip         that is a update package including kernel, ramdisk and system folder.
+  ramdisk_ext3.img         Android ramdisk image.
+  system_ext3.img          Android system image.
+  userdata_ext.img         Android userdata image. 
+  update_droid.zip         that is a update package including kernel, ramdisk and system folder.
 
   if xxx is "internal" means everything is built in the package, and should be used internally.
 
