@@ -20,7 +20,7 @@ ifeq ($(ANDROID_VERSION),froyo)
 	DROID_BASE:=android-2.2.2_r1
 else
 ifeq ($(ANDROID_VERSION),gingerbread)
-	DROID_BASE:=android-2.3.3_r1a
+	DROID_BASE:=android-2.3.4_r1
 else
 	DROID_BASE:=android-3.0.1
 	KERNEL_BASE_COMMIT:=6631e089ef3dc4be98e78aafaca11047e7edf193
