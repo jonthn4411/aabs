@@ -311,17 +311,20 @@ done
 #enable pipefail so that if make fail the exit of whole command is non-zero value.
 set -o pipefail
 
+if [ ! -z "$RELEASE_NAME" ]; then
+	RELEASE_FULL_NAME=rls_${PRODUCT_CODE/-/_}_${RELEASE_NAME}
+else
+	RELEASE_FULL_NAME=${PRODUCT_CODE}
+fi
+export RELEASE_FULL_NAME
 if [ -z "$ABS_MANIFEST_BRANCH" ]; then
-	MANIFEST_BRANCH=${PRODUCT_CODE}
-	if [ ! -z "$RELEASE_NAME" ]; then
-		MANIFEST_BRANCH=rls_${MANIFEST_BRANCH/-/_}_${RELEASE_NAME}
-	fi
+	MANIFEST_BRANCH=$RELEASE_FULL_NAME
 else
 	MANIFEST_BRANCH=$ABS_MANIFEST_BRANCH
 fi
 export MANIFEST_BRANCH
 
-LAST_BUILD=LAST_BUILD.${MANIFEST_BRANCH}
+LAST_BUILD=LAST_BUILD.${RELEASE_FULL_NAME}
 STD_LOG="build-${PRODUCT_CODE}${RLS_SUFFIX}.log"
 
 #TEMP_PUBLISH_DIR_BASE and OFFICIAL_PUBLISH_DIR_BASE should be defined buildhost.def
