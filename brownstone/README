@@ -135,10 +135,10 @@ Boot the device with console, and then flash the images via uboot
 MMP2>> mmc sw_part 0
 
 2) GPT
-MMP2>> t primary_gpt_8g
+MMP2>> t primary_gpt_4g
 MMP2>> mmc write 0 0x22 0x1100000
-MMP2>> t secondary_gpt_8g
-MMP2>> mmc write 0xecafdf 0x21 0x1100000
+MMP2>> t secondary_gpt_4g
+MMP2>> mmc write 0x75efdd 0x21 0x1100000
 
 3) kernel
 MMP2>> t zImage.android
