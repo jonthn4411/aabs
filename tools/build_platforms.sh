@@ -2,6 +2,29 @@
 #
 #
 
+unset_global()
+{
+  unset ABS_BOARD
+  unset ABS_DROID_BRANCH
+  unset ABS_PRODUCT_NAME
+  unset ABS_BUILDHOST_DEF
+  unset ABS_DROID_VARIANT
+  unset ABS_MANIFEST_BRANCH
+  unset ABS_UNIQUE_MANIFEST_BRANCH
+  unset ABS_RELEASE_NAME
+  unset ABS_DROID_MANIFEST
+  unset ABS_RELEASE_FULL_NAME
+  unset MANIFEST_BRANCH
+
+  unset USE_CCACHE
+  unset BUILD_VARIANTS
+  unset EXTERNAL_TOOLCHAIN_PREFIX
+  unset PUBLISH_DIR
+  unset REPO_PROJECT
+  unset TARGET_TOOLS_PREFIX
+  unset COMMAND
+}
+
 get_date()
 {
   echo $(date "+%Y-%m-%d %H:%M:%S")
@@ -106,6 +129,7 @@ if [ "$no_checkout" = "false" ]; then
 	fi
 fi
 
+unset_global
 echo "[aabs][$(get_date)]:start to build:$platform $rlsname" | tee -a $LOG
 if [ -x build-${platform}.sh ]; then
 	if [ "$dryrun_flag" == true ]; then
