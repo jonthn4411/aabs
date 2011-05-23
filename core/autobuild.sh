@@ -275,7 +275,7 @@ FLAG_MGCC=false
 FLAG_FORCE=false
 FLAG_BUILD=true
 FLAG_AUTOTEST=false
-RELEASE_NAME=
+ABS_RELEASE_NAME=
 RLS_SUFFIX=
 
 for flag in $*; do
@@ -294,11 +294,11 @@ for flag in $*; do
 		help) print_usage; exit 2;;
 		*) 
 		if [ ! "${flag%%:*}" == "${flag}" ] && [ "${flag%%:*}" == "rls" ]; then
-			RELEASE_NAME=${flag##*:}
-			RLS_SUFFIX=_${RELEASE_NAME}
-			export RELEASE_NAME
+			ABS_RELEASE_NAME=${flag##*:}
+			RLS_SUFFIX=_${ABS_RELEASE_NAME}
+			export ABS_RELEASE_NAME
 			if [ -n "$ABS_UNIQUE_MANIFEST_BRANCH" ] && [ -z "$ABS_DROID_MANIFEST" ]; then
-				export ABS_DROID_MANIFEST="${RELEASE_NAME}.xml"
+				export ABS_DROID_MANIFEST="${ABS_RELEASE_NAME}.xml"
 			fi
 		else
 			echo "Unknown flag: $flag"; 
@@ -311,20 +311,20 @@ done
 #enable pipefail so that if make fail the exit of whole command is non-zero value.
 set -o pipefail
 
-if [ ! -z "$RELEASE_NAME" ]; then
-	RELEASE_FULL_NAME=rls_${PRODUCT_CODE/-/_}_${RELEASE_NAME}
+if [ ! -z "$ABS_RELEASE_NAME" ]; then
+	ABS_RELEASE_FULL_NAME=rls_${PRODUCT_CODE/-/_}_${ABS_RELEASE_NAME}
 else
-	RELEASE_FULL_NAME=${PRODUCT_CODE}
+	ABS_RELEASE_FULL_NAME=${PRODUCT_CODE}
 fi
-export RELEASE_FULL_NAME
+export ABS_RELEASE_FULL_NAME
 if [ -z "$ABS_MANIFEST_BRANCH" ]; then
-	MANIFEST_BRANCH=$RELEASE_FULL_NAME
+	MANIFEST_BRANCH=$ABS_RELEASE_FULL_NAME
 else
 	MANIFEST_BRANCH=$ABS_MANIFEST_BRANCH
 fi
 export MANIFEST_BRANCH
 
-LAST_BUILD=LAST_BUILD.${RELEASE_FULL_NAME}
+LAST_BUILD=LAST_BUILD.${ABS_RELEASE_FULL_NAME}
 STD_LOG="build-${PRODUCT_CODE}${RLS_SUFFIX}.log"
 
 #TEMP_PUBLISH_DIR_BASE and OFFICIAL_PUBLISH_DIR_BASE should be defined buildhost.def
@@ -344,7 +344,7 @@ LAST_BUILD=$PUBLISH_DIR_BASE/$LAST_BUILD
 if [ "$FLAG_TEMP" = "true" ]; then
 	BUILD_TAG=[autobuild-temp]
 else
-	if [ ! -z "$RELEASE_NAME" ]; then
+	if [ ! -z "$ABS_RELEASE_NAME" ]; then
 		BUILD_TAG=[autobuild-rls]
 	fi
 fi

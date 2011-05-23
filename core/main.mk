@@ -41,9 +41,9 @@ TOP_DIR:=$(shell pwd)
 
 SRC_DIR:=src.$(PRODUCT_CODE)
 OUTPUT_DIR:=out.$(PRODUCT_CODE)
-ifneq ($(strip $(RELEASE_NAME)),)
-SRC_DIR:=$(SRC_DIR).$(RELEASE_NAME)
-OUTPUT_DIR:=$(OUTPUT_DIR).$(RELEASE_NAME)
+ifneq ($(strip $(ABS_RELEASE_NAME)),)
+SRC_DIR:=$(SRC_DIR).$(ABS_RELEASE_NAME)
+OUTPUT_DIR:=$(OUTPUT_DIR).$(ABS_RELEASE_NAME)
 endif
 
 #number of concurrent jobs for make
