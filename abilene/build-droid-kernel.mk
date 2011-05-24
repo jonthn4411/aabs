@@ -187,6 +187,7 @@ root:=$$(word 4, $$(tw) )
 #PUBLISHING_FILES_$(2):=$(PUBLISHING_FILES_$(2)) $(2)/uImage.$$(os):m:md5
 PUBLISHING_FILES_$(2)+=$(2)/uImage.$$(os):m:md5
 PUBLISHING_FILES_$(2)+=$(2)/uImage.up.$$(os):m:md5
+PUBLISHING_FILES_$(2)+=$(2)/rdinit:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/vmlinux:o:md5
 PUBLISHING_FILES_$(2)+=$(2)/System.map:o:md5
 PUBLISHING_FILES_$(2)+=$(2)/modules_$$(os)_$$(storage).tgz:m:md5
