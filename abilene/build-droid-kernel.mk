@@ -6,7 +6,6 @@ MY_SCRIPT_DIR:=$(TOP_DIR)/abilene
 
 DROID_PRODUCT:=abilene
 DROID_TYPE:=release
-DROID_VARIANT:=user
 
 KERNELSRC_TOPDIR:=kernel
 
