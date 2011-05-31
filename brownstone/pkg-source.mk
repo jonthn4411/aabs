@@ -60,7 +60,7 @@ pkgsrc: output_dir get_source_for_pkg
 	fi
 
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
-	$(hide)cp $(BOARD)/$(ANDROID_VERSION)_RN.pdf $(OUTPUT_DIR)
+	$(hide)cp $(BOARD)/ReleaseNotes.doc $(OUTPUT_DIR)
 	$(log) "  done."
 
 
@@ -79,4 +79,4 @@ PUBLISHING_FILES+=obm_src.tgz:m:md5
 PUBLISHING_FILES+=marvell_manifest.xml:m
 PUBLISHING_FILES+=setup_android.sh:m
 PUBLISHING_FILES+=delta_patches.tgz:o
-PUBLISHING_FILES+=$(ANDROID_VERSION)_RN.pdf:o
+PUBLISHING_FILES+=ReleaseNotes.doc:o
