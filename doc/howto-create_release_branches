@@ -15,8 +15,8 @@ Don't forget to enable the config of 'insteadof'
 
 -- 
 . traditional mode (to create a new branch for manifests.git)
-   rls_branch.sh create rls_xxxx_yyyy_alpha/beta/rc?
-   rls_branch.sh create rls_xxxx_yyyy_alpha/beta/rc? actual-run
+   rls_branch.sh create rls_xxxx_yyyy_alpha/beta/rc? multiple
+   rls_branch.sh create rls_xxxx_yyyy_alpha/beta/rc? multiple actual-run
 . use the unique branch at manifest.git
    rls_branch.sh create rls_xxxx_yyyy_alpha/beta/rc? unique
    rls_branch.sh create rls_xxxx_yyyy_alpha/beta/rc? unique actual-run
@@ -39,16 +39,39 @@ LAST_MS1.rls_xxxx_yyyy_alpha/beta/rc? (for previous release)
 LAST_MS2.rls_xxxx_yyyy_alpha/beta/rc? (for master)
 LAST_REL.rls_xxxx_yyyy_alpha/beta/rc?
 
-   then ask Joyce Zhang(joycezhang.marvell@manpower.com.cn)
+   then
+   a. upload them by self
+      login buildfarm:marvell00@10.38.164.28 (publish server -- buildfarm6)
+      put them into /autobuild/android/$PRODUCT/
+
+   b. ask Shaohua Gu (shhgu@marvell.com)
             (Previously,
+            (Joyce Zhang, joycezhang.marvell@manpower.com.cn)
             (Calm, calmshao.marvell@manpower.com.cn)
             (Rosalind, rosalind.marvell@manpower.com.cn)
             (Tony.Jiang) to upload it.
 
-3) Broadcast a mail to announce this new branch created
+3) Add new platform build plans
+
+  Append 2 lines to script.xml
+
+  at
+  \\tcms\BuildFram\
+  or
+  buildfarm:buildfarm@tcms:/opt/TestManager/source/release/WebContent/js/exec/exec_pie/data
+
+  for example:
+  <scripts> <name> $PRODUCT-$RELEASE-$BRANCH-formal </name> <script> $PRODUCT-$RELEASE-$BRANCH-formal.sh </script> </scripts>
+  <scripts> <name> $PRODUCT-$RELEASE-$BRANCH </name> <script> $PRODUCT-$RELEASE-$BRANCH.sh </script> </scripts>
+
+4) Set daily build by TCMS
+
+  Create and save a task with daily recurrence type
+
+5) Broadcast a mail to announce this new branch created
 
 Here is the list for mmp2 branches.
 
 To: GR-APSE-PIE; GR-APSE-OSE-SH; GR-APSE-MPE
 Cc:
-Bin Liang; Mingliang Hu; Johnny Xia; Catherine Zheng; Ke Ding; Leo Lei; Tao Huang; Ye Fan; Sheldon Yang; Leo Yan; He Huang; Yechen Huang; Yun Le; Xiaoxia Sun; Yan Chen; Lawrence Li; Zhifang Long; Tristan Xu; Henry Yu; Bing Zhao; Frank Huang
+Bin Liang; Mingliang Hu; Johnny Xia; Catherine Zheng; Ke Ding; Leo Lei; Tao Huang; Ye Fan; Sheldon Yang; Leo Yan; He Huang; Yechen Huang; Yun Le; Xiaoxia Sun; Lawrence Li; Zhifang Long; Tristan Xu; Henry Yu; Bing Zhao; Frank Huang
