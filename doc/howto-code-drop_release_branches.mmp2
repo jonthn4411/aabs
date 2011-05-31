@@ -23,6 +23,8 @@
 
 -- zip -r ARMADA610_ANDROID_PLATFORM_ALPHA5_PREBUILT_BIN.zip prebuilt
 
+-- split -b 100M -d ./ARMADA610_ANDROID_PLATFORM_ALPHA5_PREBUILT_BIN.tgz ./ARMADA610_ANDROID_PLATFORM_ALPHA5_PREBUILT_BIN.
+
 -- tar czf ARMADA610_ANDROID_PLATFORM_ALPHA5_SRC.tgz source-by-patch
 
 -- split -b 100M -d ./ARMADA610_ANDROID_PLATFORM_ALPHA5_SRC.tgz ./ARMADA610_ANDROID_PLATFORM_ALPHA5_SRC.
@@ -36,5 +38,8 @@
 	\\sh-fs03\APSE_Release\Internal_Releases\MMP2
    and then create a shortcut to access it at
 	\\sh-fs03\APSE_Release\External_Release\mmp2
+
+------
+There is a tool named code-drop that is placed at aabs.git/tools, which can execute all instructions mentioned above.
 
 4) Send out code drop notification
