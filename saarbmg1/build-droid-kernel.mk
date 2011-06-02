@@ -69,7 +69,7 @@ PUBLISHING_FILES_$(1)+=$(1)/system_onenand.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/build.prop:o:md5
-PUBLISHING_FILES_$(1)+=$(1)/pxafs_lyra_4kb.img.onenand:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/pxafs_lyra_4kb.img.onenand:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/pxafs_lyra_ext2.img:m:md5
 endef
 
