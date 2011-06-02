@@ -67,7 +67,8 @@ PUBLISHING_FILES_$(1)+=$(1)/system_onenand.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/build.prop:o:md5
-PUBLISHING_FILES_$(1)+=$(1)/pxafs_lyra_4kb.img.onenand:o:md5
+#PUBLISHING_FILES_$(1)+=$(1)/pxafs_lyra_4kb.img.onenand:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/pxafs_lyra.img:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/pxafs_lyra_ext2.img:m:md5
 endef
 
@@ -152,7 +153,7 @@ package_droid_slc_$(1)_$(2):
 	$$(log) "  done for package_droid_slc_$(1)_$(2)."
 	$$(log) "  build telphony"
 	cd $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers && export ANDROID_PLATFORM=$$(DROID_PRODUCT) && export MAKERULES=$(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/Rules.make && make
-	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/output/pxafs_lyra_4kb.img.onenand $$(OUTPUT_DIR)/$(2)/pxafs_lyra_4kb.img.onenand && \
+	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/output/pxafs_lyra.img $$(OUTPUT_DIR)/$(2)/pxafs_lyra.img && \
 	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/output/pxafs_lyra_ext2.img $$(OUTPUT_DIR)/$(2)/pxafs_lyra_ext2.img
 	$$(log) "  done for telephony build"
 
