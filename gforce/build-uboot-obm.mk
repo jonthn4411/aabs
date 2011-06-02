@@ -21,8 +21,12 @@ define define-build-uboot-obm
 #o:means optional
 #md5: need to generate md5 sum
 PUBLISHING_FILES_$(1)+=$(1)/u-boot.bin:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_1):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_ONENAND_1):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/TIM_u-boot.bin:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/u-boot.256k.saarb:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/obm.bin.gforce:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/obm_2k.bin.saarbmg2:o:md5
+#PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_1):m:md5
+#PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_ONENAND_1):m:md5
 #PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTLOADER_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(MBR_BIN):m:md5
 
@@ -35,10 +39,10 @@ build_uboot_obm_$(1):
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
 
 	$$(log) "start to copy uboot and obm files"
-	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot.bin $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/* $$(OUTPUT_DIR)/$(1)
 	#$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTLOADER_1) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_ONENAND_1) $$(OUTPUT_DIR)/$(1)
+	#$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
+	#$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_ONENAND_1) $$(OUTPUT_DIR)/$(1)
 	#$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(MBR_BIN) $$(OUTPUT_DIR)/$(1)
 	$$(log) "  done."
