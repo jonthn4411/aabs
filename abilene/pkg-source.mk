@@ -21,8 +21,11 @@ else
 ifeq ($(ANDROID_VERSION),froyo)
 	DROID_BASE:=android-2.2.1_r1
 else
-	DROID_BASE:=android-2.3.3_r1a
-	KERNEL_BASE_COMMIT:=7754c0f695fea81fcf63f61f83d305d389908de5
+ifeq ($(ANDROID_VERSION),gingerbread)
+	DROID_BASE:=android-2.3.4_r1
+else
+	DROID_BASE:=honeycomb-mr2
+endif
 endif
 endif
 endif
