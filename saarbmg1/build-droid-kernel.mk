@@ -160,8 +160,8 @@ package_droid_slc_$(1)_$(2):
 	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/output/pxafs_lyra.img $$(OUTPUT_DIR)/$(2)/pxafs_lyra.img && \
 	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/output/pxafs_lyra_ext2.img $$(OUTPUT_DIR)/$(2)/pxafs_lyra_ext2.img && \
 	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/Boerne_DIAG*.txt $$(OUTPUT_DIR)/$(2)/ && \
-	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin.saarbmg1 $$(OUTPUT_DIR)/$(2)/ && \
-	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin.saarbmg2 $$(OUTPUT_DIR)/$(2)/ && \
+	cp -a $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin.saarbmg1 $$(OUTPUT_DIR)/$(2)/ && \
+	cp -a $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin.saarbmg2 $$(OUTPUT_DIR)/$(2)/ && \
 	cd $$(OUTPUT_DIR)/$(2)/ && tar zcvf prebuilt_bin.saarbmg1.tgz prebuilt_bin.saarbmg1 && tar zcvf prebuilt_bin.saarbmg2.tgz prebuilt_bin.saarbmg2
 	$$(log) "  done for telephony build"
 
