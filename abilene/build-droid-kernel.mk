@@ -119,6 +119,8 @@ package_droid_mlc_$(1)_$(2):
 	make -j$$(MAKE_JOBS) && \
 	echo "    copy ext4 image files..." && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/mbr $$(OUTPUT_DIR)/$(2)/mbr && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/primary_gpt_8g $$(OUTPUT_DIR)/$(2)/primary_gpt_8g && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/secondary_gpt_8g $$(OUTPUT_DIR)/$(2)/secondary_gpt_8g && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk_ext3.img $$(OUTPUT_DIR)/$(2)/ramdisk_ext3.img && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext3.img $$(OUTPUT_DIR)/$(2)/system_ext3_$(1).img && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext3.img $$(OUTPUT_DIR)/$(2)/userdata_ext3_$(1).img
