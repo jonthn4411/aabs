@@ -92,14 +92,15 @@ Burning OBM and Uboot
    3)Erase All Blocks to erase the nand autoboot obm
    4)Choose flash: EMMC flash and click Detect button to detect emmc partition
    5)Choose partition 0x0
-      a)Burn "mbr"                                      address [0x0]
-      b)Burn "uImage.android"                           address [0x980000]
+      a)Burn "primary_gpt_8g"                           address [0x0]
+      b)Burn "secondary_gpt_8g"                         address [0x1d97fbe00]
+      c)Burn "uImage.android"                           address [0x980000]
      Choose partition 0x1
-      c)Burn "ntim_mmp3_v7_mp_emmc_dis_uboot.bin"       address [0x000000]
+      d)Burn "ntim_mmp3_v7_mp_emmc_dis_uboot.bin"       address [0x000000]
             ("ntim_mmp3_v7_mp_emmc_pop_uboot.bin" for pop board)
-      d)Burn "LoopSelf.bin"                             address [0x020000]
+      e)Burn "LoopSelf.bin"                             address [0x020000]
      Choose partition 0x2
-      e)Burn "u-boot.bin"                               address [0x000000]
+      f)Burn "u-boot.bin"                               address [0x000000]
 
 How to Disable GC2000
 =====================
@@ -120,10 +121,10 @@ Abilene>> mmc write 0 0x1100000 0x8c00 0x4000
 
 2) system
 Abilene>> tftpboot 0x1100000 system_ext3_internal.img
-Abilene>> mmc write 0 0x1100000 0xcc00 0x3c000
+Abilene>> mmc write 0 0x1100000 0xcc00 0x4b000
 
 3) user data
 Abilene>> tftpboot 0x1100000 userdata_ext3_internal.img
-Abilene>> mmc write 0 0x1100000 0x48c00 0x4b000
+Abilene>> mmc write 0 0x1100000 0x57c00 0x4b000
 
 After done, power-off and power-on again to boot mmp3 from emmc.
