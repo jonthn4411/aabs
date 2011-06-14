@@ -1,0 +1,433 @@
+==============================================================================
+Marvell PXA955 Android Platform Release for Linux
+Platform ReleaseNotes
+Last update: 01/19/2011
+==============================================================================
+
+1. Platform features
+1.1 Supported Components
+- Rebase to google android gingerbread branch
+- Do key pad mapping, touch for PXA970 SAARC platform
+- Wi-Fi/BT support
+- Light sensor and g-sensor support
+- Camera support
+- Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC800
+- Integrate stagefright and g-streamer video playback for media player
+
+1.2 BSP features
+Uboot
+- Boot from EMMC
+- Bownload from USB ethernet
+- Burn image into Onenand
+- Flash Bad block management
+- Boot kernel with kernel command line
+- MTD devices
+  - Support EMMC
+  - Support Fash Bad block management
+  - Support EXTFS3
+  - Support Partition
+- WMMX
+  - Support context switch
+- LCD (Dump panel)
+  - Support DSI and parallel display panel
+  - Support base display
+  - Support overlay display
+  - Support scaling
+  - Support backlight control
+  - Support FB interface
+  - Support pan display
+  - Support VGA resolution display for panel
+  - Support RGB565, RGB888Packed, RGB888Unpacked, YUV420planar, YUV422planar and YUV422Packed format.
+- HDMI
+  - Support up to 720p video output
+  - Support dynamic switching between HDMI output and LCD panel output
+- Camera (CCIC)
+  - Support V4L2 interface with Preview, Still Image capture
+  - Support Parallel (via MIPI-bridge) and MIPI interface.
+  - Support JPEG format
+  - Support YUV420Planar, YUV422Planar and YUV422Packed format. 
+  - Support to accept framebuf from user application.
+  - Support user point.
+  - Support camera flash
+  - Support dual sensors (back/front)
+- SSP
+  - Support to config it as I2S to transfer audio PCM data to outside code. 
+- Audio (use levante as outside audio codec)
+  - Support ALSA interface
+  - Support to playback Audio
+  - Support to Recodrd Audio 
+  - Support to playback and record simultaneously. 
+  - Support 2.5mm Jack
+  - Support headset and MICIN detection. 
+  - Support on-board mic
+- Touch screen
+  - Support pen attach, move, detach and time stamp. 
+- Keypad
+  - Support Key down, up, repeat and time stamp. 
+- I2C (three i2c busses)
+  - Share/Arbitrate the busses for multi devies.
+- UART (FFUART, BTUART)
+  - Support tty interface
+  - Support tty console
+  - Support multi sample rate
+  - Support HW flaw control
+  - Support PIO modes
+- USB
+  - Host
+    - Support to access USB mass storage device
+    - Support hot plug-in and remove
+    - Support USB hub
+  - OTG (disabled by default)
+    - Support dual role device
+    - HNP and SRP are NOT support
+  - Client
+    - Support ethernet, mass storage, adb drivers.
+    - Support RNDIS , ACM, adb and mass storage for Windows host
+    - Support composite devie.
+    - Support hot attach and detach
+- MMC/SD
+  - MMC4.3/SD2.0
+    - Support partition
+    - Support hot plug-in and remove
+  - eMMC
+  - SDIO
+    - Support TY 8787 Stamp card 
+- 8787
+  - Support TY 8787 Stamp card via SDIO
+  - Bluetooth
+  - WIFI
+  - FM Radio
+- Sensor
+  - Support G-sensor
+  - Support proximity sensor
+  - Support light sensor
+- RTC
+  - Samremo RTC
+  - Tavor RTC
+- Suspend
+  - Support suspend
+  - Support process freeze
+
+1.3 Telephony
+
+1.4 Graphics features
+  - Fully support OpenGL ES 1.1
+  - Fully support OpenGL ES 2.0
+  - Fully support EGL 1.4
+  - EGL extension supported:
+		EGL_KHR_image_base  
+		EGL_KHR_image_pixmap  
+		GL_OES_EGL_image  
+		EGL_KHR_gl_texture_2D_image  
+		EGL_KHR_gl_texture_cubemap_image   
+		EGL_KHR_gl_renderbuffer_image  
+		EGL_KHR_reusable_sync 
+		EGL_KHR_lock_surface  
+		GL_OES_draw_texture  
+		GL_EXT_texture_format_BGRA8888  
+
+1.5 Multimedia features
+- IPP Vmeta-based video codecs	
+	- H.264 BP/MP/HP decoder
+	- H.263 P0/P3 decoder
+	- MPEG-4 SP/ASP decoder
+- IPP WMMX-optimized video codecs	
+	- H.264 BP/Partial MP&HP decoder
+	- H.263 P0/P3 decoder
+	- MPEG-4 SP/ASP decoder
+- IPP WMMX-optimized image codecs		
+	- JPEG baseline/progressive decoder
+	- JPEG baseline/progressive encoder
+- IPP WMMX-optimized audio and speech codecs
+  - MP3 decoder
+	- AAC decoder
+- IPP supported multimedia container format
+  - 3GP/3GPP (Stagefright Path)
+  - MP4      (Stagefright Path)
+  - MKV      (Stagefright Path)
+
+<VERSION>=master
+===========================================================================================
+1.6 Release package contents
+- ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
+- PXA955_Android_Platform_<VERSION>_prebuilt_bin.zip	:Pre-built bin binaries
+- PXA955_Android_Platform_<VERSION>_src.tgz        	:Source code tarball (patch mode)
+  - setup_android.sh                                 	:Script help to setup Android code base from the xxx_src.tgz and xxx_patches.tgz
+  - android_patches.tgz                              	:Marvell patches to Android Projects
+  - android_src.tgz                                  	:Source code for projects added by Marvell
+  - marvell_manifest.xml                             	:Manifest xml file to download Android froyo as a base
+  - kernel_patches.tgz                               	:Marvell patches to kernel_src.tgz 
+  - kernel_src.tgz                                   	:Kernel base source code
+  - uboot_patches.tgz                                	:Marvell patches to uboot_src.tgz
+  - uboot_src.tgz                                    	:Uboot base source code
+- obm_src.tgz                                      	:OBM source code
+- manifest.xml						:Marvell manifest
+- Software_Downloader.zip				:Software downloader for Microsfot Windows
+
+2. System Requirements
+2.1 Hardware requirements
+- EMMC
+- DDR SDRAM 512 MB
+- PXA970 SAARC Board
+
+2.2 Software requirements
+- Host PC with operating system Ubuntu 6.06 or above
+
+3. Usage of this package 
+3.1 Install this package
+3.1.1 Download the Marvell packages:
+----PXA955_Android_Platform_<VERSION>_src.tgz  
+----PXA955_Android_Platform_<VERSION>_prebuilt_bin
+3.1.2 Type the following command to install:
+ $ mkdir [installed_directory]
+ $ cd [installed_directory]
+ $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA955_Android_Platform_<VERSION>_src.tgz
+
+3.2 Setup Android directory
+ $ mkdir [android_dir]
+ $ cd [android_dir]
+ $ repo init -u git://android.git.kernel.org/platform/manifest -b master
+ $ cp [installed_directory]/src/marvell_manifest.xml .repo/manifests/
+ $ repo init -m marvell_manifest.xml
+ $ repo sync
+ $ cd [installed_directory]/src
+ $ ./setup_android.sh [android_dir]
+ If you use the iAnywhere Bluetook stack instead of BlueZ in Android, apply the iAnywhere patches and BlueZ will be removed. Or skip following three steps.
+ $ tar xvf rls_ianywhere_<VERSION>.tgz
+ $ cd rls_ianywhere_<VERSION>/installdir
+ $ ./patch_ianywhere.sh [android_dir]
+
+3.3 Building Android,Linux Kernel,Uboot and OBM
+3.3.1 Build Linux Kernel
+ $ cd [android_dir]/kernel
+ $ make kernel
+After a short while, the binaries will be generated under [android]/kernel/out/zImage
+
+3.3.2 Build Modules
+ $ cd [android_dir]/kernel
+ $ make modules
+Note: Please make kernel before making modules
+After a short while, the binaries will be generated under [android]/kernel/out/modules
+
+3.3.3 Buid PXA Android by:
+ $ cd [android_dir]
+ $ . build/envsetup.sh
+ $ chooseproduct saarcnevo
+ $ choosevariant user
+ $ export ANDROID_PREBUILT_MODULES=[android_dir]/kernel/out/modules
+ $ make -j4
+Note: If there is no modules, Please export ANDROID_PREBUILT_MODULES=no_kernel_modules
+Note: The binaries will be generated under src/android/out/target/product/saarcnevo/.
+Note: Currently we use Android default toolchain to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for google arm-eabi toolchain. Please donot pecify other android toolchain version. 
+
+3.3.4 Building uboot
+ $ cd [android_dir]/boot
+ $ make uboot
+After a short while, the binary will be generated under [android]/boot/out/u-boot.bin
+Notes: kernel should be built before uboot as uboot will get cmd info from kernel config
+
+3.3.5 Building OBM
+ $ cd [android_dir]/boot
+ $ make all
+After a short while, the binary will be generated under [android]/boot/out/TAVOR_LINUX_TOBM.bin
+
+3.4 Burn images and boot system(MG1)
+3.4.1 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.1
+Notes:
+Configuration:CPU-JTAG->Target Connection: (usb:).
+JTAG->SOC->PXA9xx->PXA955_B0.xdb->Burn Flash->
+    Board:PXA955
+    Flash:EMMC
+    Burn as binary File
+    Erase affected blocks
+    Enable new BBM
+Choose partition 1
+	TAVOR_LINUX_TOBM.bin	--> address 0x00000
+Choose partition 0
+	u-boot.bin		--> address 0x140000
+
+3.4.2 Start your favorite terminal emulator with the appropriate 
+      COM port set to 115200,8N1. Power on the board and wait for SAARC>> prompt to appear
+
+3.4.3 Software downloader
+Software downloader is a tool for the images burning. 
+Burn the OBM by JTAG at firt time. unzip the Software_Downloader.zip, and read the "saarbpv2-mg1 readme.txt"
+
+3.4.4 Command line images burning
+3.4.4.1 Enter the following command to upload the kernel image into the RAM and burn into flash:
+For EMMC, issue the following commands:
+SAARC>>tftp zImage
+SAARC>>mmc write 0x5000 0x2000
+
+Note 1: You need to configure the host network interface:
+   # ifconfig usb0 192.168.1.100 (for USB)
+   # ifconfig eth0 192.168.1.100 (for Ethernet)
+Note 2: uboot configures ethernet download as default. please use SAARC>> sw to switch to USB 
+
+3.4.4.2 Enter the following command to upload the system image into the RAM and burn into flash:
+Note: uboot configures ethernet download as default. please use 'SAARC>>sw' to switch to USB 
+
+For EMMC, issue the following commands:
+SAARC>>tftp system_ext3.img
+SAARC>>mmc write 0x7200 0x38400
+
+3.4.4.3 Enter the following command to upload the userata image into the RAM and burn into flash:
+For EMMC, issue the following commands:
+SAARC>>tftp userdata_ext3.img
+SAARC>>mmc write 0x3f600 0x21c00
+
+3.4.4.4 Enter the following command to upload the ramdisk image into the RAM and burn into flash:
+For EMMC, issue the following commands:
+SAARC>>tftp ramdisk.img
+SAARC>>mmc write 0x7000 0x200
+
+3.4.4.5 Enter the following command to upload the mbr into the RAM and burn into flash:
+For EMMC, issue the following commands:
+SAARC>>tftp mbr
+SAARC>>mmc write 0x0 0x1
+Reboot the system.
+
+3.5 Marvell Code Performance Analyzer
+The Marvell Code Performance Analyzer v2.3 is supported in this release.
+- What's New
+  - Call Stack sampling data collection and corresponding data analysis
+  - Remote data collection via the Android Debug Bridge (ADB) for the Android device
+- Features
+  - The following sections provide information about the supported and unsupported features for this release.
+- Supported Features
+  - Remote data collection via TCP/IP
+  - Remote data collection via ADB for the Android device
+  - Target local data collection in a connectionless environment
+  - Call Stack sampling data collection and corresponding data analysis
+  - Hotspot sampling data collection and corresponding data analysis
+  - Counter monitor data collection and corresponding data analysis.
+  - Real-time counter monitor and post analysis
+- Unsupported Features
+  - The software development kit (SDK) for dynamic code is not supported in this release.
+- System Requirements
+This release supports the Marvell Code Performance Analyzer, version 2.3. Download this version from the Marvell Extranet website at http://www.marvell.com/extranet. If you do not have a Marvell Extranet user ID, click on the ¡°register¡± link at http://www.marvell.com and follow the instructions therein.
+- Installation
+Before running the data collector, go to the /system/bin/ folder and run the following command to load the kernel driver:
+$ load_mpdc.sh
+- Known Issues or Limitations
+  - It is recommended to first turn off the Marvell Scalable Power Management (MSPM). Otherwise, the Marvell Performance Data Collector (mpdc) may not work normally. Use the following commands to turn off MSPM on your target:
+echo 0 >/sys/power/mspm/mspm
+  - When using the command line, if you get the error message "Fail to communicate with daemon:Success", reload your activity and run it to collect the result again.
+  - When doing remote data collection on the Android target, if the analyzer exits abnormally, the status of the mpdc_svr may still be connected. If this happens, restart the mpdc_svr on the target.
+  - If the samples/second value is set too large, the events/sample value is adjusted after a calibration to a smaller value, which makes the interrupt happen more frequently. If this happens, the system becomes busy and the mpdc stops after the expected duration is expired. In addition, most of the samples will be located on the process "mpdc_d". In this case, create your activity with a decreased samples/second value and start it. 
+  - When using the command line, multiple activities cannot be started at the same time.
+  - If you want to make mpdc_svr listen to another port through using the command "mpdc_svr -p <PortNumber>" on the Android target, a segmentation fault occurs.
+  - Do not set OS_TIMER as the event in the Event-Based Sampling (EBS).
+  
+4. Known issues and workarounds
+4.1 How to disable GC800?
+	-remove /system/lib/egl/egl.cfg from android rootfs
+4.2 Updates and known issues:
+Updates:
+Video
+- Vmeta hal upgrade to 20101231.  
+- added the h263 and mpeg4 support.
+Graphics
+-  Fixed garbage issue when enable 2D path for gingerbread.
+-  Resolved RGBX format issue on gingerbread.
+-  Fixed Samsung GraphicsBenchmark: Fractal draw error issue.
+-  Fixed [Benchmark]An3DBench:Mutiple light sources: the earth color is wrong.
+-  Fixed [MG1][Android][Game]Radiant.apk screen mess while playing.
+-  Fixed [Android][Game]deadlychambers(OpenGL ES2.0 Game) will force close.
+-  Add frame-rate throttling.
+-  Performance of 0xBenchmark Flying Teapot has been improve from 23 fps to 48 fps.
+BSP
+-  Enabled suspend/resume and added basic driver support.
+-  Enabled PM and DVFM but not opened by default
+-  Enabled G-sensor, geomagnetic sensor
+-  Enabled FM radio
+-  Enabled USB OTG/host
+-  I2c updated to 32
+-  MMC enabled ADMA and clock gating
+Android
+-  Add support for dual senors(front/back).
+-  Polish camera multi-instance management.
+-  Polish overlay display/destroy sequence.
+-  Add Marvell Code Performance Analyzer support
+-  Align mbr and system size to PTK
+-  Add sensor HAL support, and enable light sensor, g-sensor
+
+Known issues:
+- The second sensor may be not probed correctly when booting up 
+- Video recording is not ready.
+- When entering suspend, it may be resumed and suspended again every 1 minute due to battery
+- Wi-Fi resume failed after suspend
+- Sometimes screen jitter when video playing
+- Sometimes screen flash when rotate
+- Sometimes kernel panic because of binder and socket when booting
+
+----------------------------
+
+---------------------------------------------------------------------
+Disclaimer and Legal Information:
+---------------------------------------------------------------------
+No part of this document may be reproduced or transmitted in any 
+form or by any means, electronic or mechanical, including 
+photocopying and recording, for any purpose, without the express 
+written permission of Marvell. Marvell retains the right to make 
+changes to this document at any time, without notice. Marvell makes 
+no warranty of any kind, expressed or implied, with regard to any 
+information contained in this document, including, but not limited 
+to, the implied warranties of merchantability or fitness for any 
+particular purpose. Further, Marvell does not warrant the accuracy 
+or completeness of the information, text, graphics, or other items 
+contained within this document.
+ 
+Marvell products are not designed for use in life-support equipment 
+or applications that would cause a life-threatening situation if 
+any such products failed. Do not use Marvell products in these 
+types of equipment or applications.
+ 
+With respect to the products described herein, the user or 
+recipient, in the absence of appropriate U.S. government 
+authorization, agrees:
+ 
+1) Not to re-export or release any such information consisting of 
+technology, software or source code controlled for national 
+security reasons by the U.S. Export Control Regulations ("EAR"), 
+to a national of EAR Country Groups D:1 or E:2;
+ 
+2) Not to export the direct product of such technology or such 
+software, to EAR Country Groups D:1 or E:2, if such technology or 
+software and direct products thereof are controlled for national 
+security reasons by the EAR; and,
+ 
+3) In the case of technology controlled for national security 
+reasons under the EAR where the direct product of the technology 
+is a complete plant or component of a plant, not to export to 
+EAR Country Groups D:1 or E:2 the direct product of the plant or 
+major component thereof, if such direct product is controlled for 
+national security reasons by the EAR, or is subject to controls 
+under the U.S. Munitions List ("USML").
+ 
+At all times hereunder, the recipient of any such information 
+agrees that they shall be deemed to have manually signed this 
+document in connection with their receipt of any such information.
+ 
+Copyright (C) 2008. Marvell International Ltd. All rights reserved. 
+Marvell, the Marvell logo, Moving Forward Faster, Alaska, 
+AnyVoltage, CODECHANNEL, Fastwriter, Datacom Systems on Silicon, 
+DSP Switcher, Feroceon, GalNet, INTERPRINT, Libertas, Link Street, 
+MOBILEPRINT, NetGX, PHYAdvantage, Prestera, Raising The Technology 
+Bar, SUPERPRINT, SUPERQUEUE, The Technology Within, Virtual Cable 
+Tester, Yukon, ZJ, ZSCRIPT, ZX, and ZXSTREAM are registered 
+trademarks of Marvell. Ants,  Discovery, GalTis, Horizon, Marvell 
+Makes It All Possible, RADLAN, UniMAC, and VCT are trademarks of 
+Marvell.
+
+All other trademarks are the property of their respective 
+owners.
+
+Marvell Semiconductor, Inc.
+5488 Marvell Lane
+Santa Clara, CA 95054, USA
+Tel: 1.408.222.2500
+Fax: 1.408.752.9028
+Email: commsales@marvell.com
+
+
