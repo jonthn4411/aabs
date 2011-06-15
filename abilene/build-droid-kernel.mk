@@ -118,7 +118,6 @@ package_droid_mlc_$(1)_$(2):
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS) && \
 	echo "    copy ext4 image files..." && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/mbr $$(OUTPUT_DIR)/$(2)/mbr && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/primary_gpt_8g $$(OUTPUT_DIR)/$(2)/primary_gpt_8g && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/secondary_gpt_8g $$(OUTPUT_DIR)/$(2)/secondary_gpt_8g && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk_ext3.img $$(OUTPUT_DIR)/$(2)/ramdisk_ext3.img && \
@@ -127,7 +126,8 @@ package_droid_mlc_$(1)_$(2):
 	$$(log) "  done for package_droid_mlc_$(1)$(2)."
 
 ifeq ($(1),internal)
-PUBLISHING_FILES_$(2)+=$(2)/mbr:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/primary_gpt_8g:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/secondary_gpt_8g:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/ramdisk_ext3.img:m:md5
 endif
 PUBLISHING_FILES_$(2)+=$(2)/system_ext3_$(1).img:m:md5
