@@ -2,8 +2,8 @@ include core/pkg-source.mk
 
 INTERNAL_PROJECTS :=vendor/marvell/external/helix
 INTERNAL_PROJECTS +=vendor/marvell/external/flash
-INTERNAL_PROJECTS +=vendor/marvell/saarcnevo/.git
-INTERNAL_PROJECTS +=vendor/marvell/saarcnevo/libsensor/src
+INTERNAL_PROJECTS +=vendor/marvell/$(DROID_PRODUCT)/.git
+INTERNAL_PROJECTS +=vendor/marvell/$(DROID_PRODUCT)/libsensor/src
 #INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbPlayer
 #INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbStack
 CHECKIN_PREBUILTLIB :=libyamaha_utils
@@ -45,9 +45,13 @@ pkgsrc: output_dir get_source_for_pkg
 
 	$(hide)echo "  check in prebuilt libs..."
 	$(hide)mkdir -p $(OUTPUT_DIR)/source/vendor/marvell/$(DROID_PRODUCT)/libsensor/prebuild/
-	$(hide)cp $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/obj/STATIC_LIBRARIES/$(CHECKIN_PREBUILTLIB)_intermediates/$(CHECKIN_PREBUILTLIB).a $(OUTPUT_DIR)/source/vendor/marvell/$(DROID_PRODUCT)/libsensor/prebuild/
-	$(hide)cp $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system/bin/geomagneticd $(OUTPUT_DIR)/source/vendor/marvell/$(DROID_PRODUCT)/libsensor/prebuild/
-	$(hide)cp $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system/bin/orientationd $(OUTPUT_DIR)/source/vendor/marvell/$(DROID_PRODUCT)/libsensor/prebuild/
+
+	$(hide)if [ -f $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/obj/STATIC_LIBRARIES/$(CHECKIN_PREBUILTLIB)_intermediates/$(CHECKIN_PREBUILTLIB).a ]; then \
+	$(hide)cp $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/obj/STATIC_LIBRARIES/$(CHECKIN_PREBUILTLIB)_intermediates/$(CHECKIN_PREBUILTLIB).a $(OUTPUT_DIR)/source/vendor/marvell/$(DROID_PRODUCT)/libsensor/prebuild/; fi
+	$(hide)if [ -f $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system/bin/geomagneticd ]; then \
+	$(hide)cp $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system/bin/geomagneticd $(OUTPUT_DIR)/source/vendor/marvell/$(DROID_PRODUCT)/libsensor/prebuild/; fi
+	$(hide)if [ if $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system/bin/orientationd ]; then \
+	$(hide)cp $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system/bin/orientationd $(OUTPUT_DIR)/source/vendor/marvell/$(DROID_PRODUCT)/libsensor/prebuild/; fi
 
 	$(hide)echo "  package all source code..."
 	$(hide)cd $(OUTPUT_DIR) && tar czf droid_all_src.tgz $(EXCLUDE_VCS) source/
