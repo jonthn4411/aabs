@@ -10,6 +10,7 @@ OBM_TIM_1:=tim_mmp2_nand_bbu_ddr.bin
 OBM_TIM_DESC_1:=tim_mmp2_emmc_ddr3_elipda_512m.txt
 OBM_TLOADER_1:=MMP2_TLOADER_3_2_19.bin
 WTM_1:=Wtm_rel_mmp2.bin
+SW_DOWNLOADER:=SWDownloader_for_MMP2.rar
 
 #$1:build variant
 define define-build-uboot-obm
@@ -26,6 +27,7 @@ PUBLISHING_FILES_$(1)+=$(1)/nontrusted/$(OBM_NTLOADER_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nontrusted/$(OBM_NTIM_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nontrusted/$(OBM_NTIM_DESC_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(WTM_1):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(SW_DOWNLOADER):m:md5
 
 .PHONY:build_uboot_obm_$(1)
 build_uboot_obm_$(1):
@@ -38,6 +40,7 @@ build_uboot_obm_$(1):
 
 	$$(log) "start to copy uboot and obm files"
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(WTM_1) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(SW_DOWNLOADER) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/trusted/$$(UBOOT) $$(OUTPUT_DIR)/$(1)/trusted
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/trusted/$$(OBM_TLOADER_1) $$(OUTPUT_DIR)/$(1)/trusted
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/trusted/$$(OBM_TIM_1) $$(OUTPUT_DIR)/$(1)/trusted
