@@ -62,7 +62,7 @@ How to get the code that autobuild system use for daily build or code drop
   1. $ mkdir my_droid_src
      $ cd my_droid_src
   2. $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest -b abilene-gingerbread
-  3. copy 'manifest.xml' from autobuild system or code drop into my_droid_src/.repo/, name it as whatever you like, say 'my_manifest.xml'.
+  3. copy 'manifest.xml' from autobuild system or code drop into my_droid_src/.repo/manifests/, name it as whatever you like, say 'my_manifest.xml'.
   4. In my_droid_src, run repo-init again as below
      $ repo init -m 'my_manifest.xml' # Don't need the full path of my_manifest.xml
   5. $ repo sync
