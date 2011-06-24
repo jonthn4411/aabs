@@ -51,17 +51,34 @@ Files in this folder
 
   if xxx is "external" means the package can be delivered outside, components with license issue has been removed.
 
-How to get source code from git server
+How to get the 'latest' source code from git server
 =====================================
   1. repo init -u ssh://shgit.marvell.com/git/android/platform/manifest -b abilene-gingerbread
   2. repo sync
 
+How to get the code that autobuild system use for daily build or code drop
+=====================================
+-Method I
+  1. $ mkdir my_droid_src
+     $ cd my_droid_src
+  2. $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest -b abilene-gingerbread
+  3. copy 'manifest.xml' from autobuild system or code drop into my_droid_src/.repo/, name it as whatever you like, say 'my_manifest.xml'.
+  4. In my_droid_src, run repo-init again as below
+     $ repo init -m 'my_manifest.xml' # Don't need the full path of my_manifest.xml
+  5. $ repo sync
+
+-Method II
+  1. Find out 'droid_all_src.tgz' in daily build or code drop.
+  2. extract that tgz package as below.
+     $ tar xzvf droid_all_src.tgz
+  3. $ cd source # now you're in the source root.
+
 How to get and build Uboot
 =====================================
-  1. git clone ssh://shgit.marvell.com/git/ose/linux/uboot.git
-  2. Use the branch m2010.09
-  3. make abilene_emmc_config
-  4. make 
+  1. Go to the diretory <android_working_dir>/boot
+     $ cd my_droid_src/boot  # replace my_droid_src by the actual android source root on your machine
+  2. Make uboot
+     $ make all
 
 How to build kernel and android image
 =====================================
@@ -74,7 +91,6 @@ How to build kernel and android image
 
   2. build android
      $ cd <android_working_dir>
-     $ export ANDROID_JAVA_HOME=[PATH_TO_JAVA_HOME]
      $ source build/envsetup.sh
      $ chooseproduct abilene
      $ export ANDROID_PREBUILT_MODULES=kernel/out/modules
