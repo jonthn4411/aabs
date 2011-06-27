@@ -138,6 +138,12 @@ Abilene>> mfpch emmc
 Abilene>> tftpboot 0x1100000 ramdisk_ext3.img
 Abilene>> mmc write 0 0x1100000 0x8c00 0x4000
 
+Please ignore only the following error, since it's not an actual error.
+----------error begins----------------
+Wrong Image Format for tftpboot command
+ERROR: can't get kernel image
+----------error ends----------------
+
 2) system
 Abilene>> tftpboot 0x1100000 system_ext3_internal.img
 Abilene>> mmc write 0 0x1100000 0xcc00 0x4b000
