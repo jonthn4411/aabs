@@ -113,7 +113,8 @@ Burning OBM and Uboot
       c)Burn "uImage.android"                           address [0x980000]
      Choose partition 0x1
       d)Burn "ntim_mmp3_v7_mp_emmc_dis_uboot.bin"       address [0x000000]
-            ("ntim_mmp3_v7_mp_emmc_pop_uboot.bin" for pop board)
+            ("ntim_mmp3_v7_mp_emmc_pop_uboot.bin" for pop board, CPU frequence 200M Hz)
+            ("ntim_mmp3_v7_mp_emmc_dis_uboot.bin" for dis board, CPU frequence 200M Hz)
             ("ntim_mmp3_v7_mp_emmc_xxx_uboot_800.bin" for pop/dis board, CPU frequence 800M Hz)
             ("ntim_mmp3_v7_mp_emmc_xxx_uboot_1000.bin" for pop/dis board, CPU frequence 1G Hz)
       e)Burn "LoopSelf.bin"                             address [0x020000]
