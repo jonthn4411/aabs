@@ -136,7 +136,7 @@ Abilene>> mfpch emmc
 
 1) ramdisk
 Abilene>> tftpboot 0x1100000 ramdisk_ext3.img
-Abilene>> mmc write 0 0x1100000 0x8c00 0x4000
+Abilene>> mmc write 0x1100000 0x8c00 0x4000
 
 Please ignore only the following error, since it's not an actual error.
 ----------error begins----------------
@@ -146,10 +146,10 @@ ERROR: can't get kernel image
 
 2) system
 Abilene>> tftpboot 0x1100000 system_ext3_internal.img
-Abilene>> mmc write 0 0x1100000 0xcc00 0x4b000
+Abilene>> mmc write 0x1100000 0xcc00 0x4b000
 
 3) user data
 Abilene>> tftpboot 0x1100000 userdata_ext3_internal.img
-Abilene>> mmc write 0 0x1100000 0x57c00 0x4b000
+Abilene>> mmc write 0x1100000 0x57c00 0x4b000
 
 After done, power-off and power-on again to boot mmp3 from emmc.
