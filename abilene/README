@@ -53,34 +53,54 @@ Files in this folder
 
 How to get the 'latest' source code from git server
 =====================================
-  1. repo init -u ssh://shgit.marvell.com/git/android/platform/manifest -b abilene-gingerbread
-  2. repo sync
+  1. $ mkdir <android_working_dir>
+     $ cd <android_working_dir>
 
-How to get the code that autobuild system use for daily build or code drop
+  2. For Gingerbread
+     $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b abilene-gingerbread
+     For Honeycomb
+     $ repo init -u ssh://shgit.marvell.com/git/droid/platform/manifest.git -b abilene-honeycomb
+
+  3. $ repo sync
+
+  You may don't have the access to our git server. In this situation, contact the administrator of our git server.
+
+How to get the code that the autobuild system uses for daily build and code drop
 =====================================
 -Method I
-  1. $ mkdir my_droid_src
-     $ cd my_droid_src
-  2. $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest -b abilene-gingerbread
+  1. $ mkdir <android_working_dir>
+     $ cd <android_working_dir>
+
+  2. For Gingerbread
+     $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b abilene-gingerbread
+     For Honeycomb
+     $ repo init -u ssh://shgit.marvell.com/git/droid/platform/manifest.git -b abilene-honeycomb
+     You may don't have the access to our git server. In this situation, contact the administrator of our git server.
+
   3. copy 'manifest.xml' from autobuild system or code drop into my_droid_src/.repo/manifests/, name it as whatever you like, say 'my_manifest.xml'.
-  4. In my_droid_src, run repo-init again as below
+
+  4. In <android_working_dir>, run repo-init again as below
      $ repo init -m 'my_manifest.xml' # Don't need the full path of my_manifest.xml
+
   5. $ repo sync
 
 -Method II
-  1. Find out 'droid_all_src.tgz' in daily build or code drop.
-  2. extract that tgz package as below.
+  1. Find out 'droid_all_src.tgz' in the daily build or code drop.
+
+  2. Extract that tgz package as below.
      $ tar xzvf droid_all_src.tgz
+
   3. $ cd source # now you're in the source root.
 
-How to get and build Uboot
+How to Build Uboot
 =====================================
   1. Go to the diretory <android_working_dir>/boot
-     $ cd my_droid_src/boot  # replace my_droid_src by the actual android source root on your machine
+     $ cd <android_working_dir>/boot  # replace my_droid_src by the actual android source root on your machine
+
   2. Make uboot
      $ make all
 
-How to build kernel and android image
+How to Build kernel and android image
 =====================================
   1. build kernel and modules
      $ cd <android_working_dir>
@@ -107,11 +127,7 @@ Burning OBM and Uboot
    2)Choose flash: NAND Flash
    3)Erase All Blocks to erase the nand autoboot obm
    4)Choose flash: EMMC flash and click Detect button to detect emmc partition
-   5)Choose partition 0x0
-      a)Burn "primary_gpt_8g"                           address [0x0]
-      b)Burn "secondary_gpt_8g"                         address [0x1d97fbe00]
-      c)Burn "uImage.android"                           address [0x980000]
-     Choose partition 0x1
+   5)Choose partition 0x1
       d)Burn "ntim_mmp3_v7_mp_emmc_dis_uboot.bin"       address [0x000000]
             ("ntim_mmp3_v7_mp_emmc_pop_uboot.bin" for pop board, CPU frequence 200M Hz)
             ("ntim_mmp3_v7_mp_emmc_dis_uboot.bin" for dis board, CPU frequence 200M Hz)
@@ -120,6 +136,7 @@ Burning OBM and Uboot
       e)Burn "LoopSelf.bin"                             address [0x020000]
      Choose partition 0x2
       f)Burn "u-boot.bin"                               address [0x000000]
+     Partition 0x0 can be burn in u-boot with mmc.
 
 How to Disable GC2000
 =====================
@@ -134,21 +151,32 @@ Boot the device, and enter the uboot menu.
    You can run the following struction to make sure:
 Abilene>> mfpch emmc
 
-1) ramdisk
-Abilene>> tftpboot 0x1100000 ramdisk_ext3.img
-Abilene>> mmc write 0x1100000 0x8c00 0x4000
+1) Partition table
+Abilene>> tftpboot 0x1100000 primary_gpt_8g
+Abilene>> mmc write 0x1100000 0 0x22
+Abilene>> tftpboot 0x1100000 secondary_gpt_8g
+Abilene>> mmc write 0x1100000 0xECBFDF 0x21 
 
 Please ignore only the following error, since it's not an actual error.
 ----------error begins----------------
 Wrong Image Format for tftpboot command
 ERROR: can't get kernel image
-----------error ends----------------
+----------error ends------------------
 
-2) system
+2) Kernel image
+   uImage.android is the SMP kernel while uImage.up.android is the UP one.
+Abilene>> tftp 0x1100000 uImage.up.android 
+Abilene>> mmc write 0x1100000 0x4c00 0x4000
+
+3) ramdisk
+Abilene>> tftpboot 0x1100000 ramdisk_ext3.img
+Abilene>> mmc write 0x1100000 0x8c00 0x4000
+
+4) system
 Abilene>> tftpboot 0x1100000 system_ext3_internal.img
 Abilene>> mmc write 0x1100000 0xcc00 0x4b000
 
-3) user data
+5) user data
 Abilene>> tftpboot 0x1100000 userdata_ext3_internal.img
 Abilene>> mmc write 0x1100000 0x57c00 0x4b000
 
