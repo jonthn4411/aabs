@@ -46,7 +46,7 @@ build_droid_root_$(1): output_dir
 	$$(log) "[$(1)]building android source code ..."
 	$$(hide)cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
-	export ANDROID_PLATFORM=gforce && export TARGET_MODEL=Gforce && export TARGET_BOARD_PRODUCT=gforce \
+	export ANDROID_PLATFORM=gforce && export TARGET_MODEL=Gforce && export TARGET_BOARD_PRODUCT=gforce && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	ANDROID_PREBUILT_MODULES=no_kernel_modules make -j$$(MAKE_JOBS) 
 
@@ -146,7 +146,7 @@ package_droid_slc_$(1)_$(2):
 	$$(hide)export ANDROID_PREBUILT_MODULES=$$(OUTPUT_DIR)/$(2)/modules && \
 	cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
-	export ANDROID_PLATFORM=gforce && export TARGET_MODEL=Gforce && export TARGET_BOARD_PRODUCT=gforce \
+	export ANDROID_PLATFORM=gforce && export TARGET_MODEL=Gforce && export TARGET_BOARD_PRODUCT=gforce && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS) && \
 	echo "    copy  image files..." && \
