@@ -109,14 +109,14 @@ Burning OBM and UBoot
    5)Choose partition 0x1
 	Trusted boot
       a)Burn "tim_mmp2_nand_bbu_ddr.bin"	address [0x0, 0x4000)
-      b)Burn "Wtm_rel_mmp2.bin"			address [0x4000, 0x20000)
-      c)Burn "MMP2_TLOADER_3_2_19.bin"		address [0x20000, 0x60000)
+      b)Burn "Wtm_rel_mmp2.bin"			address [0x4000, 0x30000)
+      c)Burn "MMP2_TLOADER_3_2_19.bin"		address [0x30000, 0x60000)
       d)Burn "u-boot.bin"			address [0x60000, 0xB0000)
       e)Burn "u-boot.bin" as recovery u-boot	address [0xB0000, 0x100000)
 	Non-Trusted boot
       a)Burn "ntim_mmp2_nand_bbu_ddr.bin"	address [0x0, 0x4000)
-      b)Burn "Wtm_rel_mmp2.bin"			address [0x4000, 0x20000)
-      c)Burn "MMP2_NTLOADER_3_2_19.bin"		address [0x20000, 0x60000)
+      b)Burn "Wtm_rel_mmp2.bin"			address [0x4000, 0x30000)
+      c)Burn "MMP2_NTLOADER_3_2_19.bin"		address [0x30000, 0x60000)
       d)Burn "u-boot.bin"			address [0x60000, 0xB0000)
       e)Burn "u-boot.bin" as recovery u-boot	address [0xB0000, 0x100000)
 
