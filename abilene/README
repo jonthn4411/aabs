@@ -150,6 +150,7 @@ Boot the device, and enter the uboot menu.
 0) By default, the initial device is set to eMMC.
    You can run the following struction to make sure:
 Abilene>> mfpch emmc
+Abilene>> set autostart no
 
 1) Partition table
 Abilene>> tftpboot 0x1100000 primary_gpt_8g
