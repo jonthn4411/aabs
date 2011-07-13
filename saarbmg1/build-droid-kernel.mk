@@ -44,6 +44,7 @@ define define-build-droid-root
 .PHONY: build_droid_root_$(1) 
 build_droid_root_$(1): output_dir
 	$$(log) "[$(1)]building android source code ..."
+	$$(hide)rm -rf $$(SRC_DIR)/out
 	$$(hide)cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
@@ -268,6 +269,7 @@ build_kernel_$$(os)_$$(storage)_$(2): private_root:=$$(root)
 build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(root)), cp_$$(os)_root_dir_$$(storage)_$(2) ) 
 	$$(log) "[$(2)]starting to build kernel for booting $$(private_os) from $$(private_storage) ..."
 	$$(log) "    kernel_config: $$(private_kernel_cfg): ..."
+	$$(hide)rm -rf $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/
 	$$(hide)cd $$(SRC_DIR)/$$(KERNELSRC_TOPDIR) && \
 	KERNEL_CONFIG=$$(private_kernel_cfg) make all 
 
