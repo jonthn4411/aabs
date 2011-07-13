@@ -273,6 +273,24 @@ If the battery service reports wrong battery status, Android power off the syste
 Open /init.rc, add the below line before class_start default:
 setprop battery.fake_ac true
 
++How to control cpufreqd?
+----------------------------------------------
+1) List all available Profiles
+$ cpufreqd-get
+
+2) List the current applied Profiles for all cpus
+$ cpufreqd-get -l
+
+3) Make cpufreqd run in manual mode
+$ cpufreqd-set manual
+
+4) Specify a profile to cpufreqd
+$ cpufreqd-set number
+
+note: number is an integer and means the sequence number of profile.
+
+5) Make cpufreqd run in dynamic mode
+$ cpufreqd-set dynamic
 
 Product Distribution
 ================================================================
