@@ -253,19 +253,12 @@ Known Issues about running Android on NFS
 
 FAQ
 =====
-+How can I configure video output path?
----------------------------------------------------------------
-The opencore,GStreamer and Helix engine uses the property video.accelerate.hw to determine the video output path.
-If the property is set to 'gc', it will allocate memory from PMEM and expect GC to do color conversion.
-If the property is set to 'overlay', it will use the overlay engine to output the video.
-If it is other values, it will use software color conversion and let surfaceflinger to output the video frame.
-
 +How to modify the files after the system_xxx.img has been burned to the flash?
 -------------------------------------------------------------------------------
 Please remount the system partition with rw mode by
 $adb remount
 
-+How to enable the video playback profiling?
++How to enable the video playback profiling? [ Only applicable to gingerbread ]
 --------------------------------------------
 After the android boot up, type in console:
 $setprop enable.pvplayer.profiling 1
