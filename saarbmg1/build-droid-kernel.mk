@@ -188,7 +188,7 @@ package_droid_mmc_$(1)_$(2):
 	if [ "$$(TARGET_PRODUCT)" = "ttc_jil" ] || [ "$$(TARGET_PRODUCT)" = "td_jil" ] || [ "$$(TARGET_PRODUCT)" = "dkbttc" ] || [ "$$(TARGET_PRODUCT)" = "td_dkb" ]; then cp -rfp $$(SRC_DIR)/vendor/marvell/generic/ttc_telephony/drivers/output/marvell $$(OUTPUT_DIR)/$(2)/root_nfs; fi
 	$$(log) "  updating the modules..."
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi
-	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar xzf modules_android_mmc.tgz && cp -aP modules $$(OUTPUT_DIR)/$(2)/root_nfs/system/lib/
+	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar xzf modules_android_mmc.tgz && rsync -av --safe-links modules $$(OUTPUT_DIR)/$(2)/root_nfs/system/lib/
 	$$(log) "  modifying root nfs folder..."
 	$$(hide)cd $$(OUTPUT_DIR)/$(2)/root_nfs && $$(MY_SCRIPT_DIR)/twist_root_nfs.sh 
 	$$(log) "copy demo media files to /sdcard if there are demo media files..."
@@ -280,7 +280,7 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/System.map $$(OUTPUT_DIR)/$(2)
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi &&\
 	mkdir -p $$(OUTPUT_DIR)/$(2)/modules
-	$$(hide)cp -aP $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules/* $$(OUTPUT_DIR)/$(2)/modules
+	$$(hide)rsync -av --safe-links $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules/* $$(OUTPUT_DIR)/$(2)/modules
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf modules_$$(private_os)_$$(private_storage).tgz modules/ 
 	$$(hide)if [ "$$(TARGET_PRODUCT)" = "dkbttc" ] || [ "$$(TARGET_PRODUCT)" = "dkbtd" ]; then \
 	cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/telephony/* /$$(OUTPUT_DIR)/$(2); fi
