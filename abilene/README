@@ -92,10 +92,16 @@ How to get the code that the autobuild system uses for daily build and code drop
 
   3. $ cd source # now you're in the source root.
 
+Set up environment before building Android
+=====================================
+     $ cd <android_working_dir>  # replace <android_working_dir> with the actual android source root on your machine
+     $ source build/envsetup.sh
+     $ chooseproduct abilene
+
 How to Build Uboot
 =====================================
   1. Go to the diretory <android_working_dir>/boot
-     $ cd <android_working_dir>/boot  # replace my_droid_src by the actual android source root on your machine
+     $ cd <android_working_dir>/boot  
 
   2. Make uboot
      $ make all
@@ -111,8 +117,6 @@ How to Build kernel and android image
 
   2. build android
      $ cd <android_working_dir>
-     $ source build/envsetup.sh
-     $ chooseproduct abilene
      $ export ANDROID_PREBUILT_MODULES=kernel/out/modules
      $ make
 
@@ -123,6 +127,8 @@ Burning OBM and Uboot
 1. Install the latest XDB with version 5.1
 2. Get the boot binaries (uboot & obm) from autobuild server
 3. Flash OBM and U-boot into EMMC using XDB
+   Note: Don't check the option "erase affected blocks" when you burn images.
+
    1)Use flash burn tool: flash --> burn flash
    2)Choose flash: NAND Flash
    3)Erase All Blocks to erase the nand autoboot obm
