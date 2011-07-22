@@ -68,9 +68,12 @@ PUBLISHING_FILES_$(1)+=$(1)/system_onenand.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/build.prop:o:md5
-#PUBLISHING_FILES_$(1)+=$(1)/pxafs_lyra_4kb.img.onenand:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/pxafs_lyra.img:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/pxafs_lyra_4kb.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/pxafs_lyra_ext2.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/nvm_ext2.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/nvm_4kb.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/nvm.img:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/prebuilt_bin.gforce.tgz:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/prebuilt_bin.saarbmg1.tgz:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/prebuilt_bin.saarbmg2.tgz:m:md5
@@ -160,7 +163,11 @@ package_droid_slc_$(1)_$(2):
 	$$(log) "  build telphony"
 	cd $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers && export ANDROID_PLATFORM=$$(DROID_PRODUCT) && export MAKERULES=$(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/Rules.make && make
 	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/output/pxafs_lyra.img $$(OUTPUT_DIR)/$(2)/pxafs_lyra.img && \
+	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/output/pxafs_lyra_4kb.img $$(OUTPUT_DIR)/$(2)/pxafs_lyra_4kb.img && \
 	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/output/pxafs_lyra_ext2.img $$(OUTPUT_DIR)/$(2)/pxafs_lyra_ext2.img && \
+	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/output/nvm_ext2.img $$(OUTPUT_DIR)/$(2)/nvm_ext2.img && \
+	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/output/nvm_4kb.img $$(OUTPUT_DIR)/$(2)/nvm_4kb.img && \
+	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/output/nvm.img $$(OUTPUT_DIR)/$(2)/nvm.img && \
 	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/Boerne_DIAG*.txt $$(OUTPUT_DIR)/$(2)/ && \
 	cp -a $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin.gforce $$(OUTPUT_DIR)/$(2)/ && \
 	cp -a $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin.saarbmg1 $$(OUTPUT_DIR)/$(2)/ && \
