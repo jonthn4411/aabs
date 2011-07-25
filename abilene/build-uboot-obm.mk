@@ -40,7 +40,7 @@ PUBLISHING_FILES_$(1)+=$(1)/emmc/$(OBM_DESC_5):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc/$(OBM_NTIM_6):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc/$(OBM_DESC_6):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc/$(OBM_NTIM_7):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/emmc/$(OBM_DESC_8):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/emmc/$(OBM_DESC_7):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc/$(WTM_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc/$(LOOP_BIN):m:md5
 
