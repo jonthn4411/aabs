@@ -173,13 +173,9 @@ if [ -f b/delta_patches.tgz ]; then
 fi
 find . -type f -a ! -name *.sh | xargs chmod -x
 
-if [ -e inner ]; then
-    echo "backuping the build from autobuild to inner_releases ..."
-    cp -r bdir/"$RLS_PATH" inner &
-fi
-
 if [ $RLS_MODE -gt 0 ]; then
   echo "publishing to inner_releases..."
+  mkdir inner/$RLS_REV
   cp -r $RLS_REV inner &
   if [ -f delta_patches.tgz ]; then
       chmod -x changelog.ms1
@@ -187,6 +183,8 @@ if [ $RLS_MODE -gt 0 ]; then
       chmod -x delta_patches.tgz
       cp -f delta_patches.tgz inner/$RLS_REV &
   fi
+  echo "backuping the build from autobuild to inner_releases ..."
+  cp -r bdir/"$RLS_PATH" inner/$RLS_REV &
 fi
 if [ $RLS_MODE -gt 1 ]; then
   echo "publishing to external_release..."
