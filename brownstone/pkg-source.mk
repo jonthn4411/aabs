@@ -22,9 +22,10 @@ else
 ifeq ($(ANDROID_VERSION),gingerbread)
 	DROID_BASE:=android-2.3.4_r1
 else
-	DROID_BASE:=honeycomb-mr2
+	DROID_BASE:=shgit/honeycomb-mr2
 	KERNEL_BASE_COMMIT:=6631e089ef3dc4be98e78aafaca11047e7edf193
 	UBOOT_BASE_COMMIT:=1a2d9b30e31e2b7ed0acb64bfb2290911e3c9efb
+	export HEAD_MANIFEST=head_manifest.hc
 endif
 endif
 endif
