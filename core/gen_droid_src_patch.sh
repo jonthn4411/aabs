@@ -23,13 +23,11 @@ echo "    generating android base manifest file and patches." &&
 rm -fr $output_dir/android_patches &&
 mkdir -p $output_dir/android_patches &&
 
-cat > $output_manifest <<-EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<manifest>
-<remote fetch="git://android.git.kernel.org/" name="korg"/>
-<default remote="korg" revision=""/>
+if [ -n "$HEAD_MANIFEST" ]; then
+	HEAD_MANIFEST=head_manifest.default
+fi
 
-EOF
+cat $output_dir/../common/$HEAD_MANIFEST > $output_manifest
 
 prjlist=$(cat prjlist)
 for prj in $prjlist; do
