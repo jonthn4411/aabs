@@ -3,7 +3,6 @@
   <remote  name="ohd"
            fetch="ssh://partner.source.android.com:29418/"
            review="https://partner.source.android.com/g/" />
-
   <default revision=""
            remote="ohd" />
 
