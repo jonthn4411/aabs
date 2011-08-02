@@ -7,6 +7,8 @@
 output_dir=$(pwd)
 droid_base=$1
 gen_manifest=$2
+head_manifest=$3
+
 EXCLUDE_VCS="--exclude-vcs --exclude=.repo"
 if [ -z $droid_base ] || [ -z $gen_manifest ]; then
 	echo "Droid base commit or gen_manifest is empty."
@@ -23,11 +25,11 @@ echo "    generating android base manifest file and patches." &&
 rm -fr $output_dir/android_patches &&
 mkdir -p $output_dir/android_patches &&
 
-if [ -n "$HEAD_MANIFEST" ]; then
-	HEAD_MANIFEST=head_manifest.default
+if [ -z "$head_manifest" ] || [ ! -f $head_manifest ]; then
+	head_manifest=$output_dir/../common/head_manifest.default
 fi
 
-cat $output_dir/../common/$HEAD_MANIFEST > $output_manifest
+cat $head_manifest > $output_manifest
 
 prjlist=$(cat prjlist)
 for prj in $prjlist; do
