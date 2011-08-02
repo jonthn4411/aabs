@@ -27,7 +27,7 @@ include core/changelog.mk
 #
 # Include goal for package source code.
 #
-include $(BOARD)/pkg-source.mk
+include common/pkg-source.mk
 
 #
 # Include goal for build uboot, obm, android and kernels.
