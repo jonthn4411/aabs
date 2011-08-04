@@ -323,3 +323,17 @@ $ out/host/linux-x86/bin/mkbootfs $signed_folder/RECOVERY/RAMDISK | out/host/lin
 $ build/tools/releasetools/ota_from_target_files -v -p out/host/linux-x86 -k vendor/marvell/brownstone/security/releasekey $signed_files $signed_folder/update_droid_signed.zip
 
 We should distribute the new system.img, ramdisk_recovery.img and update_droid_signed.zip instead of the original ones.
+
+CPA (Code Performance Analyzer) simple guide
+================================================================
+1) Launch mpdc on device (require root permission)
+
+adb shell (with root permission)
+# load_mpdc.sh
+# mpdc_svr &
+
+2) Run CPA on Host (CPA/analyzer/cpa)
+3) Create a project (normally we use the option of "Hotspot Sampling")
+4) Start the profiling by pressing "Start"
+5) choose ADB connection in dialog
+
