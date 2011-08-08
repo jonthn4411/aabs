@@ -15,6 +15,7 @@ DROID_TYPE:=release
 DROID_VARIANT:=user
 
 KERNELSRC_TOPDIR:=kernel
+OTA_PACKAGE:=dkb-ota-mrvl.zip
 
 .PHONY:clean_droid_kernel
 clean_droid_kernel: clean_droid clean_kernel
@@ -44,7 +45,7 @@ clean_kernel:
 #$1:build variant
 define define-build-droid-all
 .PHONY:build_droid_all_$(1)
-build_droid_all_$(1): build_droid_kernel_modules_$(1) build_droid_root_$(1) build_droid_telephony_$(1) build_droid_package_nfs_$(1)
+build_droid_all_$(1): build_droid_kernel_modules_$(1) build_droid_root_$(1) build_droid_telephony_$(1) build_droid_otapackage_$(1) build_droid_package_nfs_$(1)
 endef
 
 #$1:build variant
@@ -57,6 +58,22 @@ endef
 define define-build-droid-telephony
 .PHONY:build_droid_telephony_$(1)
 build_droid_telephony_$(1): build_telephony_$(1)
+endef
+
+#$1:build variant
+define define-build-droid-otapackage
+.PHONY:build_droid_otapackage_$(1)
+build_droid_otapackage_$(1): output_dir
+	$$(log) "[$(1)]building android OTA package ..."
+	$$(hide)cd $$(SRC_DIR) && \
+	source ./build/envsetup.sh && \
+	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
+	ANDROID_PREBUILT_MODULES=./kernel/out/modules make mrvlotapackage -j$$(MAKE_JOBS)
+	$$(hide)echo "  copy OTA package ..."
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/$$(OTA_PACKAGE) $$(OUTPUT_DIR)/$(1)
+	$$(log) "  done for OTA package build. "
+
+PUBLISHING_FILES_$(1)+=$(1)/$$(OTA_PACKAGE):m:md5
 endef
 
 
@@ -312,6 +329,7 @@ $(foreach bv,$(BUILD_VARIANTS), $(eval $(call define-build-droid-all,$(bv)) ) \
 				$(eval $(call define-build-droid-kernel-modules,$(bv)) ) \
 				$(eval $(call define-build-droid-telephony,$(bv)) ) \
 				$(eval $(call define-build-droid-root,$(bv)) ) \
+				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
 				$(eval $(call define-build-droid-package-nfs,internal,$(bv)) ) \
 				$(foreach kc, $(kernel_configs),$(eval $(call define-telephony-target,$(kc),$(bv)) ) )\
 				$(foreach kc, $(kernel_configs),$(eval $(call define-kernel-modules-target,$(kc),$(bv)) ) ) \
