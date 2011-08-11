@@ -1,10 +1,28 @@
 1) Update release notes
 
---- Update the android part
---- Ask the owners of the other components to update their parts
+  a. Either PM (Bin.Liang) or you send a request of support of formal RN
+     to Tech Pub (Sharon Brown, and Charlene Weisberg)
+  b. Tech Pub (Charlene Weisberg) will send a set of draft RN
+  c. Broadcast the set of draft to the other owners of the components
+
+To: Ke Ding; Yi Wang; Bo Fang; Hans Li; Catherine Zheng; Yan Chen; Lawrence Li; 
+    Zhifang Long; Haipang Wu; Shedlon Yang; Mi Li; Dafu Lv; Lindong Wu;
+    Mingliang Hu; Tao Huang; Ye Fan; Yi Lu; He Huang; Jasper Chan; Jianle Qiu;
+    Alice Wang
+Cc: Bin Liang; Johnny Xia
+
+  d. Update the android part, after got the feedback from team
+
+To: GR-APSE-PIE-APDROID
+
+  e. Merge the change from the other owners of components
+  f. Send the draft with our changes back to Tech Pub for revise
+  g. Review and approve the final version provided by Tech Pub
+  i. After the RN approved, please update aabs to get the latest RN
+     in daily build 
 
 2)
---- Send a release notification to Bin.Liang & cc the relevant guys
+--- Send a request of the formal release to Bin.Liang & cc the relevant guys
 
 3) COO
 
