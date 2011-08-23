@@ -28,7 +28,12 @@ else
 ifeq ($(ANDROID_VERSION),froyo)
 	DROID_BASE:=android-2.2.2_r1
 else
+ifeq ($(ANDROID_VERSION),gingerbread)
 	DROID_BASE:=android-2.3.5_r1
+else
+	DROID_BASE:=shgit/honeycomb-mr2-release
+	HEAD_MANIFEST:=head_manifest.hc
+endif
 endif
 endif
 endif
