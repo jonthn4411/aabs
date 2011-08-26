@@ -11,8 +11,14 @@ else
        DROID_PRODUCT:=dkb
        KERNEL_IMAGE:=uImage
 endif
+
 DROID_TYPE:=release
-DROID_VARIANT:=user
+
+ifneq ($(ABS_DROID_VARIANT),)
+       DROID_VARIANT:=$(ABS_DROID_VARIANT)
+else
+       DROID_VARIANT:=user
+endif
 
 KERNELSRC_TOPDIR:=kernel
 OTA_PACKAGE:=dkb-ota-mrvl.zip
