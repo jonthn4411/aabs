@@ -1,6 +1,11 @@
 #check if the required variables have been set.
 #$(call check-variables,BUILD_VARIANTS)
 
+#
+# Include goal for build UBoot and obm
+#
+include $(BOARD)/build-uboot-obm.mk
+
 DEMO_MEDIA_DIR:=/autobuild/demomedia
 MY_SCRIPT_DIR:=$(TOP_DIR)/abilene
 
