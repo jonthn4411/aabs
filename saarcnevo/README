@@ -21,7 +21,7 @@ Files in this folder
  If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
  
 -OBM and UBoot
-    TAVOR_LINUX_NTOBM.bin		uboot for saarcnevo
+    TAVOR_LINUX_TOBM.bin		uboot for saarcnevo
     u-boot.bin				NTLoader image
  
 -Kernel and Modules for Android [Currently for saarcnevo, zImage.android.slc and zImage.android.mmc is same]
@@ -36,44 +36,41 @@ saarcnevo Flashing images and boot system
 
 Install OBM and Uboot
 ============================
-Burn following binaries to EMMC using Marvell eXtreme Debugger 5.0(XDB_5_0_Beta2-20100324)
+Burn following binaries to EMMC using Marvell eXtreme Debugger 5.1
 Configuration:CPU-JTAG->Target Connection: (usb:).
-JTAG->SOC->PXA9xx->PXA950_CPU.xdb->Burn Flash->
-    Board:pxa950
+JTAG->SOC->PXA9xx->PXA970.xdb->Burn Flash->
+    Board:pxa970
     Flash:EMMC
     Burn as binary File
     Erase affected blocks
     Enable new BBM
 Choose partition 0 & 1
-	TAVOR_LINUX_NTOBM.bin	    --> address 0x00000
+	TAVOR_LINUX_TOBM.bin	    --> address 0x00000
 Choose partition 0
-	u-boot.bin		    --> address 0x80000
+	u-boot.bin		    --> address 0x140000
 
 
 Setup Android on EMMC
 ===========================
 1.Start your favorite terminal emulator with the appropriate 
-	COM port set to 115200,8N1. Power on hte board and wait for TavorPV2>> prompt to appear
+	COM port set to 115200,8N1. Power on hte board and wait for SAARC>> prompt to appear
 
 3.Enter the following command to upload the system.img into the RAM and burn into flash:
-For NAND flash, issue the following commands:
-Use tftp to down load images:
-
 For EMMC, issue the following commands:
-TavorPV2>>tftp zImage
-TavorPV2>>mmc write 0x4908 0x17f8
+SAARC>>tftp zImage
+SAARC>>mmc write 0x5000 0x2000
 
-TavorPV2>>tftp system_ext3.img
-TavorPV2>>mmc write 0x6100 0x2d000
+SAARC>>tftp system_ext3.img
+SAARC>>mmc write 0x7200 0x38400
 
-TavorPV2>>tftp userdata_ext3.img
-TavorPV2>>mmc write 0x33100 0x2d000
+SAARC>>tftp userdata_ext3.img
+SAARC>>mmc write 0x3f600 0x21c00
 
-TavorPV2>>tftp ramdisk.img
-TavorPV2>>mmc write 0x600 0x200
+SAARC>>tftp ramdisk.img
+SAARC>>mmc write 0x7000 0x200
 
-TavorPV2>>tftp mbr
-TavorPV2>>mmc write 0x4900 0x1
+SAARC>>tftp mbr
+SAARC>>mmc write 0x0 0x1
 Reboot the system.
 
 
@@ -101,6 +98,6 @@ FAQ
 Update your obm/uboot image and try again.
 
 
-+How to disable GC500 completly
++How to disable GC800 completly
 ----------------------------------------------------------------
-You can do this by: rm /system/lib/egl/egl.cfg, so android UI and 3D applications will use SW version instead of GC500. To save 16MB from GC500 low level driver, you can: rm /system/lib/modules/galcore.ko
+You can do this by: rm /system/lib/egl/egl.cfg, so android UI and 3D applications will use SW version instead of GC800. To save 16MB from GC800 low level driver, you can: rm /system/lib/modules/galcore.ko
