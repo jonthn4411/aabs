@@ -18,9 +18,9 @@ endif
 #m:means mandatory
 #o:means optional
 #md5: need to generate md5 sum
-PUBLISHING_FILES+=$(ANDROID_VERSION)_RN.pdf:o
+PUBLISHING_FILES+=ReleaseNotes.doc:o
 
 publish_RN:
-	$(hide)cp $(BOARD)/$(ANDROID_VERSION)_RN.pdf $(OUTPUT_DIR)
+	$(hide)cp $(BOARD)/ReleaseNotes.doc $(OUTPUT_DIR)
 
 pkgsrc: publish_RN
