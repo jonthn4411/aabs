@@ -51,8 +51,8 @@ build_droid_root_$(1): output_dir
 	choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS)
 	echo "    copy GPT files..." && \
-		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/primary_gpt_8g $$(OUTPUT_DIR)/$(1)/ && \
-		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/secondary_gpt_8g $$(OUTPUT_DIR)/$(1)/
+		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/primary_gpt_4g $$(OUTPUT_DIR)/$(1)/ && \
+		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/secondary_gpt_4g $$(OUTPUT_DIR)/$(1)/
 	echo "    copy ramfs files..." && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img $$(OUTPUT_DIR)/$(1)/ && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk_recovery.img $$(OUTPUT_DIR)/$(1)/
@@ -72,8 +72,8 @@ build_droid_root_$(1): output_dir
 		cd $$(OUTPUT_DIR)/$(1) && tar czf symbols_lib.tgz lib && rm lib -rf
 	$(log) "  done"
 
-PUBLISHING_FILES_$(1)+=$(1)/primary_gpt_8g:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/secondary_gpt_8g:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/primary_gpt_4g:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/secondary_gpt_4g:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk_recovery.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/system.img:m:md5

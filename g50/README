@@ -40,8 +40,8 @@ Files in this folder
  If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
  
 -GPT and UBoot
- primary_gpt_8g    primary GUID partition table (for 8G eMMC)
- secondary_gpt_8g  secondary GUID partition table (for 8G eMMC)
+ primary_gpt_4g    primary GUID partition table (for 4G eMMC)
+ secondary_gpt_4g  secondary GUID partition table (for 4G eMMC)
  uboot.bin         the uboot
 
 -Kernel and Modules for Android
@@ -135,10 +135,10 @@ Boot the device with console, and then flash the images via uboot
 MMP2>> mmc sw_part 0
 
 2) GPT
-MMP2>> t primary_gpt_8g
+MMP2>> t primary_gpt_4g
 MMP2>> mmc write 0 0x22 0x1100000
-MMP2>> t secondary_gpt_8g
-MMP2>> mmc write 0xecafdf 0x21 0x1100000
+MMP2>> t secondary_gpt_4g
+MMP2>> mmc write 0x75efdd 0x21 0x1100000
 
 3) kernel
 MMP2>> t zImage.android
