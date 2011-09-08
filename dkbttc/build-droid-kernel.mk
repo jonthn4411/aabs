@@ -89,6 +89,10 @@ define define-build-droid-root
 build_droid_root_$(1): output_dir
 	$$(log) "[$(1)]building android source code with modules ..."
 	$$(hide)cd $$(SRC_DIR) && \
+	echo "" > vendor/marvell/$$(DROID_PRODUCT)/system.prop && \
+	echo "# begin adding additional information for OTA" >> vendor/marvell/$$(DROID_PRODUCT)/system.prop && \
+	echo "ro.build.manifest.branch=$$(MANIFEST_BRANCH)" >> vendor/marvell/$$(DROID_PRODUCT)/system.prop && \
+	echo "# end adding additional information for OTA" >> vendor/marvell/$$(DROID_PRODUCT)/system.prop && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	ANDROID_PREBUILT_MODULES=./kernel/out/modules make -j$$(MAKE_JOBS)
