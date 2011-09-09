@@ -30,9 +30,6 @@ include $(BOARD)/build-uboot-obm.mk
 # Include goal for build software downloader
 include $(BOARD)/build-swd.mk
 
-# Include goal for build wtpsp
-include $(BOARD)/build-wtpsp.mk
-
 #define the combined goal to include all build goals
 define define-build
 build_$(1): build_droid_kernel_$(1) build_uboot_obm_$(1) build_swd_$(1) build_wtpsp_$(1)
