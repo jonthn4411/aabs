@@ -160,7 +160,7 @@ package_droid_mmc_$(1)_$(2):
 	$$(hide)cp -r -p $$(OUTPUT_DIR)/$(2)/root $$(OUTPUT_DIR)/$(2)/root_nfs && \
 	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system $$(OUTPUT_DIR)/$(2)/root_nfs && \
 	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/data $$(OUTPUT_DIR)/$(2)/root_nfs
-	if [ "$$(TARGET_PRODUCT)" = "ttc_jil" ] || [ "$$(TARGET_PRODUCT)" = "td_jil" ] || [ "$$(TARGET_PRODUCT)" = "dkbttc" ] || [ "$$(TARGET_PRODUCT)" = "td_dkb" ]; then cp -rfp $$(SRC_DIR)/vendor/marvell/generic/ttc_telephony/drivers/output/marvell $$(OUTPUT_DIR)/$(2)/root_nfs; fi
+	$$(hide)cp -rfp $$(SRC_DIR)/vendor/marvell/generic/ttc_telephony/drivers/output/marvell $$(OUTPUT_DIR)/$(2)/root_nfs
 	$$(log) "  updating the modules..."
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar xzf modules_android_mmc.tgz && cp -r modules $$(OUTPUT_DIR)/$(2)/root_nfs/system/lib/
@@ -252,8 +252,7 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	mkdir -p $$(OUTPUT_DIR)/$(2)/modules
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules/* $$(OUTPUT_DIR)/$(2)/modules
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf modules_$$(private_os)_$$(private_storage).tgz modules/ 
-	$$(hide)if [ "$$(TARGET_PRODUCT)" = "dkbttc" ] || [ "$$(TARGET_PRODUCT)" = "dkbtd" ]; then \
-	cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/telephony/* /$$(OUTPUT_DIR)/$(2); fi
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/telephony/* /$$(OUTPUT_DIR)/$(2)
 	$(log) "  done."
 
 .PHONY: build_kernel_$$(os)_$$(storage)_$(2)
