@@ -66,7 +66,9 @@ build_droid_root_$(1): output_dir
 		mkdir -p $$(OUTPUT_DIR)/$(1)/trusted && \
 		mkdir -p $$(OUTPUT_DIR)/$(1)/nontrusted && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_droid_trusted.zip $$(OUTPUT_DIR)/$(1)/trusted/update_droid.zip && \
-		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_droid_nontrusted.zip $$(OUTPUT_DIR)/$(1)/nontrusted/update_droid.zip
+		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_droid_nontrusted.zip $$(OUTPUT_DIR)/$(1)/nontrusted/update_droid.zip && \
+		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_trusted.zip $$(OUTPUT_DIR)/$(1)/trusted/update_recovery.zip && \
+		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_nontrusted.zip $$(OUTPUT_DIR)/$(1)/nontrusted/update_recovery.zip
 	echo "    generating symbols_lib.tgz..." && \
 		cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(1)/ && \
 		cd $$(OUTPUT_DIR)/$(1) && tar czf symbols_lib.tgz lib && rm lib -rf
@@ -80,6 +82,8 @@ PUBLISHING_FILES_$(1)+=$(1)/system.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/userdata.img:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/trusted/update_droid.zip:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nontrusted/update_droid.zip:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/trusted/update_recovery.zip:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/nontrusted/update_recovery.zip:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
 endef
 
