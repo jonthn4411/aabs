@@ -139,7 +139,7 @@ Burning OBM and Uboot
             ("ntim_mmp3_v7_mp_emmc_dis_uboot.bin" for dis board, CPU frequence 200M Hz)
             ("ntim_mmp3_v7_mp_emmc_xxx_uboot_800.bin" for pop/dis board, CPU frequence 800M Hz)
             ("ntim_mmp3_v7_mp_emmc_xxx_uboot_1000.bin" for pop/dis board, CPU frequence 1G Hz)
-      e)Burn "LoopSelf.bin"                             address [0x020000]
+      e)Burn "Wtm_rel_mmp3.bin"                             address [0x020000]
      Choose partition 0x2
       f)Burn "u-boot.bin"                               address [0x000000]
      Partition 0x0 can be burn in u-boot with mmc.

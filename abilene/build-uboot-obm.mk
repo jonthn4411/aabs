@@ -17,8 +17,7 @@ OBM_DESC_6:=ntim_mmp3_v7_mp_emmc_pop_uboot_1000.txt
 OBM_NTIM_6:=ntim_mmp3_v7_mp_emmc_pop_uboot_1000.bin
 OBM_DESC_7:=ntim-mmp3-yellowstone-dis-800.txt
 OBM_NTIM_7:=ntim-mmp3-yellowstone-dis-800.bin
-LOOP_BIN:=LoopSelf.bin
-WTM_1:=wtm_400_MHz.bin
+WTM_BIN:=Wtm_rel_mmp3.bin
 
 #$1:build variant
 define define-build-uboot-obm
@@ -41,8 +40,7 @@ PUBLISHING_FILES_$(1)+=$(1)/emmc/$(OBM_NTIM_6):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc/$(OBM_DESC_6):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc/$(OBM_NTIM_7):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc/$(OBM_DESC_7):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/emmc/$(WTM_1):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/emmc/$(LOOP_BIN):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/emmc/$(WTM_BIN):m:md5
 
 
 
@@ -70,8 +68,7 @@ build_uboot_obm_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_DESC_6) $$(OUTPUT_DIR)/$(1)/emmc
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_NTIM_7) $$(OUTPUT_DIR)/$(1)/emmc
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(OBM_DESC_7) $$(OUTPUT_DIR)/$(1)/emmc
-	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(WTM_1) $$(OUTPUT_DIR)/$(1)/emmc
-	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(LOOP_BIN) $$(OUTPUT_DIR)/$(1)/emmc
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(WTM_BIN) $$(OUTPUT_DIR)/$(1)/emmc
 	$$(log) "  done."
 
 endef
