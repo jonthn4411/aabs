@@ -67,8 +67,12 @@ build_droid_root_$(1): output_dir
 		mkdir -p $$(OUTPUT_DIR)/$(1)/nontrusted && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_droid_trusted.zip $$(OUTPUT_DIR)/$(1)/trusted/update_droid.zip && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_droid_nontrusted.zip $$(OUTPUT_DIR)/$(1)/nontrusted/update_droid.zip && \
-		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_trusted.zip $$(OUTPUT_DIR)/$(1)/trusted/update_recovery.zip && \
-		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_nontrusted.zip $$(OUTPUT_DIR)/$(1)/nontrusted/update_recovery.zip
+		$$(hide)if [ -f $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_trusted.zip ]; then \
+			cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_trusted.zip $$(OUTPUT_DIR)/$(1)/trusted/update_recovery.zip; \
+		fi && \
+		$$(hide)if [ -f $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_nontrusted.zip]; then \
+			cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_nontrusted.zip $$(OUTPUT_DIR)/$(1)/nontrusted/update_recovery.zip; \
+		fi
 	echo "    generating symbols_lib.tgz..." && \
 		cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(1)/ && \
 		cd $$(OUTPUT_DIR)/$(1) && tar czf symbols_lib.tgz lib && rm lib -rf
