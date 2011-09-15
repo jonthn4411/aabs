@@ -13,7 +13,8 @@ Don't forget to enable the config of 'insteadof'
    repo init -m manifest.xml
    repo sync
 
--- 
+-- Pick one of two modes to create the release branch
+
 . traditional mode (to create a new branch for manifests.git)
    rls_branch.sh create rls_xxxx_yyyy_alpha/beta/rc? multiple
    rls_branch.sh create rls_xxxx_yyyy_alpha/beta/rc? multiple actual-run
