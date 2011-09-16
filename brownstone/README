@@ -293,6 +293,11 @@ note: number is an integer and means the sequence number of profile.
 5) Make cpufreqd run in dynamic mode
 $ cpufreqd-set dynamic
 
++How to dump the current memory status (including both pmem and normal memory)?
+----------------------------------------------
+# echo m > /proc/sysrq-trigger
+# dmesg
+
 Product Distribution
 ================================================================
 To distribute final product, we should use customer specific keys to sign APK files and update package instead of test keys.
