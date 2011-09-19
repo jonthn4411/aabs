@@ -150,6 +150,7 @@ done
 
 echo "Update manifest branch..."
 manifest_prj="${CWD}/.repo/manifests"
+cur_manifest="${CWD}/.repo/manifest.xml"
 cd ${manifest_prj}
 rmt=origin
 account=$(get_account_to_use $rmt)
@@ -163,13 +164,14 @@ fi
 if [ "$action" = "create" ]; then
 	if [ -z "$dryrun_flag" ]; then
 		if [ "$unique" = "unique" ]; then
-			cp -f default.xml $target
+			cp -f $cur_manifest $target
 		fi
 		sopt="-i"
 		act="s/revision=\"[^[:blank:]]*\"/revision=\"${rls_branch}\"/"
 		act1="s/\/>/revision=\"${rls_branch}\" \/>/"
 		act2="s/>/revision=\"${rls_branch}\" >/"
 	else
+		target=$cur_manifest
 		sopt="-n"
 		act="s/revision=\"[^[:blank:]]*\"/revision=\"${rls_branch}\"/p"
 		act1="s/\/>/revision=\"${rls_branch}\" \/>/p"
