@@ -169,11 +169,13 @@ if [ "$action" = "create" ]; then
 		sopt="-i"
 		act="s/revision=\"[^[:blank:]]*\"/revision=\"${rls_branch}\"/"
 		act1="s/\/>/revision=\"${rls_branch}\" \/>/"
+		act2="s/>/revision=\"${rls_branch}\" >/"
 	else
 		target=$cur_manifest
 		sopt="-n"
 		act="s/revision=\"[^[:blank:]]*\"/revision=\"${rls_branch}\"/p"
 		act1="s/\/>/revision=\"${rls_branch}\" \/>/p"
+		act2="s/>/revision=\"${rls_branch}\" >/p"
 	fi
 	if [ -z "$prj_list" ]; then
 		sed $sopt "/revision=\"[^[:blank:]]*\"/$act" $target
@@ -181,7 +183,8 @@ if [ "$action" = "create" ]; then
 		for prj in $prj_list
 		do
 			sed $sopt -e "/path=\"$prj\"/$act" -e ta \
-				-e "/path=\"$prj\"/$act1" -e :a $target
+				-e "/path=\"$prj\"/$act1" -e ta \
+				-e "/path=\"$prj\"/$act2" -e :a $target
 		done
 	fi
 	if [ "$unique" = "unique" ]; then
