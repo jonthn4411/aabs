@@ -5,6 +5,7 @@ export GIT_REPO=${GIT_ANDROID_ROOT}/tools/repo.git
 export GIT_LOCAL_MIRROR=/mnt/mirror/default/
 
 export OFFICIAL_PUBLISH_DIR_BASE=/autobuild/android
+export OFFICIAL_PUBLISH_DIR_BASE_BAK=/autobuild/Samsung
 export TEMP_PUBLISH_DIR_BASE=/autobuild/temp
 
 #file name that is to read the ip address of the publish server. If the file doesn't exists, ip address of the building host is used.
