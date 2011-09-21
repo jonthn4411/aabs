@@ -1,4 +1,4 @@
-export ABS_BOARD=brownstone
+export ABS_BOARD=brownstonerv5
 export ABS_DROID_BRANCH=honeycomb
 export ABS_PRODUCT_NAME=MMP2
 export ABS_BUILDHOST_DEF=buildhost2.def
