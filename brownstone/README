@@ -151,23 +151,23 @@ MMP2>> mmc write 0x8c00 0x800 0x1100000
 
 5) system
 MMP2>> t system.img
-MMP2>> mmc write 0xcc00 0x4b000 0x1100000
+MMP2>> unsparse 0x9ec00 0x80000 0x1100000
 
 6) clean up data if userdata.img is unavailable.
 
 MMP2>> mw.b 0x1100000 0 0x80000
-MMP2>> mmc write 0x57c00 0x400 0x1100000
+MMP2>> mmc write 0x11ec00 0x400 0x1100000
 
 (You can flash user partition if it's available.)
 MMP2>> t userdata.img
-MMP2>> mmc write 0x57c00 0x4b000 0x1100000
+MMP2>> unsparse 0x11ec00 0x500000 0x1100000
 
 7) recovery
 
 MMP2>> t zImage_recovery.android
-MMP2>> mmc write 0xa2c00 0x2000 0x1100000
+MMP2>> mmc write 0xcc00 0x2000 0x1100000
 MMP2>> t ramdisk_recovery.img
-MMP2>> mmc write 0xa6c00 0x800 0x1100000
+MMP2>> mmc write 0x10c00 0x800 0x1100000
 
 After done, power-off and power-on again to boot mmp2 from emmc.
 
