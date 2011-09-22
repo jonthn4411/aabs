@@ -34,7 +34,10 @@ clean_kernel:
 #$1:build variant
 define define-build-droid-kernel
 .PHONY:build_droid_kernel_$(1)
-build_droid_kernel_$(1): build_uboot_obm_$(1) build_kernel_$(1) build_droid_root_$(1) build_droid_pkgs_$(1)
+build_droid_kernel_$(1): build_kernel_$(1)
+build_droid_kernel_$(1): build_droid_root_$(1)
+build_droid_kernel_$(1): build_uboot_obm_$(1)
+build_droid_kernel_$(1): build_droid_pkgs_$(1)
 endef
 
 #$1:build variant
@@ -62,17 +65,6 @@ build_droid_root_$(1): output_dir
 		echo "    copy userdata.img ..." && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(1)/; \
 	fi
-	echo "    copy update packages..." && \
-		mkdir -p $$(OUTPUT_DIR)/$(1)/trusted && \
-		mkdir -p $$(OUTPUT_DIR)/$(1)/nontrusted && \
-		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_droid_trusted.zip $$(OUTPUT_DIR)/$(1)/trusted/update_droid.zip && \
-		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_droid_nontrusted.zip $$(OUTPUT_DIR)/$(1)/nontrusted/update_droid.zip && \
-		if [ -f $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_trusted.zip ]; then \
-			cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_trusted.zip $$(OUTPUT_DIR)/$(1)/trusted/update_recovery.zip; \
-		fi && \
-		if [ -f $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_nontrusted.zip]; then \
-			cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_nontrusted.zip $$(OUTPUT_DIR)/$(1)/nontrusted/update_recovery.zip; \
-		fi
 	echo "    generating symbols_lib.tgz..." && \
 		cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(1)/ && \
 		cd $$(OUTPUT_DIR)/$(1) && tar czf symbols_lib.tgz lib && rm lib -rf
@@ -84,17 +76,38 @@ PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk_recovery.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/system.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/userdata.img:o:md5
-PUBLISHING_FILES_$(1)+=$(1)/trusted/update_droid.zip:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/nontrusted/update_droid.zip:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/trusted/update_recovery.zip:o:md5
-PUBLISHING_FILES_$(1)+=$(1)/nontrusted/update_recovery.zip:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
 endef
 
 #$1:build variant
 define define-build-droid-pkgs
 .PHONY:build_droid_pkgs_$(1)
-build_droid_pkgs_$(1): 
+
+build_droid_update_pkgs_$(1): output_dir
+	$$(log) "[$(1)]generating update packages..."
+	$$(hide)cd $$(SRC_DIR) && \
+	. $$(TOP_DIR)/tools/apb $$(DROID_PRODUCT) && \
+	choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
+	make droidupdate
+	echo "    copy update packages..." && \
+		mkdir -p $$(OUTPUT_DIR)/$(1)/trusted && \
+		mkdir -p $$(OUTPUT_DIR)/$(1)/nontrusted && \
+		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_droid_trusted.zip $$(OUTPUT_DIR)/$(1)/trusted/update_droid.zip && \
+		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_droid_nontrusted.zip $$(OUTPUT_DIR)/$(1)/nontrusted/update_droid.zip && \
+		if [ -f $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_trusted.zip ]; then \
+			cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_trusted.zip $$(OUTPUT_DIR)/$(1)/trusted/update_recovery.zip; \
+		fi && \
+		if [ -f $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_nontrusted.zip]; then \
+			cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_nontrusted.zip $$(OUTPUT_DIR)/$(1)/nontrusted/update_recovery.zip; \
+		fi
+	$(log) "  done"
+
+build_droid_pkgs_$(1): build_droid_update_pkgs_$(1)
+
+PUBLISHING_FILES_$(1)+=$(1)/trusted/update_droid.zip:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/nontrusted/update_droid.zip:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/trusted/update_recovery.zip:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/nontrusted/update_recovery.zip:o:md5
 endef
 
 #$1: build variant
@@ -186,11 +199,11 @@ build_kernel_$(2): build_kernel_$$(os)_$$(storage)_$(2)
 endef
 
 $(foreach bv,$(BUILD_VARIANTS), \
-	$(eval $(call define-build-uboot-obm,$(bv)) ) \
 	$(eval $(call define-build-droid-kernel,$(bv)) ) \
 	$(foreach kc, $(kernel_configs), \
 		$(eval $(call define-kernel-target,$(kc),$(bv)) ) ) \
 	$(eval $(call define-build-droid-root,$(bv)) ) \
+	$(eval $(call define-build-uboot-obm,$(bv)) ) \
 	$(eval $(call define-build-droid-pkgs,$(bv)) ) \
 	$(eval $(call define-build-droid-config,$(bv),internal) ) \
 	$(eval $(call package-droid-nfs-config,$(bv),internal) ) \
