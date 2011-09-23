@@ -3,12 +3,20 @@ $(call check-variables,BUILD_VARIANTS)
 BOOT_SRC_DIR:=boot
 BOOT_OUT_DIR:=$(BOOT_SRC_DIR)/out
 UBOOT:=u-boot.bin
-OBM_NTIM_1:=ntim_mmp2_nand_bbu_ddr.bin
-OBM_NTIM_DESC_1:=ntim_mmp2_emmc_ddr3_elipda_1g.txt
-OBM_NTLOADER_1:=MMP2_NTLOADER_3_2_19.bin
-OBM_TIM_1:=tim_mmp2_nand_bbu_ddr.bin
-OBM_TIM_DESC_1:=tim_mmp2_emmc_ddr3_elipda_1g.txt
-OBM_TLOADER_1:=MMP2_TLOADER_3_2_19.bin
+
+OBM_NTIM_1:=ntim_platform_512m_ddr3.bin
+OBM_NTIM_DESC_1:=ntim_platform_512m_ddr3.txt
+OBM_NTLOADER_1:=MMP2_LINUX_ARM_BL_3_2_21_EB_JO.bin
+OBM_DNTIM_1:=dntim_platform.bin
+OBM_DNTIM_DESC_1:=dntim_platform.txt
+
+OBM_TIM_1:=tim_platform_512m_ddr3.bin
+OBM_TIM_DESC_1:=tim_platform_512m_ddr3.txt
+OBM_TLOADER_1:=MMP2_LINUX_ARM_BL_3_2_21_TRUSTED_EB_JO.bin
+OBM_DTIM_1:=dtim_platform.bin
+OBM_DTIM_DESC_1:=dtim_platform.txt
+OBM_DTIM_KEY_1:=EncryptKey_SHA256_RSA2048.txt
+
 WTM_1:=Wtm_rel_mmp2.bin
 
 #$1:build variant
@@ -21,16 +29,23 @@ PUBLISHING_FILES_$(1)+=$(1)/trusted/$(UBOOT):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/trusted/$(OBM_TLOADER_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/trusted/$(OBM_TIM_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/trusted/$(OBM_TIM_DESC_1):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/trusted/$(OBM_DTIM_1):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/trusted/$(OBM_DTIM_DESC_1):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/trusted/$(OBM_DTIM_KEY_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nontrusted/$(UBOOT):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nontrusted/$(OBM_NTLOADER_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nontrusted/$(OBM_NTIM_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/nontrusted/$(OBM_NTIM_DESC_1):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/nontrusted/$(OBM_DNTIM_1):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/nontrusted/$(OBM_DNTIM_DESC_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(WTM_1):m:md5
 
 .PHONY:build_uboot_obm_$(1)
 build_uboot_obm_$(1):
 	$$(log) "starting($(1)) to build uboot and obm"
-	$$(hide)cd $$(SRC_DIR)/$$(BOOT_SRC_DIR) && \
+	$$(hide). $(TOP_DIR)/tools/apb $(DROID_PRODUCT) && \
+	choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
+	cd $$(SRC_DIR)/$$(BOOT_SRC_DIR) && \
 	make all
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)/trusted
@@ -42,10 +57,15 @@ build_uboot_obm_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/trusted/$$(OBM_TLOADER_1) $$(OUTPUT_DIR)/$(1)/trusted
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/trusted/$$(OBM_TIM_1) $$(OUTPUT_DIR)/$(1)/trusted
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/trusted/$$(OBM_TIM_DESC_1) $$(OUTPUT_DIR)/$(1)/trusted
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/trusted/$$(OBM_DTIM_1) $$(OUTPUT_DIR)/$(1)/trusted
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/trusted/$$(OBM_DTIM_DESC_1) $$(OUTPUT_DIR)/$(1)/trusted
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/trusted/$$(OBM_DTIM_KEY_1) $$(OUTPUT_DIR)/$(1)/trusted
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/nontrusted/$$(UBOOT) $$(OUTPUT_DIR)/$(1)/nontrusted
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/nontrusted/$$(OBM_NTLOADER_1) $$(OUTPUT_DIR)/$(1)/nontrusted
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/nontrusted/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)/nontrusted
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/nontrusted/$$(OBM_NTIM_DESC_1) $$(OUTPUT_DIR)/$(1)/nontrusted
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/nontrusted/$$(OBM_DNTIM_1) $$(OUTPUT_DIR)/$(1)/nontrusted
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/nontrusted/$$(OBM_DNTIM_DESC_1) $$(OUTPUT_DIR)/$(1)/nontrusted
 	$$(log) "  done."
 endef
 
