@@ -43,9 +43,10 @@ PUBLISHING_FILES_$(1)+=$(1)/$(WTM_1):m:md5
 .PHONY:build_uboot_obm_$(1)
 build_uboot_obm_$(1):
 	$$(log) "starting($(1)) to build uboot and obm"
-	$$(hide). $(TOP_DIR)/tools/apb $(DROID_PRODUCT) && \
-	choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	cd $$(SRC_DIR)/$$(BOOT_SRC_DIR) && \
+	$$(hide)cd $$(SRC_DIR) && \
+	. $$(TOP_DIR)/tools/apb $$(DROID_PRODUCT) && \
+	choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
+	cd $$(BOOT_SRC_DIR) && \
 	make all
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)/trusted
