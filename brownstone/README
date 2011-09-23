@@ -73,16 +73,29 @@ How to get source code from git server
 
   <branch-name> : for example brownstone-froyo
 
-How to build kernel and android image
+How to build kernel and android image (Please follow the sequence: kernel/modules -> android -> uboot/obm -> update packages)
 =====================================
-  1. build kernel and modules
+  1. setup build environment
+     $ cd <android_working_dir>
+     $ . build/envsetup.sh
+     $ chooseproduct brownstone
+     $ choosevariant <build variant> //Select "user" as the build variant if you are a normal user. Select "userdebug" or "eng" to specify what you want to do.
+     $ export ANDROID_PREBUILT_MODULES=kernel/out/modules/
+
+  2. build kernel and modules
      $ cd <android_working_dir>
      $ cd kernel
      $ make all
 
   zImage is at kernel/out, and the modules place at kernel/out/modules
 
-  2. build uboot and obm
+  3. build android
+     $ cd <android_working_dir>
+     $ make -j4
+
+   The android GPTs, ramdisk.img, system.img and userdata.img are at out/target/product/brownstone
+
+  4. build uboot and obm
      $ cd <android_working_dir>
      $ cd boot
      $ make all
@@ -90,14 +103,11 @@ How to build kernel and android image
   The uboot bin and obm are at boot/out/trusted and boot/out/nontrusted,
 while the unified WTM is at boot/out.
 
-  3. build android
+  5. build update packages
      $ cd <android_working_dir>
-     $ . build/envsetup.sh
-     $ chooseproduct brownstone
-     $ export ANDROID_PREBUILT_MODULES=kernel/out/modules/
-     $ make
+     $ make droidupdate
 
-  The android GPTs, ramdisk.img, system.img and update_droid.zip are at out/target/product/brownstone
+  The update_droid.zip and update_recovery.zip are at out/target/product/brownstone
 
 Burning OBM and UBoot
 =====================
@@ -110,17 +120,22 @@ Burning OBM and UBoot
    4)Choose flash: EMMC flash and click Detect button to detect emmc partition
    5)Choose partition 0x1
 	Trusted boot
-      a)Burn "tim_mmp2_nand_bbu_ddr.bin"	address [0x0, 0x4000)
+      a)Burn "tim_platform_512m_ddr3.bin"	address [0x0, 0x4000)
       b)Burn "Wtm_rel_mmp2.bin"			address [0x4000, 0x30000)
-      c)Burn "MMP2_TLOADER_3_2_19.bin"		address [0x30000, 0x60000)
+      c)Burn "MMP2_LINUX_ARM_BL_3_2_21_TRUSTED_EB_JO.bin"		address [0x30000, 0x60000)
       d)Burn "u-boot.bin"			address [0x60000, 0xB0000)
       e)Burn "u-boot.bin" as recovery u-boot	address [0xB0000, 0x100000)
 	Non-Trusted boot
-      a)Burn "ntim_mmp2_nand_bbu_ddr.bin"	address [0x0, 0x4000)
+      a)Burn "ntim_platform_512m_ddr3.bin"	address [0x0, 0x4000)
       b)Burn "Wtm_rel_mmp2.bin"			address [0x4000, 0x30000)
-      c)Burn "MMP2_NTLOADER_3_2_19.bin"		address [0x30000, 0x60000)
+      c)Burn "MMP2_LINUX_ARM_BL_3_2_21_EB_JO.bin"		address [0x30000, 0x60000)
       d)Burn "u-boot.bin"			address [0x60000, 0xB0000)
       e)Burn "u-boot.bin" as recovery u-boot	address [0xB0000, 0x100000)
+   6)Choose partition 0x1
+    Trusted boot
+      a)Burn "dtim_platform.bin"	address [0x780000, 0x800000)
+    Non-Trusted boot
+      a)Burn "dntim_platform.bin"	address [0x780000, 0x800000)
 
 How to Disable GC860
 =====================
