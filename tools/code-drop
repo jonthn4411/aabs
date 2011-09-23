@@ -25,7 +25,12 @@ print_usage() {
     echo "    [RLS_SRC, \$(RLS_NAME)_SRC]"
     echo "    [RLS_MODE, 2], 0 -- Local, 1 -- Inner, 2 -- Outer+Inner"
     echo "    [RLS_PATH, \$(RLS_DATE)_\$(RLS_KIT)_\$(RLS_REV)]"
+    echo "    [RLS_RESTRICTED, 0]"
 }
+
+if [ -z $RLS_RESTRICTED ]; then
+    RLS_RESTRICTED=0
+fi
 
 if [ -z $RLS_DATE ]; then
     RLS_DATE=$(date +%F)
@@ -93,12 +98,24 @@ if [ -z $SMB_BDIR ]; then
     SMB_BDIR="$HOME/.gvfs/autobuild on 10.38.164.28/android/$1"
 fi
 
+if [ -z $APSE_RELEASE ]; then
+    APSE_RELEASE="$HOME/.gvfs/apse_release on sh-fs03"
+fi
+
 if [ -z $SMB_IDIR ]; then
-    SMB_IDIR="$HOME/.gvfs/apse_release on sh-fs03/Internal_Releases/$RLS_INNER"
+    if [ $RLS_RESTRICTED -eq 0 ]; then
+        SMB_IDIR="$APSE_RELEASE/Internal_Releases/$RLS_INNER"
+    else
+        SMB_IDIR="$APSE_RELEASE/Restricted_Releases/Internal/$RLS_OUTER"
+    fi
 fi
 
 if [ -z $SMB_ODIR ]; then
-    SMB_ODIR="$HOME/.gvfs/apse_release on sh-fs03/External_Release/$RLS_OUTER"
+    if [ $RLS_RESTRICTED -eq 0 ]; then
+        SMB_ODIR="$APSE_RELEASE/External_Release/$RLS_OUTER"
+    else
+        SMB_ODIR="$APSE_RELEASE/Restricted_Releases/External/$RLS_OUTER"
+    fi
 fi
 
 if [ ! -e bdir ]; then
