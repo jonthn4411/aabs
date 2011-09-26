@@ -109,7 +109,7 @@ while the unified WTM is at boot/out.
 
   The update_droid.zip and update_recovery.zip are at out/target/product/brownstone
 
-Burning OBM and UBoot
+Burning OBM and UBoot (we must burn kernel and ramdisk by XDB in trusted mode)
 =====================
 1. Install XDB 5.1.105 from: \\sh1sbak009\debugger_public\Engineering_Release\XDB_5_1
 2. Get a trusted or non-trusted set of boot binaries (uboot & obm) from autobuild server
@@ -134,8 +134,13 @@ Burning OBM and UBoot
    6)Choose partition 0x0
     Trusted boot
       a)Burn "dtim_platform.bin"	address [0x780000, 0x800000)
+      b)Burn "zImage.android"		address [0x980000, 0x1180000)
+      c)Burn "ramdisk.img"			address [0x1180000, 0x1980000)
+      d)Burn "zImage_recovery.android"	address [0x1980000, 0x2180000)
+      e)Burn "ramdisk_recovery.img"		address [0x2180000, 0x2980000)
     Non-Trusted boot
       a)Burn "dntim_platform.bin"	address [0x780000, 0x800000)
+      b)"zImage.android", "ramdisk.img", "zImage_recovery.android" and "ramdisk_recovery.img" could be burned by XDB or uboot.
 
 How to Disable GC860
 =====================
