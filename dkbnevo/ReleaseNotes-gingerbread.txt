@@ -1,13 +1,13 @@
 ==============================================================================
-Marvell PXA970 Android Platform Release for Linux
+Marvell PXA978 Android Platform Release for Linux
 Platform ReleaseNotes
-Last update: 06/28/2011
+Last update: 09/26/2011
 ==============================================================================
 
 1. Platform features
 1.1 Supported Components
 - Rebase to google android gingerbread branch
-- Do key pad mapping, touch for PXA970 DKB platform
+- Do key pad mapping, touch for PXA978 DKB platform
 - Wi-Fi/BT support
 - Light sensor and g-sensor and compass sensor and proximity sensor and accleration sensor support
 - Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC800
@@ -162,8 +162,8 @@ Uboot
 ===========================================================================================
 1.6 Release package contents
 - ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
-- PXA970_Android_Platform_<VERSION>_prebuilt_bin.zip	:Pre-built bin binaries
-- PXA970_Android_Platform_<VERSION>_src.tgz        	:Source code tarball (patch mode)
+- PXA978_Android_Platform_<VERSION>_prebuilt_bin.zip	:Pre-built bin binaries
+- PXA978_Android_Platform_<VERSION>_src.tgz        	:Source code tarball (patch mode)
   - setup_android.sh                                 	:Script help to setup Android code base from the xxx_src.tgz and xxx_patches.tgz
   - android_patches.tgz                              	:Marvell patches to Android Projects
   - android_src.tgz                                  	:Source code for projects added by Marvell
@@ -180,7 +180,7 @@ Uboot
 2.1 Hardware requirements
 - EMMC
 - DDR SDRAM 512 MB
-- PXA970 DKB Board
+- PXA978 DKB Board
 
 2.2 Software requirements
 - Host PC with operating system Ubuntu 10.04 or above
@@ -188,12 +188,12 @@ Uboot
 3. Usage of this package 
 3.1 Install this package
 3.1.1 Download the Marvell packages:
-----PXA970_Android_Platform_<VERSION>_src.tgz  
-----PXA970_Android_Platform_<VERSION>_prebuilt_bin
+----PXA978_Android_Platform_<VERSION>_src.tgz  
+----PXA978_Android_Platform_<VERSION>_prebuilt_bin
 3.1.2 Type the following command to install:
  $ mkdir [installed_directory]
  $ cd [installed_directory]
- $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA970_Android_Platform_<VERSION>_src.tgz
+ $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA978_Android_Platform_<VERSION>_src.tgz
 
 3.2 Setup Android directory
  $ mkdir [android_dir]
@@ -247,16 +247,17 @@ After a short while, the binary will be generated under [android]/boot/out/TAVOR
 3.4.1 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.1
 Notes:
 Configuration:CPU-JTAG->Target Connection: (usb:).
-JTAG->SOC->PXA9xx->PXA970.xdb->Burn Flash->
-    Board:PXA970
-    Flash:EMMC
+JTAG->SOC->PXA9xx->PXA978.xdb->Burn Flash->
+    Board:PXA978
+    Flash:NAND Flash
     Burn as binary File
     Erase affected blocks
     Enable new BBM
 Choose partition 1
-	TAVOR_LINUX_TOBM.bin	--> address 0x00000
-Choose partition 0
-	u-boot.bin		--> address 0x140000
+	TAVOR_LINUX_TOBM.bin	    --> address 0x00000
+	u-boot.bin		    --> address 0x140000
+	Arbel_DKB_SKWS.bin          --> address 0x500000
+        TTD_M06_AI_A1_Flash.bin     --> address 0xC00000
 
 3.4.2 Start your favorite terminal emulator with the appropriate 
       COM port set to 115200,8N1. Power on the board and wait for NEVODKB>> prompt to appear
@@ -293,7 +294,12 @@ For EMMC, issue the following commands:
 NEVODKB>>tftp ramdisk.img
 NEVODKB>>mmc write 0x7000 0x200
 
-3.4.4.5 Enter the following command to upload the mbr into the RAM and burn into flash:
+3.4.4.5 Enter the following command to upload the pxafs_ext4 image into the RAM and burn into flash:
+For EMMC, issue the following commands:
+NEVODKB>>tftp pxafs_ext4.img
+NEVODKB>>mmc write 0x61200 0x3000
+
+3.4.4.6 Enter the following command to upload the mbr into the RAM and burn into flash:
 For EMMC, issue the following commands:
 NEVODKB>>tftp mbr
 NEVODKB>>mmc write 0x0 0x1

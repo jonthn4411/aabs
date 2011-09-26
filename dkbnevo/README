@@ -23,6 +23,8 @@ Files in this folder
 -OBM and UBoot
     TAVOR_LINUX_NTOBM.bin		uboot for dkbnevo
     u-boot.bin				NTLoader image
+    Arbel_DKB_SKWS.bin                  CP Arbel image
+    TTD_M06_AI_A1_Flash.bin             CP MSA image
  
 -Kernel and Modules for Android [Currently for dkbnevo, zImage.android.slc and zImage.android.mmc is same]
   zImage.android	Kernel image to boot android from EMMC. A root file system is built in. 
@@ -31,23 +33,24 @@ Files in this folder
   system.img_ext3	    Android system image for  file system.
   userdata.img_ext3	    Android userdata image for  file system.
   ramdisk.img		    Android root image for file system.
+  pxafs_ext4.img            AP telephony image.
 
 dkbnevo Flashing images and boot system
 
 Install OBM and Uboot
 ============================
-Burn following binaries to EMMC using Marvell eXtreme Debugger 5.0(XDB_5_0_Beta2-20100324)
+Burn following binaries to EMMC using Marvell eXtreme Debugger 5.2(XDB_5_2_Beta2.1)
 Configuration:CPU-JTAG->Target Connection: (usb:).
-JTAG->SOC->PXA9xx->PXA970.xdb->Burn Flash->
-    Board:pxa970
-    Flash:EMMC
+JTAG->SOC->PXA9xx->PXA978.xdb->Burn Flash->
+    Board:pxa978
+    Flash:NAND Flash
     Burn as binary File
     Erase affected blocks
-    Enable new BBM
-Choose partition 0 & 1
 	TAVOR_LINUX_TOBM.bin	    --> address 0x00000
-Choose partition 0
 	u-boot.bin		    --> address 0x140000
+	Arbel_DKB_SKWS.bin          --> address 0x500000
+        TTD_M06_AI_A1_Flash.bin     --> address 0xC00000
+
 
 
 Setup Android on EMMC
@@ -69,6 +72,9 @@ NEVODKB>>mmc write 0x3f600 0x21c00
 NEVODKB>>tftp ramdisk.img
 NEVODKB>>mmc write 0x7000 0x200
 
+NEVODKB>>tftp pxafs_ext4.img
+NEVODKB>>mmc write 0x61200 0x3000
+
 NEVODKB>>tftp mbr
 NEVODKB>>mmc write 0x0 0x1
 Reboot the system.
@@ -79,6 +85,8 @@ Note 1: All the following images should copy to the host tftp share directory:
 	system.img_ext3
 	userdata.img_ext3
 	ramdisk.img
+        pxafs_ext4.img
+        mbr
 Note 2: You need to first input "sw" to switch to usb eth, and then, input "tftp zImage", then connect the USB micro-line between the host PC and the dkbnevo board
 Note 3: You need to configure the host network interface:
 	# ifconfig usb0 192.168.1.100 
