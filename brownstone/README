@@ -326,6 +326,13 @@ $ development/tools/make_key shared '/C=US/ST=California/L=Santa Clara/O=Android
 $ development/tools/make_key media '/C=US/ST=California/L=Santa Clara/O=Android/OU=Android/CN=Android/emailAddress=android@marvell.com'
 Collect password to a single file "pw" and move all keys and password file to "vendor/marvell/brownstone/security
 
+"pw" file example:
+# Enter key passwords between the [[[ ]]] brackets.
+[[[  media-marvell  ]]] vendor/marvell/brownstone/security/media
+[[[  platform-marvell  ]]] vendor/marvell/brownstone/security/platform
+[[[  releasekey-marvell  ]]] vendor/marvell/brownstone/security/releasekey
+[[[  shared-marvell  ]]] vendor/marvell/brownstone/security/shared
+
 2) sign all APK files in the target zipfile with customer's keys and produce a new target zipfile
 $ export ANDROID_PW_FILE=vendor/marvell/brownstone/security/pw
 $ target_files=`find out/target/product/brownstone/obj/PACKAGING/target_files_intermediates/ -type f -name "*-target_files-*.*.zip"`
@@ -336,7 +343,7 @@ $ build/tools/releasetools/sign_target_files_apks -o -d vendor/marvell/brownston
 3) generate system image containing new signed APK files
 $ mkdir $signed_folder
 $ unzip -o -q $signed_files -d $signed_folder
-$ system/extras/ext4_utils/mkuserimg.sh  $signed_folder/SYSTEM $signed_folder/system.img ext4 system 157286400
+$ system/extras/ext4_utils/mkuserimg.sh -s $signed_folder/SYSTEM $signed_folder/system.img ext4 system 268435456
 
 4) generate recovery ramdisk containing new public key
 $ out/host/linux-x86/bin/mkbootfs $signed_folder/RECOVERY/RAMDISK | out/host/linux-x86/bin/minigzip > $signed_folder/ramdisk_recovery.img
