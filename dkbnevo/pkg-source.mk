@@ -67,6 +67,7 @@ pkgsrc: output_dir get_source_for_pkg
 
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
 	$(hide)cp $(BOARD)/ReleaseNotes-$(ANDROID_VERSION).txt $(OUTPUT_DIR)/ReleaseNotes.txt
+	$(hide)cp $(BOARD)/TAVOR_LINUX_TOBM.bin $(OUTPUT_DIR)/droid-gcc
 	$(log) "  done."
 
 
@@ -81,7 +82,8 @@ PUBLISHING_FILES+=kernel_src.tgz:m:md5
 PUBLISHING_FILES+=kernel_patches.tgz:m:md5 
 PUBLISHING_FILES+=uboot_src.tgz:m:md5 
 PUBLISHING_FILES+=uboot_patches.tgz:m:md5 
-PUBLISHING_FILES+=obm_src.tgz:m:md5 
+PUBLISHING_FILES+=droid-gcc/TAVOR_LINUX_TOBM.bin:m:md5 
+#PUBLISHING_FILES+=obm_src.tgz:m:md5 
 PUBLISHING_FILES+=marvell_manifest.xml:m
 PUBLISHING_FILES+=setup_android.sh:m
 PUBLISHING_FILES+=ReleaseNotes.txt:m

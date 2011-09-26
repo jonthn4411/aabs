@@ -9,7 +9,7 @@ define define-build-swd
 #m:means mandatory
 #o:means optional
 #md5: need to generate md5 sum
-PUBLISHING_FILES_$(1)+=$(1)/Software_Downloader.zip:m:md5
+#PUBLISHING_FILES_$(1)+=$(1)/Software_Downloader.zip:m:md5
 
 .PHONY:build_swd_$(1)
 build_swd_$(1):
