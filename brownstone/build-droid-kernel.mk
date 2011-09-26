@@ -97,7 +97,7 @@ build_droid_update_pkgs_$(1): output_dir
 		if [ -f $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_trusted.zip ]; then \
 			cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_trusted.zip $$(OUTPUT_DIR)/$(1)/trusted/update_recovery.zip; \
 		fi && \
-		if [ -f $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_nontrusted.zip]; then \
+		if [ -f $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_nontrusted.zip ]; then \
 			cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_nontrusted.zip $$(OUTPUT_DIR)/$(1)/nontrusted/update_recovery.zip; \
 		fi
 	$(log) "  done"
