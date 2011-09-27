@@ -15,7 +15,7 @@ OBM_TIM_DESC_1:=tim_platform_512m_ddr3.txt
 OBM_TLOADER_1:=MMP2_LINUX_ARM_BL_3_2_21_TRUSTED_EB_JO.bin
 OBM_DTIM_1:=dtim_platform.bin
 OBM_DTIM_DESC_1:=dtim_platform.txt
-OBM_DTIM_KEY_1:=EncryptKey_SHA256_RSA2048.txt
+OBM_DTIM_KEY_1:=EncryptKey.txt
 
 WTM_1:=Wtm_rel_mmp2.bin
 
