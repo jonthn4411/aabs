@@ -9,14 +9,15 @@ Last update: 09/26/2011
 - Rebase to google android gingerbread branch
 - Do key pad mapping, touch for PXA978 DKB platform
 - Wi-Fi/BT support
-- Light sensor and g-sensor and compass sensor and proximity sensor and accleration sensor support
+- FM support
+- G-sensor, Compass sensor, Gyroscope sensor and Orientation support
 - Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC800
 - Integrate stagefright and g-streamer video playback for media player
 - Organ support
 
 1.2 BSP features
 Uboot
-- Boot from EMMC
+- Boot from NAND 
 - Bownload from USB ethernet
 - Burn image into EMMC
 - Flash Bad block management
@@ -65,7 +66,7 @@ Uboot
     - Support to access USB mass storage device
     - Support hot plug-in and remove
     - Support USB hub
-  - OTG (disabled by default)
+  - OTG
     - Support dual role device
     - HNP and SRP are NOT support
   - Client
@@ -87,9 +88,9 @@ Uboot
   - FM Radio
 - Sensor
   - Support G-sensor
-  - Support proximity sensor
-  - Support light sensor
   - Support Compass sensor
+  - Support Gyroscope sensor
+  - Support Orientation sensor
 - RTC
   - Samremo RTC
   - Tavor RTC
@@ -98,6 +99,10 @@ Uboot
   - Support process freeze
 
 1.3 Telephony
+  - Voice call MO/MT
+  - SMS MO/MT
+  - DIAG
+ (Notes: Please use RDA (legacy RF) board to do the test.) 
 
 1.4 Graphics features
   - Fully support OpenGL ES 1.1
@@ -122,21 +127,6 @@ Uboot
   - MPEG-4 SP/ASP decoder
   - MPEG-2 MP decoder
   - WMV/VC-1 SP/MP/AP decoder
-  - H.264 BP encoder
-  - H.263 P0 encoder
-  - MPEG-4 SP encoder
-- IPP WMMX-optimized video codecs	
-  - H.264 BP/Partial MP&HP decoder
-  - H.263 P0/P3 decoder
-  - MPEG-4 SP/ASP decoder
-  - MPEG-2 MP decoder
-  - WMV/VC-1 SP/MP decoder
-  - H.264 BP encoder
-  - H.263 P0/P3 encoder
-  - MPEG-4 SP encoder
-- IPP WMMX-optimized image codecs		
-  - JPEG baseline/progressive decoder
-  - JPEG baseline/progressive encoder
 - IPP WMMX-optimized audio and speech codecs
   - MP3 decoder
   - AAC decoder
@@ -149,16 +139,16 @@ Uboot
 - IPP supported multimedia container format
   - 3GP/3GPP (Stagefright Path)
   - MP4      (Stagefright Path)
-  - MKV      (Stagefright Path)
   - MP3      (Stagefright Path)
-  - AMR      (Stagefright Path)
-  - AAC      (GStreamer Path)
+  - AAC      (Stagefright Path)
   - AVI      (GStreamer Path)
   - ASF      (GStreamer Path)
   - WMV      (GStreamer Path)
   - WMA      (GStreamer Path)
+  - MOV      (GStreamer Path)
+  - MPG      (GStreamer Path)
 
-<VERSION>=master
+<VERSION>=nt1
 ===========================================================================================
 1.6 Release package contents
 - ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
@@ -172,9 +162,7 @@ Uboot
   - kernel_src.tgz                                   	:Kernel base source code
   - uboot_patches.tgz                                	:Marvell patches to uboot_src.tgz
   - uboot_src.tgz                                    	:Uboot base source code
-  - obm_src.tgz                                      	:OBM source code
 - manifest.xml						:Marvell manifest
-- Software_Downloader.zip				:Software downloader for Microsfot Windows
 
 2. System Requirements
 2.1 Hardware requirements
@@ -232,29 +220,38 @@ Note: If there is no modules, Please export ANDROID_PREBUILT_MODULES=no_kernel_m
 Note: The binaries will be generated under src/android/out/target/product/dkbnevo/.
 Note: Currently we use Android default toolchain to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for google arm-eabi toolchain. Please donot pecify other android toolchain version. 
 
-3.3.4 Building uboot
+3.3.4 Building telephony
+$ cd [android_dir]/kernel
+$ make telephony
+Note: Please make android before making telephony
+After a short while, the binary will be generated under [android]/kernel/out/telephony/
+
+3.3.5 Building uboot
  $ cd [android_dir]/boot
  $ make uboot
 After a short while, the binary will be generated under [android]/boot/out/u-boot.bin
 Notes: kernel should be built before uboot as uboot will get cmd info from kernel config
 
-3.3.5 Building OBM
- $ cd [android_dir]/boot
- $ make all
-After a short while, the binary will be generated under [android]/boot/out/TAVOR_LINUX_TOBM.bin
+3.3.6 Building OBM
+  no OBM source code is provided in this release. Please use OBM binary directly.
 
-3.4 Burn images and boot system(MG1)
-3.4.1 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.1
+3.4 Burn images and boot system(Nevo)
+3.4.1 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.2((XDB_5_2_Beta2.1))
 Notes:
 Configuration:CPU-JTAG->Target Connection: (usb:).
 JTAG->SOC->PXA9xx->PXA978.xdb->Burn Flash->
-    Board:PXA978
-    Flash:NAND Flash
-    Burn as binary File
-    Erase affected blocks
-    Enable new BBM
-Choose partition 1
-	TAVOR_LINUX_TOBM.bin	    --> address 0x00000
+    "Burning"
+        - Board:PXA978
+        - Flash:NAND Flash
+        - Burn as binary File
+        - Erase affected blocks
+    "Extended Flash Functionality"
+        -EditNand->Audodetect:changes the detected flash's ECCAlgorithm to "BCH"->exit and save
+        -Select NAND Function:Reset runtime bad block -> Execute
+    "Erasing/Unblocking"
+        - Block Selection: all blocks -> Erase
+    "Burning"
+	TAVOR_LINUX_TOBM.bin	    --> address 0x0
 	u-boot.bin		    --> address 0x140000
 	Arbel_DKB_SKWS.bin          --> address 0x500000
         TTD_M06_AI_A1_Flash.bin     --> address 0xC00000
