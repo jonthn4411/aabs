@@ -94,6 +94,7 @@ while the unified WTM is at boot/out.
      $ cd <android_working_dir>
      $ . build/envsetup.sh
      $ chooseproduct brownstone
+     $ export ANDROID_PREBUILT_MODULES=kernel/out/modules/
      $ make
 
   The android GPTs, ramdisk.img, system.img and update_droid.zip are at out/target/product/brownstone
