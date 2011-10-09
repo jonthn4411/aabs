@@ -10,7 +10,8 @@ OBM_NTIM_1:=TAVOR_LINUX_TOBM.bin
 #OBM_NTIM_1:=TAVOR_SAAR_NTOBM_EMMC_MODE1.bin.rnd
 #OBM_NTIM_2:=ntim_a0_avengers-a_1.6F_256mb_400mhz_mode3_pm_spi.bin
 
-MBR_BIN:=mbr
+PRIMARY_GPT_BIN:=primary_gpt
+SECONDARY_GPT_BIN:=secondary_gpt
 
 
 #$1:build variant
@@ -22,7 +23,8 @@ define define-build-uboot-obm
 PUBLISHING_FILES_$(1)+=$(1)/u-boot.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_1):m:md5
 #PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTLOADER_1):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/$(MBR_BIN):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(PRIMARY_GPT_BIN):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(SECONDARY_GPT_BIN):m:md5
 
 
 .PHONY:build_uboot_obm_$(1)
@@ -37,7 +39,8 @@ build_uboot_obm_$(1):
 	#$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTLOADER_1) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
 	#$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(MBR_BIN) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(PRIMARY_GPT_BIN) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(SECONDARY_GPT_BIN) $$(OUTPUT_DIR)/$(1)
 	$$(log) "  done."
 
 endef
