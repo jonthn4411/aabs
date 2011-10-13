@@ -143,7 +143,7 @@ fi
 if [ ! -d source-by-patch ]; then
   echo "copying source-by-patch ..."
   mkdir -p source-by-patch
-  cp b/android_patches.tgz b/android_src.tgz b/kernel_patches.tgz b/kernel_src.tgz b/obm_src.tgz b/uboot_src.tgz b/uboot_patches.tgz b/marvell_manifest.xml b/setup_android.sh source-by-patch/
+  cp b/android_patches.tgz b/android_src.tgz b/kernel_patches.tgz b/kernel_src.tgz b/obm_src.tgz b/uboot_src.tgz b/uboot_patches.tgz b/marvell_manifest.xml b/setup_android.sh b/build.sh source-by-patch/
 fi
 
 if [ ! -d $RLS_REV ]; then

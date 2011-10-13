@@ -45,6 +45,7 @@ PUBLISHING_FILES+=obm_src.tgz:m:md5
 PUBLISHING_FILES+=marvell_manifest.xml:m
 PUBLISHING_FILES+=setup_android.sh:m
 PUBLISHING_FILES+=delta_patches.tgz:o
+PUBLISHING_FILES+=build.sh:o
 
 .PHONY:pkgsrc
 
@@ -87,6 +88,9 @@ delta_patches: output_dir
 publish_setup_sh: output_dir
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
 
+publish_build_sh: output_dir
+        $(hide)cp $(TOP_DIR)/tools/build.sh $(OUTPUT_DIR)
+
 pkgsrc: save_prjlist
 pkgsrc: remove_internal_src
 pkgsrc: pkg_all_src
@@ -95,4 +99,5 @@ pkgsrc: pkg_boot_src
 pkgsrc: pkg_droid_src
 pkgsrc: delta_patches
 pkgsrc: publish_setup_sh
+pkgsrc: publish_build_sh
 	$(log) "  done."
