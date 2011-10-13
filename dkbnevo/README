@@ -21,23 +21,64 @@ Files in this folder
  If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
  
 -OBM and UBoot
-    TAVOR_LINUX_NTOBM.bin		uboot for dkbnevo
     u-boot.bin				NTLoader image
     Arbel_DKB_SKWS.bin                  CP Arbel image
     TTD_M06_AI_A1_Flash.bin             CP MSA image
+    ReliableData.bin                    IMEI
  
 -Kernel and Modules for Android [Currently for dkbnevo, zImage.android.slc and zImage.android.mmc is same]
-  zImage.android	Kernel image to boot android from EMMC. A root file system is built in. 
+  zImage.android.xxx                        Kernel image to boot android from EMMC. A root file system is built in. 
 
 -Android File Systems
-  system.img_ext3	    Android system image for  file system.
-  userdata.img_ext3	    Android userdata image for  file system.
+  primary_gpt               Primary GPT file
+  secondary_gpt             Secondary GPT file
+  system_ext3.img	    Android system image for  file system.
+  userdata_ext3.img	    Android userdata image for  file system.
   ramdisk.img		    Android root image for file system.
   pxafs_ext4.img            AP telephony image.
 
+-Software_Downloader.zip    :Software downloader
+
 dkbnevo Flashing images and boot system
 
-Install OBM and Uboot
+Burn binaries by Software Downloader
+============================
+1) put the following binary files in <softwareDownloader>/NEVO
+        u-boot.bin
+        Arbel_DKB_SKWS.bin
+        TTD_M06_AI_A1_Flash.bin
+        ReliableData.bin
+        primary_gpt
+        secondary_gpt
+        zImage
+        system_ext3.img
+        userdata_ext3.img
+        ramdisk.img
+        pxafs_ext4.img
+
+2) open software download, and then open the configure file <softwareDownloader>/NEVO/Nevo_trusted_NAND.blf:
+        Press "start" button (the button with the green bulb icon), wait for the icon become red color.
+
+        ntim_nand.bin                                           --> flash address 0x00000 (this binary is automatically created by SoftwareDownloader, when press "start" button)
+        NEVO_Loader_ARM_3_3_1.bin                               --> flash address 0x20000
+        u-boot.bin                                              --> flash address 0x80000
+        ReliableData.bin                                        --> flash address 0x180000
+        Arbel_DKB_SKWS.bin                                      --> flash address 0x200000
+        TTD_M06_AI_A1_Flash.bin                                 --> flash address 0x900000
+        primary_gpt                                             --> flash address 0x000000
+        secondary_gpt                                           --> flash address 0x1ce7fbe00
+        zImage                                                  --> flash address 0xa00000
+        ramdisk.img                                             --> flash address 0xe00000
+        pxafs_ext4.img                                          --> flash address 0x2800000
+        system_ext3.img                                         --> flash address 0x8900000
+        userdata_ext3.img                                       --> flash address 0x18900000
+Notes: So far, due to software download bug, you need to use XDB to burn ntim_nand.bin and NEVO_Loader_ARM_3_3_1.bin if it's your first time to burn the board. If it's not your first time to burn this board, go to step 4 now.
+
+4) Connect the USB cable between the host machine and the board.
+5) Power on the board, hold "Back" button on the board, and Press the reset key on the board, Release the "Back" button after the software download shows the downloading is in progress. When the burning is done, the software download will pop up a dialog to notify
+Notes: you will be asked to install usb driver if it's your first time to burn the board, then install the driver in <softwareDownloader>/WTPTP folder.
+
+Burn binaries by XDB
 ============================
 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.2(XDB_5_2_Beta2.1)
 Configuration:CPU-JTAG->Target Connection: (usb:).
@@ -46,13 +87,10 @@ JTAG->SOC->PXA9xx->PXA978.xdb->Burn Flash->
     Flash:NAND Flash
     Burn as binary File
     Erase affected blocks
-	TAVOR_LINUX_TOBM.bin	    --> address 0x00000
-	u-boot.bin		    --> address 0x140000
-	Arbel_DKB_SKWS.bin          --> address 0x500000
-        TTD_M06_AI_A1_Flash.bin     --> address 0xC00000
 
 
-
+Use TFTP to erase or reburn specific binaries
+=============================================
 Setup Android on EMMC
 ===========================
 1.Start your favorite terminal emulator with the appropriate 
@@ -60,23 +98,26 @@ Setup Android on EMMC
 
 3.Enter the following command to upload the system.img into the RAM and burn into flash:
 For EMMC, issue the following commands:
+NEVODKB>>tftp primary_gpt
+NEVODKB>>mmc write 0x0 0x400
+
 NEVODKB>>tftp zImage
 NEVODKB>>mmc write 0x5000 0x2000
 
 NEVODKB>>tftp system_ext3.img
-NEVODKB>>mmc write 0x7200 0x38400
+NEVODKB>>mmc write 0x44800 0x38400
 
 NEVODKB>>tftp userdata_ext3.img
-NEVODKB>>mmc write 0x3f600 0x21c00
+NEVODKB>>mmc write 0xc4800 0x21c00
 
 NEVODKB>>tftp ramdisk.img
 NEVODKB>>mmc write 0x7000 0x200
 
 NEVODKB>>tftp pxafs_ext4.img
-NEVODKB>>mmc write 0x61200 0x3000
+NEVODKB>>mmc write 0x14000 0x3000
 
-NEVODKB>>tftp mbr
-NEVODKB>>mmc write 0x0 0x1
+NEVODKB>>tftp secondary_gpt
+NEVODKB>>mmc write 0xe73fdf 0x21
 Reboot the system.
 
 
@@ -86,7 +127,9 @@ Note 1: All the following images should copy to the host tftp share directory:
 	userdata.img_ext3
 	ramdisk.img
         pxafs_ext4.img
-        mbr
+        primary_gpt
+        secondary_gpt
+
 Note 2: You need to first input "sw" to switch to usb eth, and then, input "tftp zImage", then connect the USB micro-line between the host PC and the dkbnevo board
 Note 3: You need to configure the host network interface:
 	# ifconfig usb0 192.168.1.100 
