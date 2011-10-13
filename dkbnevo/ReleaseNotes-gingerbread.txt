@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA978 Android Platform Release for Linux
 Platform ReleaseNotes
-Last update: 09/26/2011
+Last update: 10/11/2011
 ==============================================================================
 
 1. Platform features
@@ -11,7 +11,7 @@ Last update: 09/26/2011
 - Wi-Fi/BT support
 - FM support
 - G-sensor, Compass sensor, Gyroscope sensor and Orientation support
-- Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC800
+- Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC860
 - Integrate stagefright and g-streamer video playback for media player
 - Organ support
 
@@ -162,7 +162,9 @@ Uboot
   - kernel_src.tgz                                   	:Kernel base source code
   - uboot_patches.tgz                                	:Marvell patches to uboot_src.tgz
   - uboot_src.tgz                                    	:Uboot base source code
+  - obm_src.tgz                                         :OBM source code
 - manifest.xml						:Marvell manifest
+- Software_Downloader.zip                              :Software downloader for Microsfot Windows
 
 2. System Requirements
 2.1 Hardware requirements
@@ -233,10 +235,49 @@ After a short while, the binary will be generated under [android]/boot/out/u-boo
 Notes: kernel should be built before uboot as uboot will get cmd info from kernel config
 
 3.3.6 Building OBM
-  no OBM source code is provided in this release. Please use OBM binary directly.
+ $ cd [android_dir]/boot
+ $ make all
+After a short while, the binary will be generated under [android]/boot/out/Bootloader_3.3.1_NEVO_Linux/
 
 3.4 Burn images and boot system(Nevo)
-3.4.1 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.2((XDB_5_2_Beta2.1))
+3.4.1 Burn binaries by Software Downloader
+1) put the following binary files in <softwareDownloader>/NEVO
+        u-boot.bin
+        Arbel_DKB_SKWS.bin
+        TTD_M06_AI_A1_Flash.bin
+        ReliableData.bin
+        primary_gpt
+        secondary_gpt
+        zImage
+        system_ext3.img
+        userdata_ext3.img
+        ramdisk.img
+        pxafs_ext4.img
+
+2) open software downloader, and then open the configure file <softwareDownloader>/NEVO/Nevo_trusted_NAND.blf:
+
+        ntim_nand.bin                                           --> flash address 0x00000 (this binary is automatically created by SoftwareDownloader, when press "start" button)
+        NEVO_Loader_ARM_3_3_1.bin                               --> flash address 0x20000
+        u-boot.bin                                              --> flash address 0x80000
+        ReliableData.bin                                        --> flash address 0x180000
+        Arbel_DKB_SKWS.bin                                      --> flash address 0x200000
+        TTD_M06_AI_A1_Flash.bin                                 --> flash address 0x900000
+        primary_gpt                                             --> flash address 0x000000
+        secondary_gpt                                           --> flash address 0x1ce7fbe00
+        zImage                                                  --> flash address 0xa00000
+        ramdisk.img                                             --> flash address 0xe00000
+        pxafs_ext4.img                                          --> flash address 0x2800000
+        system_ext3.img                                         --> flash address 0x8900000
+        userdata_ext3.img                                       --> flash address 0x18900000
+Notes: So far, due to software download bug, you need to use XDB to burn ntim_nand.bin and NEVO_Loader_ARM_3_3_1.bin if it's your first time to burn the board. If it's not your first time to burn this board, go to step 4 now.
+
+3) Press "start" button (the button with the green bulb icon), wait for the icon become red color.
+4) Connect the USB cable between the host machine and the board.
+5) Power on the board, hold "Back" button on the board, and Press the reset key on the board, Release the "Back" button after the software download shows the downloading is in progress. When the burning is done, the software download will pop up a dialog to notify
+Notes: you will be asked to install usb driver if it's your first time to burn the board, then install the driver in <softwareDownloader>/WTPTP folder.
+Notes: Sometimes Software Downloader will stop during downloading or burning, you have to try again. If it failes again and again, you can disable system_ext3.img and userdata_ext3.img, and use tftp to burn them. 
+
+3.4.2 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.2((XDB_5_2_Beta2.1))
 Notes:
 Configuration:CPU-JTAG->Target Connection: (usb:).
 JTAG->SOC->PXA9xx->PXA978.xdb->Burn Flash->
@@ -251,17 +292,9 @@ JTAG->SOC->PXA9xx->PXA978.xdb->Burn Flash->
     "Erasing/Unblocking"
         - Block Selection: all blocks -> Erase
     "Burning"
-	TAVOR_LINUX_TOBM.bin	    --> address 0x0
-	u-boot.bin		    --> address 0x140000
-	Arbel_DKB_SKWS.bin          --> address 0x500000
-        TTD_M06_AI_A1_Flash.bin     --> address 0xC00000
 
-3.4.2 Start your favorite terminal emulator with the appropriate 
+3.4.3 Start your favorite terminal emulator with the appropriate 
       COM port set to 115200,8N1. Power on the board and wait for NEVODKB>> prompt to appear
-
-3.4.3 Software downloader
-Software downloader is a tool for the images burning. 
-Burn the OBM by JTAG at firt time. unzip the Software_Downloader.zip, and read the "readme.txt"
 
 3.4.4 Command line images burning
 3.4.4.1 Enter the following command to upload the kernel image into the RAM and burn into flash:
@@ -279,12 +312,12 @@ Note: uboot configures ethernet download as default. please use 'NEVODKB>>sw' to
 
 For EMMC, issue the following commands:
 NEVODKB>>tftp system_ext3.img
-NEVODKB>>mmc write 0x7200 0x38400
+NEVODKB>>mmc write 0x44800 0x38400
 
 3.4.4.3 Enter the following command to upload the userata image into the RAM and burn into flash:
 For EMMC, issue the following commands:
 NEVODKB>>tftp userdata_ext3.img
-NEVODKB>>mmc write 0x3f600 0x21c00
+NEVODKB>>mmc write 0xc4800 0x21c00
 
 3.4.4.4 Enter the following command to upload the ramdisk image into the RAM and burn into flash:
 For EMMC, issue the following commands:
@@ -294,16 +327,18 @@ NEVODKB>>mmc write 0x7000 0x200
 3.4.4.5 Enter the following command to upload the pxafs_ext4 image into the RAM and burn into flash:
 For EMMC, issue the following commands:
 NEVODKB>>tftp pxafs_ext4.img
-NEVODKB>>mmc write 0x61200 0x3000
+NEVODKB>>mmc write 0x14000 0x3000
 
-3.4.4.6 Enter the following command to upload the mbr into the RAM and burn into flash:
+3.4.4.6 Enter the following command to upload the GPT into the RAM and burn into flash:
 For EMMC, issue the following commands:
-NEVODKB>>tftp mbr
-NEVODKB>>mmc write 0x0 0x1
+NEVODKB>>tftp primary_gpt
+NEVODKB>>mmc write 0x0 0x400
+NEVODKB>>tftp secondary_gpt
+NEVODKB>>mmc write 0xe73fdf 0x21
 Reboot the system.
 
 4. Known issues and workarounds
-4.1 How to disable GC800?
+4.1 How to disable GC860?
 	-remove /system/lib/egl/egl.cfg from android rootfs
 
 ----------------------------
