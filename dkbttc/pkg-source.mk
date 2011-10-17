@@ -28,7 +28,7 @@ else
 ifeq ($(ANDROID_VERSION),froyo)
 	DROID_BASE:=android-2.2.2_r1
 else
-	DROID_BASE:=android-2.3.5_r1
+	DROID_BASE:=android-2.3.7_r1
 endif
 endif
 endif
