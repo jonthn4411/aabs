@@ -186,6 +186,14 @@ install_toolchain()
 	echo > /dev/null
 }
 
+install_rdroot()
+{
+	if [ -e $PKG_RDROOT ]; then
+		mkdir -p $android_working_dir/kernel/rdroot
+		cp $PKG_RDROOT $android_working_dir/kernel/rdroot
+        fi
+}
+
 #####  Function to check result
 check_result() {
 if [ $? -ne 0 ]
@@ -261,6 +269,7 @@ PKG_UBOOTPATCH=$PKG_ROOT/uboot_patches.tgz
 PKG_OBMSRC=$PKG_ROOT/obm_src.tgz
 PKG_OBMPATCH=$PKG_ROOT/obm_patches.tgz
 PKG_TOOLCHAIN=$PKG_ROOT/toolchain.tgz
+PKG_RDROOT=$PKG_ROOT/rdroot.tgz
 
 # Note: Check necessary program for installation
 echo -n "Checking necessary program for installation......"
@@ -307,6 +316,7 @@ apply_obm_patches
 
 install_toolchain
 
+install_rdroot
 echo 
 echo "Success."
 echo
