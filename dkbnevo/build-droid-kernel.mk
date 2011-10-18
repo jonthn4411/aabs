@@ -204,8 +204,8 @@ endef
 #
 
 ifeq ($(ABS_PRODUCT_NAME),dkbnevo)
-kernel_configs:=android:mmc:pxa970_defconfig
-kernel_configs+=android:slc:pxa970_defconfig
+kernel_configs:=android:mmc:pxa978_defconfig
+kernel_configs+=android:slc:pxa978_defconfig
 endif
 
 export KERNEL_TOOLCHAIN_PREFIX
