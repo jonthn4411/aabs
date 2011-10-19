@@ -26,8 +26,8 @@ mkdir -p $output_dir/android_patches &&
 cat > $output_manifest <<-EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
-<remote fetch="git://android.git.kernel.org/" name="korg"/>
-<default remote="korg" revision=""/>
+<remote fetch="https://android.googlesource.com/" name="aosp"/>
+<default remote="aosp" revision=""/>
 
 EOF
 
