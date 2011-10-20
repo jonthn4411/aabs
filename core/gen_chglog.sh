@@ -117,6 +117,21 @@ function gen_log_lastbuild_newprj()
 	echo >> $output_file
 }
 
+#$1: output file
+#$2: purged prj
+function gen_log_lastbuild_purgedprj()
+{
+	local output_file=${1}
+	local purged_path=${2}
+	local purged_prj=${3}
+
+	echo "----------------" >> $output_file
+	echo "-$purged_path:$purged_prj:-newly purged project." >> $output_file
+	echo "----------------" >> $output_file
+
+	echo >> $output_file
+}
+
 #$1:file name
 function parse_lastbuild_file()
 {
@@ -342,7 +357,7 @@ if [ ! -z "$LAST_MS2_PACKAGE" ]; then
 fi &&
 
 cd $SRC_DIR &&
-PRJS=$(repo forall -c "echo -n \$REPO_PROJECT:;pwd") &&
+PRJS=$(repo forall -c "echo \$REPO_PROJECT:\$REPO_PATH") &&
 for prj in $PRJS
 do
   CURRENT_PRJNAME=${prj%%:*} &&
@@ -398,4 +413,72 @@ do
   cd - >/dev/null
 done
 
+#Generate the list of purged projects
 
+cd $SRC_DIR &&
+PRJS=$(repo forall -c "echo \$REPO_PROJECT")
+PRJ_REMOVE_PATTERN="
+  BEGIN { split(projects, plist, \" \") }
+  {
+    ignored = 0;
+    for (i in plist) {
+      if (\$2 == plist[i]) {
+        ignored = 1;
+        break;
+      }
+    }
+    if (ignored == 0)
+      print \$2
+  }
+"
+
+if [ -n "$LAST_BUILD_PACKAGE" -a -f $LAST_BUILD_PACKAGE/manifest.xml ]; then
+  LAST_BUILD_PRJS=$(grep "project name" $LAST_BUILD_PACKAGE/manifest.xml |\
+    awk -v projects="$PRJS" -F\" "$PRJ_REMOVE_PATTERN")
+fi
+if [ -n "$LAST_REL_PACKAGE" -a -f $LAST_REL_PACKAGE/manifest.xml ]; then
+  LAST_REL_PRJS=$(grep "project name" $LAST_REL_PACKAGE/manifest.xml |\
+    awk -v projects="$PRJS" -F\" "$PRJ_REMOVE_PATTERN")
+fi
+if [ -n "$LAST_MS1_PACKAGE" -a -f $LAST_MS1_PACKAGE/manifest.xml ]; then
+  LAST_MS1_PRJS=$(grep "project name" $LAST_MS1_PACKAGE/manifest.xml |\
+    awk -v projects="$PRJS" -F\" "$PRJ_REMOVE_PATTERN")
+fi
+if [ -n "$LAST_MS2_PACKAGE" -a -f $LAST_MS2_PACKAGE/manifest.xml ]; then
+  LAST_MS2_PRJS=$(grep "project name" $LAST_MS2_PACKAGE/manifest.xml |\
+    awk -v projects="$PRJS" -F\" "$PRJ_REMOVE_PATTERN")
+fi
+
+# Record the purged projects
+if [ -n "$LAST_BUILD_PRJS" ]; then
+  for prj in "$LAST_BUILD_PRJS"
+  do
+    prj_name=$(repo list $prj)
+    prj_name=${prj_name%%:*}
+    gen_log_lastbuild_purgedprj $OUTPUT_DIR/changelog.build $prj_name $prj
+  done
+fi
+if [ -n "$LAST_REL_PRJS" ]; then
+  for prj in "$LAST_REL_PRJS"
+  do
+    prj_name=$(repo list $prj)
+    prj_name=${prj_name%%:*}
+    gen_log_lastbuild_purgedprj $OUTPUT_DIR/changelog.rel $prj_name $prj
+  done
+fi
+if [ -n "$LAST_MS1_PRJS" ]; then
+  for prj in "$LAST_MS1_PRJS"
+  do
+    prj_name=$(repo list $prj)
+    prj_name=${prj_name%%:*}
+    gen_log_lastbuild_purgedprj $OUTPUT_DIR/changelog.ms1 $prj_name $prj
+  done
+fi
+if [ -n "$LAST_MS2_PRJS" ]; then
+  for prj in "$LAST_MS2_PRJS"
+  do
+    prj_name=$(repo list $prj)
+    prj_name=${prj_name%%:*}
+    gen_log_lastbuild_purgedprj $OUTPUT_DIR/changelog.ms2 $prj_name $prj
+  done
+fi
