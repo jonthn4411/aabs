@@ -45,6 +45,7 @@ PUBLISHING_FILES+=obm_src.tgz:m:md5
 PUBLISHING_FILES+=marvell_manifest.xml:m
 PUBLISHING_FILES+=setup_android.sh:m
 PUBLISHING_FILES+=delta_patches.tgz:o
+PUBLISHING_FILES+=delta_patches.base:o
 
 .PHONY:pkgsrc
 
@@ -74,15 +75,11 @@ pkg_droid_src: output_dir
 	$(hide)echo "  package android source code..."
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(TOP_DIR)/core $(COMMON_DIR)/$(HEAD_MANIFEST)
 
-delta_patches: output_dir
-	$(hide)if [ -f $(OUTPUT_DIR)/changelog.ms1 ]; then \
-		echo "  extract delta patches since ms1..." && \
-		rm -rf $(OUTPUT_DIR)/delta_patches && \
-		cd $(SRC_DIR) && \
-		$(TOP_DIR)/tools/extract_patches $(OUTPUT_DIR)/delta_patches $(OUTPUT_DIR)/changelog.ms1 -e aabs && \
-		tar czf $(OUTPUT_DIR)/delta_patches.tgz $(OUTPUT_DIR)/delta_patches && \
-		rm -rf $(OUTPUT_DIR)/delta_patches; \
-	fi
+delta_patches: output_dir pkg_droid_src
+	$(hide)echo "  extract delta patches since ms1..."
+	$(hide)cd $(OUTPUT_DIR) && \
+	$(TOP_DIR)/core/gen_delta_patch.sh $(SRC_DIR) \
+		$(TOP_DIR)/tools $(LAST_MS1_FILE) $(OUTPUT_DIR)/changelog.ms1
 
 publish_setup_sh: output_dir
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
