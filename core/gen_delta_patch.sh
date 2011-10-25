@@ -23,22 +23,21 @@ if [ ! -d $output_source ]; then
   exit 3
 fi
 
-rm -rf $output_dir/delta_patches
-cd $source_dir
+rm -rf $output_dir/delta_patches && cd $source_dir && \
 $tools_dir/extract_patches $output_dir/delta_patches $last_chglog -e aabs
 
 new_prjs=`grep ":+newly added project, commits since" $last_chglog | awk -F: '{ print $2 }'`
 for p in $new_prjs
 do
-  mkdir -p $output_dir/delta_patches/$p
-  cp -pf $output_source/$p/* $output_dir/delta_patches/$p
+  mkdir -p $output_dir/delta_patches/$p && \
+    cp -pf $output_source/$p/* $output_dir/delta_patches/$p
 done
 
 purged_prjs=`grep ":-newly purged project." $last_chglog | awk -F: '{ print $1:$2 }'`
 for p in $purged_prjs
 do
   echo ${p#-} >> $output_dir/delta_patches/PURGED_PROJECTS
-done
-cp $last_ms $output_dir/delta_patches.base
+done && \
+cp $last_ms $output_dir/delta_patches.base && \
 tar czf $output_dir/delta_patches.tgz -C $output_dir/delta_patches .
 
