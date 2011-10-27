@@ -8,6 +8,7 @@ output_dir=`pwd`
 output_source=$output_dir/source
 
 if [ -z "$last_chglog" -o ! -f $last_ms ]; then
+  echo "last_chglog is specified as NULL ($last_chglog) or last_ms doesn't exist($last_ms)."
   exit
 fi
 if [ ! -f $last_chglog ]; then
