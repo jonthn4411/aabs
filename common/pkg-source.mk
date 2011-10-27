@@ -77,9 +77,7 @@ pkg_droid_src: output_dir
 
 delta_patches: output_dir pkg_droid_src
 	$(hide)echo "  extract delta patches since ms1..."
-	$(hide)cd $(OUTPUT_DIR) && \
-	$(TOP_DIR)/core/gen_delta_patch.sh $(SRC_DIR) \
-		$(TOP_DIR)/tools $(LAST_MS1_FILE) $(OUTPUT_DIR)/changelog.ms1
+	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_delta_patch.sh $(SRC_DIR) $(TOP_DIR)/tools $(LAST_MS1_FILE) $(OUTPUT_DIR)/changelog.ms1
 
 publish_setup_sh: output_dir
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
