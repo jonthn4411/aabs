@@ -35,7 +35,7 @@ do
   cp -pf $output_source/$p/* $output_dir/delta_patches/$p
 done
 
-purged_prjs=`grep ":-newly purged project." $last_chglog | awk -F: '{ print $1:$2 }'`
+purged_prjs=`grep ":-newly purged project." $last_chglog | awk -F: '{ print $1":"$2 }'`
 for p in $purged_prjs
 do
   echo ${p#-} >> $output_dir/delta_patches/PURGED_PROJECTS

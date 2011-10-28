@@ -75,6 +75,8 @@ pkg_droid_src: output_dir
 	$(hide)echo "  package android source code..."
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(TOP_DIR)/core $(COMMON_DIR)/$(HEAD_MANIFEST)
 
+LAST_MS1_FILE=${LAST_BUILD_LOC}/"LAST_MS1.${ABS_RELEASE_FULL_NAME}"
+
 delta_patches: output_dir pkg_droid_src
 	$(hide)echo "  extract delta patches since ms1..."
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_delta_patch.sh $(SRC_DIR) $(TOP_DIR)/tools $(LAST_MS1_FILE) $(OUTPUT_DIR)/changelog.ms1
