@@ -369,7 +369,8 @@ if [ "$FLAG_SOURCE" = "true" ]; then
 	make -f ${MAKEFILE} "source" 2>&1 | tee -a $STD_LOG
 fi &&
 
-LAST_BUILD_LOC=$PUBLISH_DIR_BASE make -f ${MAKEFILE} changelog 2>&1 | tee -a $STD_LOG &&
+export LAST_BUILD_LOC=$PUBLISH_DIR_BASE
+make -f ${MAKEFILE} changelog 2>&1 | tee -a $STD_LOG &&
 
 change_since_last_build=$(make -f ${MAKEFILE} get_change_summary_since_last_build) &&
 
