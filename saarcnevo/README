@@ -38,8 +38,8 @@ Install OBM and Uboot
 ============================
 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.1
 Configuration:CPU-JTAG->Target Connection: (usb:).
-JTAG->SOC->PXA9xx->PXA970.xdb->Burn Flash->
-    Board:pxa970
+JTAG->SOC->PXA9xx->PXA978.xdb->Burn Flash->
+    Board:pxa978
     Flash:EMMC
     Burn as binary File
     Erase affected blocks
@@ -98,6 +98,6 @@ FAQ
 Update your obm/uboot image and try again.
 
 
-+How to disable GC800 completly
++How to disable GC860 completly
 ----------------------------------------------------------------
-You can do this by: rm /system/lib/egl/egl.cfg, so android UI and 3D applications will use SW version instead of GC800. To save 16MB from GC800 low level driver, you can: rm /system/lib/modules/galcore.ko
+You can do this by: rm /system/lib/egl/egl.cfg, so android UI and 3D applications will use SW version instead of GC860. To save 16MB from GC860 low level driver, you can: rm /system/lib/modules/galcore.ko

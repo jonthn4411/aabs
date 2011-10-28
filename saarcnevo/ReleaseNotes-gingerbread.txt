@@ -1,16 +1,16 @@
 ==============================================================================
-Marvell PXA970 Android Platform Release for Linux
+Marvell PXA978 Android Platform Release for Linux
 Platform ReleaseNotes
-Last update: 06/28/2011
+Last update: 10/28/2011
 ==============================================================================
 
 1. Platform features
 1.1 Supported Components
 - Rebase to google android gingerbread branch
-- Do key pad mapping, touch for PXA970 SAARC platform
+- Do key pad mapping, touch for PXA978 SAARC platform
 - Wi-Fi/BT support
 - Light sensor and g-sensor and compass sensor and proximity sensor and accleration sensor support
-- Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC800
+- Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC860
 - Integrate stagefright and g-streamer video playback for media player
 - Organ support
 
@@ -162,8 +162,8 @@ Uboot
 ===========================================================================================
 1.6 Release package contents
 - ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
-- PXA970_Android_Platform_<VERSION>_prebuilt_bin.zip	:Pre-built bin binaries
-- PXA970_Android_Platform_<VERSION>_src.tgz        	:Source code tarball (patch mode)
+- PXA978_Android_Platform_<VERSION>_prebuilt_bin.zip	:Pre-built bin binaries
+- PXA978_Android_Platform_<VERSION>_src.tgz        	:Source code tarball (patch mode)
   - setup_android.sh                                 	:Script help to setup Android code base from the xxx_src.tgz and xxx_patches.tgz
   - android_patches.tgz                              	:Marvell patches to Android Projects
   - android_src.tgz                                  	:Source code for projects added by Marvell
@@ -180,7 +180,7 @@ Uboot
 2.1 Hardware requirements
 - EMMC
 - DDR SDRAM 512 MB
-- PXA970 SAARC Board
+- PXA978 SAARC Board
 
 2.2 Software requirements
 - Host PC with operating system Ubuntu 10.04 or above
@@ -188,12 +188,12 @@ Uboot
 3. Usage of this package 
 3.1 Install this package
 3.1.1 Download the Marvell packages:
-----PXA970_Android_Platform_<VERSION>_src.tgz  
-----PXA970_Android_Platform_<VERSION>_prebuilt_bin
+----PXA978_Android_Platform_<VERSION>_src.tgz  
+----PXA978_Android_Platform_<VERSION>_prebuilt_bin
 3.1.2 Type the following command to install:
  $ mkdir [installed_directory]
  $ cd [installed_directory]
- $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA970_Android_Platform_<VERSION>_src.tgz
+ $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA978_Android_Platform_<VERSION>_src.tgz
 
 3.2 Setup Android directory
  $ mkdir [android_dir]
@@ -243,12 +243,12 @@ Notes: kernel should be built before uboot as uboot will get cmd info from kerne
  $ make all
 After a short while, the binary will be generated under [android]/boot/out/TAVOR_LINUX_TOBM.bin
 
-3.4 Burn images and boot system(MG1)
+3.4 Burn images and boot system(SAARC)
 3.4.1 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.1
 Notes:
 Configuration:CPU-JTAG->Target Connection: (usb:).
-JTAG->SOC->PXA9xx->PXA970.xdb->Burn Flash->
-    Board:PXA970
+JTAG->SOC->PXA9xx->PXA978.xdb->Burn Flash->
+    Board:PXA978
     Flash:EMMC
     Burn as binary File
     Erase affected blocks
@@ -300,7 +300,7 @@ SAARC>>mmc write 0x0 0x1
 Reboot the system.
 
 4. Known issues and workarounds
-4.1 How to disable GC800?
+4.1 How to disable GC860?
 	-remove /system/lib/egl/egl.cfg from android rootfs
 
 ----------------------------
