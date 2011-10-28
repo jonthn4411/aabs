@@ -44,7 +44,7 @@ Files in this folder
 
   ramdisk_ext3.img         Android ramdisk image.
   system_ext3.img          Android system image.
-  userdata_ext.img         Android userdata image. 
+  userdata_ext.img         Android userdata image.
   update_droid.zip         that is a update package including kernel, ramdisk and system folder.
 
   if xxx is "internal" means everything is built in the package, and should be used internally.
@@ -101,7 +101,7 @@ Set up environment before building Android
 How to Build Uboot
 =====================================
   1. Go to the diretory <android_working_dir>/boot
-     $ cd <android_working_dir>/boot  
+     $ cd <android_working_dir>/boot
 
   2. Make uboot
      $ make all
@@ -124,7 +124,7 @@ How to Build kernel and android image
 
 Burning OBM and Uboot
 =====================
-1. Install the latest XDB with version 5.1
+1. Install the latest XDB with version 5.1 or later (\\Sh-fs03\debugger_public\Official_Release\eXtreme_Debugger_*)
 2. Get the boot binaries (uboot & obm) from autobuild server
 3. Flash OBM and U-boot into EMMC using XDB
    Note: Don't check the option "erase affected blocks" when you burn images.
@@ -162,7 +162,7 @@ Abilene>> set autostart no
 Abilene>> tftpboot 0x1100000 primary_gpt_8g
 Abilene>> mmc write 0x1100000 0 0x22
 Abilene>> tftpboot 0x1100000 secondary_gpt_8g
-Abilene>> mmc write 0x1100000 0xECBFDF 0x21 
+Abilene>> mmc write 0x1100000 0xECBFDF 0x21
 
 Please ignore only the following error, since it's not an actual error.
 ----------error begins----------------
@@ -172,7 +172,7 @@ ERROR: can't get kernel image
 
 2) Kernel image
    uImage.android is the SMP kernel while uImage.up.android is the UP one.
-Abilene>> tftp 0x1100000 uImage.up.android 
+Abilene>> tftp 0x1100000 uImage.up.android
 Abilene>> mmc write 0x1100000 0x4c00 0x4000
 
 3) ramdisk
