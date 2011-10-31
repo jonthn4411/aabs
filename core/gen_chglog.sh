@@ -428,7 +428,7 @@ PRJ_REMOVE_PATTERN="
       }
     }
     if (ignored == 0)
-      print \$2
+      print \$2\":\"\$4
   }
 "
 
@@ -453,32 +453,32 @@ fi
 if [ -n "$LAST_BUILD_PRJS" ]; then
   for prj in "$LAST_BUILD_PRJS"
   do
-    prj_name=$(repo list $prj)
-    prj_name=${prj_name%%:*}
-    gen_log_lastbuild_purgedprj $OUTPUT_DIR/changelog.build $prj_name $prj
+    prj_name=${prj%%:*}
+    prj_path=${prj##*:}
+    gen_log_lastbuild_purgedprj $OUTPUT_DIR/changelog.build $prj_name $prj_path
   done
 fi
 if [ -n "$LAST_REL_PRJS" ]; then
   for prj in "$LAST_REL_PRJS"
   do
-    prj_name=$(repo list $prj)
-    prj_name=${prj_name%%:*}
-    gen_log_lastbuild_purgedprj $OUTPUT_DIR/changelog.rel $prj_name $prj
+    prj_name=${prj%%:*}
+    prj_path=${prj##*:}
+    gen_log_lastbuild_purgedprj $OUTPUT_DIR/changelog.rel $prj_name $prj_path
   done
 fi
 if [ -n "$LAST_MS1_PRJS" ]; then
   for prj in "$LAST_MS1_PRJS"
   do
-    prj_name=$(repo list $prj)
-    prj_name=${prj_name%%:*}
-    gen_log_lastbuild_purgedprj $OUTPUT_DIR/changelog.ms1 $prj_name $prj
+    prj_name=${prj%%:*}
+    prj_path=${prj##*:}
+    gen_log_lastbuild_purgedprj $OUTPUT_DIR/changelog.ms1 $prj_name $prj_path
   done
 fi
 if [ -n "$LAST_MS2_PRJS" ]; then
   for prj in "$LAST_MS2_PRJS"
   do
-    prj_name=$(repo list $prj)
-    prj_name=${prj_name%%:*}
-    gen_log_lastbuild_purgedprj $OUTPUT_DIR/changelog.ms2 $prj_name $prj
+    prj_name=${prj%%:*}
+    prj_path=${prj##*:}
+    gen_log_lastbuild_purgedprj $OUTPUT_DIR/changelog.ms2 $prj_name $prj_path
   done
 fi
