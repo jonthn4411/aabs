@@ -256,6 +256,7 @@ JTAG->SOC->PXA9xx->PXA978.xdb->Burn Flash->
 Choose partition 1
 	TAVOR_LINUX_TOBM.bin	--> address 0x00000
 Choose partition 0
+	PinMuxData.bin          --> address 0x80000
 	u-boot.bin		--> address 0x140000
 
 3.4.2 Start your favorite terminal emulator with the appropriate 
