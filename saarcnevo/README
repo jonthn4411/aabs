@@ -44,9 +44,10 @@ JTAG->SOC->PXA9xx->PXA978.xdb->Burn Flash->
     Burn as binary File
     Erase affected blocks
     Enable new BBM
-Choose partition 0 & 1
+Choose partition 1
 	TAVOR_LINUX_TOBM.bin	    --> address 0x00000
 Choose partition 0
+	PinMuxData.bin		    --> address 0x80000
 	u-boot.bin		    --> address 0x140000
 
 
