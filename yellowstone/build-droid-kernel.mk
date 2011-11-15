@@ -125,18 +125,18 @@ package_droid_mlc_$(1)_$(2):
 	echo "    copy ext4 image files..." && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/primary_gpt_8g $$(OUTPUT_DIR)/$(2)/primary_gpt_8g && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/secondary_gpt_8g $$(OUTPUT_DIR)/$(2)/secondary_gpt_8g && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk_ext3.img $$(OUTPUT_DIR)/$(2)/ramdisk_ext3.img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext3.img $$(OUTPUT_DIR)/$(2)/system_ext3_$(1).img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext3.img $$(OUTPUT_DIR)/$(2)/userdata_ext3_$(1).img
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk_ext4.img $$(OUTPUT_DIR)/$(2)/ramdisk_ext4.img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext4.img $$(OUTPUT_DIR)/$(2)/system_ext4_$(1).img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(2)/userdata_ext4_$(1).img
 	$$(log) "  done for package_droid_mlc_$(1)$(2)."
 
 ifeq ($(1),internal)
 PUBLISHING_FILES_$(2)+=$(2)/primary_gpt_8g:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/secondary_gpt_8g:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/ramdisk_ext3.img:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/ramdisk_ext4.img:m:md5
 endif
-PUBLISHING_FILES_$(2)+=$(2)/system_ext3_$(1).img:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/userdata_ext3_$(1).img:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/system_ext4_$(1).img:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/userdata_ext4_$(1).img:m:md5
 endef
 
 #$1:internal or external
