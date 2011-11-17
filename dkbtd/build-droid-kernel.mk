@@ -51,7 +51,8 @@ clean_kernel:
 #$1:build variant
 define define-build-droid-all
 .PHONY:build_droid_all_$(1)
-build_droid_all_$(1): build_droid_kernel_modules_$(1) build_droid_root_$(1) build_droid_telephony_$(1) build_droid_otapackage_$(1) build_droid_package_nfs_$(1)
+#build_droid_all_$(1): build_droid_kernel_modules_$(1) build_droid_root_$(1) build_droid_telephony_$(1) build_droid_otapackage_$(1) build_droid_package_nfs_$(1)
+build_droid_all_$(1): build_droid_kernel_modules_$(1) build_droid_root_$(1) build_droid_telephony_$(1) build_droid_package_nfs_$(1)
 endef
 
 #$1:build variant
@@ -102,10 +103,10 @@ build_droid_root_$(1): output_dir
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/root $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(1)
+#	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext4.img $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery.img $$(OUTPUT_DIR)/$(1)
+#	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext4.img $$(OUTPUT_DIR)/$(1)
+#	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery.img $$(OUTPUT_DIR)/$(1)
 	$$(log) "  done for copy root directory."
 	$$(hide)echo "    packge symbols_lib files..." && \
 	cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(1)/
@@ -113,11 +114,11 @@ build_droid_root_$(1): output_dir
 	$$(log) "  done for package symbols_lib files. "
 
 PUBLISHING_FILES_$(1)+=$(1)/userdata.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/userdata_ext4.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/userdata_ext4.img:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/system.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/system_ext4.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/system_ext4.img:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/ramdisk-recovery.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/ramdisk-recovery.img:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
 endef
 
