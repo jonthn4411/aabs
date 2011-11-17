@@ -3,4 +3,4 @@ BOARD:=saarbmg1
 ANDROID_VERSION:=ics
 PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
 
-include dkbtd/board.mk
+include saarbmg1/board.mk
