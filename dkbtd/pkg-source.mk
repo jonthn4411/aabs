@@ -18,7 +18,11 @@ else
 ifeq ($(ANDROID_VERSION),gingerbread)
 	KERNEL_BASE_COMMIT:=49e8954d66ce9ccf75f951a5adb217209ae6f78f
 else
+ifeq ($(ANDROID_VERSION),honeycomb)
+	KERNEL_BASE_COMMIT:=49e8954d66ce9ccf75f951a5adb217209ae6f78f
+else
 	KERNEL_BASE_COMMIT:=5e4fcd2c556e25e1b6787dcd0c97b06e29e42292
+endif
 endif
 endif
 endif
