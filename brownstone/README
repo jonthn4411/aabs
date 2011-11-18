@@ -160,7 +160,7 @@ MMP2>> mmc sw_part 0
 MMP2>> t primary_gpt_8g
 MMP2>> mmc write 0 0x22 0x1100000
 MMP2>> t secondary_gpt_8g
-MMP2>> mmc write 0xecafdf 0x21 0x1100000
+MMP2>> mmc write 0xecbfdf 0x21 0x1100000
 
 3) kernel
 MMP2>> t zImage.android
