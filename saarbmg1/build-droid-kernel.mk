@@ -264,7 +264,7 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/System.map $$(OUTPUT_DIR)/$(2)
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi &&\
 	mkdir -p $$(OUTPUT_DIR)/$(2)/modules
-	$$(hide)sync -avl $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules $$(OUTPUT_DIR)/$(2)/
+	$$(hide)rsync -avl $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules $$(OUTPUT_DIR)/$(2)/
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf modules_$$(private_os)_$$(private_storage).tgz modules/ 
 	$$(hide)if [ "$$(TARGET_PRODUCT)" = "dkbttc" ] || [ "$$(TARGET_PRODUCT)" = "dkbtd" ]; then \
 	cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/telephony/* /$$(OUTPUT_DIR)/$(2); fi
