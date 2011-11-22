@@ -106,10 +106,10 @@ build_droid_root_$(1): output_dir
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/root $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(1)
-#	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(1)
-#	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext4.img $$(OUTPUT_DIR)/$(1)
-#	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery.img $$(OUTPUT_DIR)/$(1)
+	$$(hide)if[ ! $(ANDROID_VERSION) == "ics" ]; then  cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(1); \
+	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext4.img $$(OUTPUT_DIR)/$(1); \
+	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery.img $$(OUTPUT_DIR)/$(1);fi
 	$$(log) "  done for copy root directory."
 	$$(hide)echo "    packge symbols_lib files..." && \
 	cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(1)/
