@@ -132,6 +132,25 @@ function gen_log_lastbuild_purgedprj()
 	echo >> $output_file
 }
 
+#$1: since
+#$2: logfile
+gen_log_csv() {
+	local commit=${2}
+	local i=0
+
+	while read line
+	do
+		if [ -n "$line" ]; then
+			echo $line >> $1
+			i=1
+		fi
+	done < <(git --no-pager log ${commit}...HEAD --left-right --boundary --cherry-pick --topo-order --pretty="format:%m,\"$CURRENT_PRJPATH\",\"$CURRENT_PRJNAME\",\"$CURRENT_PRJORG\",\"%s\",%aN,%aE,%cE,%H,%ci%n")
+
+	if [ $i -eq 1 ]; then
+		echo >> $1
+	fi
+}
+
 #$1:file name
 function parse_lastbuild_file()
 {
@@ -293,12 +312,11 @@ if [ ! -z "$LAST_BUILD_LOC" ]; then
 
   if [ -e $LAST_BUILD_LOC/${LAST_REL_FILE} ]; then
     parse_lastrel_file $LAST_BUILD_LOC/${LAST_REL_FILE} &&
-    echo -n > "$OUTPUT_DIR/changelog.rel"
-    echo "Change logs since last release: $LAST_REL_VERSION" >> "$OUTPUT_DIR/changelog.rel"
-	echo "" >> "$OUTPUT_DIR/changelog.rel"
-    echo "The last release package can be found at: $LAST_REL_PACKAGE" >> "$OUTPUT_DIR/changelog.rel"
-    echo "==============================================================" >> "$OUTPUT_DIR/changelog.rel"
-    echo >> "$OUTPUT_DIR/changelog.rel"
+    echo -n > "$OUTPUT_DIR/changelog_rel.csv"
+    echo "# Change logs since last release: $LAST_REL_VERSION" >> "$OUTPUT_DIR/changelog_rel.csv"
+    echo "# The last release package can be found at: $LAST_REL_PACKAGE" >> "$OUTPUT_DIR/changelog_rel.csv"
+    echo >> "$OUTPUT_DIR/changelog_rel.csv"
+    echo "DIR,Project,Git,Branch,Patch,Author,AEmail,CEmail,Hash,Date" >> "$OUTPUT_DIR/changelog_rel.csv"
   fi &&
 
   if [ -e $LAST_BUILD_LOC/${LAST_MS1_FILE} ]; then
@@ -343,7 +361,7 @@ fi &&
 
 if [ ! -z "$LAST_REL_PACKAGE" ]; then
   commit=$(cat $LAST_REL_PACKAGE/abs.commit) &&
-  gen_log_lastbuild $OUTPUT_DIR/changelog.rel $commit
+  gen_log_csv $OUTPUT_DIR/changelog_rel.csv $commit
 fi &&
 
 if [ ! -z "$LAST_MS1_PACKAGE" ]; then
@@ -385,11 +403,7 @@ do
 
   if [ ! -z "$LAST_REL_PACKAGE" ]; then
     commit=$(${GET_REV_APP} -m $LAST_REL_PACKAGE/manifest.xml $CURRENT_PRJNAME 2>/dev/null) 
-    if [ -z "$commit" ]; then
-      gen_log_lastbuild_newprj $OUTPUT_DIR/changelog.rel "3 months ago"
-    else
-      gen_log_lastbuild $OUTPUT_DIR/changelog.rel $commit
-    fi
+    gen_log_csv $OUTPUT_DIR/changelog_rel.csv $commit
   fi &&
 
   if [ ! -z "$LAST_MS1_PACKAGE" ]; then
