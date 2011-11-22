@@ -138,6 +138,14 @@ gen_log_csv() {
 	local commit=${2}
 	local i=0
 
+	if [ -n $commit ]; then
+		echo ">,\"$CURRENT_PRJPATH\",\"$CURRENT_PRJNAME\",\"$CURRENT_PRJORG\",,,,,,%n%n"
+		return;
+	elif [ "$commit" = "-1" ]; then
+		echo "<,\"$CURRENT_PRJPATH\",\"$CURRENT_PRJNAME\",\"$CURRENT_PRJORG\",,,,,,%n%n"
+		return;
+	fi
+
 	while read line
 	do
 		if [ -n "$line" ]; then
@@ -475,9 +483,10 @@ fi
 if [ -n "$LAST_REL_PRJS" ]; then
   for prj in "$LAST_REL_PRJS"
   do
-    prj_name=${prj%%:*}
-    prj_path=${prj##*:}
-    gen_log_lastbuild_purgedprj $OUTPUT_DIR/changelog.rel $prj_name $prj_path
+    CURRENT_PRJPATH=${prj##*:}
+    CURRENT_PRJNAME=${prj%%:*}
+    CURRENT_PRJORG=
+    gen_log_csv $OUTPUT_DIR/changelog_rel.csv -1
   done
 fi
 if [ -n "$LAST_MS1_PRJS" ]; then
