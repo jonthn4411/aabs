@@ -12,7 +12,7 @@ PUBLISHING_FILES+=changelog.week:m
 PUBLISHING_FILES+=changelog.biweek:m
 PUBLISHING_FILES+=changelog.month:m
 PUBLISHING_FILES+=changelog.build:m
-PUBLISHING_FILES+=changelog.rel:o
+PUBLISHING_FILES+=changelog_rel.csv:o
 PUBLISHING_FILES+=changelog.ms1:o
 PUBLISHING_FILES+=changelog.ms2:o
 
