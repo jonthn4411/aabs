@@ -199,7 +199,7 @@ send_nobuild_notification()
 #$2: build number
 update_changelogs()
 {
-	LOG_FILES="changelog.build changelog.rel changelog.day changelog.week changelog.biweek changelog.month"
+	LOG_FILES="changelog.build changelog.day changelog.week changelog.biweek changelog.month"
 	for log in $LOG_FILES; do
 		log_file=$1/$log
 		if [ -e "$log_file" ]; then
