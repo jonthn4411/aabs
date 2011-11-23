@@ -218,7 +218,7 @@ root:=$$(word 4, $$(tw) )
 PUBLISHING_FILES_$(2)+=$(2)/uImage.$$(os).$$(storage):m:md5
 PUBLISHING_FILES_$(2)+=$(2)/modules_$$(os)_$$(storage).tgz:m:md5
 
-PUBLISHING_FILES_$(2)+=$(2)/pxafs.img:m:md5
+#PUBLISHING_FILES_$(2)+=$(2)/pxafs.img:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/Boerne_DIAG.mdb.txt:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/System.map:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/vmlinux:m:md5
