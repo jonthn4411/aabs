@@ -40,8 +40,8 @@ copy_obm_cp_image_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP2) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP3) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP4) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP5) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_IMEI) $$(OUTPUT_DIR)/$(1)
+#	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP5) $$(OUTPUT_DIR)/$(1)
+#	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_IMEI) $$(OUTPUT_DIR)/$(1)
 #	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_NO_GUI_RAMDISK) $$(OUTPUT_DIR)/$(1)
 	$$(log) "cp OBM and CP images  done."
 
