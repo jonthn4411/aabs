@@ -138,11 +138,11 @@ gen_log_csv() {
 	local commit=${2}
 	local i=0
 
-	if [ -n $commit ]; then
-		echo ">,\"$CURRENT_PRJPATH\",\"$CURRENT_PRJNAME\",\"$CURRENT_PRJORG\",,,,,,%n%n"
+	if [ -z $commit ]; then
+		echo ">,\"$CURRENT_PRJPATH\",\"$CURRENT_PRJNAME\",\"$CURRENT_PRJORG\",,,,,,%n%n" >> $1
 		return;
 	elif [ "$commit" = "-1" ]; then
-		echo "<,\"$CURRENT_PRJPATH\",\"$CURRENT_PRJNAME\",\"$CURRENT_PRJORG\",,,,,,%n%n"
+		echo "<,\"$CURRENT_PRJPATH\",\"$CURRENT_PRJNAME\",\"$CURRENT_PRJORG\",,,,,,%n%n" >> $1
 		return;
 	fi
 
