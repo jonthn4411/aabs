@@ -169,7 +169,7 @@ function parse_lastbuild_file()
   LAST_BUILD_BUILDNUM=${line##Build-Num:}
 
   if [ -z "$LAST_BUILD_PACKAGE" ] || [ -z "$LAST_BUILD_BUILDNUM" ]; then
-    echo "Invalid format of LAST_REL file: $1"
+    echo "Invalid format of LAST_BUILD file: $1"
     return 2
   fi
   if [ ! -r "$LAST_BUILD_PACKAGE/manifest.xml" ] || [ ! -r "$LAST_BUILD_PACKAGE/abs.commit" ]; then
@@ -180,15 +180,80 @@ function parse_lastbuild_file()
 
 function parse_lastrel_file()
 {
-  local line
-  line=$(grep "[:blank:]*Package:" $1)
-  LAST_REL_PACKAGE=${line##*Package:}
+  local branch
+  local dir
+  local SAVE_LAST_PACK
+  local SAVE_LAST_NUM
+  local SAVE_LAST_VER
 
-  line=$(grep "[:blank:]*Version:" $1)
-  LAST_REL_VERSION=${line##*Version:}
+  DIR=$(dirname $1)
+  LAST_REL_PACKAGE=$(awk -F: '/[:blank:]*Package/ { print $2 }' $1)
+  LAST_REL_BUILDNUM=$(awk -F: '/[:blank:]*Build-Num/ { print $2 }' $1)
+  LAST_REL_VERSION=$(basename $1 | awk -F. '{ print $2 }' $1)
 
-  line=$(grep "[:blank:]*Build-Num:" $1)
-  LAST_REL_BUILDNUM=${line##*Build-Num:}
+  while [ -z "$LAST_REL_PACKAGE" -o -z "$LAST_REL_BUILDNUM" ]
+  do
+    branch=$(cat $1 | awk -F. '{ print $2 }')
+    case "$(cat $1 | awk -F. '{ print $1 }')" in
+      "LAST_BUILD")
+        SAVE_LAST_PACK=$LAST_BUILD_PACKAGE
+        SAVE_LAST_NUM=$LAST_BUILD_BUILDNUM
+
+        parse_lastbuild_file $DIR/"LAST_BUILD".$branch
+        if [ $? -gt 0 ]; then
+          break;
+        fi
+        LAST_REL_PACKAGE=$LAST_BUILD_PACKAGE
+        LAST_REL_BUILDNUM=$LAST_BUILD_BUILDNUM
+        LAST_REL_VERSION=$branch
+
+        LAST_BUILD_PACKAGE=$SAVE_LAST_PACK
+        LAST_BUILD_BUILDNUM=$SAVE_LAST_NUM
+        ;;
+      "LAST_MS1")
+        SAVE_LAST_PACK=$LAST_MS1_PACKAGE
+        SAVE_LAST_NUM=$LAST_MS1_BUILDNUM
+        SAVE_LAST_VER=$LAST_MS1_VERSION
+
+        parse_last_ms1_file $DIR/"LAST_MS1".$branch
+        if [ $? -gt 0]; then
+          break;
+        fi
+        LAST_REL_PACKAGE=$LAST_MS1_PACKAGE
+        LAST_REL_BUILDNUM=$LAST_MS1_BUILDNUM
+        LAST_REL_VERSION=$LAST_MS1_VERSION
+
+        LAST_MS1_PACKAGE=$SAVE_LAST_PACK
+        LAST_MS1_BUILDNUM=$SAVE_LAST_NUM
+        LAST_MS1_VERSION=$SAVE_LAST_VER
+        ;;
+      "LAST_MS2")
+        SAVE_LAST_PACK=$LAST_MS2_PACKAGE
+        SAVE_LAST_NUM=$LAST_MS2_BUILDNUM
+        SAVE_LAST_VER=$LAST_MS2_VERSION
+
+        parse_last_ms2_file $DIR/"LAST_MS2".$branch
+        if [ $? -gt 0]; then
+          break;
+        fi
+        LAST_REL_PACKAGE=$LAST_MS2_PACKAGE
+        LAST_REL_BUILDNUM=$LAST_MS2_BUILDNUM
+        LAST_REL_VERSION=$LAST_MS2_VERSION
+
+        LAST_MS2_PACKAGE=$SAVE_LAST_PACK
+        LAST_MS2_BUILDNUM=$SAVE_LAST_NUM
+        LAST_MS2_VERSION=$SAVE_LAST_VER
+        ;;
+      "LAST_REL")
+        parse_lastrel_file $DIR/"LAST_REL".$branch
+        if [ $? -gt 0]; then
+          break;
+        fi
+        ;;
+      *)
+        break;;
+    esac
+  done
 
   if [ -z "$LAST_REL_PACKAGE" ] || [ -z "$LAST_REL_VERSION" ] || [ -z "$LAST_REL_BUILDNUM" ]; then
     echo "Invalid format of LAST_REL file: $1"
