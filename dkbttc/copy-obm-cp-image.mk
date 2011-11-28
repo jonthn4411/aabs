@@ -3,12 +3,11 @@ $(call check-variables,BUILD_VARIANTS)
 TEL_SRC_DIR:=kernel/out/telephony/
 
 DKBTTC_UBOOT:=u-boot.bin
-DKBTTC_CP1:=Arbel_DIGRF3.bin
-DKBTTC_CP2:=Arbel_DIGRF3_DIAG.mdb
-DKBTTC_CP3:=Arbel_DIGRF3_NVM.mdb
-#DKBTTC_CP4:=TTC1_M05_AI_A1_Flash.bin
-DKBTTC_CP4:=TTD_M06_AI_A1_Flash.bin
-DKBTTC_CP5:=pxa_symbols.tgz
+DKBTTC_CP1:=WK_CP_2CHIP_SPRW.bin
+DKBTTC_CP2:=WK_CP_2CHIP_SPRW_DIAG.mdb
+DKBTTC_CP3:=WK_CP_2CHIP_SPRW_NVM.mdb
+DKBTTC_CP4:=WK_M06_AI_Y0_E1_Flash.bin
+#DKBTTC_CP5:=pxa_symbols.tgz
 DKBTTC_IMEI:=ReliableData.bin
 DKBTTC_SWD:=Software_Downloader.zip
 #DKBTTC_NO_GUI_RAMDISK:=ramdisk_no_gui.img
@@ -41,7 +40,7 @@ copy_obm_cp_image_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP3) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP4) $$(OUTPUT_DIR)/$(1)
 #	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP5) $$(OUTPUT_DIR)/$(1)
-#	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_IMEI) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_IMEI) $$(OUTPUT_DIR)/$(1)
 #	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_NO_GUI_RAMDISK) $$(OUTPUT_DIR)/$(1)
 	$$(log) "cp OBM and CP images  done."
 
