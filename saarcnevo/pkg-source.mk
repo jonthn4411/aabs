@@ -75,6 +75,9 @@ pkgsrc: output_dir get_source_for_pkg
 
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
 	$(hide)cp $(BOARD)/ReleaseNotes-$(ANDROID_VERSION).txt $(OUTPUT_DIR)/ReleaseNotes.txt
+	$(hide)cp $(BOARD)/NEVO_SAAR_TOBM_NAND16BCH_MODE1.bin.rnd $(OUTPUT_DIR)/droid-gcc
+	$(hide)cp $(BOARD)/NEVO_SAAR_TOBM_EMMCAB_MODE2.bin.rnd $(OUTPUT_DIR)/droid-gcc
+	$(hide)cp $(BOARD)/PinMuxData.bin $(OUTPUT_DIR)/droid-gcc
 	$(log) "  done."
 
 
@@ -89,9 +92,12 @@ PUBLISHING_FILES+=kernel_src.tgz:m:md5
 PUBLISHING_FILES+=kernel_patches.tgz:m:md5 
 PUBLISHING_FILES+=uboot_src.tgz:m:md5 
 PUBLISHING_FILES+=uboot_patches.tgz:m:md5 
-PUBLISHING_FILES+=obm_src.tgz:m:md5 
+#PUBLISHING_FILES+=obm_src.tgz:m:md5 
 PUBLISHING_FILES+=marvell_manifest.xml:m
 PUBLISHING_FILES+=setup_android.sh:m
 PUBLISHING_FILES+=ReleaseNotes.txt:m
+PUBLISHING_FILES+=droid-gcc/NEVO_SAAR_TOBM_NAND16BCH_MODE1.bin.rnd:m:md5
+PUBLISHING_FILES+=droid-gcc/NEVO_SAAR_TOBM_EMMCAB_MODE2.bin.rnd:m:md5
+PUBLISHING_FILES+=droid-gcc/PinMuxData.bin:m:md5
 
 
