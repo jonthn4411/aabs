@@ -31,7 +31,9 @@ include $(BOARD)/build-uboot-obm.mk
 include $(BOARD)/build-swd.mk
 
 # Include goal for build wtpsp
-include $(BOARD)/build-wtpsp.mk
+ifeq ($(ANDROID_VERSION)),gingerbread)
+   include $(BOARD)/build-wtpsp.mk
+endif
 
 #define the combined goal to include all build goals
 define define-build
