@@ -129,20 +129,38 @@ Burning OBM and Uboot
 3. Flash OBM and U-boot into EMMC using XDB
    Note: Don't check the option "erase affected blocks" when you burn images.
 
+  For normal user:(files under droid-gcc/emmc)
    1)Use flash burn tool: flash --> burn flash
    2)Choose flash: NAND Flash
    3)Erase All Blocks to erase the nand autoboot obm
    4)Choose flash: EMMC flash and click Detect button to detect emmc partition
    5)Choose partition 0x1
-      d)Burn "ntim_mmp3_v7_mp_emmc_dis_uboot.bin"       address [0x000000]
+      a)Burn "ntim_mmp3_v7_mp_emmc_dis_uboot.bin"       address [0x000000]
             ("ntim_mmp3_v7_mp_emmc_pop_uboot.bin" for pop board, CPU frequence 200M Hz)
             ("ntim_mmp3_v7_mp_emmc_dis_uboot.bin" for dis board, CPU frequence 200M Hz)
             ("ntim_mmp3_v7_mp_emmc_xxx_uboot_800.bin" for pop/dis board, CPU frequence 800M Hz)
             ("ntim_mmp3_v7_mp_emmc_xxx_uboot_1000.bin" for pop/dis board, CPU frequence 1G Hz)
-      e)Burn "Wtm_rel_mmp3.bin"                             address [0x020000]
+      b)Burn "Wtm_rel_mmp3.bin"                             address [0x020000]
      Choose partition 0x2
-      f)Burn "u-boot.bin"                               address [0x000000]
+      c)Burn "u-boot.bin"                               address [0x000000]
      Partition 0x0 can be burn in u-boot with mmc.
+
+  For developer who use coremorphall:(files under droid-gcc/emmc_cm)
+   1)Use flash burn tool: flash --> burn flash
+   2)Choose flash: NAND Flash
+   3)Erase All Blocks to erase the nand autoboot obm
+   4)Choose flash: EMMC flash and click Detect button to detect emmc partition
+   5)Choose partition 0x1
+      a)Burn "ntim_abex_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1200mv.bin"      address [0x000000]
+            ("ntim_abex_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1225mv.bin" for dis board, volage 1225mv)
+      b)Burn "Wtm_rel_mmp3.bin"                             address [0x020000]
+      c)Burn "coremorphall.bin"                             address [0x060000]
+     Choose partition 0x2
+      d)Burn "u-boot_cm.bin"                               address [0x000000]
+     Partition 0x0 can be burn in u-boot with mmc.
+
+
+
 
 How to Disable GC2000
 =====================
