@@ -194,13 +194,13 @@ root:=$$(word 4, $$(tw) )
 #PUBLISHING_FILES_$(2):=$(PUBLISHING_FILES_$(2)) $(2)/uImage.$$(os):m:md5
 PUBLISHING_FILES_$(2)+=$(2)/uImage.$$(os):m:md5
 #PUBLISHING_FILES_$(2)+=$(2)/uImage.up.$$(os):m:md5
+PUBLISHING_FILES_$(2)+=$(2)/uImage.cm.$$(os):m:md5
 PUBLISHING_FILES_$(2)+=$(2)/rdinit:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/rdroot.tgz:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/vmlinux:o:md5
 PUBLISHING_FILES_$(2)+=$(2)/System.map:o:md5
 PUBLISHING_FILES_$(2)+=$(2)/modules_$$(os)_$$(storage).tgz:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/symbols_lib.tgz:o:md5
-
 build_kernel_$$(os)_$$(storage)_$(2): private_os:=$$(os)
 build_kernel_$$(os)_$$(storage)_$(2): private_storage:=$$(storage)
 build_kernel_$$(os)_$$(storage)_$(2): private_root:=$$(root)
@@ -215,6 +215,7 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	$$(log) "    copy kernel and module files ..."
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage $$(OUTPUT_DIR)/$(2)/uImage.$$(private_os)
 #	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage.up $$(OUTPUT_DIR)/$(2)/uImage.up.$$(private_os)
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage.cm $$(OUTPUT_DIR)/$(2)/uImage.cm.$$(private_os)
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/rdinit $$(OUTPUT_DIR)/$(2)
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/rdroot/rdroot.tgz $$(OUTPUT_DIR)/$(2)
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/vmlinux $$(OUTPUT_DIR)/$(2)
