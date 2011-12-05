@@ -314,7 +314,7 @@ kernel_cfg:=$$(word 3, $$(tw) )
 root:=$$(word 4, $$(tw) )
 
 PUBLISHING_FILES_$(2)+=$(2)/pxafs.img:m:md5
-#PUBLISHING_FILES_$(2)+=$(2)/pxafs_ext4.img:m:md5
+#PUBLISHING_FILES_$(2)+=$(2)/pxafs_ext4.img:o:md5
 
 build_telephony_$$(os)_$$(storage)_$(2): private_os:=$$(os)
 build_telephony_$$(os)_$$(storage)_$(2): private_storage:=$$(storage)
