@@ -15,7 +15,11 @@ else
 ifeq ($(ANDROID_VERSION),froyo)
         KERNEL_BASE_COMMIT:=f6320db51173e3b94f54b87944b88d3b363c4487
 else
+ifeq ($(ANDROID_VERSION),gingerbread)
         KERNEL_BASE_COMMIT:=49e8954d66ce9ccf75f951a5adb217209ae6f78f
+else
+        KERNEL_BASE_COMMIT:=5e4fcd2c556e25e1b6787dcd0c97b06e29e42292
+endif
 endif
 endif
 
