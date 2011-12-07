@@ -6,12 +6,12 @@ BOOT_OUT_DIR:=$(BOOT_SRC_DIR)/out
 #OBM_NTLOADER_1:=ASPN_NTLOADER_avengers-a_slc.bin
 #OBM_NTLOADER_2:=ASPN_NTLOADER_spi.bin
 
-OBM_NTIM_1:=NEVO_Loader_ARM_3_3_1.bin
+#OBM_NTIM_1:=NEVO_Loader_ARM_3_3_1.bin
 #OBM_NTIM_1:=TAVOR_SAAR_NTOBM_EMMC_MODE1.bin.rnd
 #OBM_NTIM_2:=ntim_a0_avengers-a_1.6F_256mb_400mhz_mode3_pm_spi.bin
 
-PRIMARY_GPT_BIN:=primary_gpt
-SECONDARY_GPT_BIN:=secondary_gpt
+#PRIMARY_GPT_BIN:=primary_gpt
+#SECONDARY_GPT_BIN:=secondary_gpt
 
 
 #$1:build variant
@@ -21,10 +21,10 @@ define define-build-uboot-obm
 #o:means optional
 #md5: need to generate md5 sum
 PUBLISHING_FILES_$(1)+=$(1)/u-boot.bin:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_1):m:md5
+#PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_1):m:md5
 #PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTLOADER_1):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/$(PRIMARY_GPT_BIN):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/$(SECONDARY_GPT_BIN):m:md5
+#PUBLISHING_FILES_$(1)+=$(1)/$(PRIMARY_GPT_BIN):m:md5
+#PUBLISHING_FILES_$(1)+=$(1)/$(SECONDARY_GPT_BIN):m:md5
 
 
 .PHONY:build_uboot_obm_$(1)
@@ -37,10 +37,10 @@ build_uboot_obm_$(1):
 	$$(log) "start to copy uboot and obm files"
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot.bin $$(OUTPUT_DIR)/$(1)
 	#$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTLOADER_1) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
+	#$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
 	#$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(PRIMARY_GPT_BIN) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(SECONDARY_GPT_BIN) $$(OUTPUT_DIR)/$(1)
+	#$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(PRIMARY_GPT_BIN) $$(OUTPUT_DIR)/$(1)
+	#$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(SECONDARY_GPT_BIN) $$(OUTPUT_DIR)/$(1)
 	$$(log) "  done."
 
 endef
