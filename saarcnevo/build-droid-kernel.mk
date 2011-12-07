@@ -4,11 +4,16 @@
 DEMO_MEDIA_DIR:=/autobuild/demomedia
 MY_SCRIPT_DIR:=$(TOP_DIR)/$(ABS_BOARD)
 
-DROID_PRODUCT:=$(ABS_PRODUCT_NAME)
 DROID_TYPE:=release
 DROID_VARIANT:=user
 
 KERNELSRC_TOPDIR:=kernel
+
+ifeq ($(ANDROID_VERSION),ics)
+DROID_PRODUCT:=nevo
+else
+DROID_PRODUCT:=saarcnevo
+endif
 
 .PHONY:clean_droid_kernel
 clean_droid_kernel: clean_droid clean_kernel

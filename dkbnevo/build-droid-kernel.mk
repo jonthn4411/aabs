@@ -10,6 +10,12 @@ DROID_VARIANT:=user
 
 KERNELSRC_TOPDIR:=kernel
 
+ifeq ($(ANDROID_VERSION),ics)
+DROID_PRODUCT:=nevo
+else
+DROID_PRODUCT:=dkbnevo
+endif
+
 .PHONY:clean_droid_kernel
 clean_droid_kernel: clean_droid clean_kernel
 

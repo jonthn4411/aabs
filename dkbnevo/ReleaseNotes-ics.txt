@@ -1,22 +1,23 @@
 ==============================================================================
 Marvell PXA978 Android Platform Release for Linux
 Platform ReleaseNotes
-Last update: 12/01/2011
+Last update: 07/12/2011
 ==============================================================================
 
 1. Platform features
 1.1 Supported Components
-- Rebase to google android Ice Cream Sandwich
-- Do key pad mapping, touch for PXA978 SAARC platform
+- Rebase to google android Ice Cream Sandwich branch
+- Do key pad mapping, touch for PXA978 DKB platform
 - Wi-Fi/BT support
-- Light sensor and g-sensor and compass sensor and proximity sensor and accleration sensor support
+- FM support
+- G-sensor, Compass sensor, Gyroscope sensor and Orientation support
 - Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC860
 - Integrate stagefright and g-streamer video playback for media player
 - Organ support
 
 1.2 BSP features
 Uboot
-- Boot from EMMC
+- Boot from NAND 
 - Bownload from USB ethernet
 - Burn image into EMMC
 - Flash Bad block management
@@ -65,7 +66,7 @@ Uboot
     - Support to access USB mass storage device
     - Support hot plug-in and remove
     - Support USB hub
-  - OTG (disabled by default)
+  - OTG
     - Support dual role device
     - HNP and SRP are NOT support
   - Client
@@ -87,9 +88,9 @@ Uboot
   - FM Radio
 - Sensor
   - Support G-sensor
-  - Support proximity sensor
-  - Support light sensor
   - Support Compass sensor
+  - Support Gyroscope sensor
+  - Support Orientation sensor
 - RTC
   - Samremo RTC
   - Tavor RTC
@@ -98,6 +99,10 @@ Uboot
   - Support process freeze
 
 1.3 Telephony
+  - Voice call MO/MT
+  - SMS MO/MT
+  - DIAG
+ (Notes: Please use RDA (legacy RF) board to do the test.) 
 
 1.4 Graphics features
   - Fully support OpenGL ES 1.1
@@ -122,21 +127,6 @@ Uboot
   - MPEG-4 SP/ASP decoder
   - MPEG-2 MP decoder
   - WMV/VC-1 SP/MP/AP decoder
-  - H.264 BP encoder
-  - H.263 P0 encoder
-  - MPEG-4 SP encoder
-- IPP WMMX-optimized video codecs	
-  - H.264 BP/Partial MP&HP decoder
-  - H.263 P0/P3 decoder
-  - MPEG-4 SP/ASP decoder
-  - MPEG-2 MP decoder
-  - WMV/VC-1 SP/MP decoder
-  - H.264 BP encoder
-  - H.263 P0/P3 encoder
-  - MPEG-4 SP encoder
-- IPP WMMX-optimized image codecs		
-  - JPEG baseline/progressive decoder
-  - JPEG baseline/progressive encoder
 - IPP WMMX-optimized audio and speech codecs
   - MP3 decoder
   - AAC decoder
@@ -149,16 +139,16 @@ Uboot
 - IPP supported multimedia container format
   - 3GP/3GPP (Stagefright Path)
   - MP4      (Stagefright Path)
-  - MKV      (Stagefright Path)
   - MP3      (Stagefright Path)
-  - AMR      (Stagefright Path)
-  - AAC      (GStreamer Path)
+  - AAC      (Stagefright Path)
   - AVI      (GStreamer Path)
   - ASF      (GStreamer Path)
   - WMV      (GStreamer Path)
   - WMA      (GStreamer Path)
+  - MOV      (GStreamer Path)
+  - MPG      (GStreamer Path)
 
-<VERSION>=master
+<VERSION>=nt1
 ===========================================================================================
 1.6 Release package contents
 - ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
@@ -172,15 +162,15 @@ Uboot
   - kernel_src.tgz                                   	:Kernel base source code
   - uboot_patches.tgz                                	:Marvell patches to uboot_src.tgz
   - uboot_src.tgz                                    	:Uboot base source code
-  - obm_src.tgz                                      	:OBM source code
+  - obm_src.tgz                                         :OBM source code
 - manifest.xml						:Marvell manifest
-- Software_Downloader.zip				:Software downloader for Microsfot Windows
+- Software_Downloader.zip                              :Software downloader for Microsfot Windows
 
 2. System Requirements
 2.1 Hardware requirements
 - EMMC
 - DDR SDRAM 512 MB
-- PXA978 SAARC Board
+- PXA978 DKB Board
 
 2.2 Software requirements
 - Host PC with operating system Ubuntu 10.04 or above
@@ -226,77 +216,125 @@ After a short while, the binaries will be generated under [android]/kernel/out/m
  $ . build/envsetup.sh
  $ chooseproduct nevo
  $ choosevariant user
+ $ export ANDROID_PREBUILT_MODULES=[android_dir]/kernel/out/modules
  $ make -j4
 Note: If there is no modules, Please export ANDROID_PREBUILT_MODULES=no_kernel_modules
 Note: The binaries will be generated under src/android/out/target/product/nevo/.
 Note: Currently we use Android default toolchain to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for google arm-eabi toolchain. Please donot pecify other android toolchain version. 
 
-3.3.4 Building uboot
+3.3.4 Building telephony
+$ cd [android_dir]/kernel
+$ make telephony
+Note: Please make android before making telephony
+After a short while, the binary will be generated under [android]/kernel/out/telephony/
+
+3.3.5 Building uboot
  $ cd [android_dir]/boot
  $ make uboot
 After a short while, the binary will be generated under [android]/boot/out/u-boot.bin
 Notes: kernel should be built before uboot as uboot will get cmd info from kernel config
 
-3.3.5 Building OBM
+3.3.6 Building OBM
  $ cd [android_dir]/boot
  $ make all
-After a short while, the binary will be generated under [android]/boot/out/TAVOR_LINUX_TOBM.bin
+After a short while, the binary will be generated under [android]/boot/out/Bootloader_3.3.1_NEVO_Linux/
 
-3.4 Burn images and boot system(SAARC)
-3.4.1 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.1
+3.4 Burn images and boot system(Nevo)
+3.4.1 Burn binaries by Software Downloader
+1) put the following binary files in <softwareDownloader>/NEVO
+        u-boot.bin
+        Arbel_DKB_SKWS.bin
+        TTD_M06_AI_A1_Flash.bin
+        ReliableData.bin
+        primary_gpt
+        secondary_gpt
+        zImage
+        system_ext3.img
+        userdata_ext3.img
+        ramdisk.img
+        pxafs_ext4.img
+
+2) open software downloader, and then open the configure file <softwareDownloader>/NEVO/Nevo_trusted_NAND.blf:
+
+        ntim_nand.bin                                           --> flash address 0x00000 (this binary is automatically created by SoftwareDownloader, when press "start" button)
+        NEVO_Loader_ARM_3_3_1.bin                               --> flash address 0x20000
+        u-boot.bin                                              --> flash address 0x80000
+        ReliableData.bin                                        --> flash address 0x180000
+        Arbel_DKB_SKWS.bin                                      --> flash address 0x200000
+        TTD_M06_AI_A1_Flash.bin                                 --> flash address 0x900000
+        primary_gpt                                             --> flash address 0x000000
+        secondary_gpt                                           --> flash address 0x1ce7fbe00
+        zImage                                                  --> flash address 0xa00000
+        ramdisk.img                                             --> flash address 0xe00000
+        pxafs_ext4.img                                          --> flash address 0x2800000
+        system_ext3.img                                         --> flash address 0x8900000
+        userdata_ext3.img                                       --> flash address 0x18900000
+Notes: So far, due to software download bug, you need to use XDB to burn ntim_nand.bin and NEVO_Loader_ARM_3_3_1.bin if it's your first time to burn the board. If it's not your first time to burn this board, go to step 4 now.
+
+3) Press "start" button (the button with the green bulb icon), wait for the icon become red color.
+4) Connect the USB cable between the host machine and the board.
+5) Power on the board, hold "Back" button on the board, and Press the reset key on the board, Release the "Back" button after the software download shows the downloading is in progress. When the burning is done, the software download will pop up a dialog to notify
+Notes: you will be asked to install usb driver if it's your first time to burn the board, then install the driver in <softwareDownloader>/WTPTP folder.
+Notes: Sometimes Software Downloader will stop during downloading or burning, you have to try again. If it failes again and again, you can disable system_ext3.img and userdata_ext3.img, and use tftp to burn them. 
+
+3.4.2 Burn following binaries to EMMC using Marvell eXtreme Debugger 5.2((XDB_5_2_Beta2.1))
 Notes:
 Configuration:CPU-JTAG->Target Connection: (usb:).
 JTAG->SOC->PXA9xx->PXA978.xdb->Burn Flash->
-    Board:PXA978
-    Flash:EMMC
-    Burn as binary File
-    Erase affected blocks
-    Enable new BBM
-Choose partition 1
-	TAVOR_LINUX_TOBM.bin	--> address 0x00000
-Choose partition 0
-	PinMuxData.bin          --> address 0x80000
-	u-boot.bin		--> address 0x140000
+    "Burning"
+        - Board:PXA978
+        - Flash:NAND Flash
+        - Burn as binary File
+        - Erase affected blocks
+    "Extended Flash Functionality"
+        -EditNand->Audodetect:changes the detected flash's ECCAlgorithm to "BCH"->exit and save
+        -Select NAND Function:Reset runtime bad block -> Execute
+    "Erasing/Unblocking"
+        - Block Selection: all blocks -> Erase
+    "Burning"
 
-3.4.2 Start your favorite terminal emulator with the appropriate 
-      COM port set to 115200,8N1. Power on the board and wait for SAARC>> prompt to appear
-
-3.4.3 Software downloader
-Software downloader is a tool for the images burning. 
-Burn the OBM by JTAG at firt time. unzip the Software_Downloader.zip, and read the "readme.txt"
+3.4.3 Start your favorite terminal emulator with the appropriate 
+      COM port set to 115200,8N1. Power on the board and wait for NEVODKB>> prompt to appear
 
 3.4.4 Command line images burning
 3.4.4.1 Enter the following command to upload the kernel image into the RAM and burn into flash:
 For EMMC, issue the following commands:
-SAARC>>tftp zImage
-SAARC>>mmc write 0x5000 0x2000
+NEVODKB>>tftp zImage
+NEVODKB>>mmc write 0x5000 0x2000
 
 Note 1: You need to configure the host network interface:
    # ifconfig usb0 192.168.1.100 (for USB)
    # ifconfig eth0 192.168.1.100 (for Ethernet)
-Note 2: uboot configures ethernet download as default. please use SAARC>> sw to switch to USB 
+Note 2: uboot configures ethernet download as default. please use NEVODKB>> sw to switch to USB 
 
 3.4.4.2 Enter the following command to upload the system image into the RAM and burn into flash:
-Note: uboot configures ethernet download as default. please use 'SAARC>>sw' to switch to USB 
+Note: uboot configures ethernet download as default. please use 'NEVODKB>>sw' to switch to USB 
 
 For EMMC, issue the following commands:
-SAARC>>tftp system_ext3.img
-SAARC>>mmc write 0x7200 0x38400
+NEVODKB>>tftp system_ext3.img
+NEVODKB>>mmc write 0x44800 0x38400
 
 3.4.4.3 Enter the following command to upload the userata image into the RAM and burn into flash:
 For EMMC, issue the following commands:
-SAARC>>tftp userdata_ext3.img
-SAARC>>mmc write 0x3f600 0x21c00
+NEVODKB>>tftp userdata_ext3.img
+NEVODKB>>mmc write 0xc4800 0x21c00
 
 3.4.4.4 Enter the following command to upload the ramdisk image into the RAM and burn into flash:
 For EMMC, issue the following commands:
-SAARC>>tftp ramdisk.img
-SAARC>>mmc write 0x7000 0x200
+NEVODKB>>tftp ramdisk.img
+NEVODKB>>mmc write 0x7000 0x200
 
-3.4.4.5 Enter the following command to upload the mbr into the RAM and burn into flash:
+3.4.4.5 Enter the following command to upload the pxafs_ext4 image into the RAM and burn into flash:
 For EMMC, issue the following commands:
-SAARC>>tftp mbr
-SAARC>>mmc write 0x0 0x1
+NEVODKB>>tftp pxafs_ext4.img
+NEVODKB>>mmc write 0x14000 0x3000
+
+3.4.4.6 Enter the following command to upload the GPT into the RAM and burn into flash:
+For EMMC, issue the following commands:
+NEVODKB>>tftp primary_gpt
+NEVODKB>>mmc write 0x0 0x400
+NEVODKB>>tftp secondary_gpt
+NEVODKB>>mmc write 0xe73fdf 0x21
 Reboot the system.
 
 4. Known issues and workarounds
