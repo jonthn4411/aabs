@@ -75,6 +75,7 @@ pkgsrc: output_dir get_source_for_pkg
 
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
 	$(hide)cp $(BOARD)/ReleaseNotes-$(ANDROID_VERSION).txt $(OUTPUT_DIR)/ReleaseNotes.txt
+	$(hide)cp $(BOARD)/NEVO_EVB_TOBM_NAND16BCH_MODE3.bin.rnd $(OUTPUT_DIR)/droid-gcc
 	$(log) "  done."
 
 
@@ -93,5 +94,6 @@ PUBLISHING_FILES+=obm_src.tgz:m:md5
 PUBLISHING_FILES+=marvell_manifest.xml:m
 PUBLISHING_FILES+=setup_android.sh:m
 PUBLISHING_FILES+=ReleaseNotes.txt:m
+PUBLISHING_FILES+=droid-gcc/NEVO_EVB_TOBM_NAND16BCH_MODE3.bin.rnd:m:md5
 
 
