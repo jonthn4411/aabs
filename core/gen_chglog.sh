@@ -152,7 +152,7 @@ gen_log_csv() {
 			echo $line >> $1
 			i=1
 		fi
-	done < <(git --no-pager log ${commit}...HEAD --left-right --boundary --cherry-pick --topo-order --pretty="format:%m,\"$CURRENT_PRJPATH\",\"$CURRENT_PRJNAME\",\"$CURRENT_PRJORG\",\"%s\",%aN,%aE,%cE,%H,%ci%n")
+	done < <(git --no-pager log ${commit}...HEAD --left-right --boundary --cherry-pick --topo-order --pretty="format:%m,$CURRENT_PRJPATH,$CURRENT_PRJNAME,$CURRENT_PRJORG,\"%s\",%aN,%aE,%cE,%H,%ci%n")
 
 	if [ $i -eq 1 ]; then
 		echo >> $1
