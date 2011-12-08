@@ -5,7 +5,12 @@ DEMO_MEDIA_DIR:=/autobuild/demomedia
 MY_SCRIPT_DIR:=$(TOP_DIR)/$(ABS_BOARD)
 
 DROID_TYPE:=release
-DROID_VARIANT:=user
+
+ifneq ($(ABS_DROID_VARIANT),)
+       DROID_VARIANT:=$(ABS_DROID_VARIANT)
+else
+       DROID_VARIANT:=user
+endif
 
 KERNELSRC_TOPDIR:=kernel
 
