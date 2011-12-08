@@ -94,6 +94,8 @@ PUBLISHING_FILES+=obm_src.tgz:m:md5
 PUBLISHING_FILES+=marvell_manifest.xml:m
 PUBLISHING_FILES+=setup_android.sh:m
 PUBLISHING_FILES+=ReleaseNotes.txt:m
+ifeq ($(ANDROID_VERSION),ics)
 PUBLISHING_FILES+=droid-gcc/NEVO_EVB_TOBM_NAND16BCH_MODE3.bin.rnd:m:md5
+endif
 
 

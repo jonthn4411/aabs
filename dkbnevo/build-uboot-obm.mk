@@ -21,10 +21,16 @@ define define-build-uboot-obm
 #o:means optional
 #md5: need to generate md5 sum
 PUBLISHING_FILES_$(1)+=$(1)/u-boot.bin:m:md5
+
+ifneq ($(ANDROID_VERSION),ics)
 PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_1):m:md5
 #PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTLOADER_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(PRIMARY_GPT_BIN):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(SECONDARY_GPT_BIN):m:md5
+DROID_PRODUCT:=dkbnevo
+else
+DROID_PRODUCT:=nevo
+endif
 
 
 .PHONY:build_uboot_obm_$(1)
@@ -37,10 +43,10 @@ build_uboot_obm_$(1):
 	$$(log) "start to copy uboot and obm files"
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot.bin $$(OUTPUT_DIR)/$(1)
 	#$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTLOADER_1) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
-	#$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(PRIMARY_GPT_BIN) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(SECONDARY_GPT_BIN) $$(OUTPUT_DIR)/$(1)
+	$$(hide)if [ -e $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) ]; then cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1); fi
+	#$$(hide)cp $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
+	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/$$(PRIMARY_GPT_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/$$(PRIMARY_GPT_BIN) $$(OUTPUT_DIR)/$(1); fi
+	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/$$(SECONDARY_GPT_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/$$(SECONDARY_GPT_BIN) $$(OUTPUT_DIR)/$(1); fi
 	$$(log) "  done."
 
 endef
