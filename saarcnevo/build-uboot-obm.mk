@@ -13,6 +13,11 @@ OBM_NTIM_2:=PinMuxData.bin
 
 MBR_BIN:=mbr
 
+ifneq ($(ANDROID_VERSION),ics)
+DROID_PRODUCT:=saarcnevo
+else
+DROID_PRODUCT:=nevo
+endif
 
 #$1:build variant
 define define-build-uboot-obm
@@ -39,8 +44,8 @@ build_uboot_obm_$(1):
 	#$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTLOADER_1) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_2) $$(OUTPUT_DIR)/$(1)
-	#$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(MBR_BIN) $$(OUTPUT_DIR)/$(1)
+	#$$(hide)cp $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/$$(MBR_BIN) $$(OUTPUT_DIR)/$(1)
 	$$(log) "  done."
 
 endef
