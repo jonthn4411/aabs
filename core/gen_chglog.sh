@@ -155,7 +155,7 @@ gen_log_csv() {
 	done < <(git --no-pager log ${commit}...HEAD --left-right --boundary --cherry-pick --topo-order --pretty="format:%m,$CURRENT_PRJPATH,$CURRENT_PRJNAME,$CURRENT_PRJORG,\"%s\",%aN,%aE,%cE,%H,%ci%n")
 
 	if [ $i -eq 1 ]; then
-		echo >> $1
+		echo ",,,,,,,,," >> $1
 	fi
 }
 
@@ -386,9 +386,9 @@ if [ ! -z "$LAST_BUILD_LOC" ]; then
   if [ -e $LAST_BUILD_LOC/${LAST_REL_FILE} ]; then
     parse_lastrel_file $LAST_BUILD_LOC/${LAST_REL_FILE} &&
     echo -n > "$OUTPUT_DIR/changelog_rel.csv"
-    echo "# Change logs since last release: $LAST_REL_VERSION" >> "$OUTPUT_DIR/changelog_rel.csv"
-    echo "# The last release package can be found at: $LAST_REL_PACKAGE" >> "$OUTPUT_DIR/changelog_rel.csv"
-    echo >> "$OUTPUT_DIR/changelog_rel.csv"
+    echo "# Change logs since last release: $LAST_REL_VERSION,,,,,,,,," >> "$OUTPUT_DIR/changelog_rel.csv"
+    echo "# The last release package can be found at: $LAST_REL_PACKAGE,,,,,,,,," >> "$OUTPUT_DIR/changelog_rel.csv"
+    echo ",,,,,,,,," >> "$OUTPUT_DIR/changelog_rel.csv"
     echo "DIR,Project,Git,Branch,Patch,Author,AEmail,CEmail,Hash,Date" >> "$OUTPUT_DIR/changelog_rel.csv"
   fi &&
 
