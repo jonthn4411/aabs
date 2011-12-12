@@ -3,7 +3,6 @@ $(call check-variables,BUILD_VARIANTS)
 BOOT_SRC_DIR:=boot
 BOOT_OUT_DIR:=$(BOOT_SRC_DIR)/out
 UBOOT:=u-boot.bin
-WTM_BIN:=Wtm_rel_mmp3.bin
 
 #$1:build variant
 define define-build-uboot-obm
@@ -12,7 +11,6 @@ define define-build-uboot-obm
 #o:means optional
 #md5: need to generate md5 sum
 PUBLISHING_FILES+=$(1)/$(UBOOT):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/emmc/$(WTM_BIN):m:md5
 
 .PHONY:build_uboot_obm_$(1)
 build_uboot_obm_$(1):
@@ -24,7 +22,6 @@ build_uboot_obm_$(1):
 
 	$$(log) "start to copy uboot and obm files"
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot.bin $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/emmc/$$(WTM_BIN) $$(OUTPUT_DIR)/$(1)/emmc
 	$$(log) "  done."
 
 endef
