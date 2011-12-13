@@ -122,13 +122,13 @@ Burning OBM and UBoot (we must burn kernel and ramdisk by XDB in trusted mode)
 	Trusted boot
       a)Burn "tim_platform_512m_ddr3.bin"	address [0x0, 0x4000)
       b)Burn "Wtm_rel_mmp2.bin"			address [0x4000, 0x30000)
-      c)Burn "MMP2_LINUX_ARM_BL_3_2_21_TRUSTED_EB_JO.bin"		address [0x30000, 0x60000)
+      c)Burn "MMP2_LINUX_ARM_BL_3_2_23_TRUSTED_EB_JO.bin"		address [0x30000, 0x60000)
       d)Burn "u-boot.bin"			address [0x60000, 0xB0000)
       e)Burn "u-boot.bin" as recovery u-boot	address [0xB0000, 0x100000)
 	Non-Trusted boot
       a)Burn "ntim_platform_512m_ddr3.bin"	address [0x0, 0x4000)
       b)Burn "Wtm_rel_mmp2.bin"			address [0x4000, 0x30000)
-      c)Burn "MMP2_LINUX_ARM_BL_3_2_21_EB_JO.bin"		address [0x30000, 0x60000)
+      c)Burn "MMP2_LINUX_ARM_BL_3_2_23_EB_JO.bin"		address [0x30000, 0x60000)
       d)Burn "u-boot.bin"			address [0x60000, 0xB0000)
       e)Burn "u-boot.bin" as recovery u-boot	address [0xB0000, 0x100000)
    6)Choose partition 0x0

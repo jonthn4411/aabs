@@ -6,13 +6,13 @@ UBOOT:=u-boot.bin
 
 OBM_NTIM_1:=ntim_platform_512m_ddr3.bin
 OBM_NTIM_DESC_1:=ntim_platform_512m_ddr3.txt
-OBM_NTLOADER_1:=MMP2_LINUX_ARM_BL_3_2_21_EB_JO.bin
+OBM_NTLOADER_1:=MMP2_LINUX_ARM_BL_3_2_23_EB_JO.bin
 OBM_DNTIM_1:=dntim_platform.bin
 OBM_DNTIM_DESC_1:=dntim_platform.txt
 
 OBM_TIM_1:=tim_platform_512m_ddr3.bin
 OBM_TIM_DESC_1:=tim_platform_512m_ddr3.txt
-OBM_TLOADER_1:=MMP2_LINUX_ARM_BL_3_2_21_TRUSTED_EB_JO.bin
+OBM_TLOADER_1:=MMP2_LINUX_ARM_BL_3_2_23_TRUSTED_EB_JO.bin
 OBM_DTIM_1:=dtim_platform.bin
 OBM_DTIM_DESC_1:=dtim_platform.txt
 OBM_DTIM_KEY_1:=EncryptKey.txt
