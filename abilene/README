@@ -135,14 +135,10 @@ Burning OBM and Uboot
    3)Erase All Blocks
    4)Burn Date Files as follows:
      Choose partition 0x1
-        a)Burn "ntim_mmp3_v7_mp_emmc_dis_uboot.bin"           address [0x000000]
-              ("ntim_mmp3_v7_mp_emmc_pop_uboot.bin" for pop board, CPU frequence 200M Hz)
-              ("ntim_mmp3_v7_mp_emmc_dis_uboot.bin" for dis board, CPU frequence 200M Hz)
-              ("ntim_mmp3_v7_mp_emmc_xxx_uboot_800.bin" for pop/dis board, CPU frequence 800M Hz)
-              ("ntim_mmp3_v7_mp_emmc_xxx_uboot_1000.bin" for pop/dis board, CPU frequence 1G Hz)
-        b)Burn "Wtm_rel_mmp3.bin"                             address [0x020000]
+        a)Burn "ntim_abex_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1150mv.binn"           address [0x000000]
+        b)Burn "Wtm_rel_mmp3.bin"                                                                address [0x020000]
      Choose partition 0x2
-        c)Burn "u-boot.bin"                                   address [0x000000]
+        c)Burn "u-boot.bin"                                                                      address [0x000000]
 
   For developer who use coremorphall:(files under droid-gcc/emmc_cm)
    1)Use flash burn tool: flash --> burn flash
@@ -150,13 +146,50 @@ Burning OBM and Uboot
    3)Erase All Blocks 
    4)Burn Date Files as follows:
      Choose partition 0x1
-        a)Burn "ntim_abex_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1200mv.bin"      address [0x000000]
-              ("ntim_abex_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1225mv.bin" for dis board, volage 1225mv)
-        b)Burn "Wtm_rel_mmp3.bin"                                                          address [0x020000]
-        c)Burn "coremorphall.bin"                                                          address [0x060000]
+        a)Burn "ntim_abex_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1200mv_TZ.bin"      address [0x000000]
+        b)Burn "Wtm_rel_mmp3.bin"                                                             address [0x020000]
+        c)Burn "coremorphall.bin"                                                             address [0x060000]
      Choose partition 0x2
-        d)Burn "u-boot_cm.bin"                                                             address [0x000000]
-   
+        d)Burn "u-boot.bin"                                                                   address [0x000000]
+
+About Ntims
+============
+1.For normal user:
+  1)ntim.bin.tar is ntim tar file and is droid/emmc  
+  2)Prefered ntims are as follows:
+    a)For Abilene Discrete Board:
+      abex_dis/ntim_abex_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1150mv.bin
+      abex_dis/ntim_abex_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1181mv.bin
+      abex_dis/ntim_abex_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1200mv.bin
+      abex_dis/ntim_abex_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1225mv.bin
+    b)For Abilene Pop Board:
+      abex_pop/ntim_abex_pop-797-797-399-399-399-399-399-200__3_1_sm_400_1181mv.bin
+      abex_pop/ntim_abex_pop-797-797-399-399-399-399-399-200__3_1_sm_400_1150mv.bin
+      abex_pop/ntim_abex_pop-797-797-399-399-399-399-399-200__3_1_sm_400_1200mv.bin
+      abex_pop/ntim_abex_pop-797-797-399-399-399-399-399-200__3_1_sm_400_1225mv.bin
+  3)Recommend to use the xxx-1200mv.bin for each platform, if the board has stability issue, then try others. 
+
+2.For developer who use coremorphall:
+  ntim.bin.tar is ntim tar file and is droid/emmc_cm
+
+3.The naming meaning for NTIM binary
+  ntim_<board>-<mp1>-<mp2>-<mm>-<aclk>-<ddr1>-<ddr2>-<axi1>-<axi2>__<ppname>_<ddrcfgname>_<voltage>.bin
+    for example:
+  ntim_abex_dis-797-797-399-399-399-399-399-200__3_1_sm_noch2_400_1200mv.bin 
+  is for abex_dis
+  MP1: 797
+  MP2: 797
+  MM:  399
+  ACLK:399
+  DDR1:399
+  DDR2:399
+  AXI1:399
+  AXI2:200
+  PP: 3_1
+  ddrcfgname: sm_noch2_400, signle memory controller, 2nd reset, using 400MHz timing
+  voltage 1.2v
+
+  
 Boot up Android on eMMC
 =====================================
 
