@@ -12,7 +12,7 @@ define define-build-uboot-obm
 #o:means optional
 #md5: need to generate md5 sum
 PUBLISHING_FILES+=$(1)/$(UBOOT):m:md5
-PUBLISHING_FILES+=$(1)/$(UBOOT):m:md5
+PUBLISHING_FILES+=$(1)/Wtm_rel_mmp3.bin:m:md5
 PUBLISHING_FILES+=$(1)/$(NTIM_BIN_TGZ):m:md5
 
 .PHONY:build_uboot_obm_$(1)
