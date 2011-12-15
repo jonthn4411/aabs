@@ -42,9 +42,9 @@ Files in this folder
 -Android File Systems
   root_nfs_xxx.tgz          Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
 
-  ramdisk_ext4.img         Android ramdisk image.
-  system_ext4.img          Android system image.
-  userdata_ext4.img         Android userdata image.
+  ramdisk.img         Android ramdisk image.
+  system.img          Android system image.
+  userdata.img         Android userdata image.
   update_droid.zip         that is a update package including kernel, ramdisk and system folder.
 
   if xxx is "internal" means everything is built in the package, and should be used internally.
@@ -56,10 +56,10 @@ How to get the 'latest' source code from git server
   1. $ mkdir <android_working_dir>
      $ cd <android_working_dir>
 
-  2. For Gingerbread
-     $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b abilene-gingerbread
-     For Honeycomb
+  2.For Honeycomb
      $ repo init -u ssh://shgit.marvell.com/git/droid/platform/manifest.git -b abilene-honeycomb
+    For ICS
+     $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b abilene-ics
 
   3. $ repo sync
 
@@ -71,10 +71,11 @@ How to get the code that the autobuild system uses for daily build and code drop
   1. $ mkdir <android_working_dir>
      $ cd <android_working_dir>
 
-  2. For Gingerbread
-     $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b abilene-gingerbread
-     For Honeycomb
-     $ repo init -u ssh://shgit.marvell.com/git/droid/platform/manifest.git -b abilene-honeycomb
+  2. For Honeycomb
+      $ repo init -u ssh://shgit.marvell.com/git/droid/platform/manifest.git -b abilene-honeycomb
+     For ICS
+      $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b abilene-ics
+
      You may don't have the access to our git server. In this situation, contact the administrator of our git server.
 
   3. copy 'manifest.xml' from autobuild system or code drop into my_droid_src/.repo/manifests/, name it as whatever you like, say 'my_manifest.xml'.
@@ -217,15 +218,15 @@ Abilene>> tftp 0x1100000 uImage.android
 Abilene>> mmc write 0x1100000 0x4c00 0x4000
 
 3) ramdisk
-Abilene>> tftpboot 0x1100000 ramdisk_ext4.img
+Abilene>> tftpboot 0x1100000 ramdisk.img
 Abilene>> mmc write 0x1100000 0x8c00 0x4000
 
 4) system
-Abilene>> tftpboot 0x1100000 system_ext4_internal.img
+Abilene>> tftpboot 0x1100000 system_internal.img
 Abilene>> mmc write 0x1100000 0xcc00 0x64000
 
 5) user data
-Abilene>> tftpboot 0x1100000 userdata_ext4_internal.img
+Abilene>> tftpboot 0x1100000 userdata_internal.img
 Abilene>> mmc write 0x1100000 0x70c00 0x4b000
 
 After done, power-off and power-on again to boot mmp3 from emmc.
