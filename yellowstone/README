@@ -42,9 +42,9 @@ Files in this folder
 -Android File Systems
   root_nfs_xxx.tgz          Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
 
-  ramdisk_ext4.img         Android ramdisk image.
-  system_ext4.img          Android system image.
-  userdata_ext4.img         Android userdata image. 
+  ramdisk.img         Android ramdisk image.
+  system.img          Android system image.
+  userdata.img         Android userdata image.
   update_droid.zip         that is a update package including kernel, ramdisk and system folder.
 
   if xxx is "internal" means everything is built in the package, and should be used internally.
@@ -56,11 +56,12 @@ How to get the 'latest' source code from git server
   1. $ mkdir <android_working_dir>
      $ cd <android_working_dir>
 
-  2. $ repo init -u ssh://shgit.marvell.com/git/droid/platform/manifest.git -b yellowstone-honeycomb
+  2. For ICS
+     $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b yellowstone-ics
 
   3. $ repo sync
 
-  You may don't have the access to our git server. In this situation, contact the administrator of our git server.
+  You may not have the access to our git server. In this situation, contact the administrator of our git server.
 
 How to get the code that the autobuild system uses for daily build and code drop
 =====================================
@@ -68,8 +69,7 @@ How to get the code that the autobuild system uses for daily build and code drop
   1. $ mkdir <android_working_dir>
      $ cd <android_working_dir>
 
-  2. $ repo init -u ssh://shgit.marvell.com/git/droid/platform/manifest.git -b yellowstone-honeycomb
-     You may don't have the access to our git server. In this situation, contact the administrator of our git server.
+  2. $ repo init -u ssh://shgit.marvell.com/git/droid/platform/manifest.git -b yellowstone-ics
 
   3. copy 'manifest.xml' from autobuild system or code drop into my_droid_src/.repo/manifests/, name it as whatever you like, say 'my_manifest.xml'.
 
@@ -77,14 +77,6 @@ How to get the code that the autobuild system uses for daily build and code drop
      $ repo init -m 'my_manifest.xml' # Don't need the full path of my_manifest.xml
 
   5. $ repo sync
-
--Method II
-  1. Find out 'droid_all_src.tgz' in the daily build or code drop.
-
-  2. Extract that tgz package as below.
-     $ tar xzvf droid_all_src.tgz
-
-  3. $ cd source # now you're in the source root.
 
 Set up environment before building Android
 =====================================
@@ -95,7 +87,7 @@ Set up environment before building Android
 How to Build Uboot
 =====================================
   1. Go to the diretory <android_working_dir>/boot
-     $ cd <android_working_dir>/boot  
+     $ cd <android_working_dir>/boot
 
   2. Make uboot
      $ make all
@@ -118,29 +110,51 @@ How to Build kernel and android image
 
 Burning OBM and Uboot
 =====================
-1. Install the latest XDB with version 5.1
+1. Install the latest XDB with version 5.1 or later (\\Sh-fs03\debugger_public\Official_Release\eXtreme_Debugger_*)
 2. Get the boot binaries (uboot & obm) from autobuild server
 3. Flash OBM and U-boot into EMMC using XDB
    Note: Don't check the option "erase affected blocks" when you burn images.
-
-  Use flash burn tool: flash --> burn flash
-   1)Choose flash: EMMC Flash
-   2)Erase All Blocks
-   3)Burn Date Files as follows:
+   1)Use flash burn tool: flash --> burn flash
+   2)Choose flash: EMMC Flash
+   3)Erase All Blocks
+   4)Burn Date Files as follows:
      Choose partition 0x1
-        a)Burn "ntim_abex_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1150mv.binn"           address [0x000000]
-        b)Burn "Wtm_rel_mmp3.bin"                                                                address [0x020000]
+        a)Burn "ntim_ylst_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1200mv.bin"        address [0x000000]
+        b)Burn "Wtm_rel_mmp3.bin"                                                            address [0x020000]
      Choose partition 0x2
-        c)Burn "u-boot.bin"                                                                      address [0x000000]
+        c)Burn "u-boot.bin"                                                                  address [0x000000]
 
+About Ntims
+============
+1.For normal user:
+  1)ntim.bin.tar is ntim tar file and is droid/emmc  
+  2)Prefered ntims are as follows:
+    ntim/out/ylst_dis/ntim_ylst_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1200mv.bin
+    ntim/out/ylst_dis/ntim_ylst_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1181mv.bin
+    ntim/out/ylst_dis/ntim_ylst_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1225mv.bin
+    ntim/out/ylst_dis/ntim_ylst_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1150mv.bin
 
+2.For developer who use coremorphall:
+  ntim.bin.tar is ntim tar file and is droid/emmc_cm
 
-     Partition 0x0 can be burn in u-boot with mmc.
+3.The naming meaning for NTIM binary
+  ntim_<board>-<mp1>-<mp2>-<mm>-<aclk>-<ddr1>-<ddr2>-<axi1>-<axi2>__<ppname>_<ddrcfgname>_<voltage>.bin
+    for example:
+  ntim_ylst_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1181mv.bin
+  Device: ylst_dis (yellowstone discrete)
+  MP1: 797
+  MP2: 797
+  MM:  399
+  ACLK:399
+  DDR1:532
+  DDR2:532
+  AXI1:399
+  AXI2:200
+  PP: 3_2
+  ddrcfgname: signle memory controller, using 400MHz timing
+  voltage 1181mv
 
-How to Disable GC2000
-=====================
-remove or rename egl.cfg which located in /system/lib/egl/
-
+  
 Boot up Android on eMMC
 =====================================
 
@@ -148,14 +162,14 @@ Boot the device, and enter the uboot menu.
 
 0) By default, the initial device is set to eMMC.
    You can run the following struction to make sure:
-Abilene>> mfpch emmc
-Abilene>> set autostart no
+>> mfpch emmc
+>> set autostart no
 
 1) Partition table
-Abilene>> tftpboot 0x1100000 primary_gpt_8g
-Abilene>> mmc write 0x1100000 0 0x22
-Abilene>> tftpboot 0x1100000 secondary_gpt_8g
-Abilene>> mmc write 0x1100000 0xECBFDF 0x21 
+>> tftpboot 0x1100000 primary_gpt_8g
+>> mmc write 0x1100000 0 0x22
+>> tftpboot 0x1100000 secondary_gpt_8g
+>> mmc write 0x1100000 0xECBFDF 0x21
 
 Please ignore only the following error, since it's not an actual error.
 ----------error begins----------------
@@ -163,22 +177,22 @@ Wrong Image Format for tftpboot command
 ERROR: can't get kernel image
 ----------error ends------------------
 
-2) Kernel image
-Abilene>> tftp 0x1100000 uImage.android 
-Abilene>> mmc write 0x1100000 0x4c00 0x4000
+2) Kernel image:(uImage.android is the SMP kernel while uImage.up.android is the UP one)
+>> tftp 0x1100000 uImage.android
+>> mmc write 0x1100000 0x4c00 0x4000
 
 3) ramdisk
-Abilene>> tftpboot 0x1100000 ramdisk_ext4.img
-Abilene>> mmc write 0x1100000 0x8c00 0x4000
+>> tftpboot 0x1100000 ramdisk.img
+>> mmc write 0x1100000 0x8c00 0x4000
 
 4) system
-Abilene>> tftpboot 0x1100000 system_ext4_internal.img
-Abilene>> mmc write 0x1100000 0xcc00 0x64000
+>> tftpboot 0x1100000 system_internal.img
+>> mmc write 0x1100000 0xcc00 0x64000
 
 5) user data
-Abilene>> tftpboot 0x1100000 userdata_ext4_internal.img
-Abilene>> mmc write 0x1100000 0x70c00 0x4b000
-
-
+>> tftpboot 0x1100000 userdata_internal.img
+>> mmc write 0x1100000 0x70c00 0x4b000
 
 After done, power-off and power-on again to boot mmp3 from emmc.
+
+If you're bothered by so many commands, combine them together with the seperator ';'.
