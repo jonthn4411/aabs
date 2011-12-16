@@ -1,3 +1,6 @@
+Project:SAARBMG1 master
+Owner:Shaohua Gu<shhgu@marvell.com>
+
 Files in this folder
 ====================
 -Change logs and checksum file
@@ -21,25 +24,32 @@ Files in this folder
  If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
  
 -OBM and UBoot
-    TAVOR_LINUX_NTOBM.bin		uboot for saarbmg1
-    u-boot.bin				NTLoader image
+    TAVOR_LINUX_NTOBM.bin		OBM for saarbmg1/2(eMMC storage)
+    TAVOR_LINUX_TOBM_onenand.bin        OBM for saarbmg1/2(onenand storage)
+    u-boot.bin				u-boot for saarbmg1/2
  
 -Kernel and Modules for Android [Currently for saarbmg1, zImage.android.slc and zImage.android.mmc is same]
   zImage.android	Kernel image to boot android from EMMC. A root file system is built in. 
 
 -Android File Systems
-  system.img_ext3	    Android system image for  file system.
-  userdata.img_ext3	    Android userdata image for  file system.
+  mbr                       EMMC disk mbr.
+  system.img                Android system image for raw yaffs2 file system.
+  system_ext3.img	    Android system image for  ext4 file system.
+  system_onenand.img        Android system image for Marvell soft downloader yaffs2 file system.    
+  userdata.img              Android system image for raw yaffs2 file system.
+  userdata_ext3.img	    Android userdata image for  file system.
+  userdata_onenand.img      Android userdata image for Marvell soft downloader yaffs2 file system.
   ramdisk.img		    Android root image for file system.
 
 saarbmg1 Flashing images and boot system
 
 Install OBM and Uboot
 ============================
-Burn following binaries to EMMC using Marvell eXtreme Debugger 5.0(XDB_5_0_Beta2-20100324)
+Share fold for XDB:\\sh-fs01\Debugger_public\Engineering_Release\XDB_5_1
+Burn following binaries to EMMC using Marvell eXtreme Debugger 5.1
 Configuration:CPU-JTAG->Target Connection: (usb:).
-JTAG->SOC->PXA9xx->PXA950_CPU.xdb->Burn Flash->
-    Board:pxa950
+JTAG->SOC->PXA9xx->pxa955_cs.xsf->Burn Flash->
+    Board:pxa955
     Flash:EMMC
     Burn as binary File
     Erase affected blocks
@@ -47,8 +57,28 @@ JTAG->SOC->PXA9xx->PXA950_CPU.xdb->Burn Flash->
 Choose partition 0 & 1
 	TAVOR_LINUX_NTOBM.bin	    --> address 0x00000
 Choose partition 0
-	u-boot.bin		    --> address 0x80000
+	u-boot.bin		    --> address 0x140000
 
+Burn binaries with SWD
+======================
+Burn following binaries to flash by using Software Downloader.
+1. copy all the MG1/2 images to current images dir.
+   - TAVOR_LINUX_NTOBM.bin
+   - u-boot.bin
+   - mbr
+   - ramdisk.img
+   - system_ext3.img
+   - userdata_ext3.img
+   - pxafs_ext2.img
+   - zImage(zImage.android.mmc)
+2. run SWDownloader.exe. Choose 'TRUSTED' or 'NON-TRUSTED' according to your board/images version.
+3. open the saarbmg1/2.blf.
+4. select the images to be updated.
+5. connect MG1/2 board to windows PC by USB cable.
+6. click the green start button on SWDownloader.
+7. reset the MG1/2 board.
+8. install the USB driver for the first downlaod. Locate the driver to current usb dir.
+9. wait the connection to be ready, click the download button on SWDownloader, and the update starts.
 
 Setup Android on EMMC
 ===========================
@@ -56,24 +86,21 @@ Setup Android on EMMC
 	COM port set to 115200,8N1. Power on hte board and wait for TavorPV2>> prompt to appear
 
 3.Enter the following command to upload the system.img into the RAM and burn into flash:
-For NAND flash, issue the following commands:
-Use tftp to down load images:
-
 For EMMC, issue the following commands:
 TavorPV2>>tftp zImage
-TavorPV2>>mmc write 0x4908 0x17f8
+TavorPV2>>mmc write 0x5000 0x2000
 
 TavorPV2>>tftp system_ext3.img
-TavorPV2>>mmc write 0x6100 0x2d000
+TavorPV2>>mmc write 0x7200 0x41800
 
 TavorPV2>>tftp userdata_ext3.img
-TavorPV2>>mmc write 0x33100 0x2d000
+TavorPV2>>mmc write 0x48a00 0x50000
 
 TavorPV2>>tftp ramdisk.img
-TavorPV2>>mmc write 0x600 0x200
+TavorPV2>>mmc write 0x7000 0x200
 
 TavorPV2>>tftp mbr
-TavorPV2>>mmc write 0x4900 0x1
+TavorPV2>>mmc write 0x0 0x1
 Reboot the system.
 
 
@@ -86,12 +113,43 @@ Note 2: You need to first input "sw" to switch to usb eth, and then, input "tftp
 Note 3: You need to configure the host network interface:
 	# ifconfig usb0 192.168.1.100 
 
-Setup Android on NFS
-===========================
-1)  Burn all images except for ramdisk.img. [zImage.android.mmc can be used]
-2)  Setup nfs on host. Host ip is 192.168.1.100 and android rootfs should be put to /nfs/android
-3)  unzip root_nfs_internal.tgz to /nfs/android
-4)  reboot
+Marvell Code Performance Analyzer
+==================================
+The Marvell Code Performance Analyzer v2.3 is supported in this release.
+- What's New
+  - Call Stack sampling data collection and corresponding data analysis
+  - Remote data collection via the Android Debug Bridge (ADB) for the Android device
+- Features
+  - The following sections provide information about the supported and unsupported features for this release.
+- Supported Features
+  - Remote data collection via TCP/IP
+  - Remote data collection via ADB for the Android device
+  - Target local data collection in a connectionless environment
+  - Call Stack sampling data collection and corresponding data analysis
+  - Hotspot sampling data collection and corresponding data analysis
+  - Counter monitor data collection and corresponding data analysis.
+  - Real-time counter monitor and post analysis
+- Unsupported Features
+  - The software development kit (SDK) for dynamic code is not supported in this release.
+- System Requirements
+This release supports the Marvell Code Performance Analyzer, version 2.3. Download this version from the Marvell Extranet website at http://www.marvell.com/extranet. 
+If you do not have a Marvell Extranet user ID, click on the ¡°register¡± link at http://www.marvell.com and follow the instructions therein.
+- Installation
+Before running the data collector, go to the /system/bin/ folder and run the following command to load the kernel driver:
+$ load_mpdc.sh
+- Known Issues or Limitations
+  - It is recommended to first turn off the Marvell Scalable Power Management (MSPM). Otherwise, the Marvell Performance Data Collector (mpdc) may not work normally. 
+Use the following commands to turn off MSPM on your target:
+echo 0 >/sys/power/mspm/mspm
+  - When using the command line, if you get the error message "Fail to communicate with daemon:Success", reload your activity and run it to collect the result again.
+  - When doing remote data collection on the Android target, if the analyzer exits abnormally, the status of the mpdc_svr may still be connected. If this happens, restart the mpdc_svr on the target.
+  - If the samples/second value is set too large, the events/sample value is adjusted after a calibration to a smaller value, which makes the interrupt happen more frequently. 
+If this happens, the system becomes busy and the mpdc stops after the expected duration is expired. In addition, most of the samples will be located on the process "mpdc_d". 
+In this case, create your activity with a decreased samples/second value and start it. 
+  - When using the command line, multiple activities cannot be started at the same time.
+  - If you want to make mpdc_svr listen to another port through using the command "mpdc_svr -p <PortNumber>" on the Android target, a segmentation fault occurs.
+  - Do not set OS_TIMER as the event in the Event-Based Sampling (EBS).
+
 
 FAQ
 =====
@@ -100,7 +158,61 @@ FAQ
 ----------------------------------------------------------------
 Update your obm/uboot image and try again.
 
-
-+How to disable GC500 completly
++How to use a dailybuild manifest to fetch the codes from Marvell internal git server.
 ----------------------------------------------------------------
-You can do this by: rm /system/lib/egl/egl.cfg, so android UI and 3D applications will use SW version instead of GC500. To save 16MB from GC500 low level driver, you can: rm /system/lib/modules/galcore.ko
+ $ mkdir [android_dir]
+ $ cd [android_dir]
+ $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git --repo-url ssh://shgit.marvell.com/git/android/tools/repo.git
+ $ cp manifest.xml .repo/manifests/
+ $ repo init -m manifest.xml
+ $ repo sync
+
++How to check ipp version
+----------------------------------------------------------------
+Run the command: strings libxxxx.a/so | grep IPPONE
+
++How to check GC version
+----------------------------------------------------------------
+cat /proc/driver/gc
+
++How to check Bluetooth and WIFI version
+----------------------------------------------------------------
+1.Open the WIFI and BT
+2.Run the command: iwpriv mlan0 version
+
++Camcorder performance profiling
+----------------------------------------------------------------
+1. Repo sync the latest android branch code.
+2. Check "[src]/vendor/marvell/saarbmg1/etc/media_profiles.xml" for more.
+
++How to check the current frequency, or lock to one dedicate frequency.
+----------------------------------------------------------------
+1. Check the current frequency.
+cat /proc/cpuinfo
+2. lock to one dedicate frequency.
+cat /sys/devices/system/cpu/cpu0/ops
+echo 0 > /sys/power/mspm
+echo 0 > /sys/power/prof
+echo 5 > /sys/devices/system/cpu/cpu0/op # 5 is from ops list
+echo 0,0 > /sys/devices/system/cpu/cpu0/control
+
++adb permission deny issue.
+----------------------------------------------------------------
+sudo adb kill-server
+sudo adb start-server
+
++How to disable GC800 completly
+----------------------------------------------------------------
+You can do this by: rm /system/lib/egl/egl.cfg, so android UI and 3D applications will use SW version instead of GC800. To save 32MB from GC800 low level driver, you can: rm /system/lib/modules/galcore.ko
+
++Show the active wake lock in user space
+----------------------------------------------------------------
+Run command "cat /sys/power/wake_lock" in android shell or through "adb shell" on PC.
+
++Show all the inactive wake lock in user space
+----------------------------------------------------------------
+Run command "cat /sys/power/wake_unlock" in android shell or through "adb shell" on PC.
+
++Show all wake lock statistics, both active and inactive, and kernel wake lock included
+----------------------------------------------------------------
+Run command "cat /proc/wakelocks" in android shell or through "adb shell" on PC.
