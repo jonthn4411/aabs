@@ -69,10 +69,14 @@ build_droid_root_$(1): output_dir
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext3.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_nand.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_nand.img $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(1)
 	$(log) "  done"
 ##!!## first time publish: all for two
 PUBLISHING_FILES_$(1)+=$(1)/userdata_ext3.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/system_ext3.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/userdata.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/system.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/userdata_nand.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/system_nand.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
@@ -155,6 +159,8 @@ package_droid_slc_$(1)_$(2):
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext3.img $$(OUTPUT_DIR)/$(2)/userdata_ext3.img && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_nand.img $$(OUTPUT_DIR)/$(2)/system_nand.img && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_nand.img $$(OUTPUT_DIR)/$(2)/userdata_nand.img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(2)/system.img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(2)/userdata.img && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/build.prop $$(OUTPUT_DIR)/$(2)/build.prop
 	$$(hide)cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(2)/
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf symbols_lib.tgz lib && rm lib -rf
