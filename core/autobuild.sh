@@ -199,7 +199,7 @@ send_nobuild_notification()
 #$2: build number
 update_changelogs()
 {
-	LOG_FILES="changelog.build changelog.rel changelog.day changelog.week changelog.biweek changelog.month"
+	LOG_FILES="changelog.build changelog.day changelog.week changelog.biweek changelog.month"
 	for log in $LOG_FILES; do
 		log_file=$1/$log
 		if [ -e "$log_file" ]; then
@@ -369,7 +369,8 @@ if [ "$FLAG_SOURCE" = "true" ]; then
 	make -f ${MAKEFILE} "source" 2>&1 | tee -a $STD_LOG
 fi &&
 
-LAST_BUILD_LOC=$PUBLISH_DIR_BASE make -f ${MAKEFILE} changelog 2>&1 | tee -a $STD_LOG &&
+export LAST_BUILD_LOC=$PUBLISH_DIR_BASE
+make -f ${MAKEFILE} changelog 2>&1 | tee -a $STD_LOG &&
 
 change_since_last_build=$(make -f ${MAKEFILE} get_change_summary_since_last_build) &&
 
