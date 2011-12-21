@@ -5,6 +5,8 @@ INTERNAL_PROJECTS +=vendor/marvell/external/gps_sirf
 INTERNAL_PROJECTS +=vendor/marvell/external/flash
 INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbPlayer
 INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbStack
+INTERNAL_PROJECTS +=vendor/marvell/generic/blcr/android
+INTERNAL_PROJECTS +=vendor/marvell/generic/blcr/libcr
 
 EXCLUDE_VCS=--exclude-vcs --exclude=.repo
 
@@ -45,6 +47,9 @@ pkgsrc: output_dir get_source_for_pkg
 
 	$(hide)echo "  remove internal source code..."
 	$(hide)cd $(OUTPUT_DIR)/source && for prj in $(INTERNAL_PROJECTS); do rm -fr $$prj; done
+
+	$(hide)cp $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system/lib/libcr.so $(OUTPUT_DIR)/source/vendor/marvell/generic/blcr/prebuilt/
+	$(hide)cp $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system/lib/libcr_android.so $(OUTPUT_DIR)/source/vendor/marvell/generic/blcr/prebuilt/
 
 	$(hide)echo "  package all source code..."
 	$(hide)cd $(OUTPUT_DIR) && tar czf droid_all_src.tgz $(EXCLUDE_VCS) source/
