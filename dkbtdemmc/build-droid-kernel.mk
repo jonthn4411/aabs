@@ -51,11 +51,11 @@ clean_kernel:
 #$1:build variant
 define define-build-droid-all
 .PHONY:build_droid_all_$(1)
-ifeq ($(ANDROID_VERSION),ics)
-       build_droid_all_$(1): build_droid_kernel_modules_$(1) build_droid_root_$(1) build_droid_telephony_$(1) build_droid_package_nfs_$(1)
-else
-       build_droid_all_$(1): build_droid_kernel_modules_$(1) build_droid_root_$(1) build_droid_telephony_$(1) build_droid_otapackage_$(1) build_droid_package_nfs_$(1)
-endif
+#ifeq ($(ANDROID_VERSION),ics)
+#       build_droid_all_$(1): build_droid_kernel_modules_$(1) build_droid_root_$(1) build_droid_telephony_$(1) build_droid_package_nfs_$(1)
+#else
+build_droid_all_$(1): build_droid_kernel_modules_$(1) build_droid_root_$(1) build_droid_telephony_$(1) build_droid_otapackage_$(1) build_droid_package_nfs_$(1)
+#endif
 endef
 
 #$1:build variant
