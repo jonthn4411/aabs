@@ -1,4 +1,4 @@
-Project: dkbtd-gingerbread
+Project: dkbtd-ics
 Owner: Jingjing Tan
 
 Files in this folder
@@ -50,12 +50,9 @@ Files in this folder
 
 -Android File Systems
   system.img                                            :Android system image for file system.
-  system_ext4.img                                       :The same as system.img, except the format is EXT4, should be used on eMMC.
   userdata.img                                          :Android userdata image for  file system.
-  userdata_ext4.img                                     :The same as userdata.img, except the format is EXT4, should be used on eMMC.
   ramdisk.img                                           :Android root image for file system.
   pxafs.img                                             :AP telephony image.
-  pxafs_ext4.img                                        :The same as pxafs.img, except the format is EXT4, should be used on eMMC.
   ramdisk-recovery.img                                  :Recovery ramdisk
 
 -Software_Downloader.zip                                :Software downloader
@@ -71,7 +68,7 @@ Burn following binaries to flash by using Software Downloader. Please see <TVTD_
                 TVTD_DKB3_0_Linux_Beta_Micron4G_GB.blf [For TD-Gingerbread]
                 TTC2_DKB3_0_Linux_Beta_Micron4G_GB.blf [For TTC-Gingerbread]
 3)       if burning is for PXA920H, you can choose the configuration file:
-                TVTD_LPDDR2_Linux_eMMC.blf [For TD-EMMC]
+                TVTD_LPDDR2_Linux_eMMC_ICS.blf [For TD-EMMC]
 
         TVTD_DKB3_0_Loader_3_2_13_LINUX.bin             --> flash address 0x40000 [For TD]
         TTC2_DKB3_0_Loader_3_2_13_LINUX.bin             --> flash address 0x40000 [For TTC]
@@ -83,12 +80,9 @@ Burn following binaries to flash by using Software Downloader. Please see <TVTD_
         TTD_M06_AI_A0_Flash.bin                         --> flash address 0x880000 [For TD]
         TTC1_M05_AI_A1_Flash.bin                        --> flash address 0x880000 [For TTC]
         uImage                                          --> flash address 0x980000 [copy from uImage.android.mmc]
-        system.img                                      --> flash address 0x6800000 [Not For eMMC]
-        system_ext4.img                                 --> flash address 0x6800000 [Only For eMMC]
-        userdata.img                                    --> flash address 0x1080000 [Not For eMMC]
-        userdata_ext4.img                               --> flash address 0x1080000 [Only For eMMC]
-        pxafs.img                                       --> flash address 0x1ec0000 [Not For eMMC] 
-        pxafs_ext4.img                                  --> flash address 0x1ec0000 [Only For eMMC]
+        system.img                                      --> flash address 0x6800000
+        userdata.img                                    --> flash address 0x1080000
+        pxafs.img                                       --> flash address 0x1ec0000
 
 If you want recovery to be functional, you have to burn the below images together:
         ramdisk-recovery.img                            --> flash address 0x1180000
@@ -245,7 +239,7 @@ You can do this by following steps:
 2. Run command "adb remount" in Client PC, make sure "adb" is installed.
 3. Run command "adb shell rm /system/lib/egl/egl.cfg" in Client PC.
 4. Run command "adb reboot" in Client PC to make sure modification works.
-so android UI and 3D applications will use SW version instead of GC500. To save 32MB from GC500 low level driver, you can run: "adb shell rm /system/lib/modules/galcore.ko"
+so android UI and 3D applications will use SW version instead of GC500. To save 64MB from GC500 low level driver, you can run: "adb shell rm /system/lib/modules/galcore.ko"
 
 +"waiting for device" error when using fastboot to burn images
 ----------------------------------------------------------------
