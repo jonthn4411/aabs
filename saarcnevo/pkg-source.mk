@@ -103,7 +103,7 @@ PUBLISHING_FILES+=droid-gcc/NEVO_SAAR_TOBM_NAND16BCH_MODE1.bin.rnd:m:md5
 PUBLISHING_FILES+=droid-gcc/NEVO_SAAR_TOBM_EMMCAB_MODE2.bin.rnd:m:md5
 PUBLISHING_FILES+=droid-gcc/NEVO_C0_Flash.bin:m:md5
 PUBLISHING_FILES+=droid-gcc/Arbel_REL7_PMD2NONE.bin:m:md5
-PUBLISHING_FILES+=droid-gcc/plugin_LYRA5_A1_128_V03.bin.rnd:m:md5
+PUBLISHING_FILES+=droid-gcc/plugin_LYRA5_A1_128_V03.bin:m:md5
 PUBLISHING_FILES+=droid-gcc/PinMuxData.bin:m:md5
 
 
