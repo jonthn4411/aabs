@@ -7,7 +7,7 @@ Version: DKBTTC Gingerbread Beta6
 
 1. Platform features
 1.1 Supported Components
-- Rebase to google android-2.3.7_r1 branch
+- Rebase to google android-2.3.5_r1 branch
 - Do key pad mapping, touch for PXA920 DKB platform
 - HIFI playback on headset and speaker
 - Audio routing for phone earpiece and headset

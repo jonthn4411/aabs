@@ -1,4 +1,4 @@
-Project: dkbttc-gingerbread
+Project: dkbttc-ics
 Owner: Jingjing Tan
 
 Files in this folder
@@ -239,7 +239,7 @@ You can do this by following steps:
 2. Run command "adb remount" in Client PC, make sure "adb" is installed.
 3. Run command "adb shell rm /system/lib/egl/egl.cfg" in Client PC.
 4. Run command "adb reboot" in Client PC to make sure modification works.
-so android UI and 3D applications will use SW version instead of GC500. To save 32MB from GC500 low level driver, you can run: "adb shell rm /system/lib/modules/galcore.ko"
+so android UI and 3D applications will use SW version instead of GC500. To save 64MB from GC500 low level driver, you can run: "adb shell rm /system/lib/modules/galcore.ko"
 
 +"waiting for device" error when using fastboot to burn images
 ----------------------------------------------------------------
