@@ -181,8 +181,6 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	$$(log) "[$(2)]starting to build kernel for booting $$(private_os) from $$(private_storage) ..."
 	$$(log) "    kernel_config: $$(private_kernel_cfg): ..."
 	$$(hide)cd $$(SRC_DIR)/$$(KERNELSRC_TOPDIR) && \
-	. $(TOP_DIR)/tools/apb $(DROID_PRODUCT) && \
-	choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	KERNEL_CONFIG=$$(private_kernel_cfg) make clean all 
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)
 	$$(log) "    copy kernel and module files ..."
