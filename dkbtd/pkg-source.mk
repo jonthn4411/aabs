@@ -71,13 +71,7 @@ pkgsrc: output_dir get_source_for_pkg
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(TOP_DIR)/core
 
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
-	$(hide)if [ "$(ANDROID_VERSION)" = "ics" ];then \
-			cp $(BOARD)/ReleaseNotes.ics $(OUTPUT_DIR)/ReleaseNotes.txt; \
-		elif [ "$(ANDROID_VERSION)" = "gingerbread" ]; then \
-			cp $(BOARD)/ReleaseNotes.gb $(OUTPUT_DIR)/ReleaseNotes.txt; \
-		else \
-			cp $(BOARD)/ReleaseNotes.txt $(OUTPUT_DIR); \
-		fi
+	$(hide)cp $(BOARD)/ReleaseNotes.txt $(OUTPUT_DIR)
 	$(log) "  done."
 
 

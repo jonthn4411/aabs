@@ -409,14 +409,8 @@ fi &&
 if [ "$FLAG_PUBLISH" = "true" ]; then
 	get_new_publish_dir
 	export PUBLISH_DIR
-	make -f ${MAKEFILE} publish -e 2>&1 | tee -a $STD_LOG
-	if [ "$ANDROID_VERSION" = "ics" ]; then
-		cp ${ABS_BOARD}/README.ics $PUBLISH_DIR/README
-	elif [ "$ANDROID_VERSION" = "gingerbread" ]; then
-		cp ${ABS_BOARD}/README.gb $PUBLISH_DIR/README
-	else
-		cp ${ABS_BOARD}/README $PUBLISH_DIR/README
-	fi
+	make -f ${MAKEFILE} publish -e 2>&1 | tee -a $STD_LOG &&
+	cp ${ABS_BOARD}/README $PUBLISH_DIR &&
 	
 	update_changelogs $PUBLISH_DIR $BUILD_NUM &&
 		
