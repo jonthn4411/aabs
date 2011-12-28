@@ -21,10 +21,11 @@ Files in this folder
  If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
  
 -OBM and UBoot
-    u-boot.bin				NTLoader image
-    Arbel_DKB_SKWS.bin                  CP Arbel image
-    TTD_M06_AI_A1_Flash.bin             CP MSA image
-    ReliableData.bin                    IMEI
+    NEVO_EVB_TOBM_EMMCAB_MODE3.bin.rnd  		OBM for eMMC version board
+    u-boot.bin						NTLoader image	
+    Arbel_DIGRF3.bin                 			CP Arbel image
+    TTD_M06_AI_A1_Flash.bin             		CP MSA image
+    TTD_M06_AI_A1_L2_I_RAM_SECOND_Flash.bin             CP MSA image
  
 -Kernel and Modules for Android [Currently for dkbnevo, zImage.android.slc and zImage.android.mmc is same]
   zImage.android.xxx                        Kernel image to boot android from EMMC. A root file system is built in. 
@@ -32,6 +33,8 @@ Files in this folder
 -Android File Systems
   primary_gpt               Primary GPT file
   secondary_gpt             Secondary GPT file
+  primary_gpt_8g            Primary GPT file for board whose emmc size is 8G
+  secondary_gpt_8g          Secondary GPT file whose emmc size is 8G
   system_ext3.img	    Android system image for  file system.
   userdata_ext3.img	    Android userdata image for  file system.
   ramdisk.img		    Android root image for file system.
@@ -45,9 +48,9 @@ Burn binaries by Software Downloader
 ============================
 1) put the following binary files in <softwareDownloader>/NEVO
         u-boot.bin
-        Arbel_DKB_SKWS.bin
+        Arbel_DIGRF3.bin
         TTD_M06_AI_A1_Flash.bin
-        ReliableData.bin
+	TTD_M06_AI_A1_L2_I_RAM_SECOND_Flash.bin
         primary_gpt
         secondary_gpt
         zImage
@@ -61,33 +64,42 @@ Burn binaries by Software Downloader
 
         ntim_nand.bin                                           --> flash address 0x00000 (this binary is automatically created by SoftwareDownloader, when press "start" button)
         NEVO_Loader_ARM_3_3_1.bin                               --> flash address 0x20000
-        u-boot.bin                                              --> flash address 0x80000
-        ReliableData.bin                                        --> flash address 0x180000
-        Arbel_DKB_SKWS.bin                                      --> flash address 0x200000
-        TTD_M06_AI_A1_Flash.bin                                 --> flash address 0x900000
+        u-boot.bin                                              --> flash address 0x140000
+        Arbel_DIGRF3.bin	                                --> flash address 0x200000
+        TTD_M06_AI_A1_Flash.bin                                 --> flash address 0x700000
+        TTD_M06_AI_A1_L2_I_RAM_SECOND_Flash.bin			--> flash address 0x900000
         primary_gpt                                             --> flash address 0x000000
-        secondary_gpt                                           --> flash address 0x1ce7fbe00
+        secondary_gpt                                           --> flash address 0xFFFFFFFF
         zImage                                                  --> flash address 0xa00000
         ramdisk.img                                             --> flash address 0xe00000
         pxafs_ext4.img                                          --> flash address 0x2800000
-        system_ext3.img                                         --> flash address 0x8900000
-        userdata_ext3.img                                       --> flash address 0x18900000
-Notes: So far, due to software download bug, you need to use XDB to burn ntim_nand.bin and NEVO_Loader_ARM_3_3_1.bin if it's your first time to burn the board. If it's not your first time to burn this board, go to step 4 now.
+        system_ext3.img                                         --> flash address 0x8100000
+        userdata_ext3.img                                       --> flash address 0x18100000
 
-4) Connect the USB cable between the host machine and the board.
-5) Power on the board, hold "Back" button on the board, and Press the reset key on the board, Release the "Back" button after the software download shows the downloading is in progress. When the burning is done, the software download will pop up a dialog to notify
+3) Connect the USB cable between the host machine and the board.
+4) Power on the board, hold "Back" button on the board, and Press the reset key on the board, Release the "Back" button after the software download shows the downloading is in progress. When the burning is done, the software download will pop up a dialog to notify
 Notes: you will be asked to install usb driver if it's your first time to burn the board, then install the driver in <softwareDownloader>/WTPTP folder.
 
 Burn binaries by XDB
 ============================
-Burn following binaries to EMMC using Marvell eXtreme Debugger 5.2(XDB_5_2_Beta2.1)
+Burn following binaries to EMMC using Marvell eXtreme Debugger 5.3
+Use the configuration file c:\program files\marvell\xdb5.3\xdb\configurations\jtag\soc\pxa978\pxa978_c0_cs.xsf
 Configuration:CPU-JTAG->Target Connection: (usb:).
-JTAG->SOC->PXA9xx->PXA978.xdb->Burn Flash->
-    Board:pxa978
-    Flash:NAND Flash
-    Burn as binary File
-    Erase affected blocks
+    "Burning"
+        - Board:PXA978
+        - Flash:eMMC Flash
+        - Burn as binary File
+        - Erase affected blocks
+    "Erasing/Unblocking"
+        - Block Selection: all blocks -> Erase
 
+Choose partition 1
+	NEVO_EVB_TOBM_EMMCAB_MODE3.bin.rnd	--> address 0x00000
+Choose partition 0
+	u-boot.bin				--> address 0x140000
+	Arbel_DIGRF3.bin			--> address 0x200000
+	TTD_M06_AI_A1_Flash.bin			--> address 0x700000
+	TTD_M06_AI_A1_L2_I_RAM_SECOND_Flash.bin	--> address 0x900000
 
 Use TFTP to erase or reburn specific binaries
 =============================================
@@ -105,26 +117,31 @@ NEVODKB>>tftp zImage
 NEVODKB>>mmc write 0x5000 0x2000
 
 NEVODKB>>tftp system_ext3.img
-NEVODKB>>mmc write 0x44800 0x38400
+NEVODKB>>mmc write 0x40800 0x50000
 
 NEVODKB>>tftp userdata_ext3.img
-NEVODKB>>mmc write 0xc4800 0x21c00
+NEVODKB>>mmc write 0xC0800 0x21C00
 
 NEVODKB>>tftp ramdisk.img
 NEVODKB>>mmc write 0x7000 0x200
 
 NEVODKB>>tftp pxafs_ext4.img
-NEVODKB>>mmc write 0x14000 0x3000
+NEVODKB>>mmc write 0x14000 0x4000
 
 NEVODKB>>tftp secondary_gpt
-NEVODKB>>mmc write 0xe73fdf 0x21
+NEVODKB>>mmc write 0x0x1D4FFDF 0x21
+(if eMMC size is 8G
+NEVODKB>>mmc write 0xE8FFDF 0x21
+check eMMC size by "mmcinfo" command in uboot
+)
+
 Reboot the system.
 
 
 Note 1: All the following images should copy to the host tftp share directory:
 	zImage
-	system.img_ext3
-	userdata.img_ext3
+	system_ext3.img
+	userdata_ext3.img
 	ramdisk.img
         pxafs_ext4.img
         primary_gpt
@@ -149,6 +166,6 @@ FAQ
 Update your obm/uboot image and try again.
 
 
-+How to disable GC800 completly
++How to disable GC860 completly
 ----------------------------------------------------------------
-You can do this by: rm /system/lib/egl/egl.cfg, so android UI and 3D applications will use SW version instead of GC800. To save 16MB from GC800 low level driver, you can: rm /system/lib/modules/galcore.ko
+You can do this by: rm /system/lib/egl/egl.cfg, so android UI and 3D applications will use SW version instead of GC860. To save 16MB from GC860 low level driver, you can: rm /system/lib/modules/galcore.ko

@@ -21,34 +21,45 @@ Files in this folder
  If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
  
 -OBM and UBoot
-    TAVOR_LINUX_TOBM.bin		uboot for saarcnevo
-    u-boot.bin				NTLoader image
+    NEVO_SAAR_TOBM_EMMCAB_MODE2.bin.rnd		OBM for saarcnevo
+    PinMuxData.bin				OBM data 
+    u-boot.bin					NTLoader image
+    Arbel_REL7_PMD2NONE.bin			CP Arbel image
+    NEVO_C0_Flash.bin				CP image
+    plugin_LYRA5_A1_128_V03.bin			CP image
  
 -Kernel and Modules for Android [Currently for saarcnevo, zImage.android.slc and zImage.android.mmc is same]
   zImage.android	Kernel image to boot android from EMMC. A root file system is built in. 
 
 -Android File Systems
-  system.img_ext3	    Android system image for  file system.
-  userdata.img_ext3	    Android userdata image for  file system.
+  primary_gpt               Primary GPT file
+  secondary_gpt             Secondary GPT file
+  primary_gpt_8g            Primary GPT file for board whose emmc size is 8G
+  secondary_gpt_8g          Secondary GPT file whose emmc size is 8G
+  system_ext3.img	    Android system image for  file system.
+  userdata_ext3.img	    Android userdata image for  file system.
   ramdisk.img		    Android root image for file system.
 
 saarcnevo Flashing images and boot system
 
 Install OBM and Uboot
 ============================
-Burn following binaries to EMMC using Marvell eXtreme Debugger 5.1
+Burn following binaries to EMMC using Marvell eXtreme Debugger 5.3
+Use the configuration file c:\program files\marvell\xdb5.3\xdb\configurations\jtag\soc\pxa978\pxa978_c0_cs.xsf
 Configuration:CPU-JTAG->Target Connection: (usb:).
-JTAG->SOC->PXA9xx->PXA978.xdb->Burn Flash->
     Board:pxa978
     Flash:EMMC
     Burn as binary File
     Erase affected blocks
     Enable new BBM
 Choose partition 1
-	TAVOR_LINUX_TOBM.bin	    --> address 0x00000
+	NEVO_SAAR_TOBM_EMMCAB_MODE2.bin.rnd	--> address 0x00000
 Choose partition 0
-	PinMuxData.bin		    --> address 0x80000
-	u-boot.bin		    --> address 0x140000
+	PinMuxData.bin		    		--> address 0x80000
+	u-boot.bin		    		--> address 0x140000
+	Arbel_REL7_PMD2NONE.bin			--> address 0x200000
+	NEVO_C0_Flash.bin			--> address 0x800000
+	plugin_LYRA5_A1_128_V03.bin		--> address 0x9C0000
 
 
 Setup Android on EMMC
@@ -62,23 +73,32 @@ SAARC>>tftp zImage
 SAARC>>mmc write 0x5000 0x2000
 
 SAARC>>tftp system_ext3.img
-SAARC>>mmc write 0x7200 0x38400
+SAARC>>mmc write 0x40800 0x50000
 
 SAARC>>tftp userdata_ext3.img
-SAARC>>mmc write 0x3f600 0x21c00
+SAARC>>mmc write 0xC0800 0x21C00
 
 SAARC>>tftp ramdisk.img
 SAARC>>mmc write 0x7000 0x200
 
-SAARC>>tftp mbr
-SAARC>>mmc write 0x0 0x1
+SAARC>>tftp primary_gpt
+SAARC>>mmc write 0x0 0x400
+SAARC>>tftp secondary_gpt
+SAARC>>mmc write 0x0x1D4FFDF 0x21
+(if eMMC size is 8G
+NEVODKB>>mmc write 0xE8FFDF 0x21
+check eMMC size by "mmcinfo" command in uboot
+)
+
 Reboot the system.
 
 
 Note 1: All the following images should copy to the host tftp share directory:
+	primary_gpt
+	secondary_gpt
 	zImage
-	system.img_ext3
-	userdata.img_ext3
+	system_ext3.img
+	userdata_ext3.img
 	ramdisk.img
 Note 2: You need to first input "sw" to switch to usb eth, and then, input "tftp zImage", then connect the USB micro-line between the host PC and the saarc board
 Note 3: You need to configure the host network interface:
