@@ -249,17 +249,23 @@ PUBLISHING_FILES_$(2)+=$(2)/zImage.$$(os).$$(storage):m:md5
 PUBLISHING_FILES_$(2)+=$(2)/vmlinux:o:md5
 PUBLISHING_FILES_$(2)+=$(2)/System.map:o:md5
 #PUBLISHING_FILES_$(2)+=$(2)/modules_$$(os)_$$(storage).tgz:m:md5
-ifeq ($(DROID_PRODUCT),dkbnevo)
 PUBLISHING_FILES_$(2)+=$(2)/pxafs_ext4.img:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/pxa_symbols.tgz:o:md5
+PUBLISHING_FILES_$(2)+=$(2)/Boerne_DIAG.mdb.txt:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/ReliableData.bin:m:md5
+ifeq ($(ANDROID_VERSION),ics)
+PUBLISHING_FILES_$(2)+=$(2)/Arbel_DIGRF3.bin:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/TTD_M06_AI_A1_Flash.bin:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/TTD_M06_AI_A1_L2_I_RAM_SECOND_Flash.bin:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/Arbel_DIGRF3_NVM.mdb:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/Arbel_DIGRF3_DIAG.mdb:m:md5
+else
 PUBLISHING_FILES_$(2)+=$(2)/Arbel_DKB_SKWS.bin:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/TTD_M06_AI_A0_Flash.bin:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/TTD_M06_AI_A1_Flash.bin:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/TTD_M06_AI_Y0_Flash.bin:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/ReliableData.bin:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/Arbel_DKB_SKWS_NVM.mdb:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/Arbel_DKB_SKWS_DIAG.mdb:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/Boerne_DIAG.mdb.txt:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/pxa_symbols.tgz:o:md5
 endif
 
 build_kernel_$$(os)_$$(storage)_$(2): private_os:=$$(os)
