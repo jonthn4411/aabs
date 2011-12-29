@@ -24,8 +24,10 @@ define define-build-uboot-obm
 PUBLISHING_FILES_$(1)+=$(1)/u-boot.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(PRIMARY_GPT_BIN):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(SECONDARY_GPT_BIN):m:md5
+ifeq ($(ANDROID_VERSION),ics)
 PUBLISHING_FILES_$(1)+=$(1)/$(PRIMARY_GPT_BIN_2):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(SECONDARY_GPT_BIN_2):m:md5
+endif
 
 ifneq ($(ANDROID_VERSION),ics)
 PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_1):m:md5
