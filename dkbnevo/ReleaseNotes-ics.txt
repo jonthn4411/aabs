@@ -165,6 +165,7 @@ Uboot
   - obm_src.tgz                                         :OBM source code
 - manifest.xml						:Marvell manifest
 - Software_Downloader.zip                              :Software downloader for Microsfot Windows
+Notes: There is no software downloader in this release
 
 2. System Requirements
 2.1 Hardware requirements
@@ -240,6 +241,7 @@ Notes: OBM source code is not released, please use binary OBM file NEVO_EVB_TOBM
 
 3.4 Burn images and boot system(Nevo)
 3.4.1 Burn binaries by Software Downloader
+Notes: There is no software downloader in this release. Please use XDB to burn the binary, refer to 3.4.2
 1) put the following binary files in <softwareDownloader>/NEVO
         u-boot.bin
         Arbel_DIGRF3.bin
@@ -318,7 +320,7 @@ NEVODKB>>mmc write 0x40800 0x50000
 3.4.4.3 Enter the following command to upload the userata image into the RAM and burn into flash:
 For EMMC, issue the following commands:
 NEVODKB>>tftp userdata_ext3.img
-NEVODKB>>mmc write 0xc4800 0x21C00
+NEVODKB>>mmc write 0xC0800 0x21C00
 
 3.4.4.4 Enter the following command to upload the ramdisk image into the RAM and burn into flash:
 For EMMC, issue the following commands:
@@ -335,7 +337,7 @@ For EMMC, issue the following commands:
 NEVODKB>>tftp primary_gpt
 NEVODKB>>mmc write 0x0 0x400
 NEVODKB>>tftp secondary_gpt
-SAARC>>mmc write 0x0x1D4FFDF 0x21
+NEVODKB>>mmc write 0x1D4FFDF 0x21
 (if eMMC size is 8G
 NEVODKB>>mmc write 0xE8FFDF 0x21
 check eMMC size by "mmcinfo" command in uboot

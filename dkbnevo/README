@@ -129,7 +129,7 @@ NEVODKB>>tftp pxafs_ext4.img
 NEVODKB>>mmc write 0x14000 0x4000
 
 NEVODKB>>tftp secondary_gpt
-NEVODKB>>mmc write 0x0x1D4FFDF 0x21
+NEVODKB>>mmc write 0x1D4FFDF 0x21
 (if eMMC size is 8G
 NEVODKB>>mmc write 0xE8FFDF 0x21
 check eMMC size by "mmcinfo" command in uboot
