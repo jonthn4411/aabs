@@ -84,9 +84,9 @@ SAARC>>mmc write 0x7000 0x200
 SAARC>>tftp primary_gpt
 SAARC>>mmc write 0x0 0x400
 SAARC>>tftp secondary_gpt
-SAARC>>mmc write 0x0x1D4FFDF 0x21
+SAARC>>mmc write 0x1D4FFDF 0x21
 (if eMMC size is 8G
-NEVODKB>>mmc write 0xE8FFDF 0x21
+SAARC>>mmc write 0xE8FFDF 0x21
 check eMMC size by "mmcinfo" command in uboot
 )
 
