@@ -9,100 +9,146 @@ Last update: 12/28/2011
 - Rebase to google android Ice Cream Sandwich branch
 - Do key pad mapping, touch for PXA978 DKB platform
 - Wi-Fi/BT support
-- FM support
 - G-sensor, Compass sensor, Gyroscope sensor and Orientation support
 - Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC860
 - Integrate stagefright and g-streamer video playback for media player
-- Organ support
 
 1.2 BSP features
-Uboot
-- Boot from NAND 
-- Bownload from USB ethernet
-- Burn image into EMMC
-- Flash Bad block management
-- Boot kernel with kernel command line
-- MTD devices
-  - Support EMMC
-  - Support Fash Bad block management
-  - Support EXTFS3
-  - Support Partition
-- WMMX
-  - Support context switch
-- LCD (Dump panel)
-  - Support DSI and parallel display panel
-  - Support base display
-  - Support overlay display
-  - Support scaling
-  - Support backlight control
-  - Support FB interface
-  - Support pan display
-  - Support WVGA resolution display for panel
-  - Support RGB565, RGB888Packed, RGB888Unpacked, YUV420planar, YUV422planar and YUV422Packed format.
-- SSP
-  - Support to config it as I2S to transfer audio PCM data to outside code. 
-- Audio (use levante as outside audio codec)
-  - Support ALSA interface
-  - Support to playback Audio
-  - Support to Recodrd Audio 
-  - Support to playback and record simultaneously. 
-  - Support 3.5mm Jack
-  - Support headset and MICIN detection. 
-  - Support on-board mic
-- Touch screen
-  - Support pen attach, move, detach and time stamp. 
-- Keypad
-  - Support Key down, up, repeat and time stamp. 
-- I2C (three i2c busses)
-  - Share/Arbitrate the busses for multi devies.
-- UART (FFUART, BTUART)
-  - Support tty interface
-  - Support tty console
-  - Support multi sample rate
-  - Support HW flaw control
-  - Support PIO modes
-- USB
-  - Host
-    - Support to access USB mass storage device
-    - Support hot plug-in and remove
-    - Support USB hub
-  - OTG
-    - Support dual role device
-    - HNP and SRP are NOT support
-  - Client
-    - Support ethernet, mass storage, adb drivers.
-    - Support RNDIS , ACM, adb and mass storage for Windows host
-    - Support composite devie.
-    - Support hot attach and detach
-- MMC/SD
-  - MMC4.3/SD2.0
-    - Support partition
-    - Support hot plug-in and remove
-  - eMMC
-  - SDIO
-    - Support TY 8787 Stamp card 
-- 8787
-  - Support TY 8787 Stamp card via SDIO
-  - Bluetooth
-  - WIFI
-  - FM Radio
-- Sensor
-  - Support G-sensor
-  - Support Compass sensor
-  - Support Gyroscope sensor
-  - Support Orientation sensor
-- RTC
-  - Samremo RTC
-  - Tavor RTC
-- Suspend
-  - Support suspend
-  - Support process freeze
+Uboot:
+- Download binary from tftp over usb
+- Boot up from eMMC
+- eMMC read/write
+- Fast boot
+
+BSP:
+Kernel
+- Interrupt supported
+- L1/L2 cache supported
+- MFP/GPIO supported
+- DMA supported
+- 32k OST tick supported
+
+DDR
+- LPDDR2 with 1G size enabled (for SaarC only 512M enabled due to limitation)
+- High memory supported
+
+Storage
+- eMMC supported with 8bit width and 50Mhz
+- sdcard supported with 4bit width and 50Mhz
+- NAND supported with DMA mode
+
+FS
+- Ext4 supported
+- Yaffs2 supported
+
+Float acceleration
+- NEON supported
+
+Power
+- Suspend supported
+- Early-suspend/late resume support
+- Procida on-key supported
+- Power off supported
+- GPIO reset supported 
+
+LCD
+- 24bpp Truly WVGA dumb panel supported
+- Baselayer supported with fb framework
+- Overlay supported with fb and flip-getfreelist interface
+- Rgb565/888unpacked/yuv422packed format supported
+- Scale supported for overlay
+- Colorkey/alphablending supported
+
+Touch (ssd2531) supported
+
+Backlight (adp8885)
+- Backlight supported
+- Keypad backlight supported
+
+Keypad supported
+
+Trackpad supported
+
+Main Camera (M6MO + ov8820)
+- V4l2 interface supported
+- MIPI interface supported
+- Yuyv, 420p, 422p supported
+- VGA supported, 720p supported but with distortion
+
+Sub Camera (ov9740)
+- V4l2 interface supported
+- MIPI interface supported
+- Yuyv, 420p, 422p supported
+-  VGA and 720p supported
+
+RTC
+- Both Procida and internal RTC supported
+- Sync between external RTC and internal RTC supported
+- Wake up from RTC supported
+
+USB
+- USB client supported
+  - NFS supported
+  - Mass storage supported
+  - ADB supported
+  - Android gadget driver
+  - USB network supported
+  - Composite device supported
+  - Hot plug-in/removal supported
+- USB host enabled
+  - host mass storage supported
+  - Hot plug-in/removal supported
+  - HUB supported
+- Procida vbus supported
+- USB OTG supported
+  - when connection, "echo 1 > /sys/devices/platform/pxa-otg/inputs/a_bus_req" is required to put idle to host state
+  - Hot plug-in/removal supported
+
+Vmeta
+- UIO driver supported
+- Multi-instance supported
+
+GC860
+- Full 3D supported
+- GC clock up to 500Mhz(using MM_PLL)
+
+WIFI
+- SDIO supported
+- Host sleep supported
+
+BT
+- Co-existence with WIFI supported
+- BT transport supported
+- Headset profile supported
+
+FM supported
+
+Audio
+- Procida codec supported
+- Audio playback supported
+
+Regulator
+- Procida ldo supported
+- Usim ldo control supported
+
+SSP enabled
+
+I2C
+- Multi-master supported
+- FIFO mode and DMA mode supported
+- HS mode supported
+
+UART
+- FFUART/BTUART supported
+- DMA mode supported
+
+Sensors
+- Cywee sensors: G/gyro/Compass sensor supported
+- Adps990x sensors: light and proximity sensor supported
+
 
 1.3 Telephony
-  - Voice call MO/MT
-  - SMS MO/MT
-  - DIAG
- (Notes: Please use RDA (legacy RF) board to do the test.) 
+ (Notes: not available in this code drop) 
 
 1.4 Graphics features
   - Fully support OpenGL ES 1.1
@@ -121,34 +167,44 @@ Uboot
 		GL_EXT_texture_format_BGRA8888  
 
 1.5 Multimedia features
-- IPP Vmeta-based video codecs	
+- IPP Vmeta-based video codecs    
   - H.264 BP/MP/HP decoder
   - H.263 P0/P3 decoder
   - MPEG-4 SP/ASP decoder
   - MPEG-2 MP decoder
   - WMV/VC-1 SP/MP/AP decoder
-- IPP WMMX-optimized audio and speech codecs
+- IPP C Version audio and speech codecs
   - MP3 decoder
   - AAC decoder
   - WMA decoder
   - AAC LC encoder
   - AMR-WB decoder
   - AMR-WB encoder
-  - AMR-NB decoder
-  - AMR-NB encoder
-- IPP supported multimedia container format
-  - 3GP/3GPP (Stagefright Path)
-  - MP4      (Stagefright Path)
-  - MP3      (Stagefright Path)
-  - AAC      (Stagefright Path)
-  - AVI      (GStreamer Path)
-  - ASF      (GStreamer Path)
-  - WMV      (GStreamer Path)
-  - WMA      (GStreamer Path)
-  - MOV      (GStreamer Path)
-  - MPG      (GStreamer Path)
+  - IPP Neon-optimized SW codecs
+  - H264 decoder
+- IPP supported multimedia container format 
+Stagefright Path:
+  - 3GP/3GPP
+  - MKV/WEBM
+  - MP4      
+  - TS      
+  - MP3      
+  - AAC      
+  - FLAC      
+  - AMR      
+  - OGG      
+  - WAV      
+GStreamer Path:
+  - AVI      
+  - ASF      
+  - WMV      
+  - WMA      
+  - MOV      
+  - MPG     
+  - FLV     
 
-<VERSION>=nt1
+
+<VERSION>=r1
 ===========================================================================================
 1.6 Release package contents
 - ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
@@ -165,7 +221,6 @@ Uboot
   - obm_src.tgz                                         :OBM source code
 - manifest.xml						:Marvell manifest
 - Software_Downloader.zip                              :Software downloader for Microsfot Windows
-Notes: There is no software downloader in this release
 
 2. System Requirements
 2.1 Hardware requirements
@@ -236,13 +291,12 @@ Notes: kernel should be built before uboot as uboot will get cmd info from kerne
 3.3.6 Building OBM
  $ cd [android_dir]/boot
  $ make all
-After a short while, the binary will be generated under [android]/boot/out/Bootloader_3.3.1_NEVO_Linux/
-Notes: OBM source code is not released, please use binary OBM file NEVO_EVB_TOBM_EMMCAB_MODE3.bin.rnd
+After a short while, the binary will be generated under [android]/boot/out/
 
 3.4 Burn images and boot system(Nevo)
 3.4.1 Burn binaries by Software Downloader
-Notes: There is no software downloader in this release. Please use XDB to burn the binary, refer to 3.4.2
-1) put the following binary files in <softwareDownloader>/NEVO
+1) put the following binary files in <softwareDownloader>/NEVO_DKB/eMMC/
+	NEVO_Loader_eMMC_ARM_3_3_1.bin
         u-boot.bin
         Arbel_DIGRF3.bin
         TTD_M06_AI_A1_Flash.bin
@@ -255,11 +309,11 @@ Notes: There is no software downloader in this release. Please use XDB to burn t
         ramdisk.img
         pxafs_ext4.img
 
-2) open software downloader, and then open the configure file <softwareDownloader>/NEVO/Nevo_trusted_NAND.blf:
+2) open software download, and then open the configure file <softwareDownloader>/NEVO_DKB/eMMC/Nevo_trusted_eMMC.blf:
 
         ntim_nand.bin                                           --> flash address 0x00000 (this binary is automatically created by SoftwareDownloader, when press "start" button)
-        NEVO_Loader_ARM_3_3_1.bin                               --> flash address 0x20000
-        u-boot.bin                                              --> flash address 0x80000
+        NEVO_Loader_ARM_3_3_1.bin                               --> flash address 0x1000
+        u-boot.bin                                              --> flash address 0x140000
         Arbel_DIGRF3.bin	                                --> flash address 0x200000
         TTD_M06_AI_A1_Flash.bin                                 --> flash address 0x700000
         TTD_M06_AI_A1_L2_I_RAM_SECOND_Flash.bin			--> flash address 0x900000
@@ -270,11 +324,11 @@ Notes: There is no software downloader in this release. Please use XDB to burn t
         pxafs_ext4.img                                          --> flash address 0x2800000
         system_ext3.img                                         --> flash address 0x8100000
         userdata_ext3.img                                       --> flash address 0x18100000
-Notes: So far, due to software download bug, you need to use XDB to burn ntim_nand.bin and NEVO_Loader_ARM_3_3_1.bin if it's your first time to burn the board. If it's not your first time to burn this board, go to step 4 now.
-
 3) Press "start" button (the button with the green bulb icon), wait for the icon become red color.
 4) Connect the USB cable between the host machine and the board.
-5) Power on the board, hold "Back" button on the board, and Press the reset key on the board, Release the "Back" button after the software download shows the downloading is in progress. When the burning is done, the software download will pop up a dialog to notify
+5) Power on the board, 
+	For empty board, Press the reset key on the board, software downloader should show the downloading is in progress. When the burning is done, the software download will pop up a dialog to notify
+	For board which has obm burned, hold "Back" button on the board, and Press the reset key on the board, Release the "Back" button after the software download shows the downloading is in progress. When the burning is done, the software download will pop up a dialog to notify
 Notes: you will be asked to install usb driver if it's your first time to burn the board, then install the driver in <softwareDownloader>/WTPTP folder.
 Notes: Sometimes Software Downloader will stop during downloading or burning, you have to try again. If it failes again and again, you can disable system_ext3.img and userdata_ext3.img, and use tftp to burn them. 
 
@@ -290,7 +344,8 @@ Configuration:CPU-JTAG->Target Connection: (usb:).
     "Erasing/Unblocking"
         - Block Selection: all blocks -> Erase
 Choose partition 1
-	NEVO_EVB_TOBM_EMMCAB_MODE3.bin.rnd	--> address 0x00000
+        ntim_emmc.bin                           --> address 0x0000
+	NEVO_Loader_eMMC_ARM_3_3_1.bin		--> address 0x1000
 Choose partition 0
 	u-boot.bin				--> address 0x140000
 	Arbel_DIGRF3.bin			--> address 0x200000
