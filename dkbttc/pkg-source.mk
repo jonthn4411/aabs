@@ -68,13 +68,13 @@ pkgsrc: output_dir get_source_for_pkg
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
 	$(hide)if [ "$(ANDROID_VERSION)" = "ics" ];then \
 			cp $(BOARD)/ReleaseNotes.ics $(OUTPUT_DIR)/ReleaseNotes.txt && \
-			cp $(BOARD)/README.ics $(BOARD)/README; \
+			cp $(BOARD)/README.ics $(OUTPUT_DIR)/README; \
 		elif [ "$(ANDROID_VERSION)" = "gingerbread" ]; then \
 			cp $(BOARD)/ReleaseNotes.gb $(OUTPUT_DIR)/ReleaseNotes.txt && \
-			cp $(BOARD)/README.gb $(BOARD)/README; \
+			cp $(BOARD)/README.gb $(OUTPUT_DIR)/README; \
 		else \
 			cp $(BOARD)/ReleaseNotes.txt $(OUTPUT_DIR)/ && \
-			cp $(BOARD)/README.txt $(BOARD)/README; \
+			cp $(BOARD)/README.txt $(OUTPUT_DIR)/README; \
 		fi
 	$(log) "  done."
 
