@@ -409,8 +409,8 @@ fi &&
 if [ "$FLAG_PUBLISH" = "true" ]; then
 	get_new_publish_dir
 	export PUBLISH_DIR
-	make -f ${MAKEFILE} publish -e 2>&1 | tee -a $STD_LOG &&
 	cp ${ABS_BOARD}/README $PUBLISH_DIR &&
+	make -f ${MAKEFILE} publish -e 2>&1 | tee -a $STD_LOG &&
 	
 	update_changelogs $PUBLISH_DIR $BUILD_NUM &&
 		
