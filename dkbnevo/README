@@ -21,7 +21,7 @@ Files in this folder
  If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
  
 -OBM and UBoot
-    NEVO_EVB_TOBM_EMMCAB_MODE3.bin.rnd  		OBM for eMMC version board
+    NEVO_Loader_eMMC_ARM_3_3_1.bin			OBM for eMMC version board
     u-boot.bin						NTLoader image	
     Arbel_DIGRF3.bin                 			CP Arbel image
     TTD_M06_AI_A1_Flash.bin             		CP MSA image
@@ -46,7 +46,8 @@ dkbnevo Flashing images and boot system
 
 Burn binaries by Software Downloader
 ============================
-1) put the following binary files in <softwareDownloader>/NEVO
+1) put the following binary files in <softwareDownloader>/NEVO_DKB/eMMC/
+	NEVO_Loader_eMMC_ARM_3_3_1.bin
         u-boot.bin
         Arbel_DIGRF3.bin
         TTD_M06_AI_A1_Flash.bin
@@ -59,11 +60,11 @@ Burn binaries by Software Downloader
         ramdisk.img
         pxafs_ext4.img
 
-2) open software download, and then open the configure file <softwareDownloader>/NEVO/Nevo_trusted_NAND.blf:
+2) open software download, and then open the configure file <softwareDownloader>/NEVO_DKB/eMMC/Nevo_trusted_eMMC.blf:
         Press "start" button (the button with the green bulb icon), wait for the icon become red color.
 
-        ntim_nand.bin                                           --> flash address 0x00000 (this binary is automatically created by SoftwareDownloader, when press "start" button)
-        NEVO_Loader_ARM_3_3_1.bin                               --> flash address 0x20000
+        ntim_emmc.bin                                           --> flash address 0x00000 (this binary is automatically created by SoftwareDownloader, when press "start" button)
+        NEVO_Loader_ARM_3_3_1.bin                               --> flash address 0x1000
         u-boot.bin                                              --> flash address 0x140000
         Arbel_DIGRF3.bin	                                --> flash address 0x200000
         TTD_M06_AI_A1_Flash.bin                                 --> flash address 0x700000
@@ -75,10 +76,14 @@ Burn binaries by Software Downloader
         pxafs_ext4.img                                          --> flash address 0x2800000
         system_ext3.img                                         --> flash address 0x8100000
         userdata_ext3.img                                       --> flash address 0x18100000
+3) Press "start" button (the button with the green bulb icon), wait for the icon become red color.
+4) Connect the USB cable between the host machine and the board.
 
-3) Connect the USB cable between the host machine and the board.
-4) Power on the board, hold "Back" button on the board, and Press the reset key on the board, Release the "Back" button after the software download shows the downloading is in progress. When the burning is done, the software download will pop up a dialog to notify
+5) Power on the board, 
+	For empty board, Press the reset key on the board, software downloader should show the downloading is in progress. When the burning is done, the software download will pop up a dialog to notify
+	For board which has obm burned, hold "Back" button on the board, and Press the reset key on the board, Release the "Back" button after the software download shows the downloading is in progress. When the burning is done, the software download will pop up a dialog to notify
 Notes: you will be asked to install usb driver if it's your first time to burn the board, then install the driver in <softwareDownloader>/WTPTP folder.
+Notes: Sometimes Software Downloader will stop during downloading or burning, you have to try again. If it failes again and again, you can disable system_ext3.img and userdata_ext3.img, and use tftp to burn them. 
 
 Burn binaries by XDB
 ============================
@@ -94,7 +99,8 @@ Configuration:CPU-JTAG->Target Connection: (usb:).
         - Block Selection: all blocks -> Erase
 
 Choose partition 1
-	NEVO_EVB_TOBM_EMMCAB_MODE3.bin.rnd	--> address 0x00000
+        ntim_emmc.bin                           --> address 0x0000
+	NEVO_Loader_eMMC_ARM_3_3_1.bin		--> address 0x1000
 Choose partition 0
 	u-boot.bin				--> address 0x140000
 	Arbel_DIGRF3.bin			--> address 0x200000
@@ -129,7 +135,7 @@ NEVODKB>>tftp pxafs_ext4.img
 NEVODKB>>mmc write 0x14000 0x4000
 
 NEVODKB>>tftp secondary_gpt
-NEVODKB>>mmc write 0x0x1D4FFDF 0x21
+NEVODKB>>mmc write 0x1D4FFDF 0x21
 (if eMMC size is 8G
 NEVODKB>>mmc write 0xE8FFDF 0x21
 check eMMC size by "mmcinfo" command in uboot

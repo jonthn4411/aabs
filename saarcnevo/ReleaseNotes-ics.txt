@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA978 Android Platform Release for Linux
 Platform ReleaseNotes
-Last update: 12/28/2011
+Last update: 01/04/2012
 ==============================================================================
 
 1. Platform features
@@ -12,90 +12,141 @@ Last update: 12/28/2011
 - Light sensor and g-sensor and compass sensor and proximity sensor and accleration sensor support
 - Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC860
 - Integrate stagefright and g-streamer video playback for media player
-- Organ support
 
 1.2 BSP features
-Uboot
-- Boot from EMMC
-- Bownload from USB ethernet
-- Burn image into EMMC
-- Flash Bad block management
-- Boot kernel with kernel command line
-- MTD devices
-  - Support EMMC
-  - Support Fash Bad block management
-  - Support EXTFS3
-  - Support Partition
-- WMMX
-  - Support context switch
-- LCD (Dump panel)
-  - Support DSI and parallel display panel
-  - Support base display
-  - Support overlay display
-  - Support scaling
-  - Support backlight control
-  - Support FB interface
-  - Support pan display
-  - Support WVGA resolution display for panel
-  - Support RGB565, RGB888Packed, RGB888Unpacked, YUV420planar, YUV422planar and YUV422Packed format.
-- SSP
-  - Support to config it as I2S to transfer audio PCM data to outside code. 
-- Audio (use levante as outside audio codec)
-  - Support ALSA interface
-  - Support to playback Audio
-  - Support to Recodrd Audio 
-  - Support to playback and record simultaneously. 
-  - Support 3.5mm Jack
-  - Support headset and MICIN detection. 
-  - Support on-board mic
-- Touch screen
-  - Support pen attach, move, detach and time stamp. 
-- Keypad
-  - Support Key down, up, repeat and time stamp. 
-- I2C (three i2c busses)
-  - Share/Arbitrate the busses for multi devies.
-- UART (FFUART, BTUART)
-  - Support tty interface
-  - Support tty console
-  - Support multi sample rate
-  - Support HW flaw control
-  - Support PIO modes
-- USB
-  - Host
-    - Support to access USB mass storage device
-    - Support hot plug-in and remove
-    - Support USB hub
-  - OTG (disabled by default)
-    - Support dual role device
-    - HNP and SRP are NOT support
-  - Client
-    - Support ethernet, mass storage, adb drivers.
-    - Support RNDIS , ACM, adb and mass storage for Windows host
-    - Support composite devie.
-    - Support hot attach and detach
-- MMC/SD
-  - MMC4.3/SD2.0
-    - Support partition
-    - Support hot plug-in and remove
-  - eMMC
-  - SDIO
-    - Support TY 8787 Stamp card 
-- 8787
-  - Support TY 8787 Stamp card via SDIO
-  - Bluetooth
-  - WIFI
-  - FM Radio
-- Sensor
-  - Support G-sensor
-  - Support proximity sensor
-  - Support light sensor
-  - Support Compass sensor
-- RTC
-  - Samremo RTC
-  - Tavor RTC
-- Suspend
-  - Support suspend
-  - Support process freeze
+Uboot:
+- Download binary from tftp over usb
+- Boot up from eMMC
+- eMMC read/write
+- Fast boot
+
+BSP:
+Kernel
+- Interrupt supported
+- L1/L2 cache supported
+- MFP/GPIO supported
+- DMA supported
+- 32k OST tick supported
+
+DDR
+- LPDDR2 with 1G size enabled (for SaarC only 512M enabled due to limitation)
+- High memory supported
+
+Storage
+- eMMC supported with 8bit width and 50Mhz
+- sdcard supported with 4bit width and 50Mhz
+- NAND supported with DMA mode
+
+FS
+- Ext4 supported
+- Yaffs2 supported
+
+Float acceleration
+- NEON supported
+
+Power
+- Suspend supported
+- Early-suspend/late resume support
+- Procida on-key supported
+- Power off supported
+- GPIO reset supported 
+
+LCD
+- 24bpp Truly WVGA dumb panel supported
+- Baselayer supported with fb framework
+- Overlay supported with fb and flip-getfreelist interface
+- Rgb565/888unpacked/yuv422packed format supported
+- Scale supported for overlay
+- Colorkey/alphablending supported
+
+Touch (ssd2531) supported
+
+Backlight (adp8885)
+- Backlight supported
+- Keypad backlight supported
+
+Keypad supported
+
+Trackpad supported
+
+Main Camera (M6MO + ov8820)
+- V4l2 interface supported
+- MIPI interface supported
+- Yuyv, 420p, 422p supported
+- VGA supported, 720p supported but with distortion
+
+Sub Camera (ov9740)
+- V4l2 interface supported
+- MIPI interface supported
+- Yuyv, 420p, 422p supported
+-  VGA and 720p supported
+
+RTC
+- Both Procida and internal RTC supported
+- Sync between external RTC and internal RTC supported
+- Wake up from RTC supported
+
+USB
+- USB client supported
+  - NFS supported
+  - Mass storage supported
+  - ADB supported
+  - Android gadget driver
+  - USB network supported
+  - Composite device supported
+  - Hot plug-in/removal supported
+- USB host enabled
+  - host mass storage supported
+  - Hot plug-in/removal supported
+  - HUB supported
+- Procida vbus supported
+- USB OTG supported
+  - when connection, "echo 1 > /sys/devices/platform/pxa-otg/inputs/a_bus_req" is required to put idle to host state
+  - Hot plug-in/removal supported
+
+Vmeta
+- UIO driver supported
+- Multi-instance supported
+
+GC860
+- Full 3D supported
+- GC clock up to 500Mhz(using MM_PLL)
+
+WIFI
+- SDIO supported
+- Host sleep supported
+
+BT
+- Co-existence with WIFI supported
+- BT transport supported
+- Headset profile supported
+
+FM supported
+
+Audio
+- Procida codec supported
+- Audio playback supported
+
+Regulator
+- Procida ldo supported
+- Usim ldo control supported
+
+SSP enabled
+
+I2C
+- Multi-master supported
+- FIFO mode and DMA mode supported
+- HS mode supported
+
+UART
+- FFUART/BTUART supported
+- DMA mode supported
+
+Sensors
+- Cywee sensors: G/gyro/Compass sensor supported
+- Adps990x sensors: light and proximity sensor supported
+
+
 
 1.3 Telephony
 
@@ -116,49 +167,43 @@ Uboot
 		GL_EXT_texture_format_BGRA8888  
 
 1.5 Multimedia features
-- IPP Vmeta-based video codecs	
+- IPP Vmeta-based video codecs    
   - H.264 BP/MP/HP decoder
   - H.263 P0/P3 decoder
   - MPEG-4 SP/ASP decoder
   - MPEG-2 MP decoder
   - WMV/VC-1 SP/MP/AP decoder
-  - H.264 BP encoder
-  - H.263 P0 encoder
-  - MPEG-4 SP encoder
-- IPP WMMX-optimized video codecs	
-  - H.264 BP/Partial MP&HP decoder
-  - H.263 P0/P3 decoder
-  - MPEG-4 SP/ASP decoder
-  - MPEG-2 MP decoder
-  - WMV/VC-1 SP/MP decoder
-  - H.264 BP encoder
-  - H.263 P0/P3 encoder
-  - MPEG-4 SP encoder
-- IPP WMMX-optimized image codecs		
-  - JPEG baseline/progressive decoder
-  - JPEG baseline/progressive encoder
-- IPP WMMX-optimized audio and speech codecs
+- IPP C Version audio and speech codecs
   - MP3 decoder
   - AAC decoder
   - WMA decoder
   - AAC LC encoder
   - AMR-WB decoder
   - AMR-WB encoder
-  - AMR-NB decoder
-  - AMR-NB encoder
-- IPP supported multimedia container format
-  - 3GP/3GPP (Stagefright Path)
-  - MP4      (Stagefright Path)
-  - MKV      (Stagefright Path)
-  - MP3      (Stagefright Path)
-  - AMR      (Stagefright Path)
-  - AAC      (GStreamer Path)
-  - AVI      (GStreamer Path)
-  - ASF      (GStreamer Path)
-  - WMV      (GStreamer Path)
-  - WMA      (GStreamer Path)
+  - IPP Neon-optimized SW codecs
+  - H264 decoder
+- IPP supported multimedia container format 
+Stagefright Path:
+  - 3GP/3GPP
+  - MKV/WEBM
+  - MP4      
+  - TS      
+  - MP3      
+  - AAC      
+  - FLAC      
+  - AMR      
+  - OGG      
+  - WAV      
+GStreamer Path:
+  - AVI      
+  - ASF      
+  - WMV      
+  - WMA      
+  - MOV      
+  - MPG     
+  - FLV     
 
-<VERSION>=master
+<VERSION>=r1
 ===========================================================================================
 1.6 Release package contents
 - ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
@@ -172,7 +217,6 @@ Uboot
   - kernel_src.tgz                                   	:Kernel base source code
   - uboot_patches.tgz                                	:Marvell patches to uboot_src.tgz
   - uboot_src.tgz                                    	:Uboot base source code
-  - obm_src.tgz                                      	:OBM source code
 - manifest.xml						:Marvell manifest
 - Software_Downloader.zip				:Software downloader for Microsfot Windows
 
