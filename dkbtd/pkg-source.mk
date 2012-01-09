@@ -79,7 +79,7 @@ pkgsrc: output_dir get_source_for_pkg
 			cp $(BOARD)/README.gb $(OUTPUT_DIR)/README; \
 		else \
 			cp $(BOARD)/ReleaseNotes.txt $(OUTPUT_DIR)/ && \
-			cp $(BOARD)/README.txt $(OUTPUT_DIR)/README; \
+			cp $(BOARD)/README $(OUTPUT_DIR)/README; \
 		fi
 	$(log) "  done."
 
