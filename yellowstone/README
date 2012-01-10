@@ -35,9 +35,10 @@ Files in this folder
  If this folder is missing, it means that this package wasn't built with google gcc toolchain.
 
 -Kernel and Modules for Android
-  uImage.android           The kernel image for SMP mode
-  uImage.up.android        The kernel image for no SMP mode
-  modules_android_mmc.tgz  Kernel modules that built along with uImage.android
+  uImage.smp.android           The kernel image for SMP mode
+  uImage.up.android            The kernel image for no SMP mode
+  uImage.cm.android            The kernel image for coremorphall
+  modules_android_mmc.tgz  Kernel modules that built along with uImage.XX.android
 
 -Android File Systems
   root_nfs_xxx.tgz          Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
@@ -177,8 +178,8 @@ Wrong Image Format for tftpboot command
 ERROR: can't get kernel image
 ----------error ends------------------
 
-2) Kernel image:(uImage.android is the SMP kernel while uImage.up.android is the UP one)
->> tftp 0x1100000 uImage.android
+2) Kernel image:
+>> tftp 0x1100000 uImage.smp.android
 >> mmc write 0x1100000 0x4c00 0x4000
 
 3) ramdisk
@@ -187,11 +188,11 @@ ERROR: can't get kernel image
 
 4) system
 >> tftpboot 0x1100000 system_internal.img
->> unsparse 0xd5c00 0x80000 0x1100000
+>> unsparse mmc 0 0x1100000 0x1AB80000 0x10000000
 
 5) user data
 >> tftpboot 0x1100000 userdata_internal.img
->> unsparse 0x155c00 0x500000 0x1100000
+>> unsparse mmc 0 0x1100000 0x2AB80000 0xA0000000
 
 After done, power-off and power-on again to boot mmp3 from emmc.
 
