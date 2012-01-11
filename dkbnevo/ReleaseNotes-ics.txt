@@ -314,16 +314,16 @@ After a short while, the binary will be generated under [android]/boot/out/
         ntim_nand.bin                                           --> flash address 0x00000 (this binary is automatically created by SoftwareDownloader, when press "start" button)
         NEVO_Loader_ARM_3_3_1.bin                               --> flash address 0x1000
         u-boot.bin                                              --> flash address 0x140000
-        Arbel_DIGRF3.bin	                                --> flash address 0x200000
-        TTD_M06_AI_A1_Flash.bin                                 --> flash address 0x700000
-        TTD_M06_AI_A1_L2_I_RAM_SECOND_Flash.bin			--> flash address 0x900000
+        Arbel_DIGRF3.bin	                                --> flash address 0xF00000
+        TTD_M06_AI_A1_Flash.bin                                 --> flash address 0x1600000
+        TTD_M06_AI_A1_L2_I_RAM_SECOND_Flash.bin			--> flash address 0x1900000
         primary_gpt                                             --> flash address 0x000000
         secondary_gpt                                           --> flash address 0xFFFFFFFF
         zImage                                                  --> flash address 0xa00000
         ramdisk.img                                             --> flash address 0xe00000
-        pxafs_ext4.img                                          --> flash address 0x2800000
-        system_ext3.img                                         --> flash address 0x8100000
-        userdata_ext3.img                                       --> flash address 0x18100000
+        pxafs_ext4.img                                          --> flash address 0x2F00000
+        system_ext3.img                                         --> flash address 0x9100000
+        userdata_ext3.img                                       --> flash address 0x19100000
 3) Press "start" button (the button with the green bulb icon), wait for the icon become red color.
 4) Connect the USB cable between the host machine and the board.
 5) Power on the board, 
@@ -348,9 +348,9 @@ Choose partition 1
 	NEVO_Loader_eMMC_ARM_3_3_1.bin		--> address 0x1000
 Choose partition 0
 	u-boot.bin				--> address 0x140000
-	Arbel_DIGRF3.bin			--> address 0x200000
-	TTD_M06_AI_A1_Flash.bin			--> address 0x700000
-	TTD_M06_AI_A1_L2_I_RAM_SECOND_Flash.bin	--> address 0x900000
+	Arbel_DIGRF3.bin			--> address 0xF00000
+	TTD_M06_AI_A1_Flash.bin			--> address 0x1600000
+	TTD_M06_AI_A1_L2_I_RAM_SECOND_Flash.bin	--> address 0x1900000
 3.4.3 Start your favorite terminal emulator with the appropriate 
       COM port set to 115200,8N1. Power on the board and wait for NEVODKB>> prompt to appear
 
@@ -370,12 +370,12 @@ Note: uboot configures ethernet download as default. please use 'NEVODKB>>sw' to
 
 For EMMC, issue the following commands:
 NEVODKB>>tftp system_ext3.img
-NEVODKB>>mmc write 0x40800 0x50000
+NEVODKB>>mmc write 0x48800 0x50000
 
 3.4.4.3 Enter the following command to upload the userata image into the RAM and burn into flash:
 For EMMC, issue the following commands:
 NEVODKB>>tftp userdata_ext3.img
-NEVODKB>>mmc write 0xC0800 0x21C00
+NEVODKB>>mmc write 0xC8800 0x21C00
 
 3.4.4.4 Enter the following command to upload the ramdisk image into the RAM and burn into flash:
 For EMMC, issue the following commands:
@@ -385,7 +385,7 @@ NEVODKB>>mmc write 0x7000 0x200
 3.4.4.5 Enter the following command to upload the pxafs_ext4 image into the RAM and burn into flash:
 For EMMC, issue the following commands:
 NEVODKB>>tftp pxafs_ext4.img
-NEVODKB>>mmc write 0x14000 0x4000
+NEVODKB>>mmc write 0x17800 0x4000
 
 3.4.4.6 Enter the following command to upload the GPT into the RAM and burn into flash:
 For EMMC, issue the following commands:
