@@ -187,11 +187,11 @@ ERROR: can't get kernel image
 >> mmc write 0x1100000 0x8c00 0x4000
 
 4) system
->> tftpboot 0x1100000 system_internal.img
+>> tftpboot 0x1100000 system.img
 >> unsparse mmc 0 0x1100000 0x1AB80000 0x10000000
 
 5) user data
->> tftpboot 0x1100000 userdata_internal.img
+>> tftpboot 0x1100000 userdata.img
 >> unsparse mmc 0 0x1100000 0x2AB80000 0xA0000000
 
 After done, power-off and power-on again to boot mmp3 from emmc.

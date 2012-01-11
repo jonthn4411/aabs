@@ -35,7 +35,7 @@ Files in this folder
  If this folder is missing, it means that this package wasn't built with google gcc toolchain.
 
 -Kernel and Modules for Android
-  uImage.android           The kernel image for SMP mode
+  uImage.smp.android       The kernel image for SMP mode
   uImage.up.android        The kernel image for no SMP mode
   uImage.cm.android        The kernel image for coremorphall
   modules_android_mmc.tgz  Kernel modules that built along with uImage.android
@@ -223,11 +223,11 @@ Abilene>> tftpboot 0x1100000 ramdisk.img
 Abilene>> mmc write 0x1100000 0x8c00 0x4000
 
 4) system
-Abilene>> tftpboot 0x1100000 system_internal.img
+Abilene>> tftpboot 0x1100000 system.img
 Abilene>> unsparse mmc 0 0x1100000 0x1AB80000 0x10000000
 
 5) user data
-Abilene>> tftpboot 0x1100000 userdata_internal.img
+Abilene>> tftpboot 0x1100000 userdata.img
 Abilene>> unsparse mmc 0 0x1100000 0x2AB80000 0xA0000000
 
 After done, power-off and power-on again to boot mmp3 from emmc.
