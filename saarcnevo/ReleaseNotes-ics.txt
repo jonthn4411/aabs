@@ -286,12 +286,12 @@ Note: uboot configures ethernet download as default. please use 'SAARC>>sw' to s
 
 For EMMC, issue the following commands:
 SAARC>>tftp system_ext3.img
-SAARC>>mmc write 0x40800 0x50000
+SAARC>>mmc write 0x48800 0x50000
 
 3.4.4.3 Enter the following command to upload the userata image into the RAM and burn into flash:
 For EMMC, issue the following commands:
 SAARC>>tftp userdata_ext3.img
-SAARC>>mmc write 0xC0800 0x21C00
+SAARC>>mmc write 0xC8800 0x21C00
 
 3.4.4.4 Enter the following command to upload the ramdisk image into the RAM and burn into flash:
 For EMMC, issue the following commands:

@@ -73,10 +73,10 @@ SAARC>>tftp zImage
 SAARC>>mmc write 0x5000 0x2000
 
 SAARC>>tftp system_ext3.img
-SAARC>>mmc write 0x40800 0x50000
+SAARC>>mmc write 0x48800 0x50000
 
 SAARC>>tftp userdata_ext3.img
-SAARC>>mmc write 0xC0800 0x21C00
+SAARC>>mmc write 0xC8800 0x21C00
 
 SAARC>>tftp ramdisk.img
 SAARC>>mmc write 0x7000 0x200
