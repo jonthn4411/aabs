@@ -161,12 +161,12 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	KERNEL_CONFIG=$$(private_kernel_cfg) make clean all 
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)
 	$$(log) "    copy kernel and module files ..."
-	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage.smp         $$(OUTPUT_DIR)/$(2)/uImage.smp.$$(private_os)
-	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage_recovery.sm $$(OUTPUT_DIR)/$(2)/uImage_recovery.smp.$$(private_os)
-	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage.up          $$(OUTPUT_DIR)/$(2)/uImage.up.$$(private_os)
-	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage_recovery.up $$(OUTPUT_DIR)/$(2)/uImage_recovery.up.$$(private_os)
-	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage.cm          $$(OUTPUT_DIR)/$(2)/uImage.cm.$$(private_os)
-	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage_recovery.cm $$(OUTPUT_DIR)/$(2)/uImage_recovery.cm.$$(private_os)
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage.smp          $$(OUTPUT_DIR)/$(2)/uImage.smp.$$(private_os)
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage_recovery.smp $$(OUTPUT_DIR)/$(2)/uImage_recovery.smp.$$(private_os)
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage.up           $$(OUTPUT_DIR)/$(2)/uImage.up.$$(private_os)
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage_recovery.up  $$(OUTPUT_DIR)/$(2)/uImage_recovery.up.$$(private_os)
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage.cm           $$(OUTPUT_DIR)/$(2)/uImage.cm.$$(private_os)
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage_recovery.cm  $$(OUTPUT_DIR)/$(2)/uImage_recovery.cm.$$(private_os)
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/rdinit        $$(OUTPUT_DIR)/$(2)
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/rdroot/rdroot.tgz $$(OUTPUT_DIR)/$(2)
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/vmlinux    $$(OUTPUT_DIR)/$(2)
