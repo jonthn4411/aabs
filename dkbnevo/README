@@ -24,8 +24,8 @@ Files in this folder
     NEVO_Loader_eMMC_ARM_3_3_1.bin			OBM for eMMC version board
     u-boot.bin						NTLoader image	
     Arbel_DIGRF3.bin                 			CP Arbel image
-    TTD_M06_AI_A1_Flash.bin             		CP MSA image
-    TTD_M06_AI_A1_L2_I_RAM_SECOND_Flash.bin             CP MSA image
+    NV_M06_AI_C0_Flash.bin	             		CP MSA image
+    NV_M06_AI_C0_L2_I_RAM_SECOND.bin                    CP MSA image
  
 -Kernel and Modules for Android [Currently for dkbnevo, zImage.android.slc and zImage.android.mmc is same]
   zImage.android.xxx                        Kernel image to boot android from EMMC. A root file system is built in. 
@@ -50,8 +50,8 @@ Burn binaries by Software Downloader
 	NEVO_Loader_eMMC_ARM_3_3_1.bin
         u-boot.bin
         Arbel_DIGRF3.bin
-        TTD_M06_AI_A1_Flash.bin
-	TTD_M06_AI_A1_L2_I_RAM_SECOND_Flash.bin
+        NV_M06_AI_C0_Flash.bin 
+	NV_M06_AI_C0_L2_I_RAM_SECOND.bin
         primary_gpt
         secondary_gpt
         zImage
@@ -67,8 +67,8 @@ Burn binaries by Software Downloader
         NEVO_Loader_ARM_3_3_1.bin                               --> flash address 0x1000
         u-boot.bin                                              --> flash address 0x140000
         Arbel_DIGRF3.bin	                                --> flash address 0xF00000
-        TTD_M06_AI_A1_Flash.bin                                 --> flash address 0x1600000
-        TTD_M06_AI_A1_L2_I_RAM_SECOND_Flash.bin	                --> flash address 0x1900000
+        NV_M06_AI_C0_Flash.bin                                  --> flash address 0x1600000
+        NV_M06_AI_C0_L2_I_RAM_SECOND.bin	                --> flash address 0x1900000
         primary_gpt                                             --> flash address 0x000000
         secondary_gpt                                           --> flash address 0xFFFFFFFF
         zImage                                                  --> flash address 0xa00000
@@ -104,8 +104,8 @@ Choose partition 1
 Choose partition 0
 	u-boot.bin				--> address 0x140000
 	Arbel_DIGRF3.bin			--> address 0xF00000
-	TTD_M06_AI_A1_Flash.bin			--> address 0x1600000
-	TTD_M06_AI_A1_L2_I_RAM_SECOND_Flash.bin	--> address 0x1900000
+	NV_M06_AI_C0_Flash.bin			--> address 0x1600000
+	NV_M06_AI_C0_L2_I_RAM_SECOND.bin	--> address 0x1900000
 
 Use TFTP to erase or reburn specific binaries
 =============================================
