@@ -35,9 +35,13 @@ Files in this folder
  If this folder is missing, it means that this package wasn't built with google gcc toolchain.
 
 -Kernel and Modules for Android
-  uImage.android           The kernel image for SMP mode
-  uImage.up.android        The kernel image for no SMP mode
-  modules_android_mmc.tgz  Kernel modules that built along with uImage.android
+  uImage.smp.android             The kernel image for SMP mode
+  uImage_recovery.smp.android    The recovery kernel image for SMP mode
+  uImage.up.android              The kernel image for no UP mode
+  uImage_recovery.up.android     The recovery kernel image for no UP mode
+  uImage.cm.android              The kernel image for no CM mode
+  uImage_recovery.cm.android     The recovery kernel image for no CM mode
+  modules_android_mmc.tgz        Kernel modules that built along with uImage.android
 
 -Android File Systems
   root_nfs_xxx.tgz          Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
@@ -222,11 +226,11 @@ Abilene>> tftpboot 0x1100000 ramdisk.img
 Abilene>> mmc write 0x1100000 0x8c00 0x4000
 
 4) system
-Abilene>> tftpboot 0x1100000 system_internal.img
+Abilene>> tftpboot 0x1100000 system.img
 Abilene>> unsparse 0xd5c00 0x80000 0x1100000
 
 5) user data
-Abilene>> tftpboot 0x1100000 userdata_internal.img
+Abilene>> tftpboot 0x1100000 userdata.img
 Abilene>> unsparse 0x155c00 0x500000 0x1100000
 
 After done, power-off and power-on again to boot mmp3 from emmc.
