@@ -51,9 +51,9 @@ build_uboot_obm_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot.bin          $$(OUTPUT_DIR)/$(1)/
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot_recovery.bin $$(OUTPUT_DIR)/$(1)/
 	$$(hide)cp $$(SRC_DIR)/boot/obm/binaries/Wtm_rel_mmp3.bin   $$(OUTPUT_DIR)/$(1)/
-	$$(hide)cp $$(SRC_DIR)/boot/obm/binaries/Wtm_rel_mmp3.bin   $$(OUTPUT_DIR)/$(1)/
+	$$(hide)cp $$(SRC_DIR)/boot/obm/binaries/Wtm_rel_mmp3.bin   $$(OUTPUT_DIR)/$(1)/Wtm_rel_mmp3_backup.bin
 	$$(hide)cp $$(SRC_DIR)/boot/tzl/tzl.bin                     $$(OUTPUT_DIR)/$(1)/
-	$$(hide)cp $$(SRC_DIR)/boot/tzl/tzl_backup.bin              $$(OUTPUT_DIR)/$(1)/
+	$$(hide)cp $$(SRC_DIR)/boot/tzl/tzl.bin                     $$(OUTPUT_DIR)/$(1)/tzl_backup.bin
 	$$(hide)cp $$(SRC_DIR)/boot/out/trusted/MMP3_LINUX_ARM_3_3_1.bin                      $$(OUTPUT_DIR)/$(1)/trusted
 	$$(hide)cp $$(SRC_DIR)/boot/out/trusted/MMP3_LINUX_ARM_3_3_1_backup.bin               $$(OUTPUT_DIR)/$(1)/trusted
 	$$(hide)cp $$(SRC_DIR)/boot/out/trusted/tim_mmp3_v7_mp_emmc_dis_uboot_800_backup.bin  $$(OUTPUT_DIR)/$(1)/trusted
