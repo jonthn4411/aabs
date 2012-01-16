@@ -255,8 +255,8 @@ PUBLISHING_FILES_$(2)+=$(2)/Boerne_DIAG.mdb.txt:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/ReliableData.bin:m:md5
 ifeq ($(ANDROID_VERSION),ics)
 PUBLISHING_FILES_$(2)+=$(2)/Arbel_DIGRF3.bin:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/TTD_M06_AI_A1_Flash.bin:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/TTD_M06_AI_A1_L2_I_RAM_SECOND_Flash.bin:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/NV_M06_AI_C0_Flash.bin:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/NV_M06_AI_C0_L2_I_RAM_SECOND.bin:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/Arbel_DIGRF3_NVM.mdb:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/Arbel_DIGRF3_DIAG.mdb:m:md5
 else
