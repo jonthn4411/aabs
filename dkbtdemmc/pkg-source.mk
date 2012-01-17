@@ -40,7 +40,7 @@ ifeq ($(ANDROID_VERSION),gingerbread)
 	DROID_BASE:=android-2.3.7_r1
 else
 ifeq ($(ANDROID_VERSION),ics)
-	DROID_BASE:=android-4.0.1_r1
+	DROID_BASE:=android-4.0.3_r1
 else
 	DROID_BASE:=shgit/honeycomb-mr2-release
 	HEAD_MANIFEST:=head_manifest.hc
