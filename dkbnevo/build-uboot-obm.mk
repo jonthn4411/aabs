@@ -6,7 +6,7 @@ BOOT_OUT_DIR:=$(BOOT_SRC_DIR)/out
 #OBM_NTLOADER_1:=ASPN_NTLOADER_avengers-a_slc.bin
 #OBM_NTLOADER_2:=ASPN_NTLOADER_spi.bin
 
-OBM_NTIM_1:=NEVO_Loader_ARM_3_3_1.bin
+OBM_NTIM_1:=NEVO_Loader_eMMC_ARM_3_3_1.bin
 #OBM_NTIM_1:=TAVOR_SAAR_NTOBM_EMMC_MODE1.bin.rnd
 #OBM_NTIM_2:=ntim_a0_avengers-a_1.6F_256mb_400mhz_mode3_pm_spi.bin
 
@@ -29,9 +29,8 @@ PUBLISHING_FILES_$(1)+=$(1)/$(PRIMARY_GPT_BIN_2):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(SECONDARY_GPT_BIN_2):m:md5
 endif
 
-ifneq ($(ANDROID_VERSION),ics)
 PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_1):m:md5
-#PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTLOADER_1):m:md5
+ifneq ($(ANDROID_VERSION),ics)
 DROID_PRODUCT:=dkbnevo
 else
 DROID_PRODUCT:=nevo
