@@ -148,7 +148,7 @@ endef
 # os: the operating system
 # storage: the OS will startup from which storage
 # kernel_cfg:kernel config file used to build the kernel
-# root: optional. If specified, indicating that the kernel zImage has a root RAM file system.
+# root: optional. If specified, indicating that the kernel ?Image has a root RAM file system.
 #example: android:mlc:pxa168_android_mlc_defconfig:root
 # kernel_configs:=
 #
@@ -166,8 +166,10 @@ kernel_cfg:=$$(word 3, $$(tw) )
 root:=$$(word 4, $$(tw) )
 
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
-PUBLISHING_FILES_$(2)+=$(2)/zImage.$$(os):m:md5
-PUBLISHING_FILES_$(2)+=$(2)/zImage_recovery.$$(os):m:md5
+PUBLISHING_FILES_$(2)+=$(2)/zImage.$$(os):o:md5
+PUBLISHING_FILES_$(2)+=$(2)/zImage_recovery.$$(os):o:md5
+PUBLISHING_FILES_$(2)+=$(2)/uImage.$$(os):o:md5
+PUBLISHING_FILES_$(2)+=$(2)/uImage_recovery.$$(os):o:md5
 PUBLISHING_FILES_$(2)+=$(2)/vmlinux:o:md5
 PUBLISHING_FILES_$(2)+=$(2)/System.map:o:md5
 PUBLISHING_FILES_$(2)+=$(2)/modules_$$(os)_$$(storage).tgz:m:md5
@@ -187,8 +189,10 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	KERNEL_CONFIG=$$(private_kernel_cfg) make clean all 
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)
 	$$(log) "    copy kernel and module files ..."
-	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage $$(OUTPUT_DIR)/$(2)/zImage.$$(private_os)
-	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage_recovery $$(OUTPUT_DIR)/$(2)/zImage_recovery.$$(private_os)
+	$$(hide)if [ -f $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage ]; then cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage $$(OUTPUT_DIR)/$(2)/zImage.$$(private_os); fi
+	$$(hide)if [ -f $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage_recovery ]; then cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage_recovery $$(OUTPUT_DIR)/$(2)/zImage_recovery.$$(private_os); fi
+	$$(hide)if [ -f $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage ]; then cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage $$(OUTPUT_DIR)/$(2)/uImage.$$(private_os); fi
+	$$(hide)if [ -f $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage_recovery ]; then cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage_recovery $$(OUTPUT_DIR)/$(2)/uImage_recovery.$$(private_os); fi
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/vmlinux $$(OUTPUT_DIR)/$(2)
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/System.map $$(OUTPUT_DIR)/$(2)
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi &&\
