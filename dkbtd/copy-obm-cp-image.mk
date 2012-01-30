@@ -6,8 +6,9 @@ DKBTD_UBOOT:=u-boot.bin
 DKBTD_CP1:=Arbel_DKB_SKWS.bin
 DKBTD_CP2:=Arbel_DKB_SKWS_DIAG.mdb
 DKBTD_CP3:=Arbel_DKB_SKWS_NVM.mdb
-DKBTD_CP4:=TTD_M06_AI_A0_Flash.bin
-DKBTD_CP5:=TTD_M06_AI_A1_Flash.bin
+#DKBTD_CP4:=TTD_M06_AI_A0_Flash.bin
+#DKBTD_CP5:=TTD_M06_AI_A1_Flash.bin
+DKBTD_CP6:=920S_M07_AI_A3_Flash.bin
 DKBTD_IMEI:=ReliableData.bin
 DKBTD_SWD:=Software_Downloader.zip
 #DKBTD_NO_GUI_RAMDISK:=ramdisk_no_gui.img
@@ -24,8 +25,9 @@ PUBLISHING_FILES_$(1)+=$(1)/$(DKBTD_UBOOT):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(DKBTD_CP1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(DKBTD_CP2):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(DKBTD_CP3):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/$(DKBTD_CP4):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/$(DKBTD_CP5):m:md5
+#PUBLISHING_FILES_$(1)+=$(1)/$(DKBTD_CP4):m:md5
+#PUBLISHING_FILES_$(1)+=$(1)/$(DKBTD_CP5):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(DKBTD_CP6):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(DKBTD_IMEI):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(DKBTD_SWD):m:md5
 #PUBLISHING_FILES_$(1)+=$(1)/$(DKBTD_NO_GUI_RAMDISK):m:md5
@@ -38,8 +40,9 @@ copy_obm_cp_image_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTD_CP1) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTD_CP2) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTD_CP3) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTD_CP4) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTD_CP5) $$(OUTPUT_DIR)/$(1)
+#	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTD_CP4) $$(OUTPUT_DIR)/$(1)
+#	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTD_CP5) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTD_CP6) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTD_IMEI) $$(OUTPUT_DIR)/$(1)
 #	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTD_NO_GUI_RAMDISK) $$(OUTPUT_DIR)/$(1)
 	$$(log) "cp OBM and CP images  done."
