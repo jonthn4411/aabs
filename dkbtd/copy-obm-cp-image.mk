@@ -3,9 +3,9 @@ $(call check-variables,BUILD_VARIANTS)
 TEL_SRC_DIR:=kernel/out/telephony/
 
 DKBTD_UBOOT:=u-boot.bin
-DKBTD_CP1:=Arbel_DKB_SKWS.bin
-DKBTD_CP2:=Arbel_DKB_SKWS_DIAG.mdb
-DKBTD_CP3:=Arbel_DKB_SKWS_NVM.mdb
+DKBTD_CP1:=Arbel_DIGRF3.bin
+DKBTD_CP2:=Arbel_DIGRF3_DIAG.mdb
+DKBTD_CP3:=Arbel_DIGRF3_NVM.mdb
 #DKBTD_CP4:=TTD_M06_AI_A0_Flash.bin
 #DKBTD_CP5:=TTD_M06_AI_A1_Flash.bin
 DKBTD_CP6:=920S_M07_AI_A3_Flash.bin
