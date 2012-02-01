@@ -15,6 +15,7 @@ DROID_TYPE:=release
 DROID_VARIANT:=user
 
 KERNELSRC_TOPDIR:=kernel
+OTA_PACKAGE:=dkb-ota-mrvl.zip
 
 .PHONY:clean_droid_kernel
 clean_droid_kernel: clean_droid clean_kernel
@@ -41,7 +42,7 @@ clean_kernel:
 #$1:build variant
 define define-build-droid-kernel
 .PHONY:build_droid_kernel_$(1)
-build_droid_kernel_$(1): build_droid_root_$(1) build_kernel_$(1) build_droid_pkgs_$(1) 
+build_droid_kernel_$(1): build_droid_root_$(1) build_kernel_$(1) build_droid_pkgs_$(1) build_droid_otapackage_$(1)
 endef
 
 #$1:build variant
@@ -88,6 +89,22 @@ build_droid_$(2)_$(1): rebuild_droid_$(2)_$(1) package_droid_slc_$(2)_$(1) packa
 	$$(log) "  done"
 
 build_droid_pkgs_$(1): build_droid_$(2)_$(1)
+endef
+
+#$1:build variant
+define define-build-droid-otapackage
+.PHONY:build_droid_otapackage_$(1)
+build_droid_otapackage_$(1): output_dir
+	$$(log) "[$(1)]building android OTA package ..."
+	$$(hide)cd $$(SRC_DIR) && \
+	source ./build/envsetup.sh && \
+	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
+	ANDROID_PREBUILT_MODULES=./kernel/out/modules make mrvlotapackage -j$$(MAKE_JOBS)
+	$$(hide)echo "  copy OTA package ..."
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/$$(OTA_PACKAGE) $$(OUTPUT_DIR)/$(1)
+	$$(log) "  done for OTA package build. "
+
+PUBLISHING_FILES_$(1)+=$(1)/$$(OTA_PACKAGE):o:md5
 endef
 
 #$1:internal or external
@@ -259,6 +276,7 @@ $(foreach bv,$(BUILD_VARIANTS), $(eval $(call define-build-droid-kernel,$(bv)) )
 								$(eval $(call define-build-droid-config,$(bv),internal) ) \
 								$(eval $(call define-build-droid-config,$(bv),external) ) \
 								$(eval $(call define-cp-android-root-dir-slc,$(bv)) )\
+								$(eval $(call define-build-droid-otapackage,$(bv)) )\
 								$(eval $(call rebuild-droid-config,internal,$(bv)) )\
 								$(eval $(call rebuild-droid-config,external,$(bv)) )\
 								$(eval $(call package-droid-slc-config,internal,$(bv)) )\
