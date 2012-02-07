@@ -48,7 +48,7 @@ build_droid_root_$(1): output_dir
 	$$(hide)cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-	ANDROID_PREBUILT_MODULES=no_kernel_modules make -j$$(MAKE_JOBS) 
+	ANDROID_PREBUILT_MODULES=no_kernel_modules make
 	$(log) "  done"
 
 endef
