@@ -22,6 +22,7 @@ define define-build-uboot-obm
 #md5: need to generate md5 sum
 PUBLISHING_FILES_$(1)+=$(1)/u-boot.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/u-boot.256k.saarb:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/u-boot.256k_recovery.saarb:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/obm.bin.saarbmg1:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/obm_2k.bin.saarbmg2:o:md5
 #PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_1):m:md5

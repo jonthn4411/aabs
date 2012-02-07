@@ -58,6 +58,7 @@ build_droid_root_$(1): output_dir
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext3.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_onenand.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_onenand.img $$(OUTPUT_DIR)/$(1)
+
 	$(log) "  done"
 ##!!## first time publish: all for two
 PUBLISHING_FILES_$(1)+=$(1)/userdata_ext3.img:m:md5
@@ -66,11 +67,24 @@ PUBLISHING_FILES_$(1)+=$(1)/userdata_onenand.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/system.img:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/userdata.img:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/system_onenand.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/cache_emmc_ext2.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/ramdisk-recovery-emmc.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/ramdisk-recovery.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/build.prop:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/pxafs_lyra_4kb.img.onenand:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/nvm_4kb.img.onenand:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/pxafs_lyra_ext2.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/ebr_cache:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/ebr_INT_STORE:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/ebr_Misc:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/ebr_nvm:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/ebr_OS_Loader:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/ebr_ramdisk_recovery:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/ebr_Seagull:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/ebr_Telephony_PXA_FS:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/ebr_zImage:m:md5
 endef
 
 
@@ -150,13 +164,18 @@ package_droid_slc_$(1)_$(2):
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_onenand.img $$(OUTPUT_DIR)/$(2)/userdata_onenand.img && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(2)/system.img && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(2)/userdata.img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/build.prop $$(OUTPUT_DIR)/$(2)/build.prop
-	$$(hide)cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(2)/
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/build.prop $$(OUTPUT_DIR)/$(2)/build.prop && \
+	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ebr_* $$(OUTPUT_DIR)/$(2) && \
+	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/cache_emmc_ext2.img $$(OUTPUT_DIR)/$(2) && \
+	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery.img $$(OUTPUT_DIR)/$(2) && \
+	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery-emmc.img $$(OUTPUT_DIR)/$(2) && \
+	cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(2)/
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf symbols_lib.tgz lib && rm lib -rf
 	$$(log) "  done for package_droid_slc_$(1)_$(2)."
 	$$(log) "  build telphony"
 	cd $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers && export ANDROID_PLATFORM=$$(DROID_PRODUCT) && export MAKERULES=$(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/Rules.make && make
-	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/output/pxafs_lyra_4kb.img.onenand $$(OUTPUT_DIR)/$(2)/pxafs_lyra_4kb.img.onenand && \
+	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin.saarbmg2/Convert/pxafs_lyra_4kb.img.onenand $$(OUTPUT_DIR)/$(2)/pxafs_lyra_4kb.img.onenand && \
+	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin.saarbmg2/Convert/nvm_4kb.img.onenand $$(OUTPUT_DIR)/$(2)/nvm_4kb.img.onenand && \
 	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/output/pxafs_lyra_ext2.img $$(OUTPUT_DIR)/$(2)/pxafs_lyra_ext2.img
 	$$(log) "  done for telephony build"
 
@@ -243,10 +262,11 @@ root:=$$(word 4, $$(tw) )
 
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
 #PUBLISHING_FILES_$(2):=$(PUBLISHING_FILES_$(2)) $(2)/zImage.$$(os).$$(storage):m:md5
-PUBLISHING_FILES_$(2)+=$(2)/zImage.$$(os).$$(storage):m:md5
+PUBLISHING_FILES_$(2)+=$(2)/zImage:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/zImage_maintenance:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/vmlinux:o:md5
 PUBLISHING_FILES_$(2)+=$(2)/System.map:o:md5
-#PUBLISHING_FILES_$(2)+=$(2)/modules_$$(os)_$$(storage).tgz:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/modules.tgz:m:md5
 
 ifneq ($(filter $(ABS_PRODUCT_NAME),td_jil td_dkb ttc_jil ttc_dkb dkbttc),)
 PUBLISHING_FILES_$(2)+=$(2)/pxafs.img:m:md5
@@ -261,18 +281,22 @@ build_kernel_$$(os)_$$(storage)_$(2): private_root:=$$(root)
 build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(root)), cp_$$(os)_root_dir_$$(storage)_$(2) ) 
 	$$(log) "[$(2)]starting to build kernel for booting $$(private_os) from $$(private_storage) ..."
 	$$(log) "    kernel_config: $$(private_kernel_cfg): ..."
+	$$(hide)rm -rf $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/
 	$$(hide)cd $$(SRC_DIR)/$$(KERNELSRC_TOPDIR) && \
 	KERNEL_CONFIG=$$(private_kernel_cfg) make all 
 
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)
 	$$(log) "    copy kernel and module files ..."
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage $$(OUTPUT_DIR)/$(2)/zImage.$$(private_os).$$(private_storage) 
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage $$(OUTPUT_DIR)/$(2)/zImage
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage_maintenance $$(OUTPUT_DIR)/$(2)/zImage_maintenance
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/vmlinux $$(OUTPUT_DIR)/$(2)
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/System.map $$(OUTPUT_DIR)/$(2)
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi &&\
 	mkdir -p $$(OUTPUT_DIR)/$(2)/modules
 	$$(hide)rsync -avl $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules $$(OUTPUT_DIR)/$(2)/
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf modules_$$(private_os)_$$(private_storage).tgz modules/ 
+	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf modules.tgz modules/
 	$$(hide)if [ "$$(TARGET_PRODUCT)" = "dkbttc" ] || [ "$$(TARGET_PRODUCT)" = "dkbtd" ]; then \
 	cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/telephony/* /$$(OUTPUT_DIR)/$(2); fi
 	$(log) "  done."
