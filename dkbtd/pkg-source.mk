@@ -5,6 +5,7 @@ INTERNAL_PROJECTS +=vendor/marvell/external/gps_sirf
 INTERNAL_PROJECTS +=vendor/marvell/external/flash
 INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbPlayer
 INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbStack
+INTERNAL_PROJECTS +=vendor/marvell/generic/blcr/.git
 INTERNAL_PROJECTS +=vendor/marvell/generic/blcr/android
 INTERNAL_PROJECTS +=vendor/marvell/generic/blcr/libcr
 
