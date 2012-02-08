@@ -172,7 +172,7 @@ MMP2>> mmc write 0x8c00 0x800 0x1100000
 
 5) system
 MMP2>> t system.img
-MMP2>> unsparse 0x9ec00 0x80000 0x1100000
+MMP2>> unsparse 0x11ec00 0x100000 0x1100000
 
 6) clean up data if userdata.img is unavailable.
 
@@ -181,7 +181,7 @@ MMP2>> mmc write 0x11ec00 0x400 0x1100000
 
 (You can flash user partition if it's available.)
 MMP2>> t userdata.img
-MMP2>> unsparse 0x11ec00 0x500000 0x1100000
+MMP2>> unsparse 0x21ec00 0x500000 0x1100000
 
 7) recovery
 
