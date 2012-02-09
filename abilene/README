@@ -223,7 +223,7 @@ Abilene>> mmc write 0x1100000 0x8c00 0x4000
 
 4) system
 Abilene>> tftpboot 0x1100000 system.img
-Abilene>> unsparse mmc 0 0x1100000 0x1AB80000 0x10000000
+Abilene>> unsparse mmc 0 0x1100000 0x1980000 0xC800000
 
 5) user data
 Abilene>> tftpboot 0x1100000 userdata.img
