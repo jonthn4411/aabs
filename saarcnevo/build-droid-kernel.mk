@@ -243,9 +243,15 @@ PUBLISHING_FILES_$(2)+=$(2)/vmlinux:o:md5
 PUBLISHING_FILES_$(2)+=$(2)/System.map:o:md5
 #PUBLISHING_FILES_$(2)+=$(2)/modules_$$(os)_$$(storage).tgz:m:md5
 
-ifneq ($(filter $(ABS_PRODUCT_NAME),td_jil td_dkb ttc_jil ttc_dkb dkbttc),)
-PUBLISHING_FILES_$(2)+=$(2)/pxafs.img:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/Boerne_DIAG.mdb.txt:m:md5
+ifeq ($(ANDROID_VERSION),ics)
+PUBLISHING_FILES_$(2)+=$(2)/Arbel_REL7_PMD2NONE.bin:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/Arbel_REL7_PMD2NONE_DIAG.mdb:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/Arbel_REL7_PMD2NONE_NVM.mdb:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/NEVO_C0_Flash.bin:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/nvm_ext2.img:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/plugin_LYRA5V03_BANDS128.bin:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/pxafs_lyra_ext2.img:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/pxafs_symbols.tgz:m:md5
 endif
 
 build_kernel_$$(os)_$$(storage)_$(2): private_os:=$$(os)
@@ -268,8 +274,7 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	mkdir -p $$(OUTPUT_DIR)/$(2)/modules
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules/* $$(OUTPUT_DIR)/$(2)/modules
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf modules_$$(private_os)_$$(private_storage).tgz modules/ 
-	$$(hide)if [ "$$(TARGET_PRODUCT)" = "dkbttc" ] || [ "$$(TARGET_PRODUCT)" = "dkbtd" ]; then \
-	cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/telephony/* /$$(OUTPUT_DIR)/$(2); fi
+	$$(hide)if [ -d $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/telephony ]; then cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/telephony/* /$$(OUTPUT_DIR)/$(2); fi
 	$(log) "  done."
 
 .PHONY: build_kernel_$$(os)_$$(storage)_$(2)
