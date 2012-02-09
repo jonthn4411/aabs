@@ -1,12 +1,16 @@
 #check if the required variables have been set.
 #$(call check-variables,BUILD_VARIANTS)
 
+#
+# Include goal for build UBoot and obm
+#
+include $(BOARD)/build-uboot-obm.mk
+
 DEMO_MEDIA_DIR:=/autobuild/demomedia
 MY_SCRIPT_DIR:=$(TOP_DIR)/abilene
 
 DROID_PRODUCT:=abilene
 DROID_TYPE:=release
-DROID_VARIANT:=user
 
 KERNELSRC_TOPDIR:=kernel
 
@@ -33,7 +37,7 @@ clean_kernel:
 #$1:build variant
 define define-build-droid-kernel
 .PHONY:build_droid_kernel_$(1)
-build_droid_kernel_$(1): build_droid_root_$(1) build_kernel_$(1) build_droid_pkgs_$(1) 
+build_droid_kernel_$(1): build_uboot_obm_$(1) build_droid_root_$(1) build_kernel_$(1) build_droid_pkgs_$(1) 
 endef
 
 #$1:build variant
@@ -118,19 +122,21 @@ package_droid_mlc_$(1)_$(2):
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS) && \
-	echo "    copy ext3 image files..." && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/mbr $$(OUTPUT_DIR)/$(2)/mbr && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk_ext3.img $$(OUTPUT_DIR)/$(2)/ramdisk_ext3.img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext3.img $$(OUTPUT_DIR)/$(2)/system_ext3_$(1).img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext3.img $$(OUTPUT_DIR)/$(2)/userdata_ext3_$(1).img 
+	echo "    copy ext4 image files..." && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/primary_gpt_8g $$(OUTPUT_DIR)/$(2)/primary_gpt_8g && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/secondary_gpt_8g $$(OUTPUT_DIR)/$(2)/secondary_gpt_8g && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk_ext4.img $$(OUTPUT_DIR)/$(2)/ramdisk_ext4.img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext4.img $$(OUTPUT_DIR)/$(2)/system_ext4_$(1).img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(2)/userdata_ext4_$(1).img
 	$$(log) "  done for package_droid_mlc_$(1)$(2)."
 
 ifeq ($(1),internal)
-PUBLISHING_FILES_$(2)+=$(2)/mbr:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/ramdisk_ext3.img:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/primary_gpt_8g:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/secondary_gpt_8g:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/ramdisk_ext4.img:m:md5
 endif
-PUBLISHING_FILES_$(2)+=$(2)/system_ext3_$(1).img:m:md5 
-PUBLISHING_FILES_$(2)+=$(2)/userdata_ext3_$(1).img:m:md5 
+PUBLISHING_FILES_$(2)+=$(2)/system_ext4_$(1).img:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/userdata_ext4_$(1).img:m:md5
 endef
 
 #$1:internal or external
@@ -187,6 +193,9 @@ root:=$$(word 4, $$(tw) )
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
 #PUBLISHING_FILES_$(2):=$(PUBLISHING_FILES_$(2)) $(2)/uImage.$$(os):m:md5
 PUBLISHING_FILES_$(2)+=$(2)/uImage.$$(os):m:md5
+#PUBLISHING_FILES_$(2)+=$(2)/uImage.up.$$(os):m:md5
+PUBLISHING_FILES_$(2)+=$(2)/rdinit:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/rdroot.tgz:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/vmlinux:o:md5
 PUBLISHING_FILES_$(2)+=$(2)/System.map:o:md5
 PUBLISHING_FILES_$(2)+=$(2)/modules_$$(os)_$$(storage).tgz:m:md5
@@ -205,6 +214,9 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)
 	$$(log) "    copy kernel and module files ..."
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage $$(OUTPUT_DIR)/$(2)/uImage.$$(private_os)
+#	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage.up $$(OUTPUT_DIR)/$(2)/uImage.up.$$(private_os)
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/rdinit $$(OUTPUT_DIR)/$(2)
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/rdroot/rdroot.tgz $$(OUTPUT_DIR)/$(2)
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/vmlinux $$(OUTPUT_DIR)/$(2)
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/System.map $$(OUTPUT_DIR)/$(2)
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi &&\

@@ -6,12 +6,10 @@
 #
 include $(BOARD)/build-uboot-obm.mk
 
-DEMO_MEDIA_DIR:=/autobuild/demomedia
 MY_SCRIPT_DIR:=$(TOP_DIR)/brownstone
 
 DROID_PRODUCT:=brownstone
 DROID_TYPE:=release
-DROID_VARIANT:=user
 
 KERNELSRC_TOPDIR:=kernel
 
@@ -22,8 +20,8 @@ clean_droid_kernel: clean_droid clean_kernel
 clean_droid:
 	$(log) "clean android ..."
 	$(hide)cd $(SRC_DIR) && \
-	source ./build/envsetup.sh &&
-	chooseproduct $(DROID_PRODUCT) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
+	. $(TOP_DIR)/tools/apb $(DROID_PRODUCT) && \
+	choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	make clean
 	$(log) "    done"
 
@@ -36,7 +34,10 @@ clean_kernel:
 #$1:build variant
 define define-build-droid-kernel
 .PHONY:build_droid_kernel_$(1)
-build_droid_kernel_$(1): build_uboot_obm_$(1) build_kernel_$(1) build_droid_root_$(1) build_droid_pkgs_$(1)
+build_droid_kernel_$(1): build_kernel_$(1)
+build_droid_kernel_$(1): build_droid_root_$(1)
+build_droid_kernel_$(1): build_uboot_obm_$(1)
+build_droid_kernel_$(1): build_droid_pkgs_$(1)
 endef
 
 #$1:build variant
@@ -48,10 +49,9 @@ build_droid_root_$(1): output_dir
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
 	$$(hide)cd $$(OUTPUT_DIR)/$(1) && tar xzf modules_android_mmc.tgz
 	$$(log) "[$(1)]building android source code ..."
-	$$(hide)export ANDROID_PREBUILT_MODULES=$$(OUTPUT_DIR)/$(1)/modules && \
-	cd $$(SRC_DIR) && \
-	source ./build/envsetup.sh && \
-	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
+	$$(hide)cd $$(SRC_DIR) && \
+	. $$(TOP_DIR)/tools/apb $$(DROID_PRODUCT) && \
+	choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS)
 	echo "    copy GPT files..." && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/primary_gpt_8g $$(OUTPUT_DIR)/$(1)/ && \
@@ -59,12 +59,12 @@ build_droid_root_$(1): output_dir
 	echo "    copy ramfs files..." && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img $$(OUTPUT_DIR)/$(1)/ && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk_recovery.img $$(OUTPUT_DIR)/$(1)/
-	echo "    copy ext4 filesystem files..." && \
-		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext4.img $$(OUTPUT_DIR)/$(1)/ && \
-		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(1)/ && \
-		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/cache_ext4.img $$(OUTPUT_DIR)/$(1)/
-	echo "    copy update packages..." && \
-		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_droid.zip $$(OUTPUT_DIR)/$(1)/ && \
+	echo "    copy system.img ..." && \
+		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(1)/
+	$$(hide)if [ -f $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img ]; then \
+		echo "    copy userdata.img ..." && \
+		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(1)/; \
+	fi
 	echo "    generating symbols_lib.tgz..." && \
 		cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(1)/ && \
 		cd $$(OUTPUT_DIR)/$(1) && tar czf symbols_lib.tgz lib && rm lib -rf
@@ -74,17 +74,40 @@ PUBLISHING_FILES_$(1)+=$(1)/primary_gpt_8g:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/secondary_gpt_8g:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk_recovery.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/system_ext4.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/userdata_ext4.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/cache_ext4.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/update_droid.zip:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/system.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/userdata.img:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
 endef
 
 #$1:build variant
 define define-build-droid-pkgs
 .PHONY:build_droid_pkgs_$(1)
-build_droid_pkgs_$(1): 
+
+build_droid_update_pkgs_$(1): output_dir
+	$$(log) "[$(1)]generating update packages..."
+	$$(hide)cd $$(SRC_DIR) && \
+	. $$(TOP_DIR)/tools/apb $$(DROID_PRODUCT) && \
+	choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
+	make droidupdate
+	echo "    copy update packages..." && \
+		mkdir -p $$(OUTPUT_DIR)/$(1)/trusted && \
+		mkdir -p $$(OUTPUT_DIR)/$(1)/nontrusted && \
+		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_droid_trusted.zip $$(OUTPUT_DIR)/$(1)/trusted/update_droid.zip && \
+		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_droid_nontrusted.zip $$(OUTPUT_DIR)/$(1)/nontrusted/update_droid.zip && \
+		if [ -f $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_trusted.zip ]; then \
+			cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_trusted.zip $$(OUTPUT_DIR)/$(1)/trusted/update_recovery.zip; \
+		fi && \
+		if [ -f $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_nontrusted.zip ]; then \
+			cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery_nontrusted.zip $$(OUTPUT_DIR)/$(1)/nontrusted/update_recovery.zip; \
+		fi
+	$(log) "  done"
+
+build_droid_pkgs_$(1): build_droid_update_pkgs_$(1)
+
+PUBLISHING_FILES_$(1)+=$(1)/trusted/update_droid.zip:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/nontrusted/update_droid.zip:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/trusted/update_recovery.zip:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/nontrusted/update_recovery.zip:o:md5
 endef
 
 #$1: build variant
@@ -114,14 +137,6 @@ package_droid_nfs_$(1)_$(2):
 	$$(hide)cd $$(OUTPUT_DIR)/$(1) && tar xzf modules_android_mmc.tgz && cp -r modules $$(OUTPUT_DIR)/$(1)/root_nfs/system/lib/
 	$$(log) "  modifying root nfs folder..."
 	$$(hide)cd $$(OUTPUT_DIR)/$(1)/root_nfs && $$(MY_SCRIPT_DIR)/twist_root_nfs.sh
-	$$(log) "copy demo media files to /sdcard if there are demo media files..."
-	$$(hide)if [ -d "$$(DEMO_MEDIA_DIR)" ]; then \
-			mkdir -p $$(OUTPUT_DIR)/$(1)/root_nfs/sdcard && \
-			cp -r $$(DEMO_MEDIA_DIR)/* $$(OUTPUT_DIR)/$(1)/root_nfs/sdcard/ && \
-			echo "  done."; \
-		   else \
-			echo "    !!!demo media is not found."; \
-		   fi
 	$$(log) "  packaging the root_nfs.tgz..."
 	$$(hide)cd $$(OUTPUT_DIR)/$(1) && tar czf root_nfs_$(2).tgz root_nfs/
 	$$(log) "  done for package_droid_nfs_$(1)_$(2)."
@@ -137,9 +152,8 @@ endef
 #example: android:mlc:pxa168_android_mlc_defconfig:root
 # kernel_configs:=
 #
-kernel_configs:=android:mmc:mmp2_android_1gddr_defconfig 
+kernel_configs:=android:mmc:mmp2_android_defconfig 
 
-export KERNEL_TOOLCHAIN_PREFIX
 export MAKE_JOBS
 
 #$1:kernel_config
@@ -185,11 +199,11 @@ build_kernel_$(2): build_kernel_$$(os)_$$(storage)_$(2)
 endef
 
 $(foreach bv,$(BUILD_VARIANTS), \
-	$(eval $(call define-build-uboot-obm,$(bv)) ) \
 	$(eval $(call define-build-droid-kernel,$(bv)) ) \
 	$(foreach kc, $(kernel_configs), \
 		$(eval $(call define-kernel-target,$(kc),$(bv)) ) ) \
 	$(eval $(call define-build-droid-root,$(bv)) ) \
+	$(eval $(call define-build-uboot-obm,$(bv)) ) \
 	$(eval $(call define-build-droid-pkgs,$(bv)) ) \
 	$(eval $(call define-build-droid-config,$(bv),internal) ) \
 	$(eval $(call package-droid-nfs-config,$(bv),internal) ) \

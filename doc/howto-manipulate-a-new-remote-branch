@@ -1,0 +1,5 @@
+1) Create
+git push $REMOTE HEAD:refs/heads/$BRANCH
+
+2) Destroy
+git push $REMOTE :$BRANCH

@@ -1,0 +1,52 @@
+1) Refer to the "Make release package"
+   described in Page 3 of "BKM of Integrator"
+
+-- ln -sf ~/.gvfs/.../android/xx/20xx-xxxx/droid-gcc b
+
+-- mkdir prebuilt
+. cp -r b/* prebuilt
+. rm -f prebuilt/*internal*
+. rm -f prebuilt/*nfs*
+. rm -f prebuilt/*_mmc*
+. rm -f prebuilt/helix.tgz prebuilt/flash.tgz
+. rm -f prebuild/nand/WtmUnresetPJ4.bin
+. rm -f prebuild/emmc/WtmUnresetPJ4.bin
+
+-- mkdir source-by-patch
+. cp b/android_patches.tgz b/android_src.tgz b/kernel_patches.tgz b/kernel_src.tgz b/obm_src.tgz b/uboot_src.tgz b/uboot_patches.tgz b/marvell_manifest.xml b/setup_android.sh source-by-patch/
+
+. cp b/checksums.md5 .
+. cp b/ReleaseNotes.doc .
+
+2) Refer to the "Generate the zip and tgz package"
+   described in Page 4 of "BKM of Integrator"
+
+-- zip -r ARMADA610_ANDROID_PLATFORM_ALPHA5_PREBUILT_BIN.zip prebuilt
+
+-- split -b 100M -d ./ARMADA610_ANDROID_PLATFORM_ALPHA5_PREBUILT_BIN.tgz ./ARMADA610_ANDROID_PLATFORM_ALPHA5_PREBUILT_BIN.
+
+-- tar czf ARMADA610_ANDROID_PLATFORM_ALPHA5_SRC.tgz source-by-patch
+
+-- split -b 100M -d ./ARMADA610_ANDROID_PLATFORM_ALPHA5_SRC.tgz ./ARMADA610_ANDROID_PLATFORM_ALPHA5_SRC.
+
+-- rm -f ARMADA610_ANDROID_PLATFORM_ALPHA5_SRC.tgz
+
+-- ln -sf ~/.gvfs/apse_release\ on\ sh-fs03/External_Release/mmp2/ out
+-- cp ARMADA610_ANDROID_PLATFORM* checksums.md5 ReleaseNotes.doc out/xxx
+
+3) Backup the whole directory of kit from autobuilt server to
+	\\sh-fs03\APSE_Release\Internal_Releases\MMP2
+   and then create a shortcut to access it at
+	\\sh-fs03\APSE_Release\External_Release\mmp2
+
+------
+There is a tool named code-drop that is placed at aabs.git/tools, which can execute all instructions mentioned above.
+
+4) Send out a code drop notification letter to
+
+To:
+
+Bin Liang; Mingliang Hu; Johnny Xia; Catherine Zheng; Ke Ding; Leo Lei; Tao Huang; Ye Fan; Sheldon Yang; He Huang; Yechen Huang; Yan Chen; Lawrence Li; Zhifang Long; Haipang Wu; Yi Lu; 'Yang Lu'; Guoxun Lu; Paul Shen; Haitao Huang; Liping Gao; Alice Wang; George Tian; Ryan Peng; William Wang; Tristan Xu; Henry Yu; Bing Zhao; Frank Huang; Xiuzhuo Lu; Eric (Lujia) Ren
+
+Cc:
+GR-APSE-PIE; GR-APSE-MPE; GR-APSE-OSE-SH; GR-APSE-QAE; GR-US_CP_AP_Platform_AE

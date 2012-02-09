@@ -54,11 +54,10 @@ Files in this folder
  
   ramdisk.img              Android ramdisk image.
   ramdisk_recovery.img     Android ramdisk image in recovery mode.
-  system_ext4.img          Android system image for ext4 file system.
-  userdata_ext4.img        Android userdata image for ext4 file system.
-  cache_ext4.img           cache partition used to store recovery relevant files for ext4 file system.
+  system.img               Android system image.
 
   update_droid.zip         that is a update package including kernel, ramdisk and system folder.
+  update_recovery.zip      that is a update package including recovery images (recovery uboot, kernel and ramdisk).
 
   if xxx is "internal" means everything is built in the package, and should be used internally.
 
@@ -74,56 +73,76 @@ How to get source code from git server
 
   <branch-name> : for example brownstone-froyo
 
-How to build kernel and android image
+How to build kernel and android image (Please follow the sequence: kernel/modules -> android -> uboot/obm -> update packages)
 =====================================
-  1. build kernel and modules
+  1. setup build environment
+     $ cd <android_working_dir>
+     $ . build/envsetup.sh
+     $ chooseproduct brownstone
+     $ choosevariant <build variant> //Select "user" as the build variant if you are a normal user. Select "userdebug" or "eng" to specify what you want to do.
+     $ export ANDROID_PREBUILT_MODULES=kernel/out/modules/
+
+  2. build kernel and modules
      $ cd <android_working_dir>
      $ cd kernel
      $ make all
 
-  zImage is located at kernel/out, modules is located at kernel/out/modules
+  zImage is at kernel/out, and the modules place at kernel/out/modules
 
-  2. build android
+  3. build android
      $ cd <android_working_dir>
-     $ . build/envsetup.sh
-     $ chooseproduct brownstone
-     $ export ANDROID_PREBUILT_MODULES=kernel/out/modules
-     $ make
+     $ make -j4
 
-  The android GPTs, ramdisk.img, system_ext4.img and userdata_ext4.img are located at out/target/product/brownstone
+   The android GPTs, ramdisk.img, system.img and userdata.img are at out/target/product/brownstone
 
-  3. build uboot and obm
+  4. build uboot and obm
      $ cd <android_working_dir>
      $ cd boot
      $ make all
 
-  The uboot bin is located at boot/out, nand auto boot version obm is located at boot/out/nand, emmc auto boot version obm is located at boot/out/emmc
+  The uboot bin and obm are at boot/out/trusted and boot/out/nontrusted,
+while the unified WTM is at boot/out.
 
-Burning OBM and UBoot
+  5. build update packages
+     $ cd <android_working_dir>
+     $ make droidupdate
+
+  The update_droid.zip and update_recovery.zip are at out/target/product/brownstone
+
+Burning OBM and UBoot (we must burn kernel and ramdisk by XDB in trusted mode)
 =====================
-1. Install XDB 5.0 Gold from: \\sh1sbak009\debugger_public\Official_Release\eXtreme_Debugger_v5.0_Gold
-2. After getting nand or emmc version binary from autobuild server, please follow either step 3 or 4 to bring up board
-3. Flash OBM and U-boot into NAND using XDB
-   1)Use flash burn tool: flash --> burn flash
-   2)Initialize a new flash and Erase all blocks
-   3)burn file "ntim_mmp2_nand_bbu_ddr.bin"  		address --> 0x0
-   4)burn file "MMP2_NTLOADER_3_2_17.bin"               address --> 0x80000
-   5)burn file "Wtm_rel_mmp2.bin"		        address --> 0xc0000
-   6)burn file "u-boot.bin"				address --> 0x100000
-
-4. Flash OBM and U-boot into EMMC using XDB
+1. Install XDB 5.1.105 from: \\sh1sbak009\debugger_public\Engineering_Release\XDB_5_1
+2. Get a trusted or non-trusted set of boot binaries (uboot & obm) from autobuild server
+3. Flash OBM and U-boot into EMMC using XDB
    1)Use flash burn tool: flash --> burn flash
    2)Choose flash: NAND Flash
    3)Erase All Blocks to erase the nand autoboot obm
    4)Choose flash: EMMC flash and click Detect button to detect emmc partition
    5)Choose partition 0x1
-      a)Burn file "ntim_mmp2_nand_bbu_ddr.bin"		address --> 0x0
-      b)Burn file "partition.bin"			address --> 0x600
-      c)burn file "Wtm_rel_mmp2.bin"	              	address --> 0x1000
-      d)burn file "MMP2_NTLOADER_3_2_17.bin"            address --> 0x32000
-      e)burn file "u-boot.bin"				address --> 0x52000
+	Trusted boot
+      a)Burn "tim_platform_512m_ddr3.bin"	address [0x0, 0x4000)
+      b)Burn "Wtm_rel_mmp2.bin"			address [0x4000, 0x30000)
+      c)Burn "MMP2_LINUX_ARM_BL_3_2_21_TRUSTED_EB_JO.bin"		address [0x30000, 0x60000)
+      d)Burn "u-boot.bin"			address [0x60000, 0xB0000)
+      e)Burn "u-boot.bin" as recovery u-boot	address [0xB0000, 0x100000)
+	Non-Trusted boot
+      a)Burn "ntim_platform_512m_ddr3.bin"	address [0x0, 0x4000)
+      b)Burn "Wtm_rel_mmp2.bin"			address [0x4000, 0x30000)
+      c)Burn "MMP2_LINUX_ARM_BL_3_2_21_EB_JO.bin"		address [0x30000, 0x60000)
+      d)Burn "u-boot.bin"			address [0x60000, 0xB0000)
+      e)Burn "u-boot.bin" as recovery u-boot	address [0xB0000, 0x100000)
+   6)Choose partition 0x0
+    Trusted boot
+      a)Burn "dtim_platform.bin"	address [0x780000, 0x800000)
+      b)Burn "zImage.android"		address [0x980000, 0x1180000)
+      c)Burn "ramdisk.img"			address [0x1180000, 0x1980000)
+      d)Burn "zImage_recovery.android"	address [0x1980000, 0x2180000)
+      e)Burn "ramdisk_recovery.img"		address [0x2180000, 0x2980000)
+    Non-Trusted boot
+      a)Burn "dntim_platform.bin"	address [0x780000, 0x800000)
+      b)"zImage.android", "ramdisk.img", "zImage_recovery.android" and "ramdisk_recovery.img" could be burned by XDB or uboot.
 
-How to Disable GC800
+How to Disable GC860
 =====================
 remove or rename egl.cfg which located in /system/lib/egl/
 
@@ -152,23 +171,41 @@ MMP2>> t ramdisk.img
 MMP2>> mmc write 0x8c00 0x800 0x1100000
 
 5) system
-MMP2>> t system_ext4.img
-MMP2>> mmc write 0xcc00 0x4b000 0x1100000
+MMP2>> t system.img
+MMP2>> unsparse 0x9ec00 0x80000 0x1100000
 
-6) data
-MMP2>> t userdata_ext4.img
-MMP2>> mmc write 0x57c00 0x4b000 0x1100000
+6) clean up data if userdata.img is unavailable.
+
+MMP2>> mw.b 0x1100000 0 0x80000
+MMP2>> mmc write 0x11ec00 0x400 0x1100000
+
+(You can flash user partition if it's available.)
+MMP2>> t userdata.img
+MMP2>> unsparse 0x11ec00 0x500000 0x1100000
 
 7) recovery
 
 MMP2>> t zImage_recovery.android
-MMP2>> mmc write 0xa2c00 0x2000 0x1100000
+MMP2>> mmc write 0xcc00 0x2000 0x1100000
 MMP2>> t ramdisk_recovery.img
-MMP2>> mmc write 0xa6c00 0x800 0x1100000
-MMP2>> t cache_ext4.img
-MMP2>> mmc write 0xab000 0x4b000 0x1100000
+MMP2>> mmc write 0x10c00 0x800 0x1100000
 
 After done, power-off and power-on again to boot mmp2 from emmc.
+
+Setup Android on NAND(emmc) using fastboot
+=========================
+To make use of fastboot, you need the fastboot program compiled for your host computer whose location should be out/host/linux-x86/bin/fastboot. You could use fastboot to burn all images to eMMC flash memory as follows. If the target image is in current path, you could omit the filename option.
+$ fastboot flash kernel [<image path>/zImage.android]
+$ fastboot flash kernel [<image path>/zImage.android]
+$ fastboot flash system [<image path>/system.img]
+$ fastboot flash reckernel [<image path>/zImage_recovery.android]
+$ fastboot flash recovery [<image path>/ramdisk_recovery.img]
+
+Besides, you can put all images in current path and use “flashall” to burn all images with one command.
+$ fastboot flashall
+
+Using the following command to erase Android data partition.
+$ fastboot erase userdata
 
 Setup Android on SD Card
 ========================
@@ -238,19 +275,12 @@ Known Issues about running Android on NFS
 
 FAQ
 =====
-+How can I configure video output path?
----------------------------------------------------------------
-The opencore,GStreamer and Helix engine uses the property video.accelerate.hw to determine the video output path.
-If the property is set to 'gc', it will allocate memory from PMEM and expect GC to do color conversion.
-If the property is set to 'overlay', it will use the overlay engine to output the video.
-If it is other values, it will use software color conversion and let surfaceflinger to output the video frame.
-
 +How to modify the files after the system_xxx.img has been burned to the flash?
 -------------------------------------------------------------------------------
 Please remount the system partition with rw mode by
 $adb remount
 
-+How to enable the video playback profiling?
++How to enable the video playback profiling? [ Only applicable to gingerbread ]
 --------------------------------------------
 After the android boot up, type in console:
 $setprop enable.pvplayer.profiling 1
@@ -264,4 +294,80 @@ If the battery service reports wrong battery status, Android power off the syste
 
 Open /init.rc, add the below line before class_start default:
 setprop battery.fake_ac true
+
++How to control cpufreqd?
+----------------------------------------------
+1) List all available Profiles
+$ cpufreqd-get
+
+2) List the current applied Profiles for all cpus
+$ cpufreqd-get -l
+
+3) Make cpufreqd run in manual mode
+$ cpufreqd-set manual
+
+4) Specify a profile to cpufreqd
+$ cpufreqd-set number
+
+note: number is an integer and means the sequence number of profile.
+
+5) Make cpufreqd run in dynamic mode
+$ cpufreqd-set dynamic
+
++How to dump the current memory status (including both pmem and normal memory)?
+----------------------------------------------
+# echo m > /proc/sysrq-trigger
+# dmesg
+
+Product Distribution
+================================================================
+To distribute final product, we should use customer specific keys to sign APK files and update package instead of test keys.
+
+1) generate keys and collect password
+$ cd <android_working_dir>
+$ development/tools/make_key releasekey '/C=US/ST=California/L=Santa Clara/O=Android/OU=Android/CN=Android/emailAddress=android@marvell.com'
+$ development/tools/make_key platform '/C=US/ST=California/L=Santa Clara/O=Android/OU=Android/CN=Android/emailAddress=android@marvell.com'
+$ development/tools/make_key shared '/C=US/ST=California/L=Santa Clara/O=Android/OU=Android/CN=Android/emailAddress=android@marvell.com'
+$ development/tools/make_key media '/C=US/ST=California/L=Santa Clara/O=Android/OU=Android/CN=Android/emailAddress=android@marvell.com'
+Collect password to a single file "pw" and move all keys and password file to "vendor/marvell/brownstone/security
+
+"pw" file example:
+# Enter key passwords between the [[[ ]]] brackets.
+[[[  media-marvell  ]]] vendor/marvell/brownstone/security/media
+[[[  platform-marvell  ]]] vendor/marvell/brownstone/security/platform
+[[[  releasekey-marvell  ]]] vendor/marvell/brownstone/security/releasekey
+[[[  shared-marvell  ]]] vendor/marvell/brownstone/security/shared
+
+2) sign all APK files in the target zipfile with customer's keys and produce a new target zipfile
+$ export ANDROID_PW_FILE=vendor/marvell/brownstone/security/pw
+$ target_files=`find out/target/product/brownstone/obj/PACKAGING/target_files_intermediates/ -type f -name "*-target_files-*.*.zip"`
+$ signed_files=out/target/product/brownstone/signed_target_files.zip
+$ signed_folder=out/target/product/brownstone/signed_target_folder
+$ build/tools/releasetools/sign_target_files_apks -o -d vendor/marvell/brownstone/security $target_files $signed_files
+
+3) generate system image containing new signed APK files
+$ mkdir $signed_folder
+$ unzip -o -q $signed_files -d $signed_folder
+$ system/extras/ext4_utils/mkuserimg.sh -s $signed_folder/SYSTEM $signed_folder/system.img ext4 system 268435456
+
+4) generate recovery ramdisk containing new public key
+$ out/host/linux-x86/bin/mkbootfs $signed_folder/RECOVERY/RAMDISK | out/host/linux-x86/bin/minigzip > $signed_folder/ramdisk_recovery.img
+
+5) generate update package signed with new key
+$ build/tools/releasetools/ota_from_target_files -v -p out/host/linux-x86 -k vendor/marvell/brownstone/security/releasekey $signed_files $signed_folder/update_droid_signed.zip
+
+We should distribute the new system.img, ramdisk_recovery.img and update_droid_signed.zip instead of the original ones.
+
+CPA (Code Performance Analyzer) simple guide
+================================================================
+1) Launch mpdc on device (require root permission)
+
+adb shell (with root permission)
+# load_mpdc.sh
+# mpdc_svr &
+
+2) Run CPA on Host (CPA/analyzer/cpa)
+3) Create a project (normally we use the option of "Hotspot Sampling")
+4) Start the profiling by pressing "Start"
+5) choose ADB connection in dialog
 

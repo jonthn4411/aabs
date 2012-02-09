@@ -28,9 +28,6 @@ define check-variables
 $(foreach var, $(1), $(eval $(call check-variable,$(var))))
 endef
 
-#the definitions that specific to this build environment, such as publish dir, git server address etc.
-include buildhost.def
-
 #check if the required variables have been set.
 $(call check-variables, PRODUCT_CODE MANIFEST_BRANCH)
 
@@ -39,17 +36,15 @@ log:=@echo $(current-time)
 hide:=@
 space:= #a designated space
 
-ifneq ($(strip $(RELEASE_NAME)),)
-RLS_SUFFIX:=_$(RELEASE_NAME)
-MANIFEST_BRANCH:=rls_$(subst -,_,$(MANIFEST_BRANCH))_$(RELEASE_NAME)
-else
-RLS_SUFFIX:=
-endif
-
 PUBLISHING_FILES:=
 TOP_DIR:=$(shell pwd)
-SRC_DIR:=src.$(PRODUCT_CODE)$(RLS_SUFFIX)
-OUTPUT_DIR:=out.$(PRODUCT_CODE)$(RLS_SUFFIX)
+
+SRC_DIR:=src.$(PRODUCT_CODE)
+OUTPUT_DIR:=out.$(PRODUCT_CODE)
+ifneq ($(strip $(ABS_RELEASE_NAME)),)
+SRC_DIR:=$(SRC_DIR).$(ABS_RELEASE_NAME)
+OUTPUT_DIR:=$(OUTPUT_DIR).$(ABS_RELEASE_NAME)
+endif
 
 #number of concurrent jobs for make
 MAKE_JOBS:=8

@@ -1,6 +1,8 @@
 export ABS_BOARD=brownstone
 export ABS_DROID_BRANCH=froyo
 export ABS_PRODUCT_NAME=MMP2
-export PATH=/usr/lib/jvm/java-1.5.0-sun/bin:$PATH
+export ABS_DROID_VARIANT=user
+export ABS_MANIFEST_BRANCH="$ABS_BOARD-$ABS_DROID_BRANCH"
+export ABS_UNIQUE_MANIFEST_BRANCH=1
 
 core/autobuild.sh $*

@@ -1,0 +1,46 @@
+Create a new GIT remote repository from some local files
+
+1) Create a local Git repository in your application for your local files.
+
+#On local machine
+cd foo_project
+git init
+git add *
+git commit -m "My initial commit message"
+
+2) Create the repository on your Git server.
+
+All of my git repositories are owned by a user git and located at /usr/local/git_root/. You can change these things accordingly to match your server setup.
+
+#On remote machine (Git remote repository)
+sudo su - git
+cd /usr/local/git_root/
+
+3) Create your new project git repo as a bare Git repository
+
+mkdir foo-project.git
+cd foo-project.git/
+git --bare init
+
+4) Make sure permissions are set properly. These are common options I use for my shared repositories
+
+git config core.sharedrepository 1
+git config receive.denyNonFastforwards true
+find objects -type d -exec chmod 02770 {} \;
+#The core.sharedrepository flag tells git to keep everything group readable and writable.
+#The receive.denyNonFastforwards flag makes sure that merges can't happen when you push to the repo. You have to do the merges on your local machine, and then push the result.
+
+5) Go back to your local repository, and add the newly created remote repository so it tracks from the remote repository (origin).
+
+#On local machine, in your git project
+git remote add origin ssh://git@example.com:2227/usr/local/git_root/foo_project.git
+git push origin HEAD:master
+
+6) Ensure that your local branch is tracking when you do a fetch, you need to use -f option to force a new local branch to be created even though it already exists.
+
+#Switch to origin/master so you don't get any error about "fatal: Cannot force update the current branch."
+git checkout origin/master
+#Create the local "master" branch that is tracking the "origin/master" branch
+git branch -f master origin/master
+#Switch back to your "master" branch
+git checkout master

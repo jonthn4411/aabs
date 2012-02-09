@@ -172,7 +172,6 @@ endef
 #
 kernel_configs:=android:mmc:mmp2_android_defconfig 
 
-export KERNEL_TOOLCHAIN_PREFIX
 export MAKE_JOBS
 
 #$1:kernel_config

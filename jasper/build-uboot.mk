@@ -30,7 +30,6 @@ clean_uboot:
 	$(log) "cleaning uboot..."
 	$(hide)cd $(SRC_DIR)/$(UBOOT_SRC_DIR) && \
 	export ARCH=arm && \
-	export CROSS_COMPILE="$(KERNEL_TOOLCHAIN_PREFIX)" && \
 	make $(UBOOT_CONFIG) && \
 	make clean
 	$(log) "    done."

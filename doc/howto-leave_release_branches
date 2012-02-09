@@ -1,0 +1,16 @@
+1) Refer to the "Steps to Leave Release Cycle 1/2"
+   described in Page 15 of "Android_Release_Cycle_Proposal"
+
+cd .repo/manifests/
+cp default.xml brownstone_froyo_beta1.xml
+git add brownstone_froyo_beta1.xml
+git commit -s -m "check in beta1 menifest file."
+git push origin HEAD:rls_xxx_yyyy_zzzz
+
+2) check whether there are some patches not to be merged into main-line,
+   if exists, ask the relevant guys to do response.
+3) send the notification mail to broadcast this event
+4) send a mail to ask Joyce Zhang 
+	Previously Rosalind
+		tony.jiang
+	to stop the autobuild.

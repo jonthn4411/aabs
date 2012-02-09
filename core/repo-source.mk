@@ -7,9 +7,16 @@ source: output_dir
 	$(hide)if [ ! -d "$(SRC_DIR)" ]; then \
 	    mkdir $(SRC_DIR); \
 	fi
-	$(log) "starting get source code from GIT server:$(GIT_SERVER), branch:$(MANIFEST_BRANCH) ..."
+	$(log) "starting get source code from GIT server:$(GIT_SERVER), branch:$(MANIFEST_BRANCH), manifest:$(MANIFEST_FILE) ..."
 	$(hide)cd $(SRC_DIR) && \
-	repo init -u ssh://$(GIT_MANIFEST) -b $(MANIFEST_BRANCH) --repo-url ssh://$(GIT_REPO) && \
+	if [ -z "$(GIT_LOCAL_MIRROR)" ]; then \
+		repo init -u ssh://$(GIT_MANIFEST) -b $(MANIFEST_BRANCH) --repo-url ssh://$(GIT_REPO); \
+	else \
+		repo init -u ssh://$(GIT_MANIFEST) -b $(MANIFEST_BRANCH) --repo-url ssh://$(GIT_REPO) --reference $(GIT_LOCAL_MIRROR); \
+	fi && \
+	if [ -n "$(MANIFEST_FILE)" ]; then \
+		repo init -m $(MANIFEST_FILE); \
+	fi && \
 	repo sync
 	$(log) "saving manifest file..."
 	$(hide)cd $(SRC_DIR) && repo manifest -r -o $(OUTPUT_DIR)/manifest.xml

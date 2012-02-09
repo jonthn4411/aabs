@@ -1,0 +1,339 @@
+Files in this folder
+====================
+-Change logs and checksum file
+  changelog.build       GIT change log of each project since last build.
+  changelog.msN         GIT change log of each project since last milestone release.
+  changelog.day	GIT change log of each project since yesterday.
+  changelog.week	GIT change log of each project since last week.
+  changelog.biweek 	GIT change log of each project since 2 weeks ago.
+  changelog.month	GIT change log of each project since a month ago.
+
+  checksums.md5	This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
+
+-Source codes
+ -Internal Use
+  manifest.xml	Saving the GIT commit number of each project used in this build. This is for internal use only.
+  droid_all_src.tgz     Completing source code tar ball, including everything, such as kernel, uboot, obm, android. This is for internal use only.
+
+ -External Uses: the below files will be in the release package. To restore the complete source code that is used to build this package, please follow the intructions in Release Notes.
+
+  setup_android.sh  The script that is used to setup the code base of this build from the below tarball. For details about this, please refer to release notes.
+
+  kernel_src.tgz	Kernel base source code tar ball.
+  kernel_patches.tgz    Kernel patches that are applied on kernel base source.
+
+  marvell_manifest.xml  The manifest file used to download base android source code from google. 
+  android_src.tgz       The source code of projects that are introduced by Marvell. Not including the projects introduced by Google.
+  android_patches.tgz   The patches that applied to android projects introduced by Google. 
+
+  uboot_src.tgz         Uboot base source code tar ball. 
+  uboot_patches.tgz     The patches that applied to uboot base source.
+
+  obm_src.tgz           OBM source code tar ball. Will be released.
+
+-droid-gcc folder
+ Files under droid-gcc folder are built with android-toolchain.
+ If this folder is missing, it means that this package wasn't built with google gcc toolchain.
+
+-mrvl-gcc folder
+ Files under mrvl-gcc folder are built with marvell gcc toolchain.
+ If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
+ 
+-GPT and UBoot
+ primary_gpt_4g    primary GUID partition table (for 4G eMMC)
+ secondary_gpt_4g  secondary GUID partition table (for 4G eMMC)
+ uboot.bin         the uboot
+
+-Kernel and Modules for Android
+  zImage.android           The kernel image
+  zImage_recovery.android  The recovery kernel image
+  modules_android_mmc.tgz  Kernel modules that built along with zImage.android and zImage_recovery.android
+
+-Android File Systems
+  root_nfs_xxx.tgz         Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package. 
+ 
+  ramdisk.img              Android ramdisk image.
+  ramdisk_recovery.img     Android ramdisk image in recovery mode.
+  system.img               Android system image.
+
+  update_droid.zip         that is a update package including kernel, ramdisk and system folder.
+
+  if xxx is "internal" means everything is built in the package, and should be used internally.
+
+  if xxx is "external" means the package can be delivered outside, components with license issue has been removed.
+
+-Extra Libraries
+  None.
+
+How to get source code from git server
+=====================================
+  1. repo init -u ssh://shgit.marvell.com/git/android/platform/manifest -b <branch-name>
+  2. repo sync
+
+  <branch-name> : for example brownstone-froyo
+
+How to build kernel and android image
+=====================================
+  1. build kernel and modules
+     $ cd <android_working_dir>
+     $ cd kernel
+     $ make all
+
+  zImage is at kernel/out, and the modules place at kernel/out/modules
+
+  2. build uboot and obm
+     $ cd <android_working_dir>
+     $ cd boot
+     $ make all
+
+  The uboot bin and obm are at boot/out/trusted and boot/out/nontrusted,
+while the unified WTM is at boot/out.
+
+  3. build android
+     $ cd <android_working_dir>
+     $ . build/envsetup.sh
+     $ chooseproduct g50
+     $ make
+
+  The android GPTs, ramdisk.img, system.img and update_droid.zip are at out/target/product/g50
+
+Burning OBM and UBoot
+=====================
+1. Install XDB 5.1.105 from: \\sh1sbak009\debugger_public\Engineering_Release\XDB_5_1
+2. Get a trusted or non-trusted set of boot binaries (uboot & obm) from autobuild server
+3. Flash OBM and U-boot into EMMC using XDB
+   1)Use flash burn tool: flash --> burn flash
+   2)Choose flash: NAND Flash
+   3)Erase All Blocks to erase the nand autoboot obm
+   4)Choose flash: EMMC flash and click Detect button to detect emmc partition
+   5)Choose partition 0x1
+	Trusted boot
+      a)Burn "tim_mmp2_nand_bbu_ddr.bin"	address [0x0, 0x4000)
+      b)Burn "Wtm_rel_mmp2.bin"			address [0x4000, 0x30000)
+      c)Burn "MMP2_TLOADER_3_2_19.bin"		address [0x30000, 0x60000)
+      d)Burn "u-boot.bin"			address [0x60000, 0xB0000)
+      e)Burn "u-boot.bin" as recovery u-boot	address [0xB0000, 0x100000)
+	Non-Trusted boot
+      a)Burn "ntim_mmp2_nand_bbu_ddr.bin"	address [0x0, 0x4000)
+      b)Burn "Wtm_rel_mmp2.bin"			address [0x4000, 0x30000)
+      c)Burn "MMP2_NTLOADER_3_2_19.bin"		address [0x30000, 0x60000)
+      d)Burn "u-boot.bin"			address [0x60000, 0xB0000)
+      e)Burn "u-boot.bin" as recovery u-boot	address [0xB0000, 0x100000)
+
+How to Disable GC860
+=====================
+remove or rename egl.cfg which located in /system/lib/egl/
+
+
+Setup Android on NAND(emmc)
+=========================
+
+Boot the device with console, and then flash the images via uboot
+
+1) By default, the initial sw part has been set to 0.
+   Alternatively, you can run the following struction to make sure.
+MMP2>> mmc sw_part 0
+
+2) GPT
+MMP2>> t primary_gpt_4g
+MMP2>> mmc write 0 0x22 0x1100000
+MMP2>> t secondary_gpt_4g
+MMP2>> mmc write 0x75efdd 0x21 0x1100000
+
+3) kernel
+MMP2>> t zImage.android
+MMP2>> mmc write 0x4c00 0x2000 0x1100000
+
+4) ramdisk
+MMP2>> t ramdisk.img
+MMP2>> mmc write 0x8c00 0x800 0x1100000
+
+5) system
+MMP2>> t system.img
+MMP2>> mmc write 0xcc00 0x4b000 0x1100000
+
+6) clean up data if userdata.img is unavailable.
+
+MMP2>> mw.b 0x1100000 0 0x80000
+MMP2>> mmc write 0x57c00 0x400 0x1100000
+
+(You can flash user partition if it's available.)
+MMP2>> t userdata.img
+MMP2>> mmc write 0x57c00 0x4b000 0x1100000
+
+7) recovery
+
+MMP2>> t zImage_recovery.android
+MMP2>> mmc write 0xa2c00 0x2000 0x1100000
+MMP2>> t ramdisk_recovery.img
+MMP2>> mmc write 0xa6c00 0x800 0x1100000
+
+After done, power-off and power-on again to boot mmp2 from emmc.
+
+Setup Android on NAND(emmc) using fastboot
+=========================
+To make use of fastboot, you need the fastboot program compiled for your host computer whose location should be out/host/linux-x86/bin/fastboot. You could use fastboot to burn all images to eMMC flash memory as follows. If the target image is in current path, you could omit the filename option.
+$ fastboot flash kernel [<image path>/zImage.android]
+$ fastboot flash kernel [<image path>/zImage.android]
+$ fastboot flash system [<image path>/system.img]
+$ fastboot flash reckernel [<image path>/zImage_recovery.android]
+$ fastboot flash recovery [<image path>/ramdisk_recovery.img]
+
+Besides, you can put all images in current path and use “flashall” to burn all images with one command.
+$ fastboot flashall
+
+Using the following command to erase Android data partition.
+$ fastboot erase userdata
+
+Setup Android on SD Card
+========================
+Follow the below process to make a SD card with Android root file system installed.
+1) Plug a SD card to the PC
+2) mkfs.ext4 /dev/sdc #your SD card maybe mounted at the other sd device, such as /dev/sdb
+3) mount /dev/sdc /mnt/disk
+4) tar xvf root_nfs.tgz /tmp; cp -p -r /tmp/root_nfs/* /mnt/disk/;
+5) umount /dev/sdc
+
+Second, burning the zImage.android.mmc image.
+Boot the device with console,
+MMP2>> t zImage.android
+MMP2>> mmc write 0x4c00 0x2000 0x1100000
+
+Note : erase ramdisk first if you want to boot from sdcard
+
+
+Setup Android on NFS
+====================
+1) Install the NFS server on PC host.
+2) mkdir /nfs and /nfs/android
+3) add the below line to /etc/exports
+  /nfs/android            *(rw,sync,no_root_squash,no_subtree_check)
+  Notes: be sure you specify all the optional paramters above.
+4) tar xvf root_nfs.tgz /tmp/
+5) mv /tmp/root_nfs/* /nfs/android
+6) sudo exportfs -r
+
+Last, you should use zImage to boot the kernel and then set the bootargs variable in UBoot.
+(Notes:if adb is enabled in the kernel, this way doesn't work as the usb net won't work as the usb is used for adb)
+MMP2>> t zImage.android
+MMP2>> bo
+
+Note : erase ramdisk first if you want to boot from sdcard
+
+Notes:we used one kernel binary solution, the boot sequence is nand --> mmc --> nfs, now nand is not supported, so remove sdcard first if you want to boot from nfs. And the nfs server is fixed as 192.168.1.100:/nfs/android. if you want to change it, modify vendor/marvell/g50/roodir/rdinit and build the kernel again
+
+Notes:You only need use setenv and savenv command one time. Next time UBoot will load the environment variable from NAND automaticllay. But later if you want use zImage.android.mmc to boot Android from SD card, you should clear the "bootargs" environment variable. You can do this by:
+
+
+
+Known Issues about running Android on NFS
+=========================================
++ Wifi can't be enabled if you are using UBuntu9.04 or higher
+-------------------------------------------------------------
+  Symptom: When you enabled the Wifi, use the logcat you can see a message "Error changing group ownership of wpa_supplicant.conf to 1001:Operation not permitted." This only happens if your host PC is running with UBuntu9.04. We tested UBuntu8.04 and UBuntu8.10, which doesn't have this issue.
+  Reason: We don't know the exact reason why chown doesn't work on UBuntu9.04 but works on 8.04 or 8.10.
+
+  Workaround:In the console, you can copy the wpa_supplicant.conf from /system/etc/wifi/wpa_supplicant.conf to /data/misc/wifi/wpa_supplicant.conf and chmod 777 wpa_supplicant.conf.
+
+
++ Calibration data can't be saved, any setting data can't be saved.
+------------------------------------------------------------------
+  Symptom: You calibrate the touch screen with Calibration app, and the screen works well. But at next boot, you have to calibrate it again. The calibration data isn't stored. 
+
+  Reason: Actually the calibration data is saved to persistent property file. But just fail to read it from persistent property at boot. This seems a limitation of NFS file system on support opendir() function.
+
+  Workaround: no workaround is available right now, just recalibrate it.
+
+
++Media on SD Card can't be seen by Video/Music/Photo App
+------------------------------------------------------------
+  Symptom: Plug the SD card to device, with media files on SD card, but Video/Music/Photo App can't see anything.
+  Reason: Mounting SD card is disabled in root_nfs.tgz on purpose. As if Android is running on SD card, enable mounting of SD card may cause confliction. So by default we disable it in root_nfs.tgz. 
+  Workaround:You can enable it manually by edit /system/etc/vold.conf, uncomment the section of volume_sdcard.
+
+FAQ
+=====
++How to modify the files after the system_xxx.img has been burned to the flash?
+-------------------------------------------------------------------------------
+Please remount the system partition with rw mode by
+$adb remount
+
++How to enable the video playback profiling? [ Only applicable to gingerbread ]
+--------------------------------------------
+After the android boot up, type in console:
+$setprop enable.pvplayer.profiling 1
+$logcat &
+
+While playback a video clip, the profiling data will be output to console.
+
++How to enable the fake ac and battery status?
+----------------------------------------------
+If the battery service reports wrong battery status, Android power off the system automatically. You can use the below way to request battery service to report fake status to cheat android system.
+
+Open /init.rc, add the below line before class_start default:
+setprop battery.fake_ac true
+
++How to control cpufreqd?
+----------------------------------------------
+1) List all available Profiles
+$ cpufreqd-get
+
+2) List the current applied Profiles for all cpus
+$ cpufreqd-get -l
+
+3) Make cpufreqd run in manual mode
+$ cpufreqd-set manual
+
+4) Specify a profile to cpufreqd
+$ cpufreqd-set number
+
+note: number is an integer and means the sequence number of profile.
+
+5) Make cpufreqd run in dynamic mode
+$ cpufreqd-set dynamic
+
+Product Distribution
+================================================================
+To distribute final product, we should use customer specific keys to sign APK files and update package instead of test keys.
+
+1) generate keys and collect password
+$ cd <android_working_dir>
+$ development/tools/make_key releasekey '/C=US/ST=California/L=Santa Clara/O=Android/OU=Android/CN=Android/emailAddress=android@marvell.com'
+$ development/tools/make_key platform '/C=US/ST=California/L=Santa Clara/O=Android/OU=Android/CN=Android/emailAddress=android@marvell.com'
+$ development/tools/make_key shared '/C=US/ST=California/L=Santa Clara/O=Android/OU=Android/CN=Android/emailAddress=android@marvell.com'
+$ development/tools/make_key media '/C=US/ST=California/L=Santa Clara/O=Android/OU=Android/CN=Android/emailAddress=android@marvell.com'
+Collect password to a single file "pw" and move all keys and password file to "vendor/marvell/g50/security
+
+2) sign all APK files in the target zipfile with customer's keys and produce a new target zipfile
+$ export ANDROID_PW_FILE=vendor/marvell/g50/security/pw
+$ target_files=`find out/target/product/g50/obj/PACKAGING/target_files_intermediates/ -type f -name "*-target_files-*.*.zip"`
+$ signed_files=out/target/product/g50/signed_target_files.zip
+$ signed_folder=out/target/product/g50/signed_target_folder
+$ build/tools/releasetools/sign_target_files_apks -o -d vendor/marvell/g50/security $target_files $signed_files
+
+3) generate system image containing new signed APK files
+$ mkdir $signed_folder
+$ unzip -o -q $signed_files -d $signed_folder
+$ system/extras/ext4_utils/mkuserimg.sh  $signed_folder/SYSTEM $signed_folder/system.img ext4 system 157286400
+
+4) generate recovery ramdisk containing new public key
+$ out/host/linux-x86/bin/mkbootfs $signed_folder/RECOVERY/RAMDISK | out/host/linux-x86/bin/minigzip > $signed_folder/ramdisk_recovery.img
+
+5) generate update package signed with new key
+$ build/tools/releasetools/ota_from_target_files -v -p out/host/linux-x86 -k vendor/marvell/g50/security/releasekey $signed_files $signed_folder/update_droid_signed.zip
+
+We should distribute the new system.img, ramdisk_recovery.img and update_droid_signed.zip instead of the original ones.
+
+CPA (Code Performance Analyzer) simple guide
+================================================================
+1) Launch mpdc on device (require root permission)
+
+adb shell (with root permission)
+# load_mpdc.sh
+# mpdc_svr &
+
+2) Run CPA on Host (CPA/analyzer/cpa)
+3) Create a project (normally we use the option of "Hotspot Sampling")
+4) Start the profiling by pressing "Start"
+5) choose ADB connection in dialog
+

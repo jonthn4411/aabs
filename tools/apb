@@ -27,6 +27,3 @@ if [ -z "$ANDROID_PRE_BUILD_PATHS" ]; then
     export ANDROID_PRE_BUILD_PATHS=$JAVA_HOME/bin 
     export PATH=$ANDROID_PRE_BUILD_PATHS:$PATH
 fi
-
-# Marvell specific macros
-export ANDROID_PREBUILT_MODULES=kernel/out/modules/

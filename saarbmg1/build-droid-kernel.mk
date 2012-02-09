@@ -63,6 +63,8 @@ build_droid_root_$(1): output_dir
 PUBLISHING_FILES_$(1)+=$(1)/userdata_ext3.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/system_ext3.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/userdata_onenand.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/system.img:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/userdata.img:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/system_onenand.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
@@ -144,6 +146,8 @@ package_droid_slc_$(1)_$(2):
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext3.img $$(OUTPUT_DIR)/$(2)/userdata_ext3.img && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_onenand.img $$(OUTPUT_DIR)/$(2)/system_onenand.img && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_onenand.img $$(OUTPUT_DIR)/$(2)/userdata_onenand.img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(2)/system.img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(2)/userdata.img && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/build.prop $$(OUTPUT_DIR)/$(2)/build.prop
 	$$(hide)cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(2)/
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf symbols_lib.tgz lib && rm lib -rf
@@ -260,7 +264,7 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/System.map $$(OUTPUT_DIR)/$(2)
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi &&\
 	mkdir -p $$(OUTPUT_DIR)/$(2)/modules
-	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules/* $$(OUTPUT_DIR)/$(2)/modules
+	$$(hide)rsync -avl $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules $$(OUTPUT_DIR)/$(2)/
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf modules_$$(private_os)_$$(private_storage).tgz modules/ 
 	$$(hide)if [ "$$(TARGET_PRODUCT)" = "dkbttc" ] || [ "$$(TARGET_PRODUCT)" = "dkbtd" ]; then \
 	cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/telephony/* /$$(OUTPUT_DIR)/$(2); fi

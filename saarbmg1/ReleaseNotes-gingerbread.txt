@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA955 Android Platform Release for Linux
 Platform ReleaseNotes
-Last update: 01/19/2011
+Last update: 05/24/2011
 ==============================================================================
 
 1. Platform features
@@ -9,10 +9,12 @@ Last update: 01/19/2011
 - Rebase to google android gingerbread branch
 - Do key pad mapping, touch for PXA955 SAARB platform
 - Wi-Fi/BT support
-- Light sensor and g-sensor support
-- Camera support
+- Light sensor and g-sensor and compass sensor and proximity sensor and accleration sensor support
+- Dual camera sensor support
+- FM radio support
 - Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC800
 - Integrate stagefright and g-streamer video playback for media player
+- Organ support
 
 1.2 BSP features
 Uboot
@@ -128,23 +130,46 @@ Uboot
 
 1.5 Multimedia features
 - IPP Vmeta-based video codecs	
-	- H.264 BP/MP/HP decoder
-	- H.263 P0/P3 decoder
-	- MPEG-4 SP/ASP decoder
+  - H.264 BP/MP/HP decoder
+  - H.263 P0/P3 decoder
+  - MPEG-4 SP/ASP decoder
+  - MPEG-2 MP decoder
+  - WMV/VC-1 SP/MP/AP decoder
+  - H.264 BP encoder
+  - H.263 P0 encoder
+  - MPEG-4 SP encoder
 - IPP WMMX-optimized video codecs	
-	- H.264 BP/Partial MP&HP decoder
-	- H.263 P0/P3 decoder
-	- MPEG-4 SP/ASP decoder
+  - H.264 BP/Partial MP&HP decoder
+  - H.263 P0/P3 decoder
+  - MPEG-4 SP/ASP decoder
+  - MPEG-2 MP decoder
+  - WMV/VC-1 SP/MP decoder
+  - H.264 BP encoder
+  - H.263 P0/P3 encoder
+  - MPEG-4 SP encoder
 - IPP WMMX-optimized image codecs		
-	- JPEG baseline/progressive decoder
-	- JPEG baseline/progressive encoder
+  - JPEG baseline/progressive decoder
+  - JPEG baseline/progressive encoder
 - IPP WMMX-optimized audio and speech codecs
   - MP3 decoder
-	- AAC decoder
+  - AAC decoder
+  - WMA decoder
+  - AAC LC encoder
+  - AMR-WB decoder
+  - AMR-WB encoder
+  - AMR-NB decoder
+  - AMR-NB encoder
 - IPP supported multimedia container format
   - 3GP/3GPP (Stagefright Path)
   - MP4      (Stagefright Path)
   - MKV      (Stagefright Path)
+  - MP3      (Stagefright Path)
+  - AMR      (Stagefright Path)
+  - AAC      (GStreamer Path)
+  - AVI      (GStreamer Path)
+  - ASF      (GStreamer Path)
+  - WMV      (GStreamer Path)
+  - WMA      (GStreamer Path)
 
 <VERSION>=master
 ===========================================================================================
@@ -160,7 +185,7 @@ Uboot
   - kernel_src.tgz                                   	:Kernel base source code
   - uboot_patches.tgz                                	:Marvell patches to uboot_src.tgz
   - uboot_src.tgz                                    	:Uboot base source code
-- obm_src.tgz                                      	:OBM source code
+  - obm_src.tgz                                      	:OBM source code
 - manifest.xml						:Marvell manifest
 - Software_Downloader.zip				:Software downloader for Microsfot Windows
 
@@ -324,42 +349,247 @@ echo 0 >/sys/power/mspm/mspm
 	-remove /system/lib/egl/egl.cfg from android rootfs
 4.2 Updates and known issues:
 Updates:
-Video
-- Vmeta hal upgrade to 20101231.  
-- added the h263 and mpeg4 support.
+Multimedia
+-  Vmeta hal upgrade to 20110325
+-  Vmeta codec/openmax support power optimization
+-  Add vMeta GST PMEM support
+-  Add vMeta GST power optimization
+-  Bug fix for vMeta GST decoder mjpeg stream
+-  Add vMeta GST encoder mjpeg support
+-  Bug fix for IPP SW decoder mjpeg
+-  Add aac GST decoder 6 channel support
+-  Add aac GST decoder TS support
+-  Improved GST plug-in error handling
+-  Fix a few rate control issues vmeta encoder
+-  openmax fix a potential memory leak issue
+-  openmax  aacdec improve the handling for error streams
+-  Vmeta decoder fix mpeg4 asp mosaic issue.
+-  Jpeg decoder enhance error handling
+-  Aac decoder il component bug fixing.
+-  Aac encoder il component bug fixing.
 Graphics
--  Fixed garbage issue when enable 2D path for gingerbread.
--  Resolved RGBX format issue on gingerbread.
--  Fixed Samsung GraphicsBenchmark: Fractal draw error issue.
--  Fixed [Benchmark]An3DBench:Mutiple light sources: the earth color is wrong.
--  Fixed [MG1][Android][Game]Radiant.apk screen mess while playing.
--  Fixed [Android][Game]deadlychambers(OpenGL ES2.0 Game) will force close.
--  Add frame-rate throttling.
--  Performance of 0xBenchmark Flying Teapot has been improve from 23 fps to 48 fps.
+-  Support FBO in 2D path, make android 2.3.3 screen capture can work
+-  Fix bootanimation crash issue in android 2.3.3
+-  Fix oes20_javasft TTnLVertex010_001, TShaderBindAttribute, TFBFBO00 render error
+-  Fix gal2D multi-thread test cause GUI hang issue
+-  Move PMEM cache flush to gralloc
+-  Disable user mode heap allocation but use malloc directly.. 
+-  Refine memory allocation for VERTEX Construction.. 
+-  Fix "Jet car" 3D game Cannot play issue. 
+-  Fix (448935.4): [E28] Game AirAttackHDLite crash issue.
+-  Don't power off GC before entering early suspend to workround white screen issue.
+-  Fix com.nix.game.mahjong-1.apk draw error. 
+-  Fix CQ00158604: [Games]iPingPong3D.v1.apk : texture abnormal. 
+-  Fix CQ00158607: Games]com.glu.android.skob2_free-1.apk : system crash.
+-  Fix Samsung Forest crash issue.
+
 BSP
--  Enabled suspend/resume and added basic driver support.
--  Enabled PM and DVFM but not opened by default
--  Enabled G-sensor, geomagnetic sensor
--  Enabled FM radio
--  Enabled USB OTG/host
--  I2c updated to 32
--  MMC enabled ADMA and clock gating
+[PMEM]
+-  enabled the attribute of 'buffered' on all arm platforms 
+-  shared memory among nodes
+-  allowed multi-mmap on the connected fd
+-  supported streaming DMA mapping
+-  changed from module to built-in
+-  used alloc_bootmem instead of alloc_pages
+-  fixed the address alignment issue
+-  Fix the small flush size issue in master region
+[NAND]
+-  Enabled NAND and NAND DMA mode
+-  fixed high mem dma mapping issue
+-  Enabled dynamic low power mode management using time-out mechanism
+-  Added suspend/resume support to make NAND works in suspend
+-  Fixed coverity related issues
+-  Fix cache flush issue for high memory
+[Display]
+-  Added crop support
+-  Fixed media playback dynamic rotate issue
+-  Fixed an issue that panel distorts when dynamic rotate on media playback
+-  Supported suspend for dsi video mode
+[Power]
+-  Fixed an issue to prevent hss change to 104Mhz
+-  Enabled 1Ghz support and disabled 1Ghz when Vmeta/Camera running
+-  Enabled C2 deepidle
+-  Fixed an issue which power-i2c is not used correctly
+-  Added a parser and logger for debug purpose
+-  Added message to show 1Ghz voltage
+-  Added pp table and changes of registers for Nevo power
+-  Fixed a bug in measurecorefreq function in co-processor commands
+-  Disable IPM_DEEPIDLE config in both pxa955 and pxa970 defconfig to eliminate entering to D0CS
+-  Added error handler for suspend failure: when suspend function fails, goto to resume sequence
+-  Updated pm debug trace.
+-  Fixed 1ghz issue: when dvfm is disabled, system would boot with correct PP.
+-  Fix C2 idle exiting bug on MG2 (JIRA MG2-388)
+-  Add pm logger tracing
+-  Add DMA register save/restore when enter/exit LPM
+[PMIC]
+-  Added support for PM8607 D0 stepping
+-  Aligned pmic id proc file name
+-  supported enabling part of regulators in platform driver
+-  cleaned up camera ldo usage
+-  Cleaned up ldoes in saarb to let system not enable all ldoes at first
+-  Changed SI9226 LDO usage policy: ldo would be dynamically turned on/off now
+-  Cleaned up backlight code and fixed backlight is not lighten issue
+-  changed the PREG voltage for power supply
+-  restarted charger at 4000mV
+-  Add a fix to distinguish wall adapter and USB charger
+-  Added 88pm860x D0 support
+[Vmeta]
+-  Added 2 pps for VGA playback to use power profiler for power optimization
+-  Exposed power status of vmeta out.
+-  Fix cannot release op when pause issue
+-  Fix reader semaphore usage bug
+[USB]
+-  fixed usb-if chapter 9 test warning
+-  Automatically recongnized USB host device when mini A cable plug in
+-  Hold a wakelock when a host device is pluged in
+-  Added a wakelock to prevent system into suspend when usb cable plugged in
+-  Fixed coverity issues
+-  ignored the second set interface command to pass IF test
+-  Changed circular buffer to increase possible USB load capacity
+-  Fixed oth state transistion issue during system resume
+[MMC]
+-  Fixed 2 accessing reserved bit issue in MMC controller issue to fix mmc read/write error issue
+-  Fixed an issue that sometimes checking read only status would be failed.
+-  added wake_lock for sd insert/remove during suspend
+-  handled sdio wake up events during suspend to avoid losing wake up events during suspend process
+-  skip sdio_enable/disable_wide in suspend & resume to fix incorrect accessing to CCCR_IF
+-  clear pending interrupt flag after resumeto avoid fake wake up in next suspend
+-  Added a power optimization to close SD slot ldo when card not in
+-  Use msleep instead of timeout handler
+[FM]
+-  removed the frequency setting during init
+-  Added early suspend interface to disable fm events during early suspend.
+-  Add transmitter support
+[Camera]
+-  Reverted patch "remove duplicated sensor setting download" patch to fix sensor not working issue
+-  Fixed cpu stepping setting issue
+-  Change ov5642/7690 MIPI bridge setting to YUV format
+-  fix ov7690 view field difference in VGA/QVGA/CIF/QCIF
+-  Enabled 720p camera output and optimize arbitration for camera DMA.
+-  Fixed ov7690 image quality low and watermark problem
+-  Fixed JPEG 5M resolution absence problem
+-  Fixed extra bit not cleared problem for MIPI interface
+[Aduio]
+-  Aligned audio with latest audio server
+-  Fixed I2c error
+-  Fixed an audio period issue in pcm lib
+-  Fix abu trailing bytes issue which may cause sometimes sound is incorrect.
+-  Added trigger to make sure abu works during suspend/resume
+-  Add pcm-ssp recording support
+-  Add 88pm860x short handle
+-  Add dynamic clock on/off in ABU driver
+[TavorEVB3 platform]
+-  Enabled tavorevb3 platform support
+[NevoEVB3 platform]
+-  Enabled pmem on pxa970
+-  Fixed camera regulator issue
+-  Add a workaround to fix audio playback issue
+[WIFI/BT]
+-  Minimize reset time to speed up WIFI enabling
+-  Fixed an issue of WIFI deadlock
+-  Removed native rfkill to avoid rfkills block each other as dead lock
+[MISC]
+-  Fixed coverity issue for vibrator/ cm3601 and cwgd sensor
+-  Removed message for yas sensor
+-  Fixed build warnings
+-  Enabled STUART for GPS
+-  kept uart on for debug purpose
+-  enabled VNC touch for saarc
+-  Reverted the "pxa9xx core disable LDREX STREX" as there's no such issue now
+-  Updated cwmi and cwgi sensor to latest version
+-  Added ssp functions : enable/disable/read word/write word/flush. And updated lcd panel codes to use this interface.
+-  Fixed coverity issue in USB, battery
+-  Defconfig is cleaned to align with .32: enabled OABI COMPAT to support old ABI binaries. Disabled IR.
+-  Added UID_STAT config to fix cts bug: TrafficStatsTest fail
+-  Add ODE solution
+-  Add panic context, reset and ddr size
+-  DMA add alignment checking in camera and USB driver
+-  Fix HDMI regulator issue
+-  Enable L2 cache prefetch and burst8
+-  Fix the kernel panic leaded by the wrong software IRQs
+-  Fix the gpio enable/disable irq status issue
+-  Add hdmitx driver and added on nevo evb platform
+[UART]
+-  Fix a issue that uart lpm constrain when wake up would be released earlier than expectation
+-  Fix kernel panic when input from UART after exiting LPM
+[I2C]
+-  Fixed issue for calling of i2c functions in interrupt and atomic: force i2c move to pio mode in this case
+-  Slow down the I2C fastmode to 380K
+[Keypad]
+-  Fixed issue that keypad may not wake up system in low power mode
+-  Fixed MG1-E0 support issue in soc-camera
+-  Touch] Added solomon systech ssd2531 touchscreen support, which may be used in Saarc platform
+-  Fixed keypad mapping for nevo evb
+[Charger] 
+-  Fixed charger restart at 4000mV due to threshold and manually stop
+[Coverity] 
+-  Fixed coverity issues in SSP, PM, USB
+
 Android
--  Add support for dual senors(front/back).
--  Polish camera multi-instance management.
--  Polish overlay display/destroy sequence.
--  Add Marvell Code Performance Analyzer support
--  Align mbr and system size to PTK
--  Add sensor HAL support, and enable light sensor, g-sensor
+-  Update android to 2.3.4_r1
+-  Remove bmm module memory reservation but keep device node for GC skia path
+-  Fixed a CTS  bug which is openGLES version property issue
+-  Clean up LOCAL_MODULE_TAGS in all projects
+-  Large stream file size support
+-  Power off alarm support
+-  Improve webm video playing
+-  Fixed non-16-pixel aligned video thumbnail issue in stagefright
+-  Fixed Organ issues
+-  Improve SD card security
+-  Fixed FM radio issues
+-  Upgrade sd8787 driver to p66, and not support W1 any  more
+-  Support audio recording over PCM
+-  Improve pmem
+-  Add VT support
+-  Add opencore support
+-  Gallery3D improve the picture quality for 32bpp
+-  Optimization for realloc
+[Video] 
+-  Fix screen jitter when videos playing for some streams
+-  Enhanced the 3G network streaming playback with optimized cache design
+-  Add EOS feature for some audio and video encoder in Stagefright OMX and MP4 Writer
+-  Update GstPlayer to support large files when using appsrc
+[Camera] 
+-  Align naming convention
+-  Add JPEG digital zoom feature 
+-  Add in-place post-processing path in camera-engine to save memory footprint for physical continuous memory, now 420p->420sp conversion support in-place.
+-  Add duplicate buffer enqueue handling, will dismiss this operation and return warning to user
+-  libippexif: add GPS tag support and thumbnail support in lib, rename lib from libcodecexif to libippexif
+-  Add sensor digital zoom support, open iDigitalZoomQ16, bSupportSmoothDigZoom in camera capability for query
+-  Fix "CAM_ShotModeCapability mCamera_shotcaps" uninitialized bug.
+-  Add thumbnail function to exif.
+-  Add debug property "persist.service.camera.cnt" to avoid system booting failure for camera issue.
+-  Add 420sp 420p RGB 422I base layer preview, fixed a deadlock issue in Camera picture.
+-  Support mp4 suffix in Camera recording
+-  Refine lipippexif to support most exif private tag
+-  Improve libippexif performance about 5 times speed in big file case
+-  Add fake sensor path to isolate issues between user space and kernel space
+-  Refine-big-memory-OSAL
+-  Fix still capture memory leak issue
+-  Add shot info query path in camera-engine, currently mainly support EXIF usage case
+-  Refine v4l2 calling sequence to better robustness
+[WiFi/BT] 
+-  Update WiFi/BT driver to p58
+-  Fix the DHCP stop conflict with 2.3.3 update, Current DHCP stop don't check if mDhcpTarget is null which lead to NPE failure
+[Audio]
+-  Add OrganV2 support
+-  Fix organ record path not working issue
+-  Fix organ bluetooth A2DP path not working issue
+-  Fix organ File Format Checking in SetDataSource
+[Others]
+-  [PMEM] Align pmem and bmm, video/overlay/camcoder use the libphycontmem instead of libbmm
+-  [Overlay] Add ROI information to display
+-  [Vmeta] Add performance profiler support. The power is optimized for VGA playback
+-  [Misc] Fix the sh alignment issue
+-  [CTS] Fix some CTS bugs, include TTS, camera, graphics, WiFi бн
+-  [FM] Improve FM radio service and  manager
+-  [Tool] Marvell Code Performance Analyzer support
+-  [Overlay]Enable overlay switch on/off feature
+-  Fix a potential bug in sensor library
 
 Known issues:
-- The second sensor may be not probed correctly when booting up 
-- Video recording is not ready.
-- When entering suspend, it may be resumed and suspended again every 1 minute due to battery
-- Wi-Fi resume failed after suspend
-- Sometimes screen jitter when video playing
-- Sometimes screen flash when rotate
-- Sometimes kernel panic because of binder and socket when booting
+-  When connect to AP with IP 192.168.1.x, WiFi will fail to connect Internet. Which is caused by NFS enabled and Ethernet usb0 is active with IP 192.168.1.101 by default
+
 
 ----------------------------
 

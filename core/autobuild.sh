@@ -199,7 +199,7 @@ send_nobuild_notification()
 #$2: build number
 update_changelogs()
 {
-	LOG_FILES="changelog.build changelog.rel changelog.day changelog.week changelog.biweek changelog.month"
+	LOG_FILES="changelog.build changelog.day changelog.week changelog.biweek changelog.month"
 	for log in $LOG_FILES; do
 		log_file=$1/$log
 		if [ -e "$log_file" ]; then
@@ -229,15 +229,24 @@ print_usage()
 	echo "  help: print this list."
 }
 
-source buildhost.def
-
 if [ -z "$ABS_BOARD" ] || [ -z "$ABS_DROID_BRANCH" ] || [ -z "$ABS_PRODUCT_NAME" ]; then
   echo "Any of the variable:ABS_BOARD,ABS_DROID_BRANCH,ABS_PRODUCT_NAME is not set."
   return 1
 fi
 
+if [ -z "$ABS_BUILDHOST_DEF" ] || [ ! -e $ABS_BUILDHOST_DEF ]; then
+  ABS_BUILDHOST_DEF=buildhost.def
+fi
+. $ABS_BUILDHOST_DEF
+
 PRODUCT_CODE=${ABS_BOARD}-${ABS_DROID_BRANCH}
 MAKEFILE=${PRODUCT_CODE}.mk
+if [ ! -f "$MAKEFILE" ]; then
+  MAKEFILE=${ABS_BOARD}/board.mk
+  if [ ! -f "$MAKEFILE" ]; then
+    MAKEFILE=common/board.mk
+  fi
+fi
 PRODUCT_NAME="$ABS_PRODUCT_NAME"
 
 PUBLISH_DIR="PUBLISH_DIR-Not-Defined"
@@ -266,7 +275,7 @@ FLAG_MGCC=false
 FLAG_FORCE=false
 FLAG_BUILD=true
 FLAG_AUTOTEST=false
-RELEASE_NAME=
+ABS_RELEASE_NAME=
 RLS_SUFFIX=
 
 for flag in $*; do
@@ -285,9 +294,12 @@ for flag in $*; do
 		help) print_usage; exit 2;;
 		*) 
 		if [ ! "${flag%%:*}" == "${flag}" ] && [ "${flag%%:*}" == "rls" ]; then
-			RELEASE_NAME=${flag##*:}
-			RLS_SUFFIX=_${RELEASE_NAME}
-			export RELEASE_NAME
+			ABS_RELEASE_NAME=${flag##*:}
+			RLS_SUFFIX=_${ABS_RELEASE_NAME}
+			export ABS_RELEASE_NAME
+			if [ -n "$ABS_UNIQUE_MANIFEST_BRANCH" ] && [ -z "$ABS_DROID_MANIFEST" ]; then
+				export ABS_DROID_MANIFEST="${ABS_RELEASE_NAME}.xml"
+			fi
 		else
 			echo "Unknown flag: $flag"; 
 			print_usage; 
@@ -299,12 +311,20 @@ done
 #enable pipefail so that if make fail the exit of whole command is non-zero value.
 set -o pipefail
 
-#manifest branch name is same as product name if it is not release
-MANIFEST_BRANCH=${PRODUCT_CODE}
-if [ ! -z "$RELEASE_NAME" ]; then
-	MANIFEST_BRANCH=rls_${MANIFEST_BRANCH/-/_}_${RELEASE_NAME}
+if [ ! -z "$ABS_RELEASE_NAME" ]; then
+	ABS_RELEASE_FULL_NAME=rls_${PRODUCT_CODE/-/_}_${ABS_RELEASE_NAME}
+else
+	ABS_RELEASE_FULL_NAME=${PRODUCT_CODE}
 fi
-LAST_BUILD=LAST_BUILD.${MANIFEST_BRANCH}
+export ABS_RELEASE_FULL_NAME
+if [ -z "$ABS_MANIFEST_BRANCH" ]; then
+	MANIFEST_BRANCH=$ABS_RELEASE_FULL_NAME
+else
+	MANIFEST_BRANCH=$ABS_MANIFEST_BRANCH
+fi
+export MANIFEST_BRANCH
+
+LAST_BUILD=LAST_BUILD.${ABS_RELEASE_FULL_NAME}
 STD_LOG="build-${PRODUCT_CODE}${RLS_SUFFIX}.log"
 
 #TEMP_PUBLISH_DIR_BASE and OFFICIAL_PUBLISH_DIR_BASE should be defined buildhost.def
@@ -324,7 +344,7 @@ LAST_BUILD=$PUBLISH_DIR_BASE/$LAST_BUILD
 if [ "$FLAG_TEMP" = "true" ]; then
 	BUILD_TAG=[autobuild-temp]
 else
-	if [ ! -z "$RELEASE_NAME" ]; then
+	if [ ! -z "$ABS_RELEASE_NAME" ]; then
 		BUILD_TAG=[autobuild-rls]
 	fi
 fi
@@ -349,7 +369,8 @@ if [ "$FLAG_SOURCE" = "true" ]; then
 	make -f ${MAKEFILE} "source" 2>&1 | tee -a $STD_LOG
 fi &&
 
-LAST_BUILD_LOC=$PUBLISH_DIR_BASE make -f ${MAKEFILE} changelog 2>&1 | tee -a $STD_LOG &&
+export LAST_BUILD_LOC=$PUBLISH_DIR_BASE
+make -f ${MAKEFILE} changelog 2>&1 | tee -a $STD_LOG &&
 
 change_since_last_build=$(make -f ${MAKEFILE} get_change_summary_since_last_build) &&
 

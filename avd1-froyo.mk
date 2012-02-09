@@ -1,6 +1,0 @@
-MANIFEST_BRANCH:=avd1-froyo
-BOARD:=avd1
-ANDROID_VERSION:=froyo
-PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
-
-include avd1/board.mk
