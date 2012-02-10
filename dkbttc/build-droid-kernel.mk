@@ -106,7 +106,7 @@ build_droid_root_$(1): output_dir
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/root $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(1)
-	#$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery.img $$(OUTPUT_DIR)/$(1)
 	$$(log) "  done for copy root directory."
@@ -116,9 +116,9 @@ build_droid_root_$(1): output_dir
 	$$(log) "  done for package symbols_lib files. "
 
 PUBLISHING_FILES_$(1)+=$(1)/userdata.img:m:md5
-#PUBLISHING_FILES_$(1)+=$(1)/userdata_ext4.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/userdata_ext4.img:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/system.img:m:md5
-#PUBLISHING_FILES_$(1)+=$(1)/system_ext4.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/system_ext4.img:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk-recovery.img:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
@@ -317,7 +317,7 @@ kernel_cfg:=$$(word 3, $$(tw) )
 root:=$$(word 4, $$(tw) )
 
 PUBLISHING_FILES_$(2)+=$(2)/pxafs.img:m:md5
-#PUBLISHING_FILES_$(2)+=$(2)/pxafs_ext4.img:o:md5
+PUBLISHING_FILES_$(2)+=$(2)/pxafs_ext4.img:o:md5
 
 build_telephony_$$(os)_$$(storage)_$(2): private_os:=$$(os)
 build_telephony_$$(os)_$$(storage)_$(2): private_storage:=$$(storage)
