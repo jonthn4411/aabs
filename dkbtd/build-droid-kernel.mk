@@ -111,10 +111,10 @@ build_droid_root_$(1): output_dir
 	$$(hide)if [ ! $(ANDROID_VERSION) == "ics" ]; then  cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(1); \
 	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext4.img $$(OUTPUT_DIR)/$(1);fi
 	$$(log) "  done for copy root directory."
-	$$(hide)echo "    packge symbols_lib files..." && \
-	cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(1)/
-	$$(hide)cd $$(OUTPUT_DIR)/$(1) && tar czf symbols_lib.tgz lib && rm lib -rf
-	$$(log) "  done for package symbols_lib files. "
+	$$(hide)echo "    packge symbols system files..." && \
+	cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system $$(OUTPUT_DIR)/$(1)/
+	$$(hide)cd $$(OUTPUT_DIR)/$(1) && tar czf symbols_system.tgz system && rm system -rf
+	$$(log) "  done for package symbols system files. "
 
 PUBLISHING_FILES_$(1)+=$(1)/userdata.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/userdata_ext4.img:o:md5
@@ -122,7 +122,7 @@ PUBLISHING_FILES_$(1)+=$(1)/system.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/system_ext4.img:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk-recovery.img:o:md5
-PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/symbols_system.tgz:o:md5
 endef
 
 
@@ -195,8 +195,8 @@ package_droid_slc_$(1)_$(2):
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(2)/userdata.img &&\
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext4.img $$(OUTPUT_DIR)/$(2)/ && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(2)/
-	$$(hide)cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(2)/
-	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf symbols_lib.tgz lib && rm lib -rf
+	$$(hide)cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system $$(OUTPUT_DIR)/$(2)/
+	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf symbols_system.tgz system && rm system -rf
 	$$(log) "  done for package_droid_slc_$(1)$(2)."
 
 #PUBLISHING_FILES_$(2)+=$(2)/system_ubi_$(1).img:m:md5
