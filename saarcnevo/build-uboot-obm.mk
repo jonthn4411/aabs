@@ -6,10 +6,9 @@ BOOT_OUT_DIR:=$(BOOT_SRC_DIR)/out
 #OBM_NTLOADER_1:=ASPN_NTLOADER_avengers-a_slc.bin
 #OBM_NTLOADER_2:=ASPN_NTLOADER_spi.bin
 
-OBM_NTIM_1:=TAVOR_LINUX_TOBM.bin
+OBM_NTIM_1:=obm.bin.saarcnevo
 OBM_NTIM_2:=PinMuxData.bin
-#OBM_NTIM_1:=TAVOR_SAAR_NTOBM_EMMC_MODE1.bin.rnd
-#OBM_NTIM_2:=ntim_a0_avengers-a_1.6F_256mb_400mhz_mode3_pm_spi.bin
+OBM_NTIM_3:=obm.bin.evbnevo
 
 MBR_BIN=mbr
 PRIMARY_GPT_BIN:=primary_gpt
@@ -32,7 +31,7 @@ define define-build-uboot-obm
 PUBLISHING_FILES_$(1)+=$(1)/u-boot.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_1):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_2):m:md5
-#PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTLOADER_1):m:md5
+PUBLISING_FILES_$(1)+=$(1)/$(OBM_NTIM_3):m:md5
 ifeq ($(ANDROID_VERSION),ics)
 PUBLISHING_FILES_$(1)+=$(1)/$(PRIMARY_GPT_BIN):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(SECONDARY_GPT_BIN):m:md5
@@ -52,10 +51,9 @@ build_uboot_obm_$(1):
 
 	$$(log) "start to copy uboot and obm files"
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot.bin $$(OUTPUT_DIR)/$(1)
-	#$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTLOADER_1) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_2) $$(OUTPUT_DIR)/$(1)
-	#$$(hide)cp $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_3) $$(OUTPUT_DIR)/$(1)
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/$$(MBR_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/$$(MBR_BIN) $$(OUTPUT_DIR)/$(1); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/$$(PRIMARY_GPT_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/$$(PRIMARY_GPT_BIN) $$(OUTPUT_DIR)/$(1); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/$$(SECONDARY_GPT_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/$$(SECONDARY_GPT_BIN) $$(OUTPUT_DIR)/$(1); fi
