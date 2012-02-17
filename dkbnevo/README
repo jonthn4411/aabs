@@ -60,22 +60,22 @@ Burn binaries by Software Downloader
         ramdisk.img
         pxafs_ext4.img
 
-2) open software download, and then open the configure file <softwareDownloader>/NEVO_DKB/eMMC/Nevo_trusted_eMMC.blf:
+2) open software download, and then open the configure file <softwareDownloader>/NEVO_DKB/eMMC/Nevo_TD_trusted_eMMC.blf:
         Press "start" button (the button with the green bulb icon), wait for the icon become red color.
 
-        ntim_emmc.bin                                           --> flash address 0x00000 (this binary is automatically created by SoftwareDownloader, when press "start" button)
-        NEVO_Loader_ARM_3_3_1.bin                               --> flash address 0x1000
-        u-boot.bin                                              --> flash address 0x140000
-        Arbel_DIGRF3.bin	                                --> flash address 0xF00000
-        NV_M06_AI_C0_Flash.bin                                  --> flash address 0x1600000
-        NV_M06_AI_C0_L2_I_RAM_SECOND.bin	                --> flash address 0x1900000
-        primary_gpt                                             --> flash address 0x000000
+        ntim_emmc.bin                                           --> flash address 0x00000000 (this binary is automatically created by SoftwareDownloader, when press "start" button)
+        NEVO_Loader_ARM_3_3_1.bin                               --> flash address 0x00001000
+        u-boot.bin                                              --> flash address 0x01780000
+        Arbel_DIGRF3.bin	                                --> flash address 0x02B80000
+        NV_M06_AI_C0_Flash.bin                                  --> flash address 0x03280000
+        NV_M06_AI_C0_L2_I_RAM_SECOND.bin	                --> flash address 0x03580000
+        primary_gpt                                             --> flash address 0x00000000
         secondary_gpt                                           --> flash address 0xFFFFFFFF
-        zImage                                                  --> flash address 0xa00000
-        ramdisk.img                                             --> flash address 0xe00000
-        pxafs_ext4.img                                          --> flash address 0x2F00000
-        system_ext3.img                                         --> flash address 0x9100000
-        userdata_ext3.img                                       --> flash address 0x19100000
+        zImage                                                  --> flash address 0x01880000
+        ramdisk.img                                             --> flash address 0x01C80000
+        pxafs_ext4.img                                          --> flash address 0x24180000
+        system_ext3.img                                         --> flash address 0x26980000
+        userdata_ext3.img                                       --> flash address 0x46980000
 3) Press "start" button (the button with the green bulb icon), wait for the icon become red color.
 4) Connect the USB cable between the host machine and the board.
 
@@ -100,7 +100,7 @@ Configuration:CPU-JTAG->Target Connection: (usb:).
 
 Choose partition 1
         ntim_emmc.bin                           --> address 0x0000
-	NEVO_Loader_eMMC_ARM_3_3_1.bin		--> address 0x2000
+	NEVO_Loader_eMMC_ARM_3_3_1.bin		--> address 0x1000
 Choose partition 0
 	u-boot.bin				--> address 0x1780000
 	Arbel_DIGRF3.bin			--> address 0x2B80000
