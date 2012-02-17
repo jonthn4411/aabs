@@ -99,7 +99,7 @@ build_droid_root_$(1): output_dir
 	echo "# end adding additional information for OTA" >> vendor/marvell/$$(DROID_PRODUCT)/system.prop && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-	ANDROID_PREBUILT_MODULES=./kernel/out/modules make -j$$(MAKE_JOBS)
+	ANDROID_PREBUILT_MODULES=./kernel/out/modules make
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(1)/root ]; then rm -fr $(OUTPUT_DIR)/$(1)/root; fi
 	$$(hide)echo "  copy root directory ..."
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
