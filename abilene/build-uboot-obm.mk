@@ -40,7 +40,7 @@ build_uboot_obm_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_CM_DIR)/u-boot.bin $$(OUTPUT_DIR)/$(1)/emmc_cm
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_CM_DIR)/Wtm_rel_mmp3.bin $$(OUTPUT_DIR)/$(1)/emmc_cm
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_CM_DIR)/coremorphall.bin $$(OUTPUT_DIR)/$(1)/emmc_cm
-	$$(hide)cp -rf $$(SRC_DIR)/$$(BOOT_OUT_CM_DIR)/ntim/* $$(OUTPUT_DIR)/$(1)/emmc_cm/ntim/
+	$$(hide)cp -rf $$(SRC_DIR)/$$(BOOT_OUT_CM_DIR)/ntim/ $$(OUTPUT_DIR)/$(1)/emmc_cm/ntim/
 #	$$(hide)cd $$(OUTPUT_DIR)/$(1)/emmc_cm/ && tar zcvf ntim.bin.tgz ntim
 	$$(log) "    done."
 
