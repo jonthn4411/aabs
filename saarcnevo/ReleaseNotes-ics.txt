@@ -149,6 +149,10 @@ Sensors
 
 
 1.3 Telephony
+- voice call
+- SMS
+- MMS
+- PS connection.
 
 1.4 Graphics features
   - Fully support OpenGL ES 1.1
@@ -298,13 +302,13 @@ Configuration:CPU-JTAG->Target Connection: (usb:).
     "Erasing/Unblocking"
         - Block Selection: all blocks -> Erase
 Choose partition 1
-	NEVO_SAAR_TOBM_EMMCAB_MODE2.bin.rnd	--> address 0x00000
+	obm.bin.saarcnevo			--> address 0x00000
 Choose partition 0
-	PinMuxData.bin		    		--> address 0x80000
-	u-boot.bin		    		--> address 0x140000
-	Arbel_REL7_PMD2NONE.bin			--> address 0x200000
-	NEVO_C0_Flash.bin			--> address 0x800000
-	plugin_LYRA5_A1_128_V03.bin		--> address 0x9C0000
+	PinMuxData.bin		    		--> address 0xC80000
+	u-boot.bin		    		--> address 0x1780000
+	Arbel_REL7_PMD2NONE.bin			--> address 0x1F80000
+	NEVO_C0_Flash.bin			--> address 0x2580000
+	plugin_LYRA5V03_BANDS128.bin		--> address 0x2740000
 
 3.4.2 Start your favorite terminal emulator with the appropriate 
       COM port set to 115200,8N1. Power on the board and wait for SAARC>> prompt to appear
@@ -312,13 +316,12 @@ Choose partition 0
 3.4.3 Software downloader
 Software downloader is a tool for the images burning. 
 Use Nevo_SaarC_C0_LINUX_EMMC.blf to burn the binaries. 
-(in this release, secondary_gpt can not burned by software downloader, you have to use tftp to burn it)
 
 3.4.4 Command line images burning
 3.4.4.1 Enter the following command to upload the kernel image into the RAM and burn into flash:
 For EMMC, issue the following commands:
 SAARC>>tftp zImage
-SAARC>>mmc write 0x5000 0x2000
+SAARC>>mmc write 0xC400 0x2000
 
 Note 1: You need to configure the host network interface:
    # ifconfig usb0 192.168.1.100 (for USB)
@@ -330,19 +333,27 @@ Note: uboot configures ethernet download as default. please use 'SAARC>>sw' to s
 
 For EMMC, issue the following commands:
 SAARC>>tftp system_ext3.img
-SAARC>>mmc write 0x48800 0x50000
+SAARC>>unsparse 0x134C00 0x100000
 
 3.4.4.3 Enter the following command to upload the userata image into the RAM and burn into flash:
 For EMMC, issue the following commands:
 SAARC>>tftp userdata_ext3.img
-SAARC>>mmc write 0xC8800 0x21C00
+SAARC>>unsparse 0x234C00 0x600000
 
 3.4.4.4 Enter the following command to upload the ramdisk image into the RAM and burn into flash:
 For EMMC, issue the following commands:
 SAARC>>tftp ramdisk.img
-SAARC>>mmc write 0x7000 0x200
+SAARC>>mmc write 0xE400 0x800
 
-3.4.4.5 Enter the following command to upload the mbr into the RAM and burn into flash:
+3.4.4.5 Enter the following command to upload the telephony image into the RAM and burn into flash:
+SAARC>>tftp pxafs_lyra_ext2.img
+SAARC>>mmc write 0x12AC00 0x6000
+
+SAARC>>tftp nvm_ext2.img
+SAARC>>mmc write 0x130C00 0x4000
+
+
+3.4.4.6 Enter the following command to upload the mbr into the RAM and burn into flash:
 For EMMC, issue the following commands:
 SAARC>>tftp primary_gpt
 SAARC>>mmc write 0x0 0x400

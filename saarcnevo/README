@@ -21,12 +21,12 @@ Files in this folder
  If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
  
 -OBM and UBoot
-    NEVO_SAAR_TOBM_EMMCAB_MODE2.bin.rnd		OBM for saarcnevo
+    obm.bin.saarcnevo				OBM for saarcnevo
     PinMuxData.bin				OBM data 
     u-boot.bin					NTLoader image
     Arbel_REL7_PMD2NONE.bin			CP Arbel image
     NEVO_C0_Flash.bin				CP image
-    plugin_LYRA5_A1_128_V03.bin			CP image
+    plugin_LYRA5V03_BANDS128.bin		CP image
  
 -Kernel and Modules for Android [Currently for saarcnevo, zImage.android.slc and zImage.android.mmc is same]
   zImage.android	Kernel image to boot android from EMMC. A root file system is built in. 
@@ -39,6 +39,8 @@ Files in this folder
   system_ext3.img	    Android system image for  file system.
   userdata_ext3.img	    Android userdata image for  file system.
   ramdisk.img		    Android root image for file system.
+  pxafs_lyra_ext2.img	    AP telephony image.
+  nvm_ext2.img		    AP NVM image
 
 saarcnevo Flashing images and boot system
 
@@ -53,13 +55,13 @@ Configuration:CPU-JTAG->Target Connection: (usb:).
     Erase affected blocks
     Enable new BBM
 Choose partition 1
-	NEVO_SAAR_TOBM_EMMCAB_MODE2.bin.rnd	--> address 0x00000
+	obm.bin.saarcnevo			--> address 0x00000
 Choose partition 0
-	PinMuxData.bin		    		--> address 0x80000
-	u-boot.bin		    		--> address 0x140000
-	Arbel_REL7_PMD2NONE.bin			--> address 0x200000
-	NEVO_C0_Flash.bin			--> address 0x800000
-	plugin_LYRA5_A1_128_V03.bin		--> address 0x9C0000
+	PinMuxData.bin		    		--> address 0xC80000
+	u-boot.bin		    		--> address 0x1780000
+	Arbel_REL7_PMD2NONE.bin			--> address 0x1F80000
+	NEVO_C0_Flash.bin			--> address 0x2580000
+	plugin_LYRA5V03_BANDS128.bin		--> address 0x2740000
 
 
 Setup Android on EMMC
@@ -70,16 +72,22 @@ Setup Android on EMMC
 3.Enter the following command to upload the system.img into the RAM and burn into flash:
 For EMMC, issue the following commands:
 SAARC>>tftp zImage
-SAARC>>mmc write 0x5000 0x2000
+SAARC>>mmc write 0xC400 0x2000
 
 SAARC>>tftp system_ext3.img
-SAARC>>mmc write 0x48800 0x50000
+SAARC>>unsparse 0x134C00 0x100000
 
 SAARC>>tftp userdata_ext3.img
-SAARC>>mmc write 0xC8800 0x21C00
+SAARC>>unsparse 0x234C00 0x600000
 
 SAARC>>tftp ramdisk.img
-SAARC>>mmc write 0x7000 0x200
+SAARC>>mmc write 0xE400 0x800
+
+SAARC>>tftp pxafs_lyra_ext2.img
+SAARC>>mmc write 0x12AC00 0x6000
+
+SAARC>>tftp nvm_ext2.img
+SAARC>>mmc write 0x130C00 0x4000
 
 SAARC>>tftp primary_gpt
 SAARC>>mmc write 0x0 0x400
@@ -100,6 +108,8 @@ Note 1: All the following images should copy to the host tftp share directory:
 	system_ext3.img
 	userdata_ext3.img
 	ramdisk.img
+	pxafs_lyra_ext2.img
+	nvm_ext2.img
 Note 2: You need to first input "sw" to switch to usb eth, and then, input "tftp zImage", then connect the USB micro-line between the host PC and the saarc board
 Note 3: You need to configure the host network interface:
 	# ifconfig usb0 192.168.1.100 
