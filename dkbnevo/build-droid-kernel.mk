@@ -46,7 +46,7 @@ clean_kernel:
 #$1:build variant
 define define-build-droid-kernel
 .PHONY:build_droid_kernel_$(1)
-build_droid_kernel_$(1): build_droid_root_$(1) build_kernel_$(1) build_droid_pkgs_$(1) 
+build_droid_kernel_$(1): build_droid_root_$(1) build_kernel_$(1) build_uboot_obm_$(1) build_droid_pkgs_$(1)
 endef
 
 ##!!## build rootfs for android, make -j4 android, copy root, copy ramdisk/userdata/system.img to outdir XXX
@@ -81,6 +81,7 @@ PUBLISHING_FILES_$(1)+=$(1)/userdata_nand.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/system_nand.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/symbols_system.tgz:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/ramdisk-recovery.img:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/build.prop:o:md5
 endef
 
@@ -88,7 +89,20 @@ endef
 #$1:build variant
 define define-build-droid-pkgs
 .PHONY:build_droid_pkgs_$(1)
-build_droid_pkgs_$(1): 
+build_droid_update_pkgs_$(1): output_dir
+	$$(log) "[$(1)]generating update packages..."
+	$$(hide)cd $$(SRC_DIR) && \
+	source ./build/envsetup.sh && \
+	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
+	make mrvlotapackage
+	echo "    copy update packages..." && \
+		mkdir -p $$(OUTPUT_DIR)/$(1) && \
+		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/nevo-ota-mrvl.zip $$(OUTPUT_DIR)/$(1)/nevo-ota-mrvl.zip
+	$(log) "  done"
+
+build_droid_pkgs_$(1): build_droid_update_pkgs_$(1)
+
+PUBLISHING_FILES_$(1)+=$(1)/nevo-ota-mrvl.zip:m:md5
 endef
 
 #$1: build variant
@@ -297,7 +311,6 @@ endef
 
 $(foreach bv,$(BUILD_VARIANTS), $(eval $(call define-build-droid-kernel,$(bv)) )\
 				$(eval $(call define-build-droid-root,$(bv)) ) \
-				$(eval $(call define-build-droid-pkgs,$(bv)) ) \
 				$(eval $(call define-build-droid-config,$(bv),internal) ) \
 				$(eval $(call define-build-droid-config,$(bv),external) ) \
 				$(eval $(call define-cp-android-root-dir-slc,$(bv)) )\
@@ -308,5 +321,6 @@ $(foreach bv,$(BUILD_VARIANTS), $(eval $(call define-build-droid-kernel,$(bv)) )
 				$(eval $(call package-droid-mmc-config,internal,$(bv)) )\
 				$(eval $(call package-droid-mmc-config,external,$(bv)) ) \
 				$(foreach kc, $(kernel_configs),$(eval $(call define-kernel-target,$(kc),$(bv)) ) )\
+				$(eval $(call define-build-droid-pkgs,$(bv)) ) \
 )
 
