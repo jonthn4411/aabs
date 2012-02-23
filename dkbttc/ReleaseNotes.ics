@@ -7,7 +7,7 @@ Version: DKBTTC ICS Alpha
 
 1. Platform features
 1.1 Supported Components
-- Rebase to google android-4.0.1_r1 branch
+- Rebase to google android-4.0.3_r1 branch
 - Do key pad mapping, touch for PXA920 DKB platform
 - HIFI playback on headset and speaker
 - Audio routing for phone earpiece and headset
@@ -491,12 +491,12 @@ kernel          0x980000        0xd80000
 maintenance     0xd80000        0x1180000
 recovery        0x1180000       0x1680000
 misc            0x1680000       0x16c0000
-cache           0x16c0000       0x6800000
-system          0x6800000       0x10800000
-userdata        0x10800000      0x1e400000
-nvm             0x1e400000      0x1ec00000
-telephony       0x1ec00000      0x1f400000
-massstorage     0x1f400000      0xebf00000
+cache           0x16c0000       0x216c0000
+system          0x216c0000      0x416c0000
+userdata        0x416c0000      0x816c0000
+nvm             0x816c0000      0x81ec0000
+telephony       0x81ec0000      0x826c0000
+massstorage     0x826c0000      0xebffbe00
 2) Use the mbrgen which could be gotten from the tools directory after you compile the uboot code.
 By the command: mbrgen [descrition file] [emmc device size]
 You could generate one file named as mbr, which combine the primary and backup EFI MBR table.
