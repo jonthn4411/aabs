@@ -252,6 +252,7 @@ PUBLISHING_FILES_$(2)+=$(2)/nvm_ext2.img:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/plugin_LYRA5V03_BANDS128.bin:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/pxafs_lyra_ext2.img:m:md5
 PUBLISHING_FILES_$(2)+=$(2)/pxafs_symbols.tgz:m:md5
+PUBLISHING_FILES_$(2)+=$(2)/Boerne_DIAG_MTIL.mdb.txt:m:md5
 endif
 
 build_kernel_$$(os)_$$(storage)_$(2): private_os:=$$(os)
