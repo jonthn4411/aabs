@@ -1,4 +1,4 @@
-export ABS_BOARD=yellowstoneB0
+export ABS_BOARD=abileneB0
 export ABS_DROID_BRANCH=ics
 export ABS_PRODUCT_NAME=MMP3
 export ABS_BUILDHOST_DEF=buildhost.def
