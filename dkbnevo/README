@@ -38,6 +38,7 @@ Files in this folder
   system_ext3.img	    Android system image for  file system.
   userdata_ext3.img	    Android userdata image for  file system.
   ramdisk.img		    Android root image for file system.
+  ramdisk-recovery.img	    Android recovery root image for file system.
   pxafs_ext4.img            AP telephony image.
 
 -Software_Downloader.zip    :Software downloader
@@ -58,19 +59,25 @@ Burn binaries by Software Downloader
         system_ext3.img
         userdata_ext3.img
         ramdisk.img
+        ramdisk-recovery.img
         pxafs_ext4.img
 
 2) open software download, and then open the configure file <softwareDownloader>/NEVO_DKB/eMMC/Nevo_TD_trusted_eMMC.blf:
         Press "start" button (the button with the green bulb icon), wait for the icon become red color.
 
+	partition 1:
         ntim_emmc.bin                                           --> flash address 0x00000000 (this binary is automatically created by SoftwareDownloader, when press "start" button)
         NEVO_Loader_ARM_3_3_1.bin                               --> flash address 0x00001000
+	partition 0:
         u-boot.bin                                              --> flash address 0x01780000
         Arbel_DIGRF3.bin	                                --> flash address 0x02B80000
         NV_M06_AI_C0_Flash.bin                                  --> flash address 0x03280000
         NV_M06_AI_C0_L2_I_RAM_SECOND.bin	                --> flash address 0x03580000
         primary_gpt                                             --> flash address 0x00000000
         secondary_gpt                                           --> flash address 0xFFFFFFFF
+        u-boot.bin                                              --> flash address 0x00100000(for recovery)
+        zImage                                                  --> flash address 0x00200000(for recovery)
+        ramdisk-recovery.img                                    --> flash address 0x00600000
         zImage                                                  --> flash address 0x01880000
         ramdisk.img                                             --> flash address 0x01C80000
         pxafs_ext4.img                                          --> flash address 0x24180000
@@ -133,6 +140,15 @@ NEVODKB>>mmc write 0xE400 0x800
 
 NEVODKB>>tftp pxafs_ext4.img
 NEVODKB>>mmc write 0x120C00 0x6000
+
+NEVODKB>>tftp u-boot.bin 
+NEVODKB>>mmc write 0x800 0x800
+
+NEVODKB>>tftp zImage
+NEVODKB>>mmc write 0x1000 0x2000
+
+NEVODKB>>tftp ramdisk-recovery.img 
+NEVODKB>>mmc write 0x3000 0x2800
 
 NEVODKB>>tftp secondary_gpt
 NEVODKB>>mmc write 0x1D4FFDF 0x21

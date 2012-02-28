@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA978 Android Platform Release for Linux
 Platform ReleaseNotes
-Last update: 12/28/2011
+Last update: 02/27/2012
 ==============================================================================
 
 1. Platform features
@@ -15,6 +15,8 @@ Last update: 12/28/2011
 - Front camera OV9740 preview and still capture support
 - Back camera M6MO preview and still capture support
 - Audio playback and recording support
+- FM support
+- Recovery and update support
 
 1.2 BSP features
 Uboot:
@@ -211,7 +213,7 @@ GStreamer Path:
   - FLV     
 
 
-<VERSION>=r1
+<VERSION>=r2
 ===========================================================================================
 1.6 Release package contents
 - ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
@@ -314,17 +316,23 @@ After a short while, the binary will be generated under [android]/boot/out/
         system_ext3.img
         userdata_ext3.img
         ramdisk.img
+        ramdisk-recovery.img
         pxafs_ext4.img
 
-2) open software download, and then open the configure file <softwareDownloader>/NEVO_DKB/eMMC/Nevo_TD_trusted_eMMC.blf
+2) open software downloader, and then open the configure file <softwareDownloader>/NEVO_DKB/eMMC/Nevo_TD_trusted_eMMC.blf
+	partition 1:
         ntim_nand.bin                                           --> flash address 0x00000000 (this binary is automatically created by SoftwareDownloader, when press "start" button)
         NEVO_Loader_ARM_3_3_1.bin                               --> flash address 0x00001000
+	partition 0:
 	u-boot.bin                                              --> flash address 0x01780000
         Arbel_DIGRF3.bin	                                --> flash address 0x02B80000
         NV_M06_AI_C0_Flash.bin                                  --> flash address 0x03280000
         NV_M06_AI_C0_L2_I_RAM_SECOND.bin	                --> flash address 0x03580000
         primary_gpt                                             --> flash address 0x00000000
         secondary_gpt                                           --> flash address 0xFFFFFFFF
+        u-boot.bin                                              --> flash address 0x00100000(for recovery)
+        zImage                                                  --> flash address 0x00200000(for recovery)
+        ramdisk-recovery.img                                    --> flash address 0x00600000
         zImage                                                  --> flash address 0x01880000
         ramdisk.img                                             --> flash address 0x01C80000
         pxafs_ext4.img                                          --> flash address 0x24180000
@@ -393,7 +401,18 @@ For EMMC, issue the following commands:
 NEVODKB>>tftp pxafs_ext4.img
 NEVODKB>>mmc write 0x120C00 0x6000
 
-3.4.4.6 Enter the following command to upload the GPT into the RAM and burn into flash:
+3.4.4.6 Enter the following command to upload the recovery images into the RAM and burn into flash:
+For EMMC, issue the following commands:
+NEVODKB>>tftp u-boot.bin 
+NEVODKB>>mmc write 0x800 0x800
+
+NEVODKB>>tftp zImage
+NEVODKB>>mmc write 0x1000 0x2000
+
+NEVODKB>>tftp ramdisk-recovery.img 
+NEVODKB>>mmc write 0x3000 0x2800
+
+3.4.4.7 Enter the following command to upload the GPT into the RAM and burn into flash:
 For EMMC, issue the following commands:
 NEVODKB>>tftp primary_gpt
 NEVODKB>>mmc write 0x0 0x400

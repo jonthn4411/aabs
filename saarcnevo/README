@@ -59,6 +59,7 @@ Choose partition 1
 Choose partition 0
 	PinMuxData.bin		    		--> address 0xC80000
 	u-boot.bin		    		--> address 0x1780000
+	zImage			    		--> address 0x1880000
 	Arbel_REL7_PMD2NONE.bin			--> address 0x1F80000
 	NEVO_C0_Flash.bin			--> address 0x2580000
 	plugin_LYRA5V03_BANDS128.bin		--> address 0x2740000

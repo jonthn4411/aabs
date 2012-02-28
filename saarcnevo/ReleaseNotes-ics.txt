@@ -1,17 +1,21 @@
 ==============================================================================
 Marvell PXA978 Android Platform Release for Linux
 Platform ReleaseNotes
-Last update: 01/04/2012
+Last update: 02/28/2012
 ==============================================================================
 
 1. Platform features
 1.1 Supported Components
-- Rebase to google android Ice Cream Sandwich
+- Rebase to google android Ice Cream Sandwich 4.0.3
 - Do key pad mapping, touch for PXA978 SAARC platform
 - Wi-Fi/BT support
 - Light sensor and g-sensor and compass sensor and proximity sensor and accleration sensor support
 - Integrate OpenGL ES 1.1 and OpenGL ES 2.0 with GC860
 - Integrate stagefright and g-streamer video playback for media player
+- Front camera OV9740 preview, still capture, and recording support
+- Back camera M6MO preview, still capture and recording support
+- Audio playback and recording support
+- FM support
 
 1.2 BSP features
 Uboot:
@@ -146,8 +150,6 @@ Sensors
 - Cywee sensors: G/gyro/Compass sensor supported
 - Adps990x sensors: light and proximity sensor supported
 
-
-
 1.3 Telephony
 - voice call
 - SMS
@@ -207,7 +209,7 @@ GStreamer Path:
   - MPG     
   - FLV     
 
-<VERSION>=r1
+<VERSION>=r2
 ===========================================================================================
 1.6 Release package contents
 - ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
@@ -306,6 +308,7 @@ Choose partition 1
 Choose partition 0
 	PinMuxData.bin		    		--> address 0xC80000
 	u-boot.bin		    		--> address 0x1780000
+	zImage			    		--> address 0x1880000
 	Arbel_REL7_PMD2NONE.bin			--> address 0x1F80000
 	NEVO_C0_Flash.bin			--> address 0x2580000
 	plugin_LYRA5V03_BANDS128.bin		--> address 0x2740000
@@ -315,7 +318,25 @@ Choose partition 0
 
 3.4.3 Software downloader
 Software downloader is a tool for the images burning. 
-Use Nevo_SaarC_C0_LINUX_EMMC.blf to burn the binaries. 
+1. unzip the Software_Downloader.zip
+2. run Software_Downloader/vcredist_x86/vcredist_x86.exe to install required DLL libraries
+3. create a folder Software_Downloader/Bin/images, and put all binaries into it:
+	obm.bin.saarcnevo
+	u-boot.bin
+	ramdisk.img
+	primary_gpt
+	zImage
+	system_ext3.img
+	userdata_ext3.img
+	PinMuxData.bin
+	Arbel_REL7_PMD2NONE.bin
+	NEVO_C0_Flash.bin
+	plugin_LYRA5V03_BANDS128.bin
+	pxafs_lyra_ext2.img
+	nvm_ext2.img
+	secondary_gpt
+4. run Software_Downloader/Bin/SWDownloader.exe
+5. Open Software_Downloader/Bin/Nevo_SaarC_C0_LINUX_EMMC.blf to burn the binaries. 
 
 3.4.4 Command line images burning
 3.4.4.1 Enter the following command to upload the kernel image into the RAM and burn into flash:
