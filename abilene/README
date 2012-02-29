@@ -57,10 +57,10 @@ How to get the 'latest' source code from git server
   1. $ mkdir <android_working_dir>
      $ cd <android_working_dir>
 
-  2.For Honeycomb
-     $ repo init -u ssh://shgit.marvell.com/git/droid/platform/manifest.git -b abilene-honeycomb
-    For ICS
+  2.For ICS Ax
      $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b abilene-ics
+    For ICS B0
+     $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b abileneB0-ics
 
   3. $ repo sync
 
@@ -72,10 +72,10 @@ How to get the code that the autobuild system uses for daily build and code drop
   1. $ mkdir <android_working_dir>
      $ cd <android_working_dir>
 
-  2. For Honeycomb
-      $ repo init -u ssh://shgit.marvell.com/git/droid/platform/manifest.git -b abilene-honeycomb
-     For ICS
+  2. For ICS Ax
       $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b abilene-ics
+     For ICS B0
+      $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b abileneB0-ics
 
      You may don't have the access to our git server. In this situation, contact the administrator of our git server.
 
