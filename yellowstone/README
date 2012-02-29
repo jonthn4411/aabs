@@ -125,7 +125,7 @@ Burning OBM and Uboot
    3)Erase All Blocks
    4)Burn Date Files as follows:
      Choose partition 0x1
-        a)Burn "ntim_ylst_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1200mv.bin"        address [0x000000]
+        a)Burn "ntim_yst_dis-xxxxxxxxxxx.bin"        address [0x000000]
         b)Burn "Wtm_rel_mmp3.bin"                                                            address [0x020000]
      Choose partition 0x2
         c)Burn "u-boot.bin"                                                                  address [0x000000]
@@ -135,10 +135,14 @@ About Ntims
 1.For normal user:
   1)ntim.bin.tar is ntim tar file and is droid/emmc  
   2)Prefered ntims are as follows:
-    ntim/out/ylst_dis/ntim_ylst_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1200mv.bin
-    ntim/out/ylst_dis/ntim_ylst_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1181mv.bin
-    ntim/out/ylst_dis/ntim_ylst_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1225mv.bin
-    ntim/out/ylst_dis/ntim_ylst_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1150mv.bin
+    ------Ax------
+    yst/ntim_ylst_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1200mv.bin
+    yst/ntim_ylst_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1181mv.bin
+    yst/ntim_ylst_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1225mv.bin
+    yst/ntim_ylst_dis-798-797-399-399-532-532-399-200__3_2_sm_533_1150mv.bin
+    ------B0------
+    yst/ntim_yst-1063-1063-532-532-532-532-399-200__4_2_dm_256kinterleave_533_1200mv.bin
+    yst/ntim_yst-797-797-399-399-399-399-399-200__3_1_dm_256kinterleave_400_1200mv.bin
 
 2.For developer who use coremorphall:
   ntim.bin.tar is ntim tar file and is droid/emmc_cm
