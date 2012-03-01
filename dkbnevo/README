@@ -35,8 +35,8 @@ Files in this folder
   secondary_gpt             Secondary GPT file
   primary_gpt_8g            Primary GPT file for board whose emmc size is 8G
   secondary_gpt_8g          Secondary GPT file whose emmc size is 8G
-  system_ext3.img	    Android system image for  file system.
-  userdata_ext3.img	    Android userdata image for  file system.
+  system.img	    Android system image for  file system.
+  userdata.img	    Android userdata image for  file system.
   ramdisk.img		    Android root image for file system.
   ramdisk-recovery.img	    Android recovery root image for file system.
   pxafs_ext4.img            AP telephony image.
@@ -56,8 +56,8 @@ Burn binaries by Software Downloader
         primary_gpt
         secondary_gpt
         zImage
-        system_ext3.img
-        userdata_ext3.img
+        system.img
+        userdata.img
         ramdisk.img
         ramdisk-recovery.img
         pxafs_ext4.img
@@ -81,8 +81,8 @@ Burn binaries by Software Downloader
         zImage                                                  --> flash address 0x01880000
         ramdisk.img                                             --> flash address 0x01C80000
         pxafs_ext4.img                                          --> flash address 0x24180000
-        system_ext3.img                                         --> flash address 0x26980000
-        userdata_ext3.img                                       --> flash address 0x46980000
+        system.img                                         --> flash address 0x26980000
+        userdata.img                                       --> flash address 0x46980000
 3) Press "start" button (the button with the green bulb icon), wait for the icon become red color.
 4) Connect the USB cable between the host machine and the board.
 
@@ -90,7 +90,7 @@ Burn binaries by Software Downloader
 	For empty board, Press the reset key on the board, software downloader should show the downloading is in progress. When the burning is done, the software download will pop up a dialog to notify
 	For board which has obm burned, hold "Back" button on the board, and Press the reset key on the board, Release the "Back" button after the software download shows the downloading is in progress. When the burning is done, the software download will pop up a dialog to notify
 Notes: you will be asked to install usb driver if it's your first time to burn the board, then install the driver in <softwareDownloader>/WTPTP folder.
-Notes: Sometimes Software Downloader will stop during downloading or burning, you have to try again. If it failes again and again, you can disable system_ext3.img and userdata_ext3.img, and use tftp to burn them. 
+Notes: Sometimes Software Downloader will stop during downloading or burning, you have to try again. If it failes again and again, you can disable system.img and userdata.img, and use tftp to burn them. 
 
 Burn binaries by XDB
 ============================
@@ -129,10 +129,10 @@ NEVODKB>>mmc write 0x0 0x400
 NEVODKB>>tftp zImage
 NEVODKB>>mmc write 0xC400 0x2000
 
-NEVODKB>>tftp system_ext3.img
+NEVODKB>>tftp system.img
 NEVODKB>>unsparse 0x134C00 0x100000
 
-NEVODKB>>tftp userdata_ext3.img
+NEVODKB>>tftp userdata.img
 NEVODKB>>unsparse 0x234C00 0x600000
 
 NEVODKB>>tftp ramdisk.img
@@ -162,8 +162,8 @@ Reboot the system.
 
 Note 1: All the following images should copy to the host tftp share directory:
 	zImage
-	system_ext3.img
-	userdata_ext3.img
+	system.img
+	userdata.img
 	ramdisk.img
         pxafs_ext4.img
         primary_gpt

@@ -36,8 +36,8 @@ Files in this folder
   secondary_gpt             Secondary GPT file
   primary_gpt_8g            Primary GPT file for board whose emmc size is 8G
   secondary_gpt_8g          Secondary GPT file whose emmc size is 8G
-  system_ext3.img	    Android system image for  file system.
-  userdata_ext3.img	    Android userdata image for  file system.
+  system.img	    Android system image for  file system.
+  userdata.img	    Android userdata image for  file system.
   ramdisk.img		    Android root image for file system.
   pxafs_lyra_ext2.img	    AP telephony image.
   nvm_ext2.img		    AP NVM image
@@ -75,10 +75,10 @@ For EMMC, issue the following commands:
 SAARC>>tftp zImage
 SAARC>>mmc write 0xC400 0x2000
 
-SAARC>>tftp system_ext3.img
+SAARC>>tftp system.img
 SAARC>>unsparse 0x134C00 0x100000
 
-SAARC>>tftp userdata_ext3.img
+SAARC>>tftp userdata.img
 SAARC>>unsparse 0x234C00 0x600000
 
 SAARC>>tftp ramdisk.img
@@ -106,8 +106,8 @@ Note 1: All the following images should copy to the host tftp share directory:
 	primary_gpt
 	secondary_gpt
 	zImage
-	system_ext3.img
-	userdata_ext3.img
+	system.img
+	userdata.img
 	ramdisk.img
 	pxafs_lyra_ext2.img
 	nvm_ext2.img

@@ -326,8 +326,8 @@ Software downloader is a tool for the images burning.
 	ramdisk.img
 	primary_gpt
 	zImage
-	system_ext3.img
-	userdata_ext3.img
+	system.img
+	userdata.img
 	PinMuxData.bin
 	Arbel_REL7_PMD2NONE.bin
 	NEVO_C0_Flash.bin
@@ -353,12 +353,12 @@ Note 2: uboot configures ethernet download as default. please use SAARC>> sw to 
 Note: uboot configures ethernet download as default. please use 'SAARC>>sw' to switch to USB 
 
 For EMMC, issue the following commands:
-SAARC>>tftp system_ext3.img
+SAARC>>tftp system.img
 SAARC>>unsparse 0x134C00 0x100000
 
 3.4.4.3 Enter the following command to upload the userata image into the RAM and burn into flash:
 For EMMC, issue the following commands:
-SAARC>>tftp userdata_ext3.img
+SAARC>>tftp userdata.img
 SAARC>>unsparse 0x234C00 0x600000
 
 3.4.4.4 Enter the following command to upload the ramdisk image into the RAM and burn into flash:
