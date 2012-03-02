@@ -146,10 +146,6 @@ package_droid_slc_$(1)_$(2):
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS) && \
 	echo "    copy  image files..." && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext3.img $$(OUTPUT_DIR)/$(2)/system_ext3.img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext3.img $$(OUTPUT_DIR)/$(2)/userdata_ext3.img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_nand.img $$(OUTPUT_DIR)/$(2)/system_nand.img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_nand.img $$(OUTPUT_DIR)/$(2)/userdata_nand.img && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/build.prop $$(OUTPUT_DIR)/$(2)/build.prop
 	$$(hide)cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system $$(OUTPUT_DIR)/$(2)/
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf symbols_system.tgz system && rm system -rf
