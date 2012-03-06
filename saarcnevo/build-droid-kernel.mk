@@ -57,7 +57,7 @@ build_droid_root_$(1): output_dir
 	$$(hide)cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-	ANDROID_PREBUILT_MODULES=no_kernel_modules make -j$$(MAKE_JOBS) 
+	ANDROID_PREBUILT_MODULES=no_kernel_modules make -j4
 
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(1)/root ]; then rm -fr $(OUTPUT_DIR)/$(1)/root; fi
 	$$(hide)echo "  copy root directory ..." 
@@ -113,7 +113,7 @@ rebuild_droid_$(1)_$(2):
 	$$(hide)cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-	ANDROID_PREBUILT_MODULES=no_kernel_modules make -j$$(MAKE_JOBS)
+	ANDROID_PREBUILT_MODULES=no_kernel_modules make
 	$$(log) "    packaging helix libraries and flash library..."
 	$$(hide)if [ "$(1)" == "internal" ]; then \
 	cd $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib &&\
@@ -144,7 +144,7 @@ package_droid_slc_$(1)_$(2):
 	cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-	make -j$$(MAKE_JOBS) && \
+	make && \
 	echo "    copy  image files..." && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(2)/system.img && \
 	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(2)/userdata.img && \
