@@ -93,10 +93,10 @@ define define-build-droid-root
 build_droid_root_$(1): output_dir
 	$$(log) "[$(1)]building android source code with modules ..."
 	$$(hide)cd $$(SRC_DIR) && \
-	echo "" > vendor/marvell/$$(DROID_PRODUCT)/system.prop && \
-	echo "# begin adding additional information for OTA" >> vendor/marvell/$$(DROID_PRODUCT)/system.prop && \
-	echo "ro.build.manifest.branch=$$(MANIFEST_BRANCH)" >> vendor/marvell/$$(DROID_PRODUCT)/system.prop && \
-	echo "# end adding additional information for OTA" >> vendor/marvell/$$(DROID_PRODUCT)/system.prop && \
+	echo "" > device/marvell/$$(DROID_PRODUCT)/system.prop && \
+	echo "# begin adding additional information for OTA" >> device/marvell/$$(DROID_PRODUCT)/system.prop && \
+	echo "ro.build.manifest.branch=$$(MANIFEST_BRANCH)" >> device/marvell/$$(DROID_PRODUCT)/system.prop && \
+	echo "# end adding additional information for OTA" >> device/marvell/$$(DROID_PRODUCT)/system.prop && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	ANDROID_PREBUILT_MODULES=./kernel/out/modules make -j$$(MAKE_JOBS)
@@ -136,7 +136,7 @@ define rebuild-droid-config
 rebuild_droid_$(1)_$(2): nolib_config:=$$(if $$(findstring $(1),external),true,false)
 rebuild_droid_$(1)_$(2):
 	$$(log) "[$(2)]rebuild android for $(1)..."
-	$$(hide)cd $$(SRC_DIR)/vendor/marvell/$$(DROID_PRODUCT) && \
+	$$(hide)cd $$(SRC_DIR)/device/marvell/$$(DROID_PRODUCT) && \
 	sed -i "/^[ tab]*BOARD_NO_HELIX_LIBS[ tab]*:=/ s/:=.*/:= $$(nolib_config)/" BoardConfig.mk && \
 	sed -i "/^[ tab]*BOARD_NO_FLASH_PLUGIN[ tab]*:=/ s/:=.*/:= $$(nolib_config)/" BoardConfig.mk
 	$$(hide)rm -fr $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib/helix
@@ -168,7 +168,7 @@ define define-build-droid-config
 .PHONY: build_droid_$(2)_$(1)
 build_droid_$(2)_$(1): rebuild_droid_$(2)_$(1) package_droid_slc_$(2)_$(1) package_droid_mmc_$(2)_$(1)
 	$$(log) "build_droid_$(2)_$(1) is done, reseting the source code."
-	$$(hide)cd $$(SRC_DIR)/vendor/marvell/$$(DROID_PRODUCT)/ &&\
+	$$(hide)cd $$(SRC_DIR)/device/marvell/$$(DROID_PRODUCT)/ &&\
 	git reset --hard
 	$$(log) "  done"
 
