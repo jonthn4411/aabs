@@ -1,5 +1,5 @@
-INTERNAL_PROJECTS +=boot/obm/.git
-INTERNAL_PROJECTS +=kernel/mrvl-tool-chain
+#INTERNAL_PROJECTS +=boot/obm
+#INTERNAL_PROJECTS +=kernel/mrvl-tool-chain
 #INTERNAL_PROJECTS +=boot/obm/binaries/Wtm_rel_mmp2.bin
 
 KERNEL_BASE_COMMIT:=$(KERNEL_2_6_32_BASE_COMMIT)
