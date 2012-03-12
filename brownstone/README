@@ -45,9 +45,9 @@ Files in this folder
  uboot.bin         the uboot
 
 -Kernel and Modules for Android
-  zImage.android           The kernel image
-  zImage_recovery.android  The recovery kernel image
-  modules_android_mmc.tgz  Kernel modules that built along with zImage.android and zImage_recovery.android
+  uImage.android           The kernel image
+  uImage_recovery.android  The recovery kernel image
+  modules_android_mmc.tgz  Kernel modules that built along with uImage.android and uImage_recovery.android
 
 -Android File Systems
   root_nfs_xxx.tgz         Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package. 
@@ -87,7 +87,7 @@ How to build kernel and android image (Please follow the sequence: kernel/module
      $ cd kernel
      $ make all
 
-  zImage is at kernel/out, and the modules place at kernel/out/modules
+  uImage is at kernel/out, and the modules place at kernel/out/modules
 
   3. build android
      $ cd <android_working_dir>
@@ -134,84 +134,99 @@ Burning OBM and UBoot (we must burn kernel and ramdisk by XDB in trusted mode)
    6)Choose partition 0x0
     Trusted boot
       a)Burn "dtim_platform.bin"	address [0x780000, 0x800000)
-      b)Burn "zImage.android"		address [0x980000, 0x1180000)
+      b)Burn "uImage.android"		address [0x980000, 0x1180000)
       c)Burn "ramdisk.img"			address [0x1180000, 0x1980000)
-      d)Burn "zImage_recovery.android"	address [0x1980000, 0x2180000)
+      d)Burn "uImage_recovery.android"	address [0x1980000, 0x2180000)
       e)Burn "ramdisk_recovery.img"		address [0x2180000, 0x2980000)
     Non-Trusted boot
       a)Burn "dntim_platform.bin"	address [0x780000, 0x800000)
-      b)"zImage.android", "ramdisk.img", "zImage_recovery.android" and "ramdisk_recovery.img" could be burned by XDB or uboot.
+      b)"uImage.android", "ramdisk.img", "uImage_recovery.android" and "ramdisk_recovery.img" could be burned by XDB or uboot.
 
 How to Disable GC860
 =====================
 remove or rename egl.cfg which located in /system/lib/egl/
 
 
-Setup Android on NAND(emmc)
+Setup Android on eMMC
 =========================
 
 Boot the device with console, and then flash the images via uboot
 
-1) By default, the initial sw part has been set to 0.
+1) Partition 1 (uboot & OBM)
+MMP2>> mmc dev 0 1
+
+MMP2>> t ntim_platform_512m_ddr3.bin
+MMP2>> mmc write 0x7fc0 0x0 0x20
+MMP2>> t Wtm_rel_mmp2.bin
+MMP2>> mmc write 0x7fc0 0x20 0x160
+MMP2>> t MMP2_LINUX_ARM_BL_3_2_21_EB_JO.bin
+MMP2>> mmc write 0x7fc0 0x180 0x180
+MMP2>> t u-boot.bin
+MMP2>> mmc write 0x7fc0 0x300 0x280
+
+MMP2>> t u-boot_recovery.bin
+MMP2>> mmc write 0x7fc0 0x580 0x280
+
+2) By default, the initial sw part has been set to 0.
    Alternatively, you can run the following struction to make sure.
-MMP2>> mmc sw_part 0
+MMP2>> mmc dev 0 0
 
-2) GPT
+3) GPT
 MMP2>> t primary_gpt_8g
-MMP2>> mmc write 0 0x22 0x1100000
+MMP2>> mmc write 0x7fc0 0 0x22
 MMP2>> t secondary_gpt_8g
-MMP2>> mmc write 0xecbfdf 0x21 0x1100000
+MMP2>> mmc write 0x7fc0 0xecbfdf 0x21
 
-3) kernel
-MMP2>> t zImage.android
-MMP2>> mmc write 0x4c00 0x2000 0x1100000
+4) OBM on partition 0
+MMP2>> t dntim_platform.bin
+MMP2>> mmc write 0x7fc0 0x3c00 0x400
 
-4) ramdisk
+5) kernel
+MMP2>> t uImage.android
+MMP2>> mmc write 0x7fc0 0x4c00 0x2000
+
+6) ramdisk
 MMP2>> t ramdisk.img
-MMP2>> mmc write 0x8c00 0x800 0x1100000
+MMP2>> mmc write 0x7fc0 0x8c00 0x800
 
-5) clean up misc
+7) clean up misc
+MMP2>> mw.b 0x7fc0 0 0x80000
+MMP2>> mmc write 0x7fc0 0x14c00 0x400
 
-MMP2>> mw.b 0x1100000 0 0x80000
-MMP2>> mmc write 0x14c00 0x400 0x1100000
+8) clean up cache
+MMP2>> mw.b 0x7fc0 0 0x80000
+MMP2>> mmc write 0x7fc0 0x1ec00 0x400
 
-6) clean up cache
-
-MMP2>> mw.b 0x1100000 0 0x80000
-MMP2>> mmc write 0x1ec00 0x400 0x1100000
-
-7) system
+9) system
 MMP2>> t system.img
-MMP2>> unsparse 0x11ec00 0x100000 0x1100000
+MMP2>> unsparse 0 0x7fc0 0x23d80000 0x20000000
 
-8) clean up data if userdata.img is unavailable.
-
-MMP2>> mw.b 0x1100000 0 0x80000
-MMP2>> mmc write 0x21ec00 0x400 0x1100000
-
-(You can flash user partition if it's available.)
+10) data
 MMP2>> t userdata.img
-MMP2>> unsparse 0x21ec00 0x500000 0x1100000
+MMP2>> unsparse 0 0x7fc0 0x43d80000 0xa0000000
 
-9) recovery
+11) recovery on partition 0
 
-MMP2>> t zImage_recovery.android
-MMP2>> mmc write 0xcc00 0x2000 0x1100000
+MMP2>> t uImage_recovery.android
+MMP2>> mmc write 0x7fc0 0xcc00 0x2000
 MMP2>> t ramdisk_recovery.img
-MMP2>> mmc write 0x10c00 0x800 0x1100000
+MMP2>> mmc write 0x7fc0 0x10c00 0x800
 
 After done, power-off and power-on again to boot mmp2 from emmc.
 
-Setup Android on NAND(emmc) using fastboot
+Setup Android on eMMC using fastboot
 =========================
-To make use of fastboot, you need the fastboot program compiled for your host computer whose location should be out/host/linux-x86/bin/fastboot. You could use fastboot to burn all images to eMMC flash memory as follows. If the target image is in current path, you could omit the filename option.
-$ fastboot flash kernel [<image path>/zImage.android]
-$ fastboot flash kernel [<image path>/zImage.android]
+To enter the mode of fastboot, please hold down the key "VOLUME_UP" for a while.
+
+And then you need to compile fastboot on host, whose default location should be out/host/linux-x86/bin/fastboot. You could use fastboot to burn all images to eMMC flash memory as follows. If the target image is in current path, you could omit the filename option.
+
+$ fastboot flash kernel [<image path>/uImage.android]
+$ fastboot flash kernel [<image path>/uImage.android]
 $ fastboot flash system [<image path>/system.img]
-$ fastboot flash reckernel [<image path>/zImage_recovery.android]
+$ fastboot flash reckernel [<image path>/uImage_recovery.android]
 $ fastboot flash recovery [<image path>/ramdisk_recovery.img]
 
-Besides, you can put all images in current path and use “flashall” to burn all images with one command.
+Besides, you can put all images in current path and use flashall to burn all images with one command.
 $ fastboot flashall
 
 Using the following command to erase Android data partition.
@@ -226,9 +241,9 @@ Follow the below process to make a SD card with Android root file system install
 4) tar xvf root_nfs.tgz /tmp; cp -p -r /tmp/root_nfs/* /mnt/disk/;
 5) umount /dev/sdc
 
-Second, burning the zImage.android.mmc image.
+Second, burning the uImage.android.mmc image.
 Boot the device with console,
-MMP2>> t zImage.android
+MMP2>> t uImage.android
 MMP2>> mmc write 0x4c00 0x2000 0x1100000
 
 Note : erase ramdisk first if you want to boot from sdcard
@@ -245,16 +260,16 @@ Setup Android on NFS
 5) mv /tmp/root_nfs/* /nfs/android
 6) sudo exportfs -r
 
-Last, you should use zImage to boot the kernel and then set the bootargs variable in UBoot.
+Last, you should use uImage to boot the kernel and then set the bootargs variable in UBoot.
 (Notes:if adb is enabled in the kernel, this way doesn't work as the usb net won't work as the usb is used for adb)
-MMP2>> t zImage.android
+MMP2>> t uImage.android
 MMP2>> bo
 
 Note : erase ramdisk first if you want to boot from sdcard
 
 Notes:we used one kernel binary solution, the boot sequence is nand --> mmc --> nfs, now nand is not supported, so remove sdcard first if you want to boot from nfs. And the nfs server is fixed as 192.168.1.100:/nfs/android. if you want to change it, modify vendor/marvell/brownstone/roodir/rdinit and build the kernel again
 
-Notes:You only need use setenv and savenv command one time. Next time UBoot will load the environment variable from NAND automaticllay. But later if you want use zImage.android.mmc to boot Android from SD card, you should clear the "bootargs" environment variable. You can do this by:
+Notes:You only need use setenv and savenv command one time. Next time UBoot will load the environment variable from eMMC automaticllay. But later if you want use uImage.android.mmc to boot Android from SD card, you should clear the "bootargs" environment variable. You can do this by:
 
 
 
