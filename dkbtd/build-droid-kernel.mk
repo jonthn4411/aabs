@@ -10,9 +10,11 @@ ifeq ($(ANDROID_VERSION),eclair)
 else
 ifeq ($(ANDROID_VERSION),ics)
        DROID_PRODUCT:=dkb_920NAND
+       DROID_DEVICE:=dkb_920
        KERNEL_IMAGE:=uImage
 else
        DROID_PRODUCT:=dkb
+       DROID_DEVICE:=dkb
        KERNEL_IMAGE:=uImage
 endif
 endif
@@ -85,7 +87,7 @@ build_droid_otapackage_$(1): output_dir
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	ANDROID_PREBUILT_MODULES=./kernel/out/modules make mrvlotapackage -j$$(MAKE_JOBS)
 	$$(hide)echo "  copy OTA package ..."
-	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/$$(OTA_PACKAGE) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/$$(OTA_PACKAGE) $$(OUTPUT_DIR)/$(1)
 	$$(log) "  done for OTA package build. "
 
 PUBLISHING_FILES_$(1)+=$(1)/$$(OTA_PACKAGE):o:md5
@@ -98,26 +100,26 @@ define define-build-droid-root
 build_droid_root_$(1): output_dir
 	$$(log) "[$(1)]building android source code with modules ..."
 	$$(hide)cd $$(SRC_DIR) && \
-	echo "" > device/marvell/$$(DROID_PRODUCT)/system.prop && \
-	echo "# begin adding additional information for OTA" >> device/marvell/$$(DROID_PRODUCT)/system.prop && \
-	echo "ro.build.manifest.branch=$$(MANIFEST_BRANCH)" >> device/marvell/$$(DROID_PRODUCT)/system.prop && \
-	echo "# end adding additional information for OTA" >> device/marvell/$$(DROID_PRODUCT)/system.prop && \
+	echo "" > device/marvell/$$(DROID_DEVICE)/system.prop && \
+	echo "# begin adding additional information for OTA" >> device/marvell/$$(DROID_DEVICE)/system.prop && \
+	echo "ro.build.manifest.branch=$$(MANIFEST_BRANCH)" >> device/marvell/$$(DROID_DEVICE)/system.prop && \
+	echo "# end adding additional information for OTA" >> device/marvell/$$(DROID_DEVICE)/system.prop && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	ANDROID_PREBUILT_MODULES=./kernel/out/modules make -j$$(MAKE_JOBS)
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(1)/root ]; then rm -fr $(OUTPUT_DIR)/$(1)/root; fi
 	$$(hide)echo "  copy root directory ..."
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/root $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery.img $$(OUTPUT_DIR)/$(1)
-	$$(hide)if [ ! $(ANDROID_VERSION) == "ics" ]; then  cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(1); \
-	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext4.img $$(OUTPUT_DIR)/$(1);fi
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/root $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/ramdisk.img $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/userdata.img $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/system.img $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/ramdisk-recovery.img $$(OUTPUT_DIR)/$(1)
+	$$(hide)if [ ! $(ANDROID_VERSION) == "ics" ]; then  cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/userdata_ext4.img $$(OUTPUT_DIR)/$(1); \
+	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/system_ext4.img $$(OUTPUT_DIR)/$(1);fi
 	$$(log) "  done for copy root directory."
 	$$(hide)echo "    packge symbols system files..." && \
-	cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system $$(OUTPUT_DIR)/$(1)/
+	cp -a $$(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/symbols/system $$(OUTPUT_DIR)/$(1)/
 	$$(hide)cd $$(OUTPUT_DIR)/$(1) && tar czf symbols_system.tgz system && rm system -rf
 	$$(log) "  done for package symbols system files. "
 
@@ -141,19 +143,19 @@ define rebuild-droid-config
 rebuild_droid_$(1)_$(2): nolib_config:=$$(if $$(findstring $(1),external),true,false)
 rebuild_droid_$(1)_$(2):
 	$$(log) "[$(2)]rebuild android for $(1)..."
-	$$(hide)cd $$(SRC_DIR)/device/marvell/$$(DROID_PRODUCT) && \
+	$$(hide)cd $$(SRC_DIR)/device/marvell/$$(DROID_DEVICE) && \
 	sed -i "/^[ tab]*BOARD_NO_HELIX_LIBS[ tab]*:=/ s/:=.*/:= $$(nolib_config)/" BoardConfig.mk && \
 	sed -i "/^[ tab]*BOARD_NO_FLASH_PLUGIN[ tab]*:=/ s/:=.*/:= $$(nolib_config)/" BoardConfig.mk
-	$$(hide)rm -fr $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib/helix
-	$$(hide)rm -f $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib/netscape/libflashplayer.so
-	$$(hide)rm -f $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/*.img
+	$$(hide)rm -fr $$(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/system/lib/helix
+	$$(hide)rm -f $$(SRC_DIR)/out/target/product/$$()/system/lib/netscape/libflashplayer.so
+	$$(hide)rm -f $$(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/*.img
 	$$(hide)cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	ANDROID_PREBUILT_MODULES=no_kernel_modules make -j$$(MAKE_JOBS)
 	$$(log) "    packaging helix libraries and flash library..."
 	$$(hide)if [ "$(1)" == "internal" ]; then \
-	cd $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/lib &&\
+	cd $$(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/system/lib &&\
 	mkdir -p helix &&\
 	tar czf $$(OUTPUT_DIR)/$(2)/helix.tgz helix/ && \
 	mkdir -p netscape &&\
@@ -173,7 +175,7 @@ define define-build-droid-config
 .PHONY: build_droid_$(2)_$(1)
 build_droid_$(2)_$(1): rebuild_droid_$(2)_$(1) package_droid_slc_$(2)_$(1) package_droid_mmc_$(2)_$(1)
 	$$(log) "build_droid_$(2)_$(1) is done, reseting the source code."
-	$$(hide)cd $$(SRC_DIR)/device/marvell/$$(DROID_PRODUCT)/ &&\
+	$$(hide)cd $$(SRC_DIR)/device/marvell/$$(DROID_DEVICE)/ &&\
 	git reset --hard
 	$$(log) "  done"
 
@@ -196,11 +198,11 @@ package_droid_slc_$(1)_$(2):
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS) && \
 	echo "    copy  image files..." && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(2)/system.img && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(2)/userdata.img &&\
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext4.img $$(OUTPUT_DIR)/$(2)/ && \
-	cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext4.img $$(OUTPUT_DIR)/$(2)/
-	$$(hide)cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system $$(OUTPUT_DIR)/$(2)/
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/system.img $$(OUTPUT_DIR)/$(2)/system.img && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/userdata.img $$(OUTPUT_DIR)/$(2)/userdata.img &&\
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/system_ext4.img $$(OUTPUT_DIR)/$(2)/ && \
+	cp -p $(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/userdata_ext4.img $$(OUTPUT_DIR)/$(2)/
+	$$(hide)cp -a $$(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/symbols/system $$(OUTPUT_DIR)/$(2)/
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf symbols_system.tgz system && rm system -rf
 	$$(log) "  done for package_droid_slc_$(1)$(2)."
 
@@ -217,8 +219,8 @@ build_droid_package_nfs_$(2):
 	$$(log) "[$(2)]package root file system for booting android from SD card or NFS for $(1)."
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/root_nfs ]; then rm -fr $$(OUTPUT_DIR)/$(2)/root_nfs; fi
 	$$(hide)cp -r -p $$(OUTPUT_DIR)/$(2)/root $$(OUTPUT_DIR)/$(2)/root_nfs && \
-	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system $$(OUTPUT_DIR)/$(2)/root_nfs && \
-	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/data $$(OUTPUT_DIR)/$(2)/root_nfs
+	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/system $$(OUTPUT_DIR)/$(2)/root_nfs && \
+	cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_DEVICE)/data $$(OUTPUT_DIR)/$(2)/root_nfs
 	$$(hide)cp -rfp $$(SRC_DIR)/vendor/marvell/generic/ttc_telephony/drivers/output/marvell $$(OUTPUT_DIR)/$(2)/root_nfs
 	$$(log) "  updating the modules..."
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$(2)/modules ]; then rm -fr $$(OUTPUT_DIR)/$(2)/modules; fi
