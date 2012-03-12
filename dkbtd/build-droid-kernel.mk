@@ -8,8 +8,13 @@ ifeq ($(ANDROID_VERSION),eclair)
        DROID_PRODUCT:=dkbtd
        KERNEL_IMAGE:=zImage
 else
+ifeq ($(ANDROID_VERSION),ics)
+       DROID_PRODUCT:=dkb_920NAND
+       KERNEL_IMAGE:=uImage
+else
        DROID_PRODUCT:=dkb
        KERNEL_IMAGE:=uImage
+endif
 endif
 
 DROID_TYPE:=release
