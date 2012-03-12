@@ -19,7 +19,7 @@ PUBLISHING_FILES_$(1)+=$(1)/emmc/ntim.bin.tgz:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc_cm/u-boot.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc_cm/Wtm_rel_mmp3.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc_cm/coremorphall.bin:m:md5
-#PUBLISHING_FILES_$(1)+=$(1)/emmc_cm/ntim.bin.tgz:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/emmc_cm/ntim.bin.tgz:m:md5
 
 .PHONY:build_uboot_obm_$(1)
 build_uboot_obm_$(1):
@@ -35,13 +35,13 @@ build_uboot_obm_$(1):
 	$$(log) "start to copy uboot and obm files"
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_NOR_DIR)/u-boot.bin $$(OUTPUT_DIR)/$(1)/emmc
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_NOR_DIR)/Wtm_rel_mmp3.bin $$(OUTPUT_DIR)/$(1)/emmc
-	$$(hide)cp -rf $$(SRC_DIR)/$$(BOOT_OUT_NOR_DIR)/ntim/* $$(OUTPUT_DIR)/$(1)/emmc/ntim/
+	$$(hide)cp -rf $$(SRC_DIR)/$$(BOOT_OUT_NOR_DIR)/ntim/ $$(OUTPUT_DIR)/$(1)/emmc/
 	$$(hide)cd $$(OUTPUT_DIR)/$(1)/emmc/ && tar zcvf ntim.bin.tgz ntim
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_CM_DIR)/u-boot.bin $$(OUTPUT_DIR)/$(1)/emmc_cm
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_CM_DIR)/Wtm_rel_mmp3.bin $$(OUTPUT_DIR)/$(1)/emmc_cm
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_CM_DIR)/coremorphall.bin $$(OUTPUT_DIR)/$(1)/emmc_cm
-	$$(hide)cp -rf $$(SRC_DIR)/$$(BOOT_OUT_CM_DIR)/ntim/ $$(OUTPUT_DIR)/$(1)/emmc_cm/ntim/
-#	$$(hide)cd $$(OUTPUT_DIR)/$(1)/emmc_cm/ && tar zcvf ntim.bin.tgz ntim
+	$$(hide)cp -rf $$(SRC_DIR)/$$(BOOT_OUT_CM_DIR)/ntim/ $$(OUTPUT_DIR)/$(1)/emmc_cm/
+	$$(hide)cd $$(OUTPUT_DIR)/$(1)/emmc_cm/ && tar zcvf ntim.bin.tgz ntim
 	$$(log) "    done."
 
 endef
