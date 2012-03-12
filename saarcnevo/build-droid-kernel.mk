@@ -81,15 +81,15 @@ endef
 define define-build-droid-pkgs
 .PHONY:build_droid_pkgs_$(1)
 build_droid_update_pkgs_$(1): output_dir
-       $$(log) "[$(1)]generating update packages..."
-       $$(hide)cd $$(SRC_DIR) && \
-       source ./build/envsetup.sh && \
-       chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-       make mrvlotapackage
-       echo "    copy update packages..." && \
-               mkdir -p $$(OUTPUT_DIR)/$(1) && \
-               cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/nevo-ota-mrvl.zip $$(OUTPUT_DIR)/$(1)/nevo-ota-mrvl.zip
-       $(log) "  done"
+	$$(log) "[$(1)]generating update packages..."
+	$$(hide)cd $$(SRC_DIR) && \
+	source ./build/envsetup.sh && \
+	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
+	make mrvlotapackage
+	echo "    copy update packages..." && \
+		mkdir -p $$(OUTPUT_DIR)/$(1) && \
+		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/nevo-ota-mrvl.zip $$(OUTPUT_DIR)/$(1)/nevo-ota-mrvl.zip
+	$(log) "  done"
 
 build_droid_pkgs_$(1): build_droid_update_pkgs_$(1)
 
