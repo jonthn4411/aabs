@@ -291,7 +291,7 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	mkdir -p $$(OUTPUT_DIR)/$(2)/modules
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules/* $$(OUTPUT_DIR)/$(2)/modules
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar czf modules_$$(private_os)_$$(private_storage).tgz modules/ 
-	$$(hide)if [ -d $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/telephony ]; then cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/telephony/* /$$(OUTPUT_DIR)/$(2); fi
+	$$(hide)if [ -d $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/telephony ]; then cp -a $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/telephony/* /$$(OUTPUT_DIR)/$(2); fi
 	$(log) "  done."
 
 .PHONY: build_kernel_$$(os)_$$(storage)_$(2)
