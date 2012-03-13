@@ -28,7 +28,7 @@ else
 endif
 
 KERNELSRC_TOPDIR:=kernel
-OTA_PACKAGE:=dkb-ota-mrvl.zip
+OTA_PACKAGE:=$(DROID_PRODUCT)-ota-mrvl.zip
 
 .PHONY:clean_droid_kernel
 clean_droid_kernel: clean_droid clean_kernel
