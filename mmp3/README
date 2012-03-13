@@ -1,0 +1,235 @@
+Files in this folder
+====================
+-Change logs and checksum file
+  changelog.build       GIT change log of each project since last build.
+  changelog.day         GIT change log of each project since yesterday.
+  changelog.week        GIT change log of each project since last week.
+  changelog.biweek      GIT change log of each project since 2 weeks ago.
+  changelog.month       GIT change log of each project since a month ago.
+
+  checksums.md5 This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
+
+-Source codes
+ --Internal Use
+  manifest.xml          Saving the GIT commit number of each project used in this build. This is for internal use only.
+  droid_all_src.tgz     Completing source code tar ball, including everything, such as kernel, uboot, obm, android. This is for internal use only.
+
+ --External Uses: the below files will be in the release package. To restore the complete source code that is used to build this package, please follow the intructions in Release Notes.
+
+  setup_android.sh  The script that is used to setup the code base of this build from the below tarball. For details about this, please refer to release notes.
+
+  kernel_src.tgz        Kernel base source code tar ball.
+  kernel_patches.tgz    Kernel patches that are applied on kernel base source.
+
+  marvell_manifest.xml  The manifest file used to download base android source code from google.
+  android_src.tgz       The source code of projects that are introduced by Marvell. Not including the projects introduced by Google.
+  android_patches.tgz   The patches that applied to android projects introduced by Google.
+
+  uboot_src.tgz         Uboot base source code tar ball.
+  uboot_patches.tgz     The patches that applied to uboot base source.
+
+  obm_src.tgz           OBM source code tar ball. Will be released.
+
+-droid-gcc folder
+ Files under droid-gcc folder are built with android-toolchain.
+ If this folder is missing, it means that this package wasn't built with google gcc toolchain.
+
+-Kernel and Modules for Android
+  uImage.smp.android       The kernel image for SMP mode
+  uImage.up.android        The kernel image for no SMP mode
+  uImage.cm.android        The kernel image for coremorphall
+  modules_android_mmc.tgz  Kernel modules that built along with uImage.android
+
+-Android File Systems
+  root_nfs_xxx.tgz          Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
+
+  ramdisk.img         Android ramdisk image.
+  system.img          Android system image.
+  userdata.img         Android userdata image.
+  update_droid.zip         that is a update package including kernel, ramdisk and system folder.
+
+  if xxx is "internal" means everything is built in the package, and should be used internally.
+
+  if xxx is "external" means the package can be delivered outside, components with license issue has been removed.
+
+How to get the 'latest' source code from git server
+=====================================
+  1. $ mkdir <android_working_dir>
+     $ cd <android_working_dir>
+
+  2.For ICS Ax
+     $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b abilene-ics
+    For ICS B0
+     $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b abileneB0-ics
+
+  3. $ repo sync
+
+  You may don't have the access to our git server. In this situation, contact the administrator of our git server.
+
+How to get the code that the autobuild system uses for daily build and code drop
+=====================================
+-Method I
+  1. $ mkdir <android_working_dir>
+     $ cd <android_working_dir>
+
+  2. For ICS Ax
+      $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b abilene-ics
+     For ICS B0
+      $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b abileneB0-ics
+
+     You may don't have the access to our git server. In this situation, contact the administrator of our git server.
+
+  3. copy 'manifest.xml' from autobuild system or code drop into my_droid_src/.repo/manifests/, name it as whatever you like, say 'my_manifest.xml'.
+
+  4. In <android_working_dir>, run repo-init again as below
+     $ repo init -m 'my_manifest.xml' # Don't need the full path of my_manifest.xml
+
+  5. $ repo sync
+
+-Method II
+  1. Find out 'droid_all_src.tgz' in the daily build or code drop.
+
+  2. Extract that tgz package as below.
+     $ tar xzvf droid_all_src.tgz
+
+  3. $ cd source # now you're in the source root.
+
+Set up environment before building Android
+=====================================
+     $ cd <android_working_dir>  # replace <android_working_dir> with the actual android source root on your machine
+     $ source build/envsetup.sh
+     $ chooseproduct abilene
+
+How to Build Uboot
+=====================================
+  1. Go to the diretory <android_working_dir>/boot
+     $ cd <android_working_dir>/boot
+
+  2. Make uboot
+     $ make all
+
+How to Build kernel and android image
+=====================================
+  1. build kernel and modules
+     $ cd <android_working_dir>
+     $ cd kernel
+     $ make all
+
+  uImage is located at kernel/out, modules is located at kernel/out/modules
+
+  2. build android
+     $ cd <android_working_dir>
+     $ export ANDROID_PREBUILT_MODULES=kernel/out/modules
+     $ make
+
+  The android ramdisk.img, system.img and userdata.img are located at out/target/product/abilene
+
+Burning OBM and Uboot
+=====================
+1. Install the latest XDB with version 5.1 or later (\\Sh-fs03\debugger_public\Official_Release\eXtreme_Debugger_*)
+2. Get the boot binaries (uboot & obm) from autobuild server
+3. Flash OBM and U-boot into EMMC using XDB
+   Note: Don't check the option "erase affected blocks" when you burn images.
+
+  For normal user:(files under droid-gcc/emmc)
+   1)Use flash burn tool: flash --> burn flash
+   2)Choose flash: EMMC Flash
+   3)Erase All Blocks
+   4)Burn Date Files as follows:
+     Choose partition 0x1
+        a)Burn "ntim_abex_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1150mv.binn"           address [0x000000]
+        b)Burn "Wtm_rel_mmp3.bin"                                                                address [0x020000]
+     Choose partition 0x2
+        c)Burn "u-boot.bin"                                                                      address [0x000000]
+
+  For developer who use coremorphall:(files under droid-gcc/emmc_cm)
+   1)Use flash burn tool: flash --> burn flash
+   2)Choose flash: EMMC Flash
+   3)Erase All Blocks 
+   4)Burn Date Files as follows:
+     Choose partition 0x1
+        a)Burn "ntim_abex_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1200mv_TZ.bin"      address [0x000000]
+        b)Burn "Wtm_rel_mmp3.bin"                                                             address [0x020000]
+        c)Burn "coremorphall.bin"                                                             address [0x060000]
+     Choose partition 0x2
+        d)Burn "u-boot.bin"                                                                   address [0x000000]
+
+About Ntims
+============
+1.For normal user:
+  1)ntim.bin.tar is ntim tar file and is droid/emmc  
+  2)Prefered ntims are as follows:
+    a)For Abilene Discrete Board:
+      abex_dis/ntim_abex_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1150mv.bin
+      abex_dis/ntim_abex_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1181mv.bin
+      abex_dis/ntim_abex_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1200mv.bin
+      abex_dis/ntim_abex_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1225mv.bin
+    b)For Abilene Pop Board:
+      abex_pop/ntim_abex_pop-797-797-399-399-399-399-399-200__3_1_sm_400_1181mv.bin
+      abex_pop/ntim_abex_pop-797-797-399-399-399-399-399-200__3_1_sm_400_1150mv.bin
+      abex_pop/ntim_abex_pop-797-797-399-399-399-399-399-200__3_1_sm_400_1200mv.bin
+      abex_pop/ntim_abex_pop-797-797-399-399-399-399-399-200__3_1_sm_400_1225mv.bin
+  3)Recommend to use the xxx-1200mv.bin for each platform, if the board has stability issue, then try others. 
+
+2.For developer who use coremorphall:
+  ntim.bin.tar is ntim tar file and is droid/emmc_cm
+
+3.The naming meaning for NTIM binary
+  ntim_<board>-<mp1>-<mp2>-<mm>-<aclk>-<ddr1>-<ddr2>-<axi1>-<axi2>__<ppname>_<ddrcfgname>_<voltage>.bin
+    for example:
+  ntim_abex_dis-797-797-399-399-399-399-399-200__3_1_sm_noch2_400_1200mv.bin 
+  is for abex_dis
+  MP1: 797
+  MP2: 797
+  MM:  399
+  ACLK:399
+  DDR1:399
+  DDR2:399
+  AXI1:399
+  AXI2:200
+  PP: 3_1
+  ddrcfgname: sm_noch2_400, signle memory controller, 2nd reset, using 400MHz timing
+  voltage 1.2v
+
+  
+Boot up Android on eMMC
+=====================================
+
+Boot the device, and enter the uboot menu.
+
+0) By default, the initial device is set to eMMC.
+   You can run the following struction to make sure:
+Abilene>> mfpch emmc
+Abilene>> set autostart no
+
+1) Partition table
+Abilene>> tftpboot 0x1100000 primary_gpt_8g
+Abilene>> mmc write 0x1100000 0 0x22
+Abilene>> tftpboot 0x1100000 secondary_gpt_8g
+Abilene>> mmc write 0x1100000 0xECBFDF 0x21
+
+Please ignore only the following error, since it's not an actual error.
+----------error begins----------------
+Wrong Image Format for tftpboot command
+ERROR: can't get kernel image
+----------error ends------------------
+
+2) Kernel image:
+Abilene>> tftp 0x1100000 uImage.smp.android
+Abilene>> mmc write 0x1100000 0x4c00 0x4000
+
+3) ramdisk
+Abilene>> tftpboot 0x1100000 ramdisk.img
+Abilene>> mmc write 0x1100000 0x8c00 0x4000
+
+4) system
+Abilene>> tftpboot 0x1100000 system.img
+Abilene>> unsparse mmc 0 0x1100000 0x2AB80000 0x20000000
+
+5) user data
+Abilene>> tftpboot 0x1100000 userdata.img
+Abilene>> unsparse mmc 0 0x1100000 0x4AB80000 0xA0000000
+
+After done, power-off and power-on again to boot mmp3 from emmc.
+
+If you're bothered by so many commands, combine them together with the seperator ';'.
