@@ -9,8 +9,14 @@ DKBTTC_CP3:=WK_CP_2CHIP_SPRW_NVM.mdb
 DKBTTC_CP4:=WK_M07_AI_Y1_Flash.bin
 DKBTTC_CP5:=DKBI.bin
 DKBTTC_CP6:=OBMI.bin
-#DKBTTC_CP5:=pxa_symbols.tgz
+DKBTTC_CP7:=pxa_symbols.tgz
+DKBTTC_CP8:=TTC1_M06_AI_A1_Flash.bin
+DKBTTC_CP9:=Boerne_DIAG.mdb.txt
+DKBTTC_CP10:=Arbel_DIGRF3.bin
+DKBTTC_CP11:=Arbel_DIGRF3_DIAG.mdb
+DKBTTC_CP12:=Arbel_DIGRF3_NVM.mdb
 DKBTTC_IMEI:=ReliableData.bin
+DKBTTC_IMEI2:=WKReliableData.bin
 DKBTTC_SWD:=Software_Downloader.zip
 #DKBTTC_NO_GUI_RAMDISK:=ramdisk_no_gui.img
 
@@ -29,8 +35,16 @@ PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_CP3):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_CP4):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_CP5):m:md5
 PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_CP6):m:md5
-#PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_CP5):o:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_CP7):o:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_CP8):o:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_CP9):o:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_CP10):o:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_CP11):o:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_CP12):o:md5
+
 PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_IMEI):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_IMEI2):m:md5
+
 PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_SWD):m:md5
 #PUBLISHING_FILES_$(1)+=$(1)/$(DKBTTC_NO_GUI_RAMDISK):m:md5
 
@@ -45,8 +59,14 @@ copy_obm_cp_image_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP4) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP5) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP6) $$(OUTPUT_DIR)/$(1)
-#	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP5) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP7) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP8) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP9) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP10) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP11) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_CP12) $$(OUTPUT_DIR)/$(1)
 	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_IMEI) $$(OUTPUT_DIR)/$(1)
+	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_IMEI2) $$(OUTPUT_DIR)/$(1)
 #	$$(hide)cp $$(SRC_DIR)/$$(TEL_SRC_DIR)/$(DKBTTC_NO_GUI_RAMDISK) $$(OUTPUT_DIR)/$(1)
 	$$(log) "cp OBM and CP images  done."
 
