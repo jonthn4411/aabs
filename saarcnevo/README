@@ -30,6 +30,7 @@ Files in this folder
  
 -Kernel and Modules for Android [Currently for saarcnevo, zImage.android.slc and zImage.android.mmc is same]
   zImage.android	Kernel image to boot android from EMMC. A root file system is built in. 
+  zImage-recovery       Kernel image for android recovery
 
 -Android File Systems
   primary_gpt               Primary GPT file
@@ -39,6 +40,7 @@ Files in this folder
   system.img	    Android system image for  file system.
   userdata.img	    Android userdata image for  file system.
   ramdisk.img		    Android root image for file system.
+  ramdisk-recovery.img	    Android recovery root image for file system.
   pxafs_lyra_ext2.img	    AP telephony image.
   nvm_ext2.img		    AP NVM image
 
@@ -70,7 +72,7 @@ Setup Android on EMMC
 1.Start your favorite terminal emulator with the appropriate 
 	COM port set to 115200,8N1. Power on hte board and wait for SAARC>> prompt to appear
 
-3.Enter the following command to upload the system.img into the RAM and burn into flash:
+2.Enter the following command to upload the system.img into the RAM and burn into flash:
 For EMMC, issue the following commands:
 SAARC>>tftp zImage
 SAARC>>mmc write 0xC400 0x2000
@@ -89,6 +91,16 @@ SAARC>>mmc write 0x12AC00 0x6000
 
 SAARC>>tftp nvm_ext2.img
 SAARC>>mmc write 0x130C00 0x4000
+
+the following is for burning recovery images.
+SAARC>>tftp u-boot.bin
+SAARC>>mmc write 0x800 0x800
+
+SAARC>>tftp zImage-recovery
+SAARC>>mmc write 0x1000 0x2000
+
+SAARC>>tftp ramdisk-recovery.img
+SAARC>>mmc write 0x3000 0x2800
 
 SAARC>>tftp primary_gpt
 SAARC>>mmc write 0x0 0x400
@@ -111,6 +123,9 @@ Note 1: All the following images should copy to the host tftp share directory:
 	ramdisk.img
 	pxafs_lyra_ext2.img
 	nvm_ext2.img
+	u-boot.bin
+	zImage-recovery
+	ramdisk-recovery.img
 Note 2: You need to first input "sw" to switch to usb eth, and then, input "tftp zImage", then connect the USB micro-line between the host PC and the saarc board
 Note 3: You need to configure the host network interface:
 	# ifconfig usb0 192.168.1.100 
@@ -121,6 +136,53 @@ Setup Android on NFS
 2)  Setup nfs on host. Host ip is 192.168.1.100 and android rootfs should be put to /nfs/android
 3)  unzip root_nfs_internal.tgz to /nfs/android
 4)  reboot
+
+Burn binaries by Software Downloader
+============================
+1) put the following binary files in <softwareDownloader>/Bin/images/
+    Arbel_REL7_PMD2NONE.bin
+    NEVO_C0_Flash.bin
+    PinMuxData.bin
+    nvm_ext2.img
+    obm.bin.saarcnevo
+    plugin_LYRA5V03_BANDS128.bin
+    primary_gpt
+    pxafs_lyra_ext2.img
+    ramdisk.img
+    ramdisk-recovery.img
+    secondary_gpt
+    system.img
+    u-boot.bin
+    userdata.img
+    zImage
+
+2) open software download, and then open the configure file <softwareDownloader>/Bin/Nevo_SaarC_C0_LINUX_EMMC.blf:
+    Press "Initilize" button to initailize the device(the button with the green icon), wait for the icon become red color.
+    partition 1:
+        obm.bin.saarcnevo                                       --> flash address 0x00000000
+    partition 0:
+        u-boot.bin                                              --> flash address 0x01780000
+        Arbel_DIGRF3.bin                                        --> flash address 0x01F80000
+        NEVO_C0_Flash.bin                                       --> flash address 0x02580000
+        PinMuxData.bin                                          --> flash address 0x00C80000
+        plugin_LYRA5V03_BANDS128.bin                            --> flash address 0x02740000
+        primary_gpt                                             --> flash address 0x00000000
+        zImage                                                  --> flash address 0x01880000
+        ramdisk.img                                             --> flash address 0x01C80000
+        pxafs_lyra_ext2.img                                     --> flash address 0x25580000
+        tftp nvm_ext2.img                                       --> flash address 0x26180000
+        system.img                                              --> flash address 0x26980000
+        userdata.img                                            --> flash address 0x46980000
+        u-boot.bin                                              --> flash address 0x00100000(for recovery)
+        zImage-recovery                                         --> flash address 0x00200000(for recovery)
+        ramdisk-recovery.img                                    --> flash address 0x00600000(for recovery)
+    partition 128:
+        secondary_gpt                                           --> flash address 0x01D4FE00
+3) Connect the USB cable between the host machine and the board.
+
+4) Power on the board.
+Notes: you will be asked to install usb driver if it's your first time to burn the board, then install the driver in <softwareDownloader>/WTPTP folder.
+Notes: Sometimes Software Downloader will stop during downloading or burning, you have to try again. If it failes again and again, you can disable system.img and userdata.img, and use tftp to burn them.
 
 FAQ
 =====

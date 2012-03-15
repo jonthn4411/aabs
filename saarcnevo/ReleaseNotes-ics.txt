@@ -275,6 +275,7 @@ After a short while, the binaries will be generated under [android]/kernel/out/m
  $ cd [android_dir]
  $ . build/envsetup.sh
  $ chooseproduct nevo
+ $ choosevariant userdebug
  $ make -j4
 Note: The binaries will be generated under src/android/out/target/product/nevo/.
 Note: Currently we use Android default toolchain to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for google arm-eabi toolchain. Please donot pecify other android toolchain version. 
@@ -335,6 +336,8 @@ Software downloader is a tool for the images burning.
 	pxafs_lyra_ext2.img
 	nvm_ext2.img
 	secondary_gpt
+	zImage-recovery
+	ramdisk-recovery.img
 4. run Software_Downloader/Bin/SWDownloader.exe
 5. Open Software_Downloader/Bin/Nevo_SaarC_C0_LINUX_EMMC.blf to burn the binaries. 
 
@@ -372,6 +375,17 @@ SAARC>>mmc write 0x12AC00 0x6000
 
 SAARC>>tftp nvm_ext2.img
 SAARC>>mmc write 0x130C00 0x4000
+
+
+3.4.4.6 Enter the following command to upload the recovery images into the RAM and burn into flash:
+SAARC>>tftp u-boot.bin
+SAARC>>mmc write 0x800 0x800
+
+SAARC>>tftp zImage-recovery
+SAARC>>mmc write 0x1000 0x2000
+
+SAARC>>tftp ramdisk-recovery.img
+SAARC>>mmc write 0x3000 0x2800
 
 
 3.4.4.6 Enter the following command to upload the mbr into the RAM and burn into flash:
