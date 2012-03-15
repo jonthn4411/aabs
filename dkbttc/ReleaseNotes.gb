@@ -1,14 +1,14 @@
 ==============================================================================
-Marvell PXA910 Android Platform Release for Linux
+Marvell PXA910H Android Platform Release for Linux
 Platform README
-Last update: 12/23/2011
-Version: DKBTTC Gingerbread Beta6
+Last update: 03/15/2012
+Version: DKBTTC Gingerbread Beta5.1
 ==============================================================================
 
 1. Platform features
 1.1 Supported Components
 - Rebase to google android-2.3.5_r1 branch
-- Do key pad mapping, touch for PXA920 DKB platform
+- Do key pad mapping, touch for PXA910H DKB platform
 - HIFI playback on headset and speaker
 - Audio routing for phone earpiece and headset
 - Audio recorder for built-in Mic and headset Mic
@@ -331,9 +331,9 @@ Linux-2.6.35
 
 1.5 Release package contents
 - ReleaseNotes.txt                                   :This readme.txt(include how to setup Android dir,build and burn flash)
-- PXA920_Android_Platform_<version>_prebuilt_bin.zip :Pre-built bin binaries
-- PXA920_Android_Platform_<version>_src.tgz00        :Source code tarball (patch mode),part1
-- PXA920_Android_Platform_<version>_src.tgz01        :Source code tarball (patch mode),part2
+- PXA910H_Android_Platform_<version>_prebuilt_bin.zip :Pre-built bin binaries
+- PXA910H_Android_Platform_<version>_src.tgz00        :Source code tarball (patch mode),part1
+- PXA910H_Android_Platform_<version>_src.tgz01        :Source code tarball (patch mode),part2
   - setup_android.sh                                 :Script help to setup Android code base
   - android_patches.tgz                              :Marvell patches to Android Projects
   - android_src.tgz                                  :Source code for projects added by Marvell
@@ -350,7 +350,7 @@ Linux-2.6.35
 2.1 Hardware requirements
 - NAND flash 512 MB or larger
 - DDR SDRAM 512 MB or larger
-- PXA920 DKB Board
+- PXA910H DKB Board
   - Debug board: TD_TTC_DEBUG PCB070110 REV3.0
   - Core board: TTC_DKB_CORE PCB300610 REV3.1
   - RF board: TD_DKB_RF REV3.2
@@ -365,14 +365,14 @@ Linux-2.6.35
 3. Usage of this package
 3.1 Install this package
 3.1.1 Download the Marvell packages:
-----PXA910_Android_Platform_<version>_src.tgz00
-----PXA910_Android_Platform_<version>_src.tgz01
-----PXA910_Android_Platform_<version>_prebuilt_bin.zip
- $ cat PXA910_Android_Platform_<version>_src.tgz00 PXA910_Android_Platform_<version>_src.tgz01 > PXA910_Android_Platform_<version>_src.tgz
+----PXA910H_Android_Platform_<version>_src.tgz00
+----PXA910H_Android_Platform_<version>_src.tgz01
+----PXA910H_Android_Platform_<version>_prebuilt_bin.zip
+ $ cat PXA910H_Android_Platform_<version>_src.tgz00 PXA910H_Android_Platform_<version>_src.tgz01 > PXA910H_Android_Platform_<version>_src.tgz
 3.1.2 Type the following command to install:
  $ mkdir [installed_directory]
  $ cd [installed_directory]
- $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA910_Android_Platform_<version>_src.tgz
+ $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA910H_Android_Platform_<version>_src.tgz
 
 3.2 Setup Android directory
  $ mkdir [android_dir]
