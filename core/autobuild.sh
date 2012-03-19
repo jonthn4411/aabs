@@ -37,7 +37,7 @@ get_new_publish_dir()
 {
 	DATE=$(date +%Y-%m-%d)
 	BUILD_NUM=${DATE}
-	PUBLISH_DIR=$PUBLISH_DIR_BASE/${BUILD_NUM}_${PRODUCT_CODE}${RLS_SUFFIX}
+	PUBLISH_DIR=$PUBLISH_DIR_BASE/${BUILD_NUM}_${PRODUCT_CODE}${RLS_SUFFIX}/$1
 	index=0
 	while [ 1 ]; do
 	  if [ ! -d $PUBLISH_DIR ]; then
@@ -49,7 +49,7 @@ get_new_publish_dir()
 	  fi
 	  index=$(( index + 1 ))
 	  BUILD_NUM=${DATE}_${index}
-	  PUBLISH_DIR=$PUBLISH_DIR_BASE/${BUILD_NUM}_${PRODUCT_CODE}${RLS_SUFFIX}
+	  PUBLISH_DIR=$PUBLISH_DIR_BASE/${BUILD_NUM}_${PRODUCT_CODE}${RLS_SUFFIX}/$1
 	done
 }
 #$1: changelog.build
@@ -251,6 +251,7 @@ PRODUCT_NAME="$ABS_PRODUCT_NAME"
 
 PUBLISH_DIR="PUBLISH_DIR-Not-Defined"
 BUILD_NUM="BUILD_NUM-Not-Defined"
+PUBLISH_DIR_FOR_PRODUCT="dkb_920NAND"
 
 build_maintainer=$(cat ${ABS_BOARD}/maintainer)
 dev_team=$(cat ${ABS_BOARD}/dev_team )
@@ -407,7 +408,7 @@ if [ "$FLAG_PKGSRC" = "true" ]; then
 fi &&
 
 if [ "$FLAG_PUBLISH" = "true" ]; then
-	get_new_publish_dir
+	get_new_publish_dir ${PUBLISH_DIR_FOR_PRODUCT}
 	export PUBLISH_DIR
 	mkdir -p $PUBLISH_DIR
 	cp ${ABS_BOARD}/README $PUBLISH_DIR/README &&
@@ -430,7 +431,7 @@ if [ $? -ne 0 ]; then #auto build fail, send an email
 	echo "~~<result>FAIL</result>"
 	if [ "$FLAG_EMAIL" = "true" ]; then
 		echo "    sending email notification..." 2>&1 | tee -a $STD_LOG
-		send_error_notification "$(make -f ${MAKEFILE} get_changelog_build)"
+		#send_error_notification "$(make -f ${MAKEFILE} get_changelog_build)"
 	fi
 else
 	echo "build successfully. Cheers!Package:$PUBLISH_DIR " 2>&1 | tee -a $STD_LOG
@@ -438,7 +439,7 @@ else
 	echo "~~<result-dir>http://$(get_publish_server_ip)${PUBLISH_DIR}</result-dir>"
 	if [ "$FLAG_EMAIL" = "true" ]; then
 		echo "    sending email notification..." 2>&1 | tee -a $STD_LOG
-		send_success_notification
+		#send_success_notification
 	fi
 fi
 

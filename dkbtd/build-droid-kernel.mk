@@ -51,7 +51,7 @@ clean_kernel:
 # Build Step:
 # 1. build kernel and modules in ./kernel folder.
 # 2. build android with modules built from step1 in android root folder.
-# 3. build telephony in ./kernel folder.
+# 3. build telephony in android root folder.
 # 4. package mmc image.
 
 
@@ -336,8 +336,11 @@ build_telephony_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(
 
 	$$(log) "[$(2)]starting to build telephony for booting $$(private_os) from $$(private_storage) ..."
 	$$(log) "    kernel_config: $$(private_kernel_cfg): ..."
-	$$(hide)cd $$(SRC_DIR)/$$(KERNELSRC_TOPDIR) && \
-	KERNEL_CONFIG=$$(private_kernel_cfg) make telephony
+	$$(hide)cd $$(SRC_DIR) && \
+	source ./build/envsetup.sh && \
+	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
+	ANDROID_PREBUILT_MODULES=./kernel/out/modules make -j$$(MAKE_JOBS) && \
+	make telephony
 	$$(log) "    copy telephony files ..."
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/telephony/* /$$(OUTPUT_DIR)/$(2)
 	$(log) "  done."
