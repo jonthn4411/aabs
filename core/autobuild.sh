@@ -422,6 +422,52 @@ if [ "$FLAG_PUBLISH" = "true" ]; then
 	echo "Package:$PUBLISH_DIR" >> $LAST_BUILD 
 fi &&
 
+# build dkb_910NAND since here
+PUBLISH_DIR_FOR_PRODUCT="dkb_910NAND"
+OLD_PRODUCT_CODE=${PRODUCT_CODE}
+PRODUCT_CODE=dkbttc-${ABS_DROID_BRANCH}
+mv src.${OLD_PRODUCT_CODE}.${ABS_RELEASE_NAME} src.${PRODUCT_CODE}.${ABS_RELEASE_NAME}
+MAKEFILE=${PRODUCT_CODE}.mk
+if [ ! -f "$MAKEFILE" ]; then
+  MAKEFILE=${ABS_BOARD}/board.mk
+  if [ ! -f "$MAKEFILE" ]; then
+    MAKEFILE=common/board.mk
+  fi
+fi
+
+if [ "$FLAG_BUILD" = "true" ]; then
+	make -f ${MAKEFILE} build_droid-gcc 2>&1 | tee -a $STD_LOG
+fi &&
+
+if [ "$FLAG_MGCC" = "true" ]; then
+        make -f ${MAKEFILE} clean 2>&1 | tee -a $STD_LOG &&
+        #build with marvell gcc
+        echo "[$(date)]:starting to build targets with marvell toolchain ..." | tee -a $STD_LOG &&
+        #TODO: to specify the path of marvell toolchain
+        export EXTERNAL_TOOLCHAIN_PREFIX=
+        make -f ${MAKEFILE} build_mrvl-gcc 2>&1 | tee -a $STD_LOG
+fi &&
+
+if [ "$FLAG_PKGSRC" = "true" ]; then
+        make -f ${MAKEFILE} pkgsrc 2>&1 | tee -a $STD_LOG
+fi &&
+
+if [ "$FLAG_PUBLISH" = "true" ]; then
+        get_new_publish_dir ${PUBLISH_DIR_FOR_PRODUCT}
+        export PUBLISH_DIR
+        mkdir -p $PUBLISH_DIR
+        cp ${ABS_BOARD}/README $PUBLISH_DIR/README &&
+        make -f ${MAKEFILE} publish -e 2>&1 | tee -a $STD_LOG &&
+
+        update_changelogs $PUBLISH_DIR $BUILD_NUM &&
+
+        #saving the build info to file:$LAST_BUILD
+        echo "Project:$PRODUCT_NAME" > $LAST_BUILD &&
+        echo "Build-Num:$BUILD_NUM" >> $LAST_BUILD &&
+        echo "Package:$PUBLISH_DIR" >> $LAST_BUILD
+fi &&
+
+
 if [ "$FLAG_PUBLISH" = "true" ] && [ "$FLAG_TEMP" = "false" ] && [ "$FLAG_AUTOTEST" = "true" ]; then
 	perl tools/submitBuildInfo.pl -link \\\\$(get_publish_server_ip)${PUBLISH_DIR//\//\\} 2>&1 | tee -a $STD_LOG
 fi
