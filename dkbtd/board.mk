@@ -7,7 +7,6 @@ include core/main.mk
 #
 # Include goal for repo source code
 #
-GIT_LOCAL_MIRROR:=/home/jingjing/mirrors/default
 include core/repo-source.mk
 
 #
