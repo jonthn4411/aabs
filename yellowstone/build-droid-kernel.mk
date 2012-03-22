@@ -48,7 +48,7 @@ build_droid_root_$(1): output_dir
 	$$(hide)cd $$(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
-	ANDROID_PREBUILT_MODULES=kernel/out/modules make -j4
+	ANDROID_PREBUILT_MODULES=kernel/out/modules make -j8
 	echo "    copy GPT files..." && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/primary_gpt_8g $$(OUTPUT_DIR)/$(1)/ && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/secondary_gpt_8g $$(OUTPUT_DIR)/$(1)/
