@@ -1,7 +1,3 @@
-ifeq ($(strip $(BUILD_VARIANTS)),)
-	BUILD_VARIANTS:=droid-gcc
-endif
-
 include core/main.mk
 
 #
@@ -17,28 +13,25 @@ include core/changelog.mk
 #
 # Include goal for package source code.
 #
-include $(BOARD)/pkg-source.mk
+include $(ABS_SOC)/pkg-source.mk
 
 #
 # Include goal for build android and kernels.
 #
-include $(BOARD)/build-droid-kernel.mk
+include $(ABS_SOC)/build-droid-kernel-test.mk
 
 # Include goal for build UBoot and OBM
-include $(BOARD)/build-uboot-obm.mk
+include $(ABS_SOC)/build-uboot-obm-test.mk
 
 # Include goal for build software downloader
-include $(BOARD)/build-swd.mk
+include $(ABS_SOC)/build-swd.mk
 
 # Include goal for build wtpsp
-#include $(BOARD)/build-wtpsp.mk
+#include $(ABS_SOC)/build-wtpsp.mk
 
 #define the combined goal to include all build goals
-define define-build
-build_$(1): build_droid_kernel_$(1) build_uboot_obm_$(1) build_swd_$(1)
-build_uboot_obm_$(1): build_droid_kernel_$(1)
-endef
-$(foreach bv, $(BUILD_VARIANTS), $(eval $(call define-build,$(bv) ) ) )
+build: build_droid_kernel build_uboot_obm build_swd
+build_uboot_obm: build_droid_kernel
 
 clean:clean_droid_kernel clean_uboot_obm clean_swd clean_wtpsp
 

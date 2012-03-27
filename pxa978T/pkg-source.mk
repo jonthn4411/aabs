@@ -82,16 +82,17 @@ pkgsrc: output_dir get_source_for_pkg
 #m:means mandatory
 #o:means optional
 #md5: need to generate md5 sum
-PUBLISHING_FILES+=droid_all_src.tgz:o:md5 
-PUBLISHING_FILES+=android_src.tgz:m:md5 
-PUBLISHING_FILES+=android_patches.tgz:m:md5 
-PUBLISHING_FILES+=kernel_src.tgz:m:md5 
-PUBLISHING_FILES+=kernel_patches.tgz:m:md5 
-PUBLISHING_FILES+=uboot_src.tgz:m:md5 
-PUBLISHING_FILES+=uboot_patches.tgz:m:md5 
-PUBLISHING_FILES+=obm_src.tgz:m:md5 
-PUBLISHING_FILES+=marvell_manifest.xml:m
-PUBLISHING_FILES+=setup_android.sh:m
-PUBLISHING_FILES+=ReleaseNotes.txt:m
+PUBLISHING_FILES2+=droid_all_src.tgz:src:o:md5 
+PUBLISHING_FILES2+=android_src.tgz:src:m:md5 
+PUBLISHING_FILES2+=android_patches.tgz:src:m:md5 
+PUBLISHING_FILES2+=kernel_src.tgz:src:m:md5 
+PUBLISHING_FILES2+=kernel_patches.tgz:src:m:md5 
+PUBLISHING_FILES2+=uboot_src.tgz:src:m:md5 
+PUBLISHING_FILES2+=uboot_patches.tgz:src:m:md5 
+PUBLISHING_FILES2+=obm_src.tgz:src:m:md5 
+PUBLISHING_FILES2+=marvell_manifest.xml:src:m
+PUBLISHING_FILES2+=setup_android.sh:src:m
+PUBLISHING_FILES+=ReleaseNotes.txt:o
+
 
 
