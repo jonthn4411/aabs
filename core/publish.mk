@@ -3,7 +3,7 @@ $(call check-variables, PUBLISH_DIR)
 
 MD5_FILE:=checksums.md5
 define cp-with-md5
-	@echo "publishing mandatory file:$(2)"
+	@echo "publishing mandatory file:$(1) to $(2)"
 	@mkdir -p $(dir $(2))
 	@cp $(1) $(2) && chmod a+r $(2)
 	$(if $(findstring $(strip $(3)),md5), \
@@ -14,7 +14,7 @@ define cp-with-md5
 endef
 
 define cpif-with-md5
-	@if [ -f $(1) ]; then echo "publishing optional file:$(2)"; mkdir -p $(dir $(2)) && cp $(1) $(2) && chmod a+r $(2); fi
+	@if [ -f $(1) ]; then echo "publishing optional file:$(1) to $(2)"; mkdir -p $(dir $(2)) && cp $(1) $(2) && chmod a+r $(2); fi
 	$(if $(findstring $(strip $(3)),md5), \
 		@if [ -f $1 ]; then echo "generating md5 for $(2)"; \
 		cd $(dir $(1)) && \
@@ -41,6 +41,29 @@ publish_$$(name):
 publish: publish_$$(name)
 endef
 
+define define-publishing-file-target2
+tw:=$$(subst :, , $(1) )
+name:=$$(word 1, $$(tw) )
+dst:=$$(word 2, $$(tw) )
+mandatory:=$$(word 3, $$(tw) )
+md5:=$$(word 4, $$(tw) )
+
+.PHONY: publish2_$$(name)
+
+publish2_$$(name): private_name:=$$(name)
+publish2_$$(name): private_dst:=$$(dst)
+publish2_$$(name): private_mandatory:=$$(mandatory)
+publish2_$$(name): private_md5:=$$(md5)
+publish2_$$(name): 
+	$$(if $$(findstring $$(strip $$(private_mandatory)),m), \
+	$$(call cp-with-md5, $$(OUTPUT_DIR)/$$(private_name), $$(PUBLISH_DIR)/$$(private_dst)/, $$(private_md5) ), \
+	$$(call cpif-with-md5, $$(OUTPUT_DIR)/$$(private_name), $$(PUBLISH_DIR)/$$(private_dst)/, $$(private_md5) ) )
+
+publish: publish2_$$(name)
+
+endef
+
+
 .PHONY: publish_dir
 publish_dir:
 	$(hide)if [ -z "$(PUBLISH_DIR)" ]; then \
@@ -59,3 +82,4 @@ publish: publish_dir clean_md5_file
 	@cp $(OUTPUT_DIR)/$(MD5_FILE) $(PUBLISH_DIR)
 
 $(foreach pf, $(PUBLISHING_FILES), $(eval $(call define-publishing-file-target, $(pf) ) ) )
+$(foreach pf, $(PUBLISHING_FILES2), $(eval $(call define-publishing-file-target2, $(pf) ) ) )

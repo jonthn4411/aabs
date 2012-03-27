@@ -38,6 +38,7 @@ hide:=@
 space:= #a designated space
 
 PUBLISHING_FILES:=
+PUBLISHING_FILES2:=
 TOP_DIR:=$(shell pwd)
 
 SRC_DIR:=src.$(ABS_PRODUCT_CODE)
