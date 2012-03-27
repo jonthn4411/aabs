@@ -1,0 +1,193 @@
+Files in this folder
+====================
+-Change logs and checksum file
+  changelog.day		GIT change log of each project since yesterday.
+  changelog.week	GIT change log of each project since last week.
+  changelog.biweek 	GIT change log of each project since 2 weeks ago.
+  changelog.month	GIT change log of each project since a month ago.
+
+  checksums.md5		This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
+
+-Source codes
+  manifest.xml		Saving the GIT commit number of each project used in this build.
+
+-droid-gcc folder
+ Files under droid-gcc folder are built with android-toolchain.
+ If this folder is missing, it means that this package wasn't built with android  gcc toolchain.
+ root_nfs_internal.tgz 	used for mmc and nfs case
+
+-mrvl-gcc folder
+ Files under mrvl-gcc folder are built with marvell gcc toolchain.
+ If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
+ 
+-OBM and UBoot
+    NEVO_Loader_eMMC_ARM_3_3_1.bin			OBM for eMMC version board
+    u-boot.bin						NTLoader image	
+    Arbel_DIGRF3.bin                 			CP Arbel image
+    NV_M06_AI_C0_Flash.bin	             		CP MSA image
+    NV_M06_AI_C0_L2_I_RAM_SECOND.bin                    CP MSA image
+ 
+-Kernel and Modules for Android [Currently for dkbnevo, zImage.android.slc and zImage.android.mmc is same]
+  zImage.android.xxx                        Kernel image to boot android from EMMC. A root file system is built in. 
+
+-Android File Systems
+  primary_gpt               Primary GPT file
+  secondary_gpt             Secondary GPT file
+  primary_gpt_8g            Primary GPT file for board whose emmc size is 8G
+  secondary_gpt_8g          Secondary GPT file whose emmc size is 8G
+  system.img	    Android system image for  file system.
+  userdata.img	    Android userdata image for  file system.
+  ramdisk.img		    Android root image for file system.
+  ramdisk-recovery.img	    Android recovery root image for file system.
+  pxafs_ext4.img            AP telephony image.
+
+-Software_Downloader.zip    :Software downloader
+
+dkbnevo Flashing images and boot system
+
+Burn binaries by Software Downloader
+============================
+1) put the following binary files in <softwareDownloader>/NEVO_DKB/eMMC/
+	NEVO_Loader_eMMC_ARM_3_3_1.bin
+        u-boot.bin
+        Arbel_DIGRF3.bin
+        NV_M06_AI_C0_Flash.bin 
+	NV_M06_AI_C0_L2_I_RAM_SECOND.bin
+        primary_gpt
+        secondary_gpt
+        zImage
+        system.img
+        userdata.img
+        ramdisk.img
+        ramdisk-recovery.img
+        pxafs_ext4.img
+
+2) open software download, and then open the configure file <softwareDownloader>/NEVO_DKB/eMMC/Nevo_TD_trusted_eMMC.blf:
+        Press "start" button (the button with the green bulb icon), wait for the icon become red color.
+
+	partition 1:
+        ntim_emmc.bin                                           --> flash address 0x00000000 (this binary is automatically created by SoftwareDownloader, when press "start" button)
+        NEVO_Loader_ARM_3_3_1.bin                               --> flash address 0x00001000
+	partition 0:
+        u-boot.bin                                              --> flash address 0x01780000
+        Arbel_DIGRF3.bin	                                --> flash address 0x02B80000
+        NV_M06_AI_C0_Flash.bin                                  --> flash address 0x03280000
+        NV_M06_AI_C0_L2_I_RAM_SECOND.bin	                --> flash address 0x03580000
+        primary_gpt                                             --> flash address 0x00000000
+        secondary_gpt                                           --> flash address 0xFFFFFFFF
+        u-boot.bin                                              --> flash address 0x00100000(for recovery)
+        zImage                                                  --> flash address 0x00200000(for recovery)
+        ramdisk-recovery.img                                    --> flash address 0x00600000
+        zImage                                                  --> flash address 0x01880000
+        ramdisk.img                                             --> flash address 0x01C80000
+        pxafs_ext4.img                                          --> flash address 0x24180000
+        system.img                                         --> flash address 0x26980000
+        userdata.img                                       --> flash address 0x46980000
+3) Press "start" button (the button with the green bulb icon), wait for the icon become red color.
+4) Connect the USB cable between the host machine and the board.
+
+5) Power on the board, 
+	For empty board, Press the reset key on the board, software downloader should show the downloading is in progress. When the burning is done, the software download will pop up a dialog to notify
+	For board which has obm burned, hold "Back" button on the board, and Press the reset key on the board, Release the "Back" button after the software download shows the downloading is in progress. When the burning is done, the software download will pop up a dialog to notify
+Notes: you will be asked to install usb driver if it's your first time to burn the board, then install the driver in <softwareDownloader>/WTPTP folder.
+Notes: Sometimes Software Downloader will stop during downloading or burning, you have to try again. If it failes again and again, you can disable system.img and userdata.img, and use tftp to burn them. 
+
+Burn binaries by XDB
+============================
+Burn following binaries to EMMC using Marvell eXtreme Debugger 5.3
+Use the configuration file c:\program files\marvell\xdb5.3\xdb\configurations\jtag\soc\pxa978\pxa978_c0_cs.xsf
+Configuration:CPU-JTAG->Target Connection: (usb:).
+    "Burning"
+        - Board:PXA978
+        - Flash:eMMC Flash
+        - Burn as binary File
+        - Erase affected blocks
+    "Erasing/Unblocking"
+        - Block Selection: all blocks -> Erase
+
+Choose partition 1
+        ntim_emmc.bin                           --> address 0x0000
+	NEVO_Loader_eMMC_ARM_3_3_1.bin		--> address 0x1000
+Choose partition 0
+	u-boot.bin				--> address 0x1780000
+	Arbel_DIGRF3.bin			--> address 0x2B80000
+	NV_M06_AI_C0_Flash.bin			--> address 0x3280000
+	NV_M06_AI_C0_L2_I_RAM_SECOND.bin	--> address 0x3580000
+
+Use TFTP to erase or reburn specific binaries
+=============================================
+Setup Android on EMMC
+===========================
+1.Start your favorite terminal emulator with the appropriate 
+	COM port set to 115200,8N1. Power on hte board and wait for NEVODKB>> prompt to appear
+
+3.Enter the following command to upload the system.img into the RAM and burn into flash:
+For EMMC, issue the following commands:
+NEVODKB>>tftp primary_gpt
+NEVODKB>>mmc write 0x0 0x400
+
+NEVODKB>>tftp zImage
+NEVODKB>>mmc write 0xC400 0x2000
+
+NEVODKB>>tftp system.img
+NEVODKB>>unsparse 0x134C00 0x100000
+
+NEVODKB>>tftp userdata.img
+NEVODKB>>unsparse 0x234C00 0x600000
+
+NEVODKB>>tftp ramdisk.img
+NEVODKB>>mmc write 0xE400 0x800
+
+NEVODKB>>tftp pxafs_ext4.img
+NEVODKB>>mmc write 0x120C00 0x6000
+
+NEVODKB>>tftp u-boot.bin 
+NEVODKB>>mmc write 0x800 0x800
+
+NEVODKB>>tftp zImage
+NEVODKB>>mmc write 0x1000 0x2000
+
+NEVODKB>>tftp ramdisk-recovery.img 
+NEVODKB>>mmc write 0x3000 0x2800
+
+NEVODKB>>tftp secondary_gpt
+NEVODKB>>mmc write 0x1D4FFDF 0x21
+(if eMMC size is 8G
+NEVODKB>>mmc write 0xE8FFDF 0x21
+check eMMC size by "mmcinfo" command in uboot
+)
+
+Reboot the system.
+
+
+Note 1: All the following images should copy to the host tftp share directory:
+	zImage
+	system.img
+	userdata.img
+	ramdisk.img
+        pxafs_ext4.img
+        primary_gpt
+        secondary_gpt
+
+Note 2: You need to first input "sw" to switch to usb eth, and then, input "tftp zImage", then connect the USB micro-line between the host PC and the dkbnevo board
+Note 3: You need to configure the host network interface:
+	# ifconfig usb0 192.168.1.100 
+
+Setup Android on NFS
+===========================
+1)  Burn all images except for ramdisk.img. [zImage.android.mmc can be used]
+2)  Setup nfs on host. Host ip is 192.168.1.100 and android rootfs should be put to /nfs/android
+3)  unzip root_nfs_internal.tgz to /nfs/android
+4)  reboot
+
+FAQ
+=====
+
++Kernel failed to bootup
+----------------------------------------------------------------
+Update your obm/uboot image and try again.
+
+
++How to disable GC860 completly
+----------------------------------------------------------------
+You can do this by: rm /system/lib/egl/egl.cfg, so android UI and 3D applications will use SW version instead of GC860. To save 16MB from GC860 low level driver, you can: rm /system/lib/modules/galcore.ko
