@@ -1,5 +1,5 @@
 #check if the required variables have been set.
-$(call check-variables, BUILD_VARIANTS)
+$(call check-variables, PUBLISH_DIR)
 
 MD5_FILE:=checksums.md5
 define cp-with-md5
@@ -59,6 +59,3 @@ publish: publish_dir clean_md5_file
 	@cp $(OUTPUT_DIR)/$(MD5_FILE) $(PUBLISH_DIR)
 
 $(foreach pf, $(PUBLISHING_FILES), $(eval $(call define-publishing-file-target, $(pf) ) ) )
-
-$(foreach bv, $(BUILD_VARIANTS), $(foreach pf, $(PUBLISHING_FILES_$(bv)), $(eval $(call define-publishing-file-target, $(pf) ) ) ) )
-

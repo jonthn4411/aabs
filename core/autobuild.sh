@@ -37,7 +37,7 @@ get_new_publish_dir()
 {
 	DATE=$(date +%Y-%m-%d)
 	BUILD_NUM=${DATE}
-	PUBLISH_DIR=$PUBLISH_DIR_BASE/${BUILD_NUM}_${PRODUCT_CODE}${RLS_SUFFIX}
+	PUBLISH_DIR=$PUBLISH_DIR_BASE/${BUILD_NUM}_${ABS_PRODUCT_CODE}${RLS_SUFFIX}
 	index=0
 	while [ 1 ]; do
 	  if [ ! -d $PUBLISH_DIR ]; then
@@ -49,7 +49,7 @@ get_new_publish_dir()
 	  fi
 	  index=$(( index + 1 ))
 	  BUILD_NUM=${DATE}_${index}
-	  PUBLISH_DIR=$PUBLISH_DIR_BASE/${BUILD_NUM}_${PRODUCT_CODE}${RLS_SUFFIX}
+	  PUBLISH_DIR=$PUBLISH_DIR_BASE/${BUILD_NUM}_${ABS_PRODUCT_CODE}${RLS_SUFFIX}
 	done
 }
 #$1: changelog.build
@@ -60,7 +60,7 @@ generate_error_notification_email()
 	cat <<-EOF
 	From: $build_maintainer
 	To: $dev_team
-	Subject: $BUILD_TAG [$PRODUCT_CODE${RLS_SUFFIX}] autobuild failed! please check
+	Subject: $BUILD_TAG [$ABS_PRODUCT_CODE${RLS_SUFFIX}] autobuild failed! please check
 
 	This is an automated email from the autobuild script. It was
 	generated because an error encountered while building the code.
@@ -84,7 +84,7 @@ generate_error_notification_email()
 	Complete Time: $(date)
 	Build Host: $(hostname)
 	---
-	Team of $PRODUCT_CODE
+	Team of $ABS_PRODUCT_CODE
 	EOF
 }
 
@@ -96,7 +96,7 @@ generate_error_log_email()
 	cat <<-EOF
 	From: $build_maintainer
 	To: $build_maintainer
-	Subject: $BUILD_TAG [$PRODUCT_CODE${RLS_SUFFIX}] autobuild failed! Full log is attached.
+	Subject: $BUILD_TAG [$ABS_PRODUCT_CODE${RLS_SUFFIX}] autobuild failed! Full log is attached.
 
 	This is an automated email from the autobuild script. It was
 	generated because an error encountered while building the code.
@@ -120,7 +120,7 @@ generate_error_log_email()
 	Complete Time: $(date)
 	Build Host: $(hostname)
 	---
-	Team of $PRODUCT_CODE
+	Team of $ABS_PRODUCT_CODE
 	EOF
 }
 
@@ -131,7 +131,7 @@ generate_success_notification_email()
 	cat <<-EOF
 	From: $build_maintainer
 	To: $dev_team;
-	Subject: $BUILD_TAG [$PRODUCT_CODE${RLS_SUFFIX}] build $BUILD_NUM is ready.
+	Subject: $BUILD_TAG [$ABS_PRODUCT_CODE${RLS_SUFFIX}] build $BUILD_NUM is ready.
 
 	This is an automated email from the autobuild script. It was
 	generated because a new package is generated successfully and
@@ -149,7 +149,7 @@ generate_success_notification_email()
 	$(cat ${PUBLISH_DIR}/changelog.build)
 
 	---
-	Team of $PRODUCT_CODE
+	Team of $ABS_PRODUCT_CODE
 	EOF
 }
 
@@ -161,10 +161,10 @@ generate_nobuild_notification_email()
 	cat <<-EOF
 	From: $build_maintainer
 	To: $dev_team;
-	Subject: $BUILD_TAG [$PRODUCT_CODE${RLS_SUFFIX}] no build today.
+	Subject: $BUILD_TAG [$ABS_PRODUCT_CODE${RLS_SUFFIX}] no build today.
 
 	This is an automated email from the autobuild script. You received
-	this email because you are the maintainer of $PRODUCT_CODE. The
+	this email because you are the maintainer of $ABS_PRODUCT_CODE. The
 	email was generated because the script detects no significant change in
 	source code since last build, please check the details of the change log
 	since last build:
@@ -173,7 +173,7 @@ generate_nobuild_notification_email()
 	$(cat ${1} )
 
 	---
-	Team of $PRODUCT_CODE
+	Team of $ABS_PRODUCT_CODE
 	EOF
 }
 
@@ -214,7 +214,7 @@ update_changelogs()
 
 print_usage()
 {
-	echo "Usage: $0 [clobber] [source] [pkgsrc] [publish] [email] [temp] [ccache] [mgcc] [force] [autotest] [help]"
+	echo "Usage: $0 [clobber] [source] [pkgsrc] [publish] [email] [temp] [ccache] [force] [autotest] [help]"
 	echo "  clobber: do a clean build. Before build starts, the source code and output directory is removed first."
 	echo "  source: download the source code from GIT server."
 	echo "  publish:if build success, copy the result to publish dir."
@@ -222,15 +222,14 @@ print_usage()
 	echo "  pkgsrc: package the source code into a tarball."
 	echo "  temp: indicate a temporarily build, the build will be published to a temp folder:$TEMP_PUBLISH_DIR. If email is specified, only build_maintainer is notified."
 	echo "  ccache: using ccache to speedup the build process."
-	echo "  mgcc: enable to build targets with Marvell GCC."
 	echo "  force: no matter if there is any change since last build, always rebuild."
 	echo "  autotest: use submitBuildInfo.pl to inform QA a build is ready."
 	echo "  nobuild:don't build any targets."
 	echo "  help: print this list."
 }
 
-if [ -z "$ABS_BOARD" ] || [ -z "$ABS_DROID_BRANCH" ] || [ -z "$ABS_PRODUCT_NAME" ]; then
-  echo "Any of the variable:ABS_BOARD,ABS_DROID_BRANCH,ABS_PRODUCT_NAME is not set."
+if [ -z "$ABS_SOC" ] || [ -z "$ABS_DROID_BRANCH" ]; then
+  echo "Any of the variable:ABS_SOC,ABS_DROID_BRANCH is not set."
   return 1
 fi
 
@@ -239,22 +238,21 @@ if [ -z "$ABS_BUILDHOST_DEF" ] || [ ! -e $ABS_BUILDHOST_DEF ]; then
 fi
 . $ABS_BUILDHOST_DEF
 
-PRODUCT_CODE=${ABS_BOARD}-${ABS_DROID_BRANCH}
-MAKEFILE=${PRODUCT_CODE}.mk
-if [ ! -f "$MAKEFILE" ]; then
-  MAKEFILE=${ABS_BOARD}/board.mk
-  if [ ! -f "$MAKEFILE" ]; then
-    MAKEFILE=common/board.mk
-  fi
-fi
-PRODUCT_NAME="$ABS_PRODUCT_NAME"
+ABS_PRODUCT_CODE=${ABS_SOC}-${ABS_DROID_BRANCH}
+export ABS_PRODUCT_CODE
 
-PUBLISH_DIR="PUBLISH_DIR-Not-Defined"
+MAKEFILE=${ABS_SOC}/board.mk
+if [ ! -f "$MAKEFILE" ]; then
+    echo "The make file:$MAKEFILE can't be found."
+    exit 1
+fi
+
+export PUBLISH_DIR="PUBLISH_DIR-Not-Defined"
 BUILD_NUM="BUILD_NUM-Not-Defined"
 
-build_maintainer=$(cat ${ABS_BOARD}/maintainer)
-dev_team=$(cat ${ABS_BOARD}/dev_team )
-announce_list=$(cat ${ABS_BOARD}/announce_list )
+build_maintainer=$(cat ${ABS_SOC}/maintainer)
+dev_team=$(cat ${ABS_SOC}/dev_team )
+announce_list=$(cat ${ABS_SOC}/announce_list )
 envelopesend="-f $build_maintainer"
 
 #remove the new line character
@@ -271,7 +269,6 @@ FLAG_PKGSRC=false
 FLAG_SOURCE=false
 FLAG_TEMP=false
 FLAG_CCACHE=false
-FLAG_MGCC=false
 FLAG_FORCE=false
 FLAG_BUILD=true
 FLAG_AUTOTEST=false
@@ -287,7 +284,6 @@ for flag in $*; do
 		source)FLAG_SOURCE=true;;
 		temp)FLAG_TEMP=true;;
 		ccache)FLAG_CCACHE=true;;
-		mgcc)FLAG_MGCC=true;;
 		force)FLAG_FORCE=true;;
 		nobuild)FLAG_BUILD=false;;
 		autotest)FLAG_AUTOTEST=true;;
@@ -312,31 +308,31 @@ done
 set -o pipefail
 
 if [ ! -z "$ABS_RELEASE_NAME" ]; then
-	ABS_RELEASE_FULL_NAME=rls_${PRODUCT_CODE/-/_}_${ABS_RELEASE_NAME}
-else
-	ABS_RELEASE_FULL_NAME=${PRODUCT_CODE}
+    RELEASE_FULL_NAME=rls_${ABS_PRODUCT_CODE/-/_}_${ABS_RELEASE_NAME}
 fi
-export ABS_RELEASE_FULL_NAME
-if [ -z "$ABS_MANIFEST_BRANCH" ]; then
-	MANIFEST_BRANCH=$ABS_RELEASE_FULL_NAME
-else
-	MANIFEST_BRANCH=$ABS_MANIFEST_BRANCH
-fi
-export MANIFEST_BRANCH
 
-LAST_BUILD=LAST_BUILD.${ABS_RELEASE_FULL_NAME}
-STD_LOG="build-${PRODUCT_CODE}${RLS_SUFFIX}.log"
+if [ -z "$ABS_MANIFEST_BRANCH" ]; then
+    if [ ! -z "$ABS_RELEASE_NAME" ]; then
+        ABS_MANIFEST_BRANCH=$RELEASE_FULL_NAME
+    else
+        ABS_MANIFEST_BRANCH=$ABS_PRODUCT_CODE
+    fi
+fi
+export ABS_MANIFEST_BRANCH
+
+LAST_BUILD=LAST_BUILD.${ABS_MANIFEST_BRANCH}
+STD_LOG="build-${ABS_PRODUCT_CODE}${RLS_SUFFIX}.log"
 
 #TEMP_PUBLISH_DIR_BASE and OFFICIAL_PUBLISH_DIR_BASE should be defined buildhost.def
 if [ "$FLAG_TEMP" = "true" ]; then
 	PUBLISH_DIR_BASE=$TEMP_PUBLISH_DIR_BASE
 	dev_team=$build_maintainer
 	announce_list=""
-	PUBLISH_DIR_BASE=${PUBLISH_DIR_BASE}/${ABS_BOARD}
+	PUBLISH_DIR_BASE=${PUBLISH_DIR_BASE}/${ABS_SOC}
 	mkdir -p ${PUBLISH_DIR_BASE}
 else
 	PUBLISH_DIR_BASE=$OFFICIAL_PUBLISH_DIR_BASE
-	PUBLISH_DIR_BASE=${PUBLISH_DIR_BASE}/${ABS_BOARD}
+	PUBLISH_DIR_BASE=${PUBLISH_DIR_BASE}/${ABS_SOC}
 	mkdir -p ${PUBLISH_DIR_BASE}
 fi
 LAST_BUILD=$PUBLISH_DIR_BASE/$LAST_BUILD
@@ -349,16 +345,11 @@ else
 	fi
 fi
 
-echo "[$(date)]:starting build ${PRODUCT_CODE}${RLS_SUFFIX} ..." > $STD_LOG
+echo "[$(date)]:starting build ${ABS_PRODUCT_CODE}${RLS_SUFFIX} ..." > $STD_LOG
 
 if [ "$FLAG_CCACHE" = "true" ]; then
 	export USE_CCACHE=true
 	echo "ccache is enabled."
-fi &&
-
-export BUILD_VARIANTS=droid-gcc
-if [ "$FLAG_MGCC" = "true" ]; then
-	BUILD_VARIANTS="$BUILD_VARIANTS mrvl-gcc"
 fi &&
 
 if [ "$FLAG_CLOBBER" = "true" ]; then 
@@ -390,16 +381,7 @@ if [ -z "$change_since_last_build" ]; then
 fi &&
 
 if [ "$FLAG_BUILD" = "true" ]; then
-	make -f ${MAKEFILE} build_droid-gcc 2>&1 | tee -a $STD_LOG 
-fi &&
-
-if [ "$FLAG_MGCC" = "true" ]; then
-	make -f ${MAKEFILE} clean 2>&1 | tee -a $STD_LOG &&
-	#build with marvell gcc
-	echo "[$(date)]:starting to build targets with marvell toolchain ..." | tee -a $STD_LOG &&
-	#TODO: to specify the path of marvell toolchain
-	export EXTERNAL_TOOLCHAIN_PREFIX=
-	make -f ${MAKEFILE} build_mrvl-gcc 2>&1 | tee -a $STD_LOG
+	make -f ${MAKEFILE} build 2>&1 | tee -a $STD_LOG 
 fi &&
 
 if [ "$FLAG_PKGSRC" = "true" ]; then
@@ -410,13 +392,13 @@ if [ "$FLAG_PUBLISH" = "true" ]; then
 	get_new_publish_dir
 	export PUBLISH_DIR
 	mkdir -p $PUBLISH_DIR
-	cp ${ABS_BOARD}/README $PUBLISH_DIR/README &&
+	cp ${ABS_SOC}/README $PUBLISH_DIR/README &&
 	make -f ${MAKEFILE} publish -e 2>&1 | tee -a $STD_LOG &&
 	
 	update_changelogs $PUBLISH_DIR $BUILD_NUM &&
 		
 	#saving the build info to file:$LAST_BUILD
-	echo "Project:$PRODUCT_NAME" > $LAST_BUILD &&
+	echo "Project:$ABS_SOC" > $LAST_BUILD &&
 	echo "Build-Num:$BUILD_NUM" >> $LAST_BUILD &&
 	echo "Package:$PUBLISH_DIR" >> $LAST_BUILD 
 fi &&

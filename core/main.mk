@@ -29,7 +29,8 @@ $(foreach var, $(1), $(eval $(call check-variable,$(var))))
 endef
 
 #check if the required variables have been set.
-$(call check-variables, PRODUCT_CODE MANIFEST_BRANCH)
+$(call check-variables, ABS_PRODUCT_CODE ABS_MANIFEST_BRANCH)
+#ABS_RELEASE_NAME is optional
 
 current-time:=[$$(date "+%Y-%m-%d %H:%M:%S")]
 log:=@echo $(current-time)
@@ -39,8 +40,8 @@ space:= #a designated space
 PUBLISHING_FILES:=
 TOP_DIR:=$(shell pwd)
 
-SRC_DIR:=src.$(PRODUCT_CODE)
-OUTPUT_DIR:=out.$(PRODUCT_CODE)
+SRC_DIR:=src.$(ABS_PRODUCT_CODE)
+OUTPUT_DIR:=out.$(ABS_PRODUCT_CODE)
 ifneq ($(strip $(ABS_RELEASE_NAME)),)
 SRC_DIR:=$(SRC_DIR).$(ABS_RELEASE_NAME)
 OUTPUT_DIR:=$(OUTPUT_DIR).$(ABS_RELEASE_NAME)
@@ -50,10 +51,7 @@ endif
 MAKE_JOBS:=16
 
 #We must initialize PUBLISHING_FILES_XXX to a simply expanded flavor variable
-define define-publish-files
-PUBLISHING_FILES_$(1):=
-endef
-$(foreach bv,$(BUILD_VARIANTS), $(eval $(call define-publish-files,$(bv) ) ) )
+PUBLISHING_FILES:=
 
 #
 #convert the relative directory to absolute directory.
@@ -103,7 +101,7 @@ clobber:
 .PHONY: help
 help:
 	@echo "-------"
-	@echo "  Auto build system for ${PRODUCT_CODE}."
+	@echo "  Auto build system for ${ABS_PRODUCT_CODE}."
 	@echo "--------"
 	@echo "  Targets:"
 	@echo "    source: get the source code from GIT and put it in $(SRC_DIR). and save the manifest file."
@@ -114,7 +112,7 @@ help:
 	@echo "    pkgsrc: using manifest.xml to get the source from GIT server and package it as a tarball."
 	@echo "  Settings:"
 	@echo "    Manifest Repository: $(GIT_MANIFEST)"
-	@echo "    Manifest Branch: $(MANIFEST_BRANCH)"
+	@echo "    Manifest Branch: $(ABS_MANIFEST_BRANCH)"
 	@echo "    Kernel Toolchain: $(KERNEL_TOOLCHAIN_PREFIX)"
 	@echo "    Output Directory: $(OUTPUT_DIR)"
 	@echo "    Source Directory: $(SRC_DIR)"

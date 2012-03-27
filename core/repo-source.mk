@@ -1,5 +1,6 @@
 #check if the required variables have been set.
-$(call check-variables,MANIFEST_BRANCH GIT_MANIFEST GIT_REPO)
+$(call check-variables,ABS_MANIFEST_BRANCH GIT_MANIFEST GIT_REPO)
+#ABS_MANIFEST_FILE is optional
 
 #get source code from GIT by repo
 .PHONY: source
@@ -7,15 +8,15 @@ source: output_dir
 	$(hide)if [ ! -d "$(SRC_DIR)" ]; then \
 	    mkdir $(SRC_DIR); \
 	fi
-	$(log) "starting get source code from GIT server:$(GIT_SERVER), branch:$(MANIFEST_BRANCH), manifest:$(MANIFEST_FILE) ..."
+	$(log) "starting get source code from GIT server:$(GIT_SERVER), branch:$(ABS_MANIFEST_BRANCH), manifest:$(MANIFEST_FILE) ..."
 	$(hide)cd $(SRC_DIR) && \
 	if [ -z "$(GIT_LOCAL_MIRROR)" ]; then \
-		repo init -u ssh://$(GIT_MANIFEST) -b $(MANIFEST_BRANCH) --repo-url ssh://$(GIT_REPO); \
+		repo init -u ssh://$(GIT_MANIFEST) -b $(ABS_MANIFEST_BRANCH) --repo-url ssh://$(GIT_REPO); \
 	else \
-		repo init -u ssh://$(GIT_MANIFEST) -b $(MANIFEST_BRANCH) --repo-url ssh://$(GIT_REPO) --reference $(GIT_LOCAL_MIRROR); \
+		repo init -u ssh://$(GIT_MANIFEST) -b $(ABS_MANIFEST_BRANCH) --repo-url ssh://$(GIT_REPO) --reference $(GIT_LOCAL_MIRROR); \
 	fi && \
-	if [ -n "$(MANIFEST_FILE)" ]; then \
-		repo init -m $(MANIFEST_FILE); \
+	if [ -n "$(ABS_MANIFEST_FILE)" ]; then \
+		repo init -m $(ABS_MANIFEST_FILE); \
 	fi && \
 	repo sync
 	$(log) "saving manifest file..."
