@@ -201,6 +201,13 @@ ERROR: can't get kernel image
 >> tftpboot 0x1100000 userdata.img
 >> unsparse mmc 0 0x1100000 0x4AB80000 0xA0000000
 
+6) telephony
+>> tftp 0x1100000 DKBI.bin; mmc write 0x1100000 0x00755C00 0x00000200
+>> tftp 0x1100000 OBMI.bin; mmc write 0x1100000 0x00755E00 0x00000200
+>> tftp 0x1100000 ReliableData.bin; mmc write 0x1100000 0x00756000 0x00000600
+>> tftp 0x1100000 WK_CP_2CHIP_SPRW.bin; mmc write 0x1100000 0x00756600 0x00003800
+>> tftp 0x1100000 WK_M07_AI_Y1_Flash.bin; mmc write 0x1100000 0x00759E00 0x00000800
+
 After done, power-off and power-on again to boot mmp3 from emmc.
 
 If you're bothered by so many commands, combine them together with the seperator ';'.
