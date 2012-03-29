@@ -29,6 +29,15 @@ Files in this folder
   uboot_patches.tgz     The patches that applied to uboot base source.
 
   obm_src.tgz           OBM source code tar ball. Will be released.
+  telephony.tar         include:
+                          DKBI.bin
+                          OBMI.bin
+                          ReliableData.bin
+                          u-boot.bin
+                          WK_CP_2CHIP_SPRW.bin
+                          WK_M07_AI_Y1_Flash.bin
+                          WK_CP_2CHIP_SPRW_DIAG.mdb
+                          WK_CP_2CHIP_SPRW_NVM.mdb  
 
 -droid-gcc folder
  Files under droid-gcc folder are built with android-toolchain.
