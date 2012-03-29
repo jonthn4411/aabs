@@ -15,6 +15,7 @@ define define-build-uboot-obm
 #md5: need to generate md5 sum
 PUBLISHING_FILES_$(1)+=$(1)/emmc/u-boot.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc/Wtm_rel_mmp3.bin:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/emmc/LoopSelf.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc/ntim.bin.tgz:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc_cm/u-boot.bin:m:md5
 PUBLISHING_FILES_$(1)+=$(1)/emmc_cm/Wtm_rel_mmp3.bin:m:md5
@@ -35,6 +36,7 @@ build_uboot_obm_$(1):
 	$$(log) "start to copy uboot and obm files"
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_NOR_DIR)/u-boot.bin $$(OUTPUT_DIR)/$(1)/emmc
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_NOR_DIR)/Wtm_rel_mmp3.bin $$(OUTPUT_DIR)/$(1)/emmc
+	$$(hide)cp $$(SRC_DIR)/device/marvell/orchid/LoopSelf.bin $$(OUTPUT_DIR)/$(1)/emmc
 	$$(hide)cp -rf $$(SRC_DIR)/$$(BOOT_OUT_NOR_DIR)/ntim/ $$(OUTPUT_DIR)/$(1)/emmc/
 	$$(hide)cd $$(OUTPUT_DIR)/$(1)/emmc/ && tar zcvf ntim.bin.tgz ntim
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_CM_DIR)/u-boot.bin $$(OUTPUT_DIR)/$(1)/emmc_cm

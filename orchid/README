@@ -137,7 +137,8 @@ Burning OBM and Uboot
    4)Burn Date Files as follows:
      Choose partition 0x1
         a)Burn "ntim_mk2-xxxxxxxxxxx.bin"/"ntim_orc-xxxxxxxxxxx.bin"                         address [0x000000]
-        b)Burn "Wtm_rel_mmp3.bin"                                                            address [0x020000]
+        b)Burn "LoopSelf"                                                                    address [0x020000]
+        DO NOT Burn "Wtm_rel_mmp3.bin" right now, it's not for test purpose.                 address [0x020000]
      Choose partition 0x2
         c)Burn "u-boot.bin"                                                                  address [0x000000]
 
