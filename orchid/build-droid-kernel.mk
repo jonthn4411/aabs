@@ -166,8 +166,8 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage_recovery.cm  $$(OUTPUT_DIR)/$(2)/uImage_recovery.cm.$$(private_os)
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/rdinit        $$(OUTPUT_DIR)/$(2)
 	$$(hide)cd $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/ && \
-	$$(hide)tar cvf telephony.tar telephony/ && \
-	$$(hide)cp telephony.tar $$(OUTPUT_DIR)/$(2)
+	        tar cvf telephony.tar telephony/ && \
+	        cp telephony.tar $$(OUTPUT_DIR)/$(2)
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/rdroot/rdroot.tgz $$(OUTPUT_DIR)/$(2)
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/vmlinux    $$(OUTPUT_DIR)/$(2)
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/System.map $$(OUTPUT_DIR)/$(2)
