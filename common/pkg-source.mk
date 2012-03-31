@@ -30,7 +30,7 @@ ifeq ($(ANDROID_VERSION),honeycomb)
 	HEAD_MANIFEST:=head_manifest.hc
 else
 ifeq ($(ANDROID_VERSION),ics)
-	DROID_BASE:=android-4.0.3_r1
+	DROID_BASE:=android-4.0.4_r1.1
 endif
 endif
 endif
