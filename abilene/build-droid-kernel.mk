@@ -87,7 +87,7 @@ define define-build-droid-config
 .PHONY: build_droid_$(1)_$(2)
 build_droid_$(1)_$(2): package_droid_nfs_$(1)_$(2)
 	$$(log) "build_droid_$(1)_$(2) is done, reseting the source code."
-	$$(hide)cd $$(SRC_DIR)/device/marvell/$$(DROID_PRODUCT)/ &&\
+	$$(hide)cd $$(SRC_DIR)/vendor/marvell/$$(DROID_PRODUCT)/ &&\
 	git reset --hard
 	$$(log) "  done"
 
