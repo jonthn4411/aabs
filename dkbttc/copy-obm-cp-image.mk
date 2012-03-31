@@ -10,7 +10,7 @@ DKBTTC_CP4:=WK_M07_AI_Y1_Flash.bin
 DKBTTC_CP5:=DKBI.bin
 DKBTTC_CP6:=OBMI.bin
 #DKBTTC_CP5:=pxa_symbols.tgz
-DKBTTC_IMEI:=ReliableData.bin
+DKBTTC_IMEI:=WKReliableData.bin
 DKBTTC_SWD:=Software_Downloader.zip
 #DKBTTC_NO_GUI_RAMDISK:=ramdisk_no_gui.img
 
