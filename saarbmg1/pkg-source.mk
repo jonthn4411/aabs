@@ -37,7 +37,7 @@ else
 ifeq ($(ANDROID_VERSION),gingerbread)
 	DROID_BASE:=android-2.3.7_r1
 else
-	DROID_BASE:=android-4.0.3_r1
+	DROID_BASE:=android-4.0.4_r1.1
 endif	
 endif
 endif
