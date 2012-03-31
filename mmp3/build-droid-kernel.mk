@@ -78,7 +78,23 @@ endef
 #$1:build variant
 define define-build-droid-pkgs
 .PHONY:build_droid_pkgs_$(1)
-build_droid_pkgs_$(1): 
+
+build_droid_update_pkgs_$(1): output_dir
+	$$(log) "[$(1)]generating update packages..."
+	$$(hide)cd $$(SRC_DIR) && \
+	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
+	make droidupdate
+	echo "    copy update packages..." && \
+		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_droid.zip $$(OUTPUT_DIR)/$(1)/update_droid.zip && \
+		if [ -f $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery.zip ]; then \
+			cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/update_recovery.zip $$(OUTPUT_DIR)/$(1)/update_recovery.zip; \
+		fi
+	$(log) "  done"
+
+build_droid_pkgs_$(1): build_droid_update_pkgs_$(1)
+
+PUBLISHING_FILES_$(1)+=$(1)/update_droid.zip:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/update_recovery.zip:o:md5
 endef
 
 #$1: build variant
@@ -182,6 +198,7 @@ $(foreach bv,$(BUILD_VARIANTS), \
 	$(foreach kc, $(kernel_configs), \
 		$(eval $(call define-kernel-target,$(kc),$(bv)) ) ) \
 	$(eval $(call define-build-droid-root,$(bv)) ) \
+	$(eval $(call define-build-uboot-obm,$(bv)) ) \
 	$(eval $(call define-build-droid-pkgs,$(bv)) ) \
 	$(eval $(call define-build-droid-config,$(bv),internal) ) \
 	$(eval $(call package-droid-nfs-config,$(bv),internal) ) \
