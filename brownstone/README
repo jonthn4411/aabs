@@ -164,7 +164,7 @@ MMP2>> mmc write 0x7fc0 0x180 0x180
 MMP2>> t u-boot.bin
 MMP2>> mmc write 0x7fc0 0x300 0x280
 
-MMP2>> t u-boot_recovery.bin
+MMP2>> t u-boot.bin
 MMP2>> mmc write 0x7fc0 0x580 0x280
 
 2) By default, the initial sw part has been set to 0.
@@ -201,9 +201,9 @@ MMP2>> mmc write 0x7fc0 0x1ec00 0x400
 MMP2>> t system.img
 MMP2>> unsparse mmc 0 0x7fc0 0x23d80000 0x20000000
 
-10) data
-MMP2>> t userdata.img
-MMP2>> unsparse mmc 0 0x7fc0 0x43d80000 0xa0000000
+10) clean up data
+MMP2>> mw.b 0x7fc0 0 0x80000
+MMP2>> mmc write 0x7fc0 0x21ec00 0x800
 
 11) recovery on partition 0
 

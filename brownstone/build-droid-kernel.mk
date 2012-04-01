@@ -61,10 +61,6 @@ build_droid_root_$(1): output_dir
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk_recovery.img $$(OUTPUT_DIR)/$(1)/
 	echo "    copy system.img ..." && \
 		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system.img $$(OUTPUT_DIR)/$(1)/
-	$$(hide)if [ -f $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img ]; then \
-		echo "    copy userdata.img ..." && \
-		cp -p $(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata.img $$(OUTPUT_DIR)/$(1)/; \
-	fi
 	echo "    generating symbols_lib.tgz..." && \
 		cp -a $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/symbols/system/lib $$(OUTPUT_DIR)/$(1)/ && \
 		cd $$(OUTPUT_DIR)/$(1) && tar czf symbols_lib.tgz lib && rm lib -rf
