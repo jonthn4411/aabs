@@ -1,4 +1,4 @@
-ABS_BUILD_DEVICES := pxa978dkb_def:pxa978dkb pxa978dkb_test:pxa978dkb_test
+ABS_BUILD_DEVICES := pxa978dkb_def:pxa978dkb
 BOARD:=pxa978T
 ANDROID_VERSION:=ics
 PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
