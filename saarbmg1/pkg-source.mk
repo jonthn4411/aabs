@@ -2,8 +2,8 @@ include core/pkg-source.mk
 
 INTERNAL_PROJECTS :=vendor/marvell/external/helix
 INTERNAL_PROJECTS +=vendor/marvell/external/flash
-INTERNAL_PROJECTS +=vendor/marvell/saarbmg1/.git
-INTERNAL_PROJECTS +=vendor/marvell/saarbmg1/libsensor/src
+INTERNAL_PROJECTS +=vendor/marvell/$(DROID_PRODUCT)/.git
+INTERNAL_PROJECTS +=vendor/marvell/$(DROID_PRODUCT)/libsensor/src
 #INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbPlayer
 #INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbStack
 CHECKIN_PREBUILTLIB :=libyamaha_utils
@@ -52,12 +52,15 @@ pkgsrc: output_dir get_source_for_pkg
 	$(hide)cd $(OUTPUT_DIR)/source && for prj in $(INTERNAL_PROJECTS); do rm -fr $$prj; done
 
 	$(hide)echo "  check in prebuilt libs..."
-ifneq ($(ANDROID_VERSION),ics)
 	$(hide)mkdir -p $(OUTPUT_DIR)/source/vendor/marvell/$(DROID_PRODUCT)/libsensor/prebuild/
-	$(hide)cp $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/obj/STATIC_LIBRARIES/$(CHECKIN_PREBUILTLIB)_intermediates/$(CHECKIN_PREBUILTLIB).a $(OUTPUT_DIR)/source/vendor/marvell/$(DROID_PRODUCT)/libsensor/prebuild/
-	$(hide)cp $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system/bin/geomagneticd $(OUTPUT_DIR)/source/vendor/marvell/$(DROID_PRODUCT)/libsensor/prebuild/
-	$(hide)cp $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system/bin/orientationd $(OUTPUT_DIR)/source/vendor/marvell/$(DROID_PRODUCT)/libsensor/prebuild/
-endif
+
+	$(hide)if [ -f $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/obj/STATIC_LIBRARIES/$(CHECKIN_PREBUILTLIB)_intermediates/$(CHECKIN_PREBUILTLIB).a ]; then \
+	$(hide)cp $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/obj/STATIC_LIBRARIES/$(CHECKIN_PREBUILTLIB)_intermediates/$(CHECKIN_PREBUILTLIB).a $(OUTPUT_DIR)/source/vendor/marvell/$(DROID_PRODUCT)/libsensor/prebuild/; fi
+	$(hide)if [ -f $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system/bin/geomagneticd ]; then \
+	$(hide)cp $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system/bin/geomagneticd $(OUTPUT_DIR)/source/vendor/marvell/$(DROID_PRODUCT)/libsensor/prebuild/; fi
+	$(hide)if [ if $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system/bin/orientationd ]; then \
+	$(hide)cp $(SRC_DIR)/out/target/product/$(DROID_PRODUCT)/system/bin/orientationd $(OUTPUT_DIR)/source/vendor/marvell/$(DROID_PRODUCT)/libsensor/prebuild/; fi
+
 	$(hide)echo "  package all source code..."
 	$(hide)cd $(OUTPUT_DIR) && tar czf droid_all_src.tgz $(EXCLUDE_VCS) source/
 
@@ -67,7 +70,7 @@ endif
 	$(hide)echo "  package uboot obm source code..."
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_uboot_obm_src_patch.sh $(UBOOT_BASE_COMMIT)
 
-	$(hide)echo "  package android source code..."
+	$(hide)echo "  package android source code...,$(ANDROID_VERSION) $(BOARD) "
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(TOP_DIR)/core
 
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
@@ -79,16 +82,16 @@ endif
 #m:means mandatory
 #o:means optional
 #md5: need to generate md5 sum
-PUBLISHING_FILES+=droid_all_src.tgz:o:md5 
-PUBLISHING_FILES+=android_src.tgz:m:md5 
-PUBLISHING_FILES+=android_patches.tgz:m:md5 
-PUBLISHING_FILES+=kernel_src.tgz:m:md5 
-PUBLISHING_FILES+=kernel_patches.tgz:m:md5 
-PUBLISHING_FILES+=uboot_src.tgz:m:md5 
-PUBLISHING_FILES+=uboot_patches.tgz:m:md5 
-PUBLISHING_FILES+=obm_src.tgz:m:md5 
-PUBLISHING_FILES+=marvell_manifest.xml:m
-PUBLISHING_FILES+=setup_android.sh:m
-PUBLISHING_FILES+=ReleaseNotes.txt:m
+PUBLISHING_FILES2+=droid_all_src.tgz:src:o:md5 
+PUBLISHING_FILES2+=android_src.tgz:src:m:md5 
+PUBLISHING_FILES2+=android_patches.tgz:src:m:md5 
+PUBLISHING_FILES2+=kernel_src.tgz:src:m:md5 
+PUBLISHING_FILES2+=kernel_patches.tgz:src:m:md5 
+PUBLISHING_FILES2+=uboot_src.tgz:src:m:md5 
+PUBLISHING_FILES2+=uboot_patches.tgz:src:m:md5 
+PUBLISHING_FILES2+=obm_src.tgz:src:m:md5 
+PUBLISHING_FILES2+=marvell_manifest.xml:src:m
+PUBLISHING_FILES2+=setup_android.sh:src:m
+PUBLISHING_FILES+=ReleaseNotes.txt:o
 
 
