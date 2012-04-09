@@ -171,7 +171,7 @@ device:=$$(word 2, $$(tw) )
 .PHONY: build_droid_update_pkgs_$$(product)
 build_droid_update_pkgs_$$(product): private_product:=$$(product)
 build_droid_update_pkgs_$$(product): private_device:=$$(device)
-build_droid_update_pkgs_$$(product): build_telephony_$$(product)
+build_droid_update_pkgs_$$(product): build_uboot_obm_$$(product)
 	$$(log) "[$$(private_product)]generating update packages..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -179,10 +179,10 @@ build_droid_update_pkgs_$$(product): build_telephony_$$(product)
 	make mrvlotapackage
 	echo "    copy update packages..." && \
 		mkdir -p $$(OUTPUT_DIR)/$$(private_product) && \
-		cp -p $(SRC_DIR)/out/target/product/$$(private_device)/nevo-ota-mrvl.zip $(OUTPUT_DIR)/$$(private_product)/nevo-ota-mrvl.zip
+		cp -p $(SRC_DIR)/out/target/product/$$(private_device)/pxa978dkb_def-ota-mrvl.zip $(OUTPUT_DIR)/$$(private_product)/pxa978dkb_def-ota-mrvl.zip
 	$(log) "  done"
 
-PUBLISHING_FILES+=$$(product)/nevo-ota-mrvl.zip:m:md5
+PUBLISHING_FILES+=$$(product)/pxa978dkb_def-ota-mrvl.zip:m:md5
 endef
 
 
