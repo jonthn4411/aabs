@@ -82,6 +82,7 @@ define define-build-droid-pkgs
 build_droid_update_pkgs_$(1): output_dir
 	$$(log) "[$(1)]generating update packages..."
 	$$(hide)cd $$(SRC_DIR) && \
+	source ./build/envsetup.sh && \
 	chooseproduct $$(DROID_PRODUCT) && choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make droidupdate
 	echo "    copy update packages..." && \
