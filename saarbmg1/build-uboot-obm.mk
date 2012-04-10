@@ -31,7 +31,7 @@ device:=$$(word 2, $$(tw) )
 .PHONY:build_uboot_obm_$$(product)
 build_uboot_obm_$$(product): private_product:=$$(product)
 build_uboot_obm_$$(product): private_device:=$$(device)
-build_uboot_obm_$$(product): build_telephony_$$(product)
+build_uboot_obm_$$(product):
 	$(log) "[$$(private_product])starting to build uboot and obm"
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \

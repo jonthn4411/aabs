@@ -46,7 +46,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product) build_telephony_$$(product)
+build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product)
 endef
 
 export KERNEL_TOOLCHAIN_PREFIX
@@ -110,62 +110,25 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/out/target/product/$$(private_device)/root $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/out/target/product/$$(private_device)/ramdisk.img $(OUTPUT_DIR)/$$(private_product)
-	#$(hide)cp -p -r $(SRC_DIR)/out/target/product/$$(private_device)/ramdisk-recovery.img $(OUTPUT_DIR)/$$(private_product)
-	$(hide)cp -p -r $(SRC_DIR)/out/target/product/$$(private_device)/userdata.img $(OUTPUT_DIR)/$$(private_product)
-	$(hide)cp -p -r $(SRC_DIR)/out/target/product/$$(private_device)/system.img $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp -p -r $(SRC_DIR)/out/target/product/$$(private_device)/userdata_ext3.img $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp -p -r $(SRC_DIR)/out/target/product/$$(private_device)/userdata_onenand.img $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp -p -r $(SRC_DIR)/out/target/product/$$(private_device)/system_ext3.img $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp -p -r $(SRC_DIR)/out/target/product/$$(private_device)/system_onenand.img $(OUTPUT_DIR)/$$(private_product)
 	$(log) "  done"
 ##!!## first time publish: all for two
-PUBLISHING_FILES+=$$(product)/userdata.img:m:md5
-PUBLISHING_FILES+=$$(product)/system.img:m:md5
-PUBLISHING_FILES+=$$(product)/ramdisk.img:m:md5
-PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
-#PUBLISHING_FILES+=$$(product)/ramdisk-recovery.img:m:md5
-PUBLISHING_FILES+=$$(product)/build.prop:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/userdata_ext3.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/system_ext3.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/userdata_onenand.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/system.img:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/userdata.img:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/system_onenand.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
+PUBLISHING_FILES_$(1)+=$(1)/symbols_lib.tgz:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/build.prop:o:md5
 endef
 
-
-define define-build-telephony-target
-tw:=$$(subst :,  , $(1) )
-product:=$$(word 1, $$(tw) )
-device:=$$(word 2, $$(tw) )
-.PHONY: build_telephony_$$(product)
-PUBLISHING_FILES+=$$(product)/pxafs_ext4.img:m:md5
-PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
-PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:m:md5
-PUBLISHING_FILES+=$$(product)/ReliableData.bin:m:md5
-ifeq ($(ABS_DROID_BRANCH),ics)
-PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3.bin:m:md5
-PUBLISHING_FILES+=$$(product)/NV_M06_AI_C0_Flash.bin:m:md5
-PUBLISHING_FILES+=$$(product)/NV_M06_AI_C0_L2_I_RAM_SECOND.bin:m:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:m:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_DIAG.mdb:m:md5
-else
-PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS.bin:m:md5
-PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A0_Flash.bin:m:md5
-PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A1_Flash.bin:m:md5
-PUBLISHING_FILES+=$$(product)/TTD_M06_AI_Y0_Flash.bin:m:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_NVM.mdb:m:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_DIAG.mdb:m:md5
-endif
-
-build_telephony_$$(product): private_product:=$$(product)
-build_telephony_$$(product): private_device:=$$(device)
-build_telephony_$$(product): build_droid_$$(product)
-	$(log) "[$$(private_product)]starting to build telephony..."
-	$(hide)cd $(SRC_DIR) && \
-	source ./build/envsetup.sh && \
-	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
-	make telephony
-
-	$$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
-	$$(log) "    copy telephony files ..."
-	$$(hide)if [ -d $(SRC_DIR)/$(KERNELSRC_TOPDIR)/out/telephony ]; then cp -a $(SRC_DIR)/$(KERNELSRC_TOPDIR)/out/telephony/* /$(OUTPUT_DIR)/$$(private_product); fi
-	$(log) "  done."
-endef
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-target,$(bv)) ) \
-				$(eval $(call define-build-telephony-target,$(bv)) ) \
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
 )
