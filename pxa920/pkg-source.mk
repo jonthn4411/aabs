@@ -1,16 +1,14 @@
 include core/pkg-source.mk
 
 INTERNAL_PROJECTS :=vendor/marvell/external/helix
+INTERNAL_PROJECTS +=vendor/marvell/external/gps_sirf
 INTERNAL_PROJECTS +=vendor/marvell/external/flash
-INTERNAL_PROJECTS +=vendor/marvell/$(DROID_PRODUCT)/.git
-INTERNAL_PROJECTS +=vendor/marvell/$(DROID_PRODUCT)/libsensor/src
-#INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbPlayer
-#INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbStack
-CHECKIN_PREBUILTLIB :=libyamaha_utils
+INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbPlayer
+INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbStack
 
 EXCLUDE_VCS=--exclude-vcs --exclude=.repo
 
-UBOOT_BASE_COMMIT:=aced78d852d0b009e8aaa1445af8cb40861ee549
+UBOOT_BASE_COMMIT:=1a2d9b30e31e2b7ed0acb64bfb2290911e3c9efb
 ifeq ($(ANDROID_VERSION),eclair)
 	KERNEL_BASE_COMMIT:=8e0ee43bc2c3e19db56a4adaa9a9b04ce885cd84
 else
@@ -20,7 +18,11 @@ else
 ifeq ($(ANDROID_VERSION),gingerbread)
 	KERNEL_BASE_COMMIT:=49e8954d66ce9ccf75f951a5adb217209ae6f78f
 else
+ifeq ($(ANDROID_VERSION),honeycomb)
+	KERNEL_BASE_COMMIT:=49e8954d66ce9ccf75f951a5adb217209ae6f78f
+else
 	KERNEL_BASE_COMMIT:=5e4fcd2c556e25e1b6787dcd0c97b06e29e42292
+endif
 endif
 endif
 endif
@@ -37,7 +39,12 @@ else
 ifeq ($(ANDROID_VERSION),gingerbread)
 	DROID_BASE:=android-2.3.7_r1
 else
-	DROID_BASE:=android-4.0.4_r1.1
+ifeq ($(ANDROID_VERSION),ics)
+	DROID_BASE:=android-4.0.4_r1
+else
+	DROID_BASE:=shgit/honeycomb-mr2-release
+	HEAD_MANIFEST:=head_manifest.hc
+endif
 endif
 endif
 endif
