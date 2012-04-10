@@ -1,0 +1,320 @@
+Project: dkbtd-ics
+Owner: Jingjing Tan
+
+Files in this folder
+====================
+-Change logs and checksum file
+  changelog.build                                       GIT change log of each project since last build.
+  changelog.day                                         GIT change log of each project since yesterday.
+  changelog.week                                        GIT change log of each project since last week.
+  changelog.biweek                                      GIT change log of each project since 2 weeks ago.
+  changelog.month                                       GIT change log of each project since a month ago.
+  changelog.build                                       GIT change log of each project since last build
+
+  checksums.md5	                                        This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
+
+-Source codes
+  manifest.xml	                                        Saving the GIT commit number of each project used in this build.
+
+-Android package mode tarball
+  - setup_android.sh                                    :Script help to setup Android code base
+  - android_patches.tgz                                 :Marvell patches to Android Projects
+  - android_src.tgz                                     :Source code for projects added by Marvell
+  - marvell_manifest.xml                                :Manifest xml file to download Android eclair as a base
+  - kernel_patches.tgz                                  :Marvell patches to kernel_src.tgz
+  - kernel_src.tgz                                      :Kernel base source code
+  - uboot_patches.tgz                                   :Marvell patches to uboot_src.tgz
+  - uboot_src.tgz                                       :Uboot base source code
+  - obm_src.tgz                                         :OBM source code
+
+-droid-gcc folder
+ Files under droid-gcc folder are built with android-toolchain.
+ If this folder is missing, it means that this package wasn't built with android  gcc toolchain.
+ root_nfs_internal.tgz 	used for mmc and nfs case
+
+-mrvl-gcc folder
+ Files under mrvl-gcc folder are built with marvell gcc toolchain.
+ If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
+
+-OBM and UBoot
+
+  u-boot.bin                                            :uboot for dkb
+  Arbel_DKB_SKWS.bin                                    :CP Arbel image [For TD]
+  Arbel_DIGRF3.bin                                      :CP Arbel image [For TTC]
+  TTD_M06_AI_A1_Flash.bin                               :CP MSA image [For TD]
+  TTC1_M05_AI_A1_Flash.bin                              :CP MSA image [For TTC]
+  ReliableData.bin                                      :IMEI
+
+-Kernel and Modules for Android
+  uImage (rename from uImage.android.mmc)               :Kernel image
+
+-Android File Systems
+  system.img                                            :Android system image for file system.
+  userdata.img                                          :Android userdata image for  file system.
+  ramdisk.img                                           :Android root image for file system.
+  pxafs.img                                             :AP telephony image.
+  ramdisk-recovery.img                                  :Recovery ramdisk
+
+-Software_Downloader.zip                                :Software downloader
+
+Burn binaries with SWD
+======================
+Burn following binaries to flash by using Software Downloader. Please see <TVTD_DKB3_0_SWDownloader_GUI_User_Guide.doc>
+. Please see next part to know how to enter software downloader mode.
+1)       if the nand ID is Hynix 4G, you can choose the configuration file:
+                TVTD_DKB3_0_Linux_Beta_Hynix4G_GB.blf [For TD-Gingerbread]
+                TTC2_DKB3_0_Linux_Beta_Hynix4G_GB.blf [For TTC-Gingerbread]
+2)       if the nand ID is Micron 4G, you can choose the configuration file:
+                TVTD_DKB3_0_Linux_Beta_Micron4G_GB.blf [For TD-Gingerbread]
+                TTC2_DKB3_0_Linux_Beta_Micron4G_GB.blf [For TTC-Gingerbread]
+3)       if burning is for PXA920H, you can choose the configuration file:
+                TVTD_LPDDR2_Linux_eMMC_ICS.blf [For TD-EMMC]
+
+        TVTD_DKB3_0_Loader_3_2_13_LINUX.bin             --> flash address 0x40000 [For TD]
+        TTC2_DKB3_0_Loader_3_2_13_LINUX.bin             --> flash address 0x40000 [For TTC]
+        u-boot.bin                                      --> flash address 0x80000
+        ramdisk.img                                     --> flash address 0x100000 [ramdisk_no_gui.img --> flash address 0x100000: used for audio/RF calibration]
+        ReliableData.bin                                --> flash address 0x140000
+        Arbel_DKB_SKWS.bin                              --> flash address 0x180000 [For TD]
+        Arbel_DIGRF3.bin                                --> flash address 0x180000 [For TTC]
+        TTD_M06_AI_A0_Flash.bin                         --> flash address 0x880000 [For TD]
+        TTC1_M05_AI_A1_Flash.bin                        --> flash address 0x880000 [For TTC]
+        uImage                                          --> flash address 0x980000 [copy from uImage.android.mmc]
+        system.img                                      --> flash address 0x6800000
+        userdata.img                                    --> flash address 0x1080000
+        pxafs.img                                       --> flash address 0x1ec0000
+
+If you want recovery to be functional, you have to burn the below images together:
+        ramdisk-recovery.img                            --> flash address 0x1180000
+        uImage-mt                                       --> flash address 0x0d80000 
+        (Currently uImage-mt is same with uImage, so you can get a copy of uImage and rename to "uImage-mt")
+        
+You'd better make a clean erase of nand flash before burning.
+
+Boot Android or enter different mode
+=====================================
+1) default. No key is pressed when power on, enter normal Android
+2) HOME+POWER -->Enter Recovery Mode
+3) CAM1+POWER -->Enter Fastboot Mode
+4) BACK+POWER -->Enter Software Downloader Mode
+
+Use TFTP to erase or reburn specific binaries
+=============================================
+
+1.Start your favorite terminal emulator with the appropriate
+      COM port set to 115200,8N1. Power on hte board and wait for TTC_DKB>> prompt to appear
+
+2.Enter the following command to upload the kernel into the RAM and burn into flash:
+For NAND flash, issue the following commands:
+TTC_DKB>>nand erase 0x980000 0x349250
+TTC_DKB>>tftp 0x1000000 uImage
+TTC_DKB>>nand write 0x1000000 0x980000 0x349250
+Note 1: All the following images should copy to the host tftp share directory:
+	uImage
+	system.img
+	userdata.img
+	pxafs.img
+Note 2: You need to first input "sw" to switch to usb eth, and then, input "tftp 0x1000000 uImage", then connect the USB micro-line between the host PC and the dkbboard
+Note 3: You need to configure the host network interface:
+   # ifconfig usb0 192.168.1.100
+Note 4: If you want to boot from nand flash. You have to burn ramdisk. Otherwise if will boot from MMC or NFS
+	You can burn ramdisk by tftp too.
+TTC_DKB>>nand erase 0x100000 0x28DF4
+TTC_DKB>>tftp 0x1000000 ramdisk.img
+TTC_DKB>>nand write 0x1000000 0x100000 0x28DF4
+
+3.Enter the following command to upload the system.img into the RAM and burn into flash:
+For NAND flash, issue the following commands:
+TTC_DKB>>nand erase 0x06800000 0xA000000
+TTC_DKB>>tftp 0x1000000 system.img
+TTC_DKB>>nand write.yaffs 0x1000000 0x06800000 <system.img actual length> (Note: ony hex supported)
+
+4.Enter the following command to upload the userata.img into the RAM and burn into flash:
+For NAND flash, issue the following commands:
+TTC_DKB>>nand erase 0x0DC00000 0x10800000
+TTC_DKB>>tftp 0x1000000 userdata.img
+TTC_DKB>>nand write.yaffs 0x1000000 0x10800000 <userdata.img actual length> (Note: ony hex supported)
+
+5.Enter the following command to upload the marvell data into the RAM and burn into flash:
+For NAND flash, issue the following commands:
+TTC_DKB>>nand erase 0x00800000 0x1ec00000
+TTC_DKB>>tftp 0x1000000  pxafs.img
+TTC_DKB>>nand write.yaffs 0x1000000 0x1ec00000 <pxafs.img actual length> (Note: ony hex supported)
+
+6.How to setup nfs
+1)  Burn all images except for ramdisk.img. [uImage.android.mmc can be used]
+2)  Setup nfs on host. Host ip is 192.168.1.100 and android rootfs should be put to /nfs/android
+3)  unzip root_nfs_internal.tgz to /nfs/android
+4)  reboot
+
+Use fastboot to erase or reburn specific binaries
+=============================================
+1.Start your favorite terminal emulator with the appropriate COM port set to 115200,8N1.
+
+2.Make the board enter fastboot mode
+There are 2 methods to enter fastboot mode:
+(1)Power on the board using CAM1+POWER
+(2)Power on the board and wait for TTC_TD>> prompt to appear, then enter the following command:
+TTC_TD>>fb
+
+3.Enter the directory containing fastboot (In host PC)
+cd <platform>/out/host/linux-x86/bin
+
+4.Enter the following command to burn kernel into flash: (In host PC)
+For NAND flash, issue the following commands:
+sudo ./fastboot erase kernel
+sudo ./fastboot flash kernel <image path>
+
+5.Enter the following command to burn system.img into flash: (In host PC)
+For NAND flash, issue the following commands:
+sudo ./fastboot erase system
+sudo ./fastboot oem onfly system
+sudo ./fastboot flash system <image path>
+
+6.Enter the following command to burn userdata.img into flash: (In host PC)
+For NAND flash, issue the following commands:
+sudo ./fastboot erase userdata
+sudo ./fastboot flash userdata <image path>
+
+7.Enter the following command to burn pxafs.img into flash: (In host PC)
+For NAND flash, issue the following commands:
+sudo ./fastboot erase telephony
+sudo ./fastboot flash telephony <image path>
+
+Marvell Code Performance Analyzer Sample Guide
+=============================================
+This release supports the Marvell Code Performance Analyzer, version 2.3. Download this version from the Marvell Extranet website at http://www.marvell.com/extranet. If you do not have a Marvell Extranet user ID, click on the ¡°register¡± link at http://www.marvell.com and follow the instructions therein.
+- Installation
+Before running the data collector, go to the /system/bin/ folder and run the following command to load the kernel driver:
+$ load_mpdc.sh
+- Known Issues or Limitations
+  - It is recommended to first turn off the Marvell Scalable Power Management (MSPM). Otherwise, the Marvell Performance Data Collector (mpdc) may not work normally. Use the following commands to turn off MSPM on your target:
+echo 0 >/sys/power/mspm/mspm
+  - When using the command line, if you get the error message "Fail to communicate with daemon:Success", reload your activity and run it to collect the result again.
+  - When doing remote data collection on the Android target, if the analyzer exits abnormally, the status of the mpdc_svr may still be connected. If this happens, restart the mpdc_svr on the target.
+  - If the samples/second value is set too large, the events/sample value is adjusted after a calibration to a smaller value, which makes the interrupt happen more frequently. If this happens, the system becomes busy and the mpdc stops after the expected duration is expired. In addition, most of the samples will be located on the process "mpdc_d". In this case, create your activity with a decreased samples/second value and start it. 
+  - When using the command line, multiple activities cannot be started at the same time.
+  - If you want to make mpdc_svr listen to another port through using the command "mpdc_svr -p <PortNumber>" on the Android target, a segmentation fault occurs.
+  - Do not set OS_TIMER as the event in the Event-Based Sampling (EBS).
+
+FAQ
+=============================================
+
+=========== Related to Board Using ==========
+
++Device fail to boot-up, even without console output.
+----------------------------------------------------------------
+Please make sure ECN001 for "TTC DKB CORECAR V2" is applied, or un-plug the usb cable during boot-up stage
+
++Wifi can't be enabled if I use a uImage built at the other day.
+----------------------------------------------------------------
+The wifi kernel module in root_nfs.tgz or system.img may not comply with uImages built at the other day. Please use the uImage and root_nfs.tgz or system.img built at the same day.
+
++How to check the current frequency, or lock to one dedicate frequency
+----------------------------------------------------------------
+check the current frequency
+1. Make sure "PowerSetting" is installed.
+2. Run "PowerSetting" and choose "View Frequencies" to check the frequency.
+3. Run "cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq" for double-check.
+lock to one dedicate frequency
+1. Make sure "PowerSetting" is installed.
+2. Run "PowerSetting" and choose "PowerSetting Service" and select frequency in "Frequency Setting".
+
+++ Connection never proceeds beyond the "Verifying user name and password" stage in modem test
+--------------------------------------------------------------------------------------------
+Update your USB driver on windows PC to the newest version
+
++I2C error, and touch may not functional for MMI V2.0
+---------------------------------------------------
+Please remove camera sensor OV7670, which is located on MMI card
+
++Phone call is not functional with the auto build package
+---------------------------------------------------
+WIFI need to be powered on to enable CP phone call, please enable WIFI by "settings-> Wireless & networks -> WIFI(Turn on WIFI)", or directly power on WIFI from console "echo 1 > /sys/class/rfkill/rfkill0/state"
+
++How to disable GC500 completly
+----------------------------------------------------------------
+You can do this by following steps: 
+1. Enable adb in android system, make sure usb cable connected with Client PC.
+2. Run command "adb remount" in Client PC, make sure "adb" is installed.
+3. Run command "adb shell rm /system/lib/egl/egl.cfg" in Client PC.
+4. Run command "adb reboot" in Client PC to make sure modification works.
+so android UI and 3D applications will use SW version instead of GC500. To save 64MB from GC500 low level driver, you can run: "adb shell rm /system/lib/modules/galcore.ko"
+
++"waiting for device" error when using fastboot to burn images
+----------------------------------------------------------------
+You should use root permission to execute fastboot, e.g.: sudo fastboot erase kernel
+
++Show the active wake lock in user space
+----------------------------------------------------------------
+Run command "cat /sys/power/wake_lock" in android shell or through "adb shell" on PC.
+
++Show all the inactive wake lock in user space
+----------------------------------------------------------------
+Run command "cat /sys/power/wake_unlock" in android shell or through "adb shell" on PC.
+
++Show all wake lock statistics, both active and inactive, and kernel wake lock included
+----------------------------------------------------------------
+Run command "cat /proc/wakelocks" in android shell or through "adb shell" on PC.
+
+========== Related to Host Building ==========
+
++How to deal with "adb permission deny issue"
+----------------------------------------------------------------
+(Linux)
+1. sudo adb kill-server
+2. sudo adb devices
+This issue only happened on Linux.
+
++If you are using Git 1.7.1 or above, please run below command before setup android:
+----------------------------------------------------------------
+  git config --global --bool am.keepcr true
+
+========== Related to Code Fetching ==========
+
++How to use a dailybuild manifest to fetch the codes from Marvell internal git server.
+----------------------------------------------------------------
+In Client PC:
+ $ mkdir [android_dir]
+ $ cd [android_dir]
+ $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git --repo-url ssh://shgit.marvell.com/git/android/tools/repo.git
+ $ cp manifest.xml .repo/manifests/
+ $ repo init -m manifest.xml
+ $ repo sync
+
++How to check CMMB version
+----------------------------------------------------------------
+Launch CMMB Player -> Menu -> More¡­ -> About
+
++How to check CP version
+----------------------------------------------------------------
+Settings -> About phone -> Baseband version
+
++How to check ipp version
+----------------------------------------------------------------
+1. Make sure adb enable on android.
+2. Run "adb pull /system/lib/libippsp.so ."
+3. Use text editor to open libippsp.so.
+4. Search "IPPONE", you will get the version info following the "IPPONE".
+
++How to check GC version
+----------------------------------------------------------------
+Run "cat /proc/driver/gc/" for checking the version.
+
++How to check SD8787 version
+----------------------------------------------------------------
+Enable WIFI and run "iwpriv mlan0 version" for checking the version.
+
++Camcorder performance profiling
+----------------------------------------------------------------
+1. Repo sync the latest android branch code.
+2. Check "[src]/vendor/marvell/dkb/etc/media_profiles.xml" for more.
+
++Video performance profiling (Enable FPS display in logcat)
+----------------------------------------------------------------
+1. Run "setprop enable.pvplayer.profiling 1" for enabling fps display.
+2. After video playback finished, checked fps in logcat.
+
++Media profile
+----------------------------------------------------------------
+check file: "[src]/frameworks/base/media/libmedia/MediaProfiles.cpp"
