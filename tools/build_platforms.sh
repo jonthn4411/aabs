@@ -111,12 +111,7 @@ if [ -x build-${platform}.sh ]; then
 	if [ "$dryrun_flag" == true ]; then
 		echo "[aabs]will-run:./build-${platform}.sh clobber source pkgsrc publish autotest email $rlsname" | tee -a $LOG
 	else
-		if [ "$FLAG_TEMP_BUILD" = "true" ]; then
-			./build-${platform}.sh clobber source pkgsrc publish temp $rlsname
-		else
-
-			./build-${platform}.sh clobber source pkgsrc publish autotest email $rlsname
-		fi
+		./build-${platform}.sh clobber source pkgsrc publish temp force $rlsname
 	fi
 else
 	echo "[aabs]!!!./build-${platform}.sh not exist or not excutable" | tee -a $LOG
