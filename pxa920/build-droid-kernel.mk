@@ -135,32 +135,28 @@ PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:m:md5
 PUBLISHING_FILES+=$$(product)/ReliableData.bin:m:md5
 ifeq ($(product),pxa920dkb_def)
-PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS.bin:m:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_NVM.mdb:m:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_DIAG.mdb:m:md5
-PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A0_Flash.bin:m:md5
-PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A1_Flash.bin:m:md5
-PUBLISHING_FILES+=$$(product)/TTD_M06_AI_Y0_Flash.bin:m:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3.bin:m:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_DIAG.mdb:m:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:m:md5
+PUBLISHING_FILES+=$$(product)/920S_M07_AI_A3_Flash.bin:m:md5
 else
 ifeq ($(product),pxa920hdkb_def)
-PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS.bin:m:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_NVM.mdb:m:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_DIAG.mdb:m:md5
-PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A0_Flash.bin:m:md5
-PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A1_Flash.bin:m:md5
-PUBLISHING_FILES+=$$(product)/TTD_M06_AI_Y0_Flash.bin:m:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3.bin:m:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_DIAG.mdb:m:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:m:md5
+PUBLISHING_FILES+=$$(product)/920S_M07_AI_A3_Flash.bin:m:md5
 else
 ifeq ($(product),pxa910dkb_def)
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3.bin:m:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_DIAG.mdb:m:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:m:md5
-PUBLISHING_FILES+=$$(product)/TTC1_M05_AI_A1_Flash.bin:m:md5
+PUBLISHING_FILES+=$$(product)/TTC1_M06_AI_A1_Flash.bin:m:md5
 else
-ifeq ($(product),pxa910dkb_def)
+ifeq ($(product),pxa910hdkb_def)
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3.bin:m:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_DIAG.mdb:m:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:m:md5
-PUBLISHING_FILES+=$$(product)/TTC1_M05_AI_A1_Flash.bin:m:md5
+PUBLISHING_FILES+=$$(product)/TTC1_M06_AI_A1_Flash.bin:m:md5
 endif
 endif
 endif
