@@ -1,0 +1,197 @@
+Files in this folder
+====================
+-Change logs and checksum file
+  changelog.day		GIT change log of each project since yesterday.
+  changelog.week	GIT change log of each project since last week.
+  changelog.biweek 	GIT change log of each project since 2 weeks ago.
+  changelog.month	GIT change log of each project since a month ago.
+
+  checksums.md5		This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
+
+-Source codes
+  manifest.xml		Saving the GIT commit number of each project used in this build.
+
+-droid-gcc folder
+ Files under droid-gcc folder are built with android-toolchain.
+ If this folder is missing, it means that this package wasn't built with android  gcc toolchain.
+ root_nfs_internal.tgz 	used for mmc and nfs case
+
+-mrvl-gcc folder
+ Files under mrvl-gcc folder are built with marvell gcc toolchain.
+ If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
+ 
+-OBM and UBoot
+    obm.bin.saarcnevo				OBM for saarcnevo
+    PinMuxData.bin				OBM data 
+    u-boot.bin					NTLoader image
+    Arbel_REL7_PMD2NONE.bin			CP Arbel image
+    NEVO_C0_Flash.bin				CP image
+    plugin_LYRA5V03_BANDS128.bin		CP image
+ 
+-Kernel and Modules for Android [Currently for saarcnevo, zImage.android.slc and zImage.android.mmc is same]
+  zImage.android	Kernel image to boot android from EMMC. A root file system is built in. 
+  zImage-recovery       Kernel image for android recovery
+
+-Android File Systems
+  primary_gpt               Primary GPT file
+  secondary_gpt             Secondary GPT file
+  primary_gpt_8g            Primary GPT file for board whose emmc size is 8G
+  secondary_gpt_8g          Secondary GPT file whose emmc size is 8G
+  system.img	    Android system image for  file system.
+  userdata.img	    Android userdata image for  file system.
+  ramdisk.img		    Android root image for file system.
+  ramdisk-recovery.img	    Android recovery root image for file system.
+  pxafs_lyra_ext2.img	    AP telephony image.
+  nvm_ext2.img		    AP NVM image
+
+saarcnevo Flashing images and boot system
+
+Install OBM and Uboot
+============================
+Burn following binaries to EMMC using Marvell eXtreme Debugger 5.3
+Use the configuration file c:\program files\marvell\xdb5.3\xdb\configurations\jtag\soc\pxa978\pxa978_c0_cs.xsf
+Configuration:CPU-JTAG->Target Connection: (usb:).
+    Board:pxa978
+    Flash:EMMC
+    Burn as binary File
+    Erase affected blocks
+    Enable new BBM
+Choose partition 1
+	obm.bin.saarcnevo			--> address 0x00000
+Choose partition 0
+	PinMuxData.bin		    		--> address 0xC80000
+	u-boot.bin		    		--> address 0x1780000
+	zImage			    		--> address 0x1880000
+	Arbel_REL7_PMD2NONE.bin			--> address 0x1F80000
+	NEVO_C0_Flash.bin			--> address 0x2580000
+	plugin_LYRA5V03_BANDS128.bin		--> address 0x2740000
+
+
+Setup Android on EMMC
+===========================
+1.Start your favorite terminal emulator with the appropriate 
+	COM port set to 115200,8N1. Power on hte board and wait for SAARC>> prompt to appear
+
+2.Enter the following command to upload the system.img into the RAM and burn into flash:
+For EMMC, issue the following commands:
+SAARC>>tftp zImage
+SAARC>>mmc write 0xC400 0x2000
+
+SAARC>>tftp system.img
+SAARC>>unsparse 0x134C00 0x100000
+
+SAARC>>tftp userdata.img
+SAARC>>unsparse 0x234C00 0x600000
+
+SAARC>>tftp ramdisk.img
+SAARC>>mmc write 0xE400 0x800
+
+SAARC>>tftp pxafs_lyra_ext2.img
+SAARC>>mmc write 0x12AC00 0x6000
+
+SAARC>>tftp nvm_ext2.img
+SAARC>>mmc write 0x130C00 0x4000
+
+the following is for burning recovery images.
+SAARC>>tftp u-boot.bin
+SAARC>>mmc write 0x800 0x800
+
+SAARC>>tftp zImage-recovery
+SAARC>>mmc write 0x1000 0x2000
+
+SAARC>>tftp ramdisk-recovery.img
+SAARC>>mmc write 0x3000 0x2800
+
+SAARC>>tftp primary_gpt
+SAARC>>mmc write 0x0 0x400
+SAARC>>tftp secondary_gpt
+SAARC>>mmc write 0x1D4FFDF 0x21
+(if eMMC size is 8G
+SAARC>>mmc write 0xE8FFDF 0x21
+check eMMC size by "mmcinfo" command in uboot
+)
+
+Reboot the system.
+
+
+Note 1: All the following images should copy to the host tftp share directory:
+	primary_gpt
+	secondary_gpt
+	zImage
+	system.img
+	userdata.img
+	ramdisk.img
+	pxafs_lyra_ext2.img
+	nvm_ext2.img
+	u-boot.bin
+	zImage-recovery
+	ramdisk-recovery.img
+Note 2: You need to first input "sw" to switch to usb eth, and then, input "tftp zImage", then connect the USB micro-line between the host PC and the saarc board
+Note 3: You need to configure the host network interface:
+	# ifconfig usb0 192.168.1.100 
+
+Setup Android on NFS
+===========================
+1)  Burn all images except for ramdisk.img. [zImage.android.mmc can be used]
+2)  Setup nfs on host. Host ip is 192.168.1.100 and android rootfs should be put to /nfs/android
+3)  unzip root_nfs_internal.tgz to /nfs/android
+4)  reboot
+
+Burn binaries by Software Downloader
+============================
+1) put the following binary files in <softwareDownloader>/Bin/images/
+    Arbel_REL7_PMD2NONE.bin
+    NEVO_C0_Flash.bin
+    PinMuxData.bin
+    nvm_ext2.img
+    obm.bin.saarcnevo
+    plugin_LYRA5V03_BANDS128.bin
+    primary_gpt
+    pxafs_lyra_ext2.img
+    ramdisk.img
+    ramdisk-recovery.img
+    secondary_gpt
+    system.img
+    u-boot.bin
+    userdata.img
+    zImage
+
+2) open software download, and then open the configure file <softwareDownloader>/Bin/Nevo_SaarC_C0_LINUX_EMMC.blf:
+    Press "Initilize" button to initailize the device(the button with the green icon), wait for the icon become red color.
+    partition 1:
+        obm.bin.saarcnevo                                       --> flash address 0x00000000
+    partition 0:
+        u-boot.bin                                              --> flash address 0x01780000
+        Arbel_DIGRF3.bin                                        --> flash address 0x01F80000
+        NEVO_C0_Flash.bin                                       --> flash address 0x02580000
+        PinMuxData.bin                                          --> flash address 0x00C80000
+        plugin_LYRA5V03_BANDS128.bin                            --> flash address 0x02740000
+        primary_gpt                                             --> flash address 0x00000000
+        zImage                                                  --> flash address 0x01880000
+        ramdisk.img                                             --> flash address 0x01C80000
+        pxafs_lyra_ext2.img                                     --> flash address 0x25580000
+        tftp nvm_ext2.img                                       --> flash address 0x26180000
+        system.img                                              --> flash address 0x26980000
+        userdata.img                                            --> flash address 0x46980000
+        u-boot.bin                                              --> flash address 0x00100000(for recovery)
+        zImage-recovery                                         --> flash address 0x00200000(for recovery)
+        ramdisk-recovery.img                                    --> flash address 0x00600000(for recovery)
+    partition 128:
+        secondary_gpt                                           --> flash address 0x01D4FE00
+3) Connect the USB cable between the host machine and the board.
+
+4) Power on the board.
+Notes: you will be asked to install usb driver if it's your first time to burn the board, then install the driver in <softwareDownloader>/WTPTP folder.
+Notes: Sometimes Software Downloader will stop during downloading or burning, you have to try again. If it failes again and again, you can disable system.img and userdata.img, and use tftp to burn them.
+
+FAQ
+=====
+
++Kernel failed to bootup
+----------------------------------------------------------------
+Update your obm/uboot image and try again.
+
+
++How to disable GC860 completly
+----------------------------------------------------------------
+You can do this by: rm /system/lib/egl/egl.cfg, so android UI and 3D applications will use SW version instead of GC860. To save 16MB from GC860 low level driver, you can: rm /system/lib/modules/galcore.ko
