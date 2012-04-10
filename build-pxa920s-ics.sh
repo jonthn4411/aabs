@@ -1,4 +1,4 @@
-export ABS_SOC=pxa920
+export ABS_SOC=pxa920s
 export ABS_DROID_BRANCH=ics
 export ABS_DROID_VARIANT=userdebug
 export PATH=/usr/lib/jvm/java-6-sun/bin/:$PATH
