@@ -42,10 +42,8 @@ build_uboot_obm_$$(product):
 
 	$(log) "start to copy uboot and obm files"
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/u-boot.bin $(OUTPUT_DIR)/$$(private_product)
-	#$(hide)if [ -e $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTLOADER_1) ]; then cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTLOADER_1) $(OUTPUT_DIR)/$$(private_product); fi
-	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(OBM_NTIM_1) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$$(private_product); fi
-	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(OBM_NTIM_ONENAND_1) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(OBM_NTIM_ONENAND_1) $$(OUTPUT_DIR)/$$(private_product); fi
-	#$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(OBM_NTIM_1) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -e $$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) ]; then cp $$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -e $$(BOOT_OUT_DIR)/$$(OBM_NTIM_ONENAND_1) ]; then cp $$(BOOT_OUT_DIR)/$$(OBM_NTIM_ONENAND_1) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(MBR_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(MBR_BIN) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(log) "  done."
 
