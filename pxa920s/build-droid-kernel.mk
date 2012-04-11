@@ -104,7 +104,7 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	make -j$(MAKE_JOBS)
+	make -j8
 
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/root ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/root; fi
 	$(hide)echo "  copy root directory ..." 
