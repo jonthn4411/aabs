@@ -18,11 +18,11 @@ PRODUCT_OUT:=common
 #m:means mandatory
 #o:means optional
 #md5: need to generate md5 sum
-PUBLISHING_FILES_$(1)+=$(1)/u-boot.bin:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_1):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_ONENAND_1):m:md5
-#PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTLOADER_1):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/$(MBR_BIN):m:md5
+PUBLISHING_FILES+=$$(product)/u-boot.bin:m:md5
+PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_1):m:md5
+PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_ONENAND_1):m:md5
+#PUBLISHING_FILES+=$$(product)/$(OBM_NTLOADER_1):m:md5
+PUBLISHING_FILES+=$$(product)/$(MBR_BIN):m:md5
 
 define define-build-uboot-obm-target
 tw:=$$(subst :,  , $(1) )
@@ -40,13 +40,13 @@ build_uboot_obm_$$(product):
 	make all
 	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
 
-	$$(log) "start to copy uboot and obm files"
-	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot.bin $$(OUTPUT_DIR)/$(1)
-	#$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTLOADER_1) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_ONENAND_1) $$(OUTPUT_DIR)/$(1)
-	#$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(MBR_BIN) $$(OUTPUT_DIR)/$(1)
+	$(log) "start to copy uboot and obm files"
+	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/u-boot.bin $(OUTPUT_DIR)/$$(private_product)
+	$(hide)if [ -e $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTLOADER_1) ]; then cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTLOADER_1) $(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(OBM_NTIM_1) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(OBM_NTIM_ONENAND_1) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(OBM_NTIM_ONENAND_1) $$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(OBM_NTIM_1) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(MBR_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(MBR_BIN) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(log) "  done."
 
 endef
