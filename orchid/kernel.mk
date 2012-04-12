@@ -24,7 +24,6 @@ kernel:
 	        cp telephony.tar $(OUTPUT_DIR)/prebuilt
 	$(log) "KERNEL: Done:)"
 
-#make sure that PUBLISHING_FILES_XXX is a simply expanded variable
 PUBLISHING_FILES+=prebuilt/uImage.smp:m:md5
 PUBLISHING_FILES+=prebuilt/uImage_recovery.smp:m:md5
 PUBLISHING_FILES+=prebuilt/uImage.cm:m:md5

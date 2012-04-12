@@ -5,7 +5,8 @@ BOOT_OUT_CM_DIR:=$(BOOT_OUT_DIR)/CM
 BOOT_OUT_NOR_DIR:=$(BOOT_OUT_DIR)/NORMAL
 
 PUBLISHING_FILES+=prebuilt/emmc/u-boot.bin:m:md5
-PUBLISHING_FILES+=prebuilt/emmc/Wtm_rel_mmp3.bin:m:md5 PUBLISHING_FILES+=prebuilt/emmc/ntim.bin.tgz:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/Wtm_rel_mmp3.bin:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/ntim.bin.tgz:m:md5
 PUBLISHING_FILES+=prebuilt/emmc_cm/u-boot.bin:m:md5
 PUBLISHING_FILES+=prebuilt/emmc_cm/Wtm_rel_mmp3.bin:m:md5
 PUBLISHING_FILES+=prebuilt/emmc_cm/coremorphall.bin:m:md5
