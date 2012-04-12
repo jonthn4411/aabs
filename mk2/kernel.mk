@@ -19,9 +19,6 @@ kernel:
 	$(hide)rm -fr $(OUTPUT_DIR)/prebuilt/modules
 	$(hide)cp -r $(SRC_DIR)/kernel/out/modules $(OUTPUT_DIR)/prebuilt/modules
 	$(hide)cd $(OUTPUT_DIR)/prebuilt && tar czf modules.tgz modules/ 
-	$(hide)cd $(SRC_DIR)/kernel/out/ && \
-	        tar cvf telephony.tar telephony/ && \
-	        cp telephony.tar $(OUTPUT_DIR)/prebuilt
 	$(log) "KERNEL: Done:)"
 
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
@@ -34,7 +31,6 @@ PUBLISHING_FILES+=prebuilt/rdroot.tgz:m:md5
 PUBLISHING_FILES+=prebuilt/vmlinux:o:md5
 PUBLISHING_FILES+=prebuilt/System.map:o:md5
 PUBLISHING_FILES+=prebuilt/modules.tgz:m:md5
-PUBLISHING_FILES+=prebuilt/telephony.tar:m:md5
 
 #fixme(jason):all clean targets not verifeid yet
 .PHONEY: clean_kernel

@@ -31,7 +31,6 @@ PUBLISHING_FILES+=prebuilt/rdroot.tgz:m:md5
 PUBLISHING_FILES+=prebuilt/vmlinux:o:md5
 PUBLISHING_FILES+=prebuilt/System.map:o:md5
 PUBLISHING_FILES+=prebuilt/modules.tgz:m:md5
-PUBLISHING_FILES+=prebuilt/telephony.tar:m:md5
 
 #fixme(jason):all clean targets not verifeid yet
 .PHONEY: clean_kernel
