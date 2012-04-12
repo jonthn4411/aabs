@@ -267,11 +267,19 @@ GStreamer Path:
 
 3.3 Building Android,Linux Kernel,Uboot and OBM
 3.3.1 Build Linux Kernel
+ $ cd [android_dir]
+ $ . build/envsetup.sh
+ $ chooseproduct pxa978dkb_def
+ $ choosevariant userdebug
  $ cd [android_dir]/kernel
  $ make kernel
 After a short while, the binaries will be generated under [android]/kernel/out/zImage
 
 3.3.2 Build Modules
+ $ cd [android_dir]
+ $ . build/envsetup.sh
+ $ chooseproduct pxa978dkb_def
+ $ choosevariant userdebug
  $ cd [android_dir]/kernel
  $ make modules
 Note: Please make kernel before making modules
@@ -280,26 +288,39 @@ After a short while, the binaries will be generated under [android]/kernel/out/m
 3.3.3 Buid PXA Android by:
  $ cd [android_dir]
  $ . build/envsetup.sh
- $ chooseproduct nevo
+ $ chooseproduct pxa978dkb_def
+ $ choosevariant userdebug
  $ make -j4
-Note: The binaries will be generated under src/android/out/target/product/nevo/.
+Note: The binaries will be generated under src/android/out/target/product/pxa978dkb/.
 Note: Currently we use Android default toolchain to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for google arm-eabi toolchain. Please donot pecify other android toolchain version. 
 
 3.3.4 Building telephony
-$ cd [android_dir]/kernel
-$ make telephony
+ $ cd [android_dir]
+ $ . build/envsetup.sh
+ $ chooseproduct pxa978dkb_def
+ $ choosevariant userdebug
+ $ cd [android_dir]/kernel
+ $ make telephony
 Note: Please make android before making telephony
 After a short while, the binary will be generated under [android]/kernel/out/telephony/
 
 3.3.5 Building uboot
+ $ cd [android_dir]
+ $ . build/envsetup.sh
+ $ chooseproduct pxa978dkb_def
+ $ choosevariant userdebug
  $ cd [android_dir]/boot
  $ make uboot
 After a short while, the binary will be generated under [android]/boot/out/u-boot.bin
 Notes: kernel should be built before uboot as uboot will get cmd info from kernel config
 
 3.3.6 Building OBM
+ $ cd [android_dir]
+ $ . build/envsetup.sh
+ $ chooseproduct pxa978dkb_def
+ $ choosevariant userdebug
  $ cd [android_dir]/boot
- $ make all
+ $ make obm 
 After a short while, the binary will be generated under [android]/boot/out/
 
 3.4 Burn images and boot system(Nevo)
