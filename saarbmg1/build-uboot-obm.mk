@@ -36,15 +36,32 @@ build_uboot_obm_$(1):
 	$$(log) "starting($(1)) to build uboot and obm"
 	$$(hide)cd $$(SRC_DIR)/$$(BOOT_SRC_DIR) && \
 	make all
-	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)
+
+	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)/saarbmg_symbols
+	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)/saarbmg1_bin
+	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)/saarbmg2_bin
 
 	$$(log) "start to copy uboot and obm files"
-	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/* $$(OUTPUT_DIR)/$(1)
-	#$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTLOADER_1) $$(OUTPUT_DIR)/$(1)
-	#$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
-	#$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(OBM_NTIM_ONENAND_1) $$(OUTPUT_DIR)/$(1)
-	#$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(OBM_NTIM_1) $$(OUTPUT_DIR)/$(1)
-	$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(MBR_BIN) $$(OUTPUT_DIR)/$(1)
+
+	#-----------------------------
+	# Copy Boot symbols
+	#-----------------------------
+	$$(hide)gzip -cf $$(SRC_DIR)/$$(BOOT_SRC_DIR)/uboot/u-boot > $$(OUTPUT_DIR)/$(1)/saarbmg_symbols/u-boot.gz
+	
+	#-----------------------------
+	# copy saarbmg1 images
+	#-----------------------------
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot.256k_recovery.saarb	 $$(OUTPUT_DIR)/$(1)/saarbmg1_bin
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot.256k.saarb			 $$(OUTPUT_DIR)/$(1)/saarbmg1_bin
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/obm.bin.saarbmg1			 $$(OUTPUT_DIR)/$(1)/saarbmg1_bin
+	#-----------------------------
+	# copy saarbmg2 images
+	#-----------------------------
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot.256k_recovery.saarb	 $$(OUTPUT_DIR)/$(1)/saarbmg2_bin
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot.256k.saarb			 $$(OUTPUT_DIR)/$(1)/saarbmg2_bin
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/obm_2k.bin.saarbmg2			 $$(OUTPUT_DIR)/$(1)/saarbmg2_bin
+
+	##$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(MBR_BIN) $$(OUTPUT_DIR)/$(1)
 	$$(log) "  done."
 
 endef
