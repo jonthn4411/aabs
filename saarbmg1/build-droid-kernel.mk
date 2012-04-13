@@ -123,7 +123,7 @@ PUBLISHING_FILES+=$$(product)/system.img:o:md5
 PUBLISHING_FILES+=$$(product)/userdata.img:o:md5
 PUBLISHING_FILES+=$$(product)/system_onenand.img:m:md5
 PUBLISHING_FILES+=$$(product)/ramdisk.img:m:md5
-PUBLISHING_FILES+=$$(product)/symbols_lib.tgz:o:md5
+PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/build.prop:o:md5
 endef
 
