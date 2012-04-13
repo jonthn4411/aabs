@@ -215,19 +215,19 @@ package_droid_slc_$(1)_$(2):
 	#-----------------------------
 	# Pxa telephony Symbols
 	#-----------------------------
-	cp -p $$(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/saarbmg1/Convert/pxafs_symbols.tgz $$(OUTPUT_DIR)/$(2)/saarbmg_symbols
+	cp -p $$(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/output/pxafs_symbols.tgz $$(OUTPUT_DIR)/$(2)/saarbmg_symbols
 	
 	#-----------------------------
 	# Diag telephony DB
 	#-----------------------------
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)/saarbmg_Diag_DB
-	cp -p $$(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/saarbmg1/Diag_DB/* $$(OUTPUT_DIR)/$(2)/saarbmg_Diag_DB
+	cp -p $$(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/Boerne_DIAG*.txt $$(OUTPUT_DIR)/$(2)/saarbmg_Diag_DB
 
 	#-----------------------------
 	# copy telephony saarbmg1 images
 	#-----------------------------
-	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/saarbmg1/Convert/pxafs_lyra_ext2.img $$(OUTPUT_DIR)/$(2)/saarbmg1_bin/Convert/pxafs_lyra_ext2.img
-	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/saarbmg1/Convert/nvm_ext2.img $$(OUTPUT_DIR)/$(2)/saarbmg1_bin/Convert/nvm_ext2.img
+	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/output/pxafs_lyra_ext2.img 	$$(OUTPUT_DIR)/$(2)/saarbmg1_bin/Convert/pxafs_lyra_ext2.img
+	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/Drivers/output/nvm_ext2.img 			$$(OUTPUT_DIR)/$(2)/saarbmg1_bin/Convert/nvm_ext2.img
 	
 	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/saarbmg1/saarb_mg1_gb_lyra.blf 		$$(OUTPUT_DIR)/$(2)/saarbmg1_bin/saarb_mg1_gb_lyra.blf
 	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/saarbmg1/Arbel_LYRA3T4.bin 			$$(OUTPUT_DIR)/$(2)/saarbmg1_bin/Arbel_LYRA3T4.bin
