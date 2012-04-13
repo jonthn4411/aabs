@@ -57,10 +57,11 @@ build_uboot_obm_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/obm_2k.bin.saarbmg2			 $$(OUTPUT_DIR)/$(1)/saarbmg2_bin
 
 	##$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(MBR_BIN) $$(OUTPUT_DIR)/$(1)
-	tar czf $$(OUTPUT_DIR)/$(1)/saarbmg_symbols 	saarbmg_symbols.tgz
-	tar czf $$(OUTPUT_DIR)/$(1)/saarbmg1_bin		saarbmg1_bin.tgz
-	tar czf $$(OUTPUT_DIR)/$(1)/saarbmg2_bin		saarbmg2_bin.tgz
-	tar czf $$(OUTPUT_DIR)/$(1)/saarbmg_Diag_DB		saarbmg_Diag_DB.tgz
+	cd $$(OUTPUT_DIR)/$(1) && \
+	tar czf saarbmg_symbols.tgz  saarbmg_symbols && \
+	tar czf saarbmg1_bin.tgz saarbmg1_bin && \
+	tar czf saarbmg2_bin.tgz saarbmg2_bin && \
+	tar czf saarbmg_Diag_DB.tgz saarbmg_Diag_DB
 	$$(log) "  done."
 
 endef

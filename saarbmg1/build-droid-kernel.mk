@@ -303,12 +303,6 @@ kernel_cfg:=$$(word 3, $$(tw) )
 root:=$$(word 4, $$(tw) )
 
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
-#PUBLISHING_FILES_$(2):=$(PUBLISHING_FILES_$(2)) $(2)/zImage.$$(os).$$(storage):m:md5
-PUBLISHING_FILES_$(2)+=$(2)/zImage:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/zImage_maintenance:m:md5
-PUBLISHING_FILES_$(2)+=$(2)/vmlinux:o:md5
-PUBLISHING_FILES_$(2)+=$(2)/System.map:o:md5
-PUBLISHING_FILES_$(2)+=$(2)/modules.tgz:m:md5
 
 ifneq ($(filter $(ABS_PRODUCT_NAME),td_jil td_dkb ttc_jil ttc_dkb dkbttc),)
 PUBLISHING_FILES_$(2)+=$(2)/pxafs.img:m:md5
