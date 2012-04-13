@@ -66,37 +66,6 @@ build_droid_root_$(1): output_dir
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_onenand.img $$(OUTPUT_DIR)/$(1)
 	$(log) "  done"
 ##!!## first time publish: all for two
-PUBLISHING_FILES_$(1)+=$(1)/userdata_ext3.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/system_ext3.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/userdata_onenand.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/system.img:o:md5
-PUBLISHING_FILES_$(1)+=$(1)/userdata.img:o:md5
-PUBLISHING_FILES_$(1)+=$(1)/system_onenand.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/cache_emmc_ext2.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/ramdisk.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/ramdisk-recovery-emmc.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/ramdisk-recovery.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/symbols_system.tgz:o:md5
-PUBLISHING_FILES_$(1)+=$(1)/build.prop:o:md5
-PUBLISHING_FILES_$(1)+=$(1)/pxafs_lyra_4kb.img.onenand:o:md5
-PUBLISHING_FILES_$(1)+=$(1)/nvm_4kb.img.onenand:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/pxafs_lyra_ext2.img:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/ebr_cache:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/ebr_INT_STORE:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/ebr_Misc:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/ebr_nvm:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/ebr_OS_Loader:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/ebr_ramdisk_recovery:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/ebr_Seagull:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/ebr_Telephony_PXA_FS:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/ebr_zImage:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/TAVOR_PV2_E0_M11_AI_Flash.bin:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/saarb_mg1_gb_lyra.blf
-PUBLISHING_FILES_$(1)+=$(1)/Arbel_LYRA3T4.bin
-PUBLISHING_FILES_$(1)+=$(1)/plugin_LYRA3_T4_B1_128.bin
-PUBLISHING_FILES_$(1)+=$(1)/TAVOR_PV2_C1_M09_AI_Flash.bin
-PUBLISHING_FILES_$(1)+=$(1)/saarb_mg2_4k_gb_lyra.blf
-PUBLISHING_FILES_$(1)+=$(1)/TAVOR_PV2_E0_M14_AI_Flash.bin
 endef
 
 #$1:build variant
@@ -180,7 +149,7 @@ package_droid_slc_$(1)_$(2):
 	#-----------------------------
 	cp -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_ext3.img		$$(OUTPUT_DIR)/$(2)/saarbmg1_bin/Convert/system_ext3.img && \
 	cp -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_ext3.img	$$(OUTPUT_DIR)/$(2)/saarbmg1_bin/Convert/userdata_ext3.img && \
-	cp -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/cache_emmc_ext2.img	$$(OUTPUT_DIR)/$(2)/saarbmg1_bin/cache_emmc_ext2.img
+	cp -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/cache_emmc_ext2.img	$$(OUTPUT_DIR)/$(2)/saarbmg1_bin/Convert/cache_emmc_ext2.img
 
 	cp -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/build.prop	$$(OUTPUT_DIR)/$(2)/saarbmg1_bin && \
 	cp -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ebr_*				$$(OUTPUT_DIR)/$(2)/saarbmg1_bin && \

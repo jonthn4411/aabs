@@ -20,15 +20,10 @@ define define-build-uboot-obm
 #m:means mandatory
 #o:means optional
 #md5: need to generate md5 sum
-PUBLISHING_FILES_$(1)+=$(1)/u-boot.bin:m:md5
-PUBLISHING_FILES_$(1)+=$(1)/u-boot.256k.saarb:o:md5
-PUBLISHING_FILES_$(1)+=$(1)/u-boot.256k_recovery.saarb:o:md5
-PUBLISHING_FILES_$(1)+=$(1)/obm.bin.saarbmg1:o:md5
-PUBLISHING_FILES_$(1)+=$(1)/obm_2k.bin.saarbmg2:o:md5
-#PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_1):m:md5
-#PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTIM_ONENAND_1):m:md5
-#PUBLISHING_FILES_$(1)+=$(1)/$(OBM_NTLOADER_1):m:md5
-PUBLISHING_FILES_$(1)+=$(1)/$(MBR_BIN):m:md5
+PUBLISHING_FILES_$(1)+=$(1)/saarbmg_symbols.tgz:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/saarbmg1_bin.tgz:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/saarbmg2_bin.tgz:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/saarbmg_Diag_DB.tgz:o:md5
 
 
 .PHONY:build_uboot_obm_$(1)
@@ -62,6 +57,10 @@ build_uboot_obm_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/obm_2k.bin.saarbmg2			 $$(OUTPUT_DIR)/$(1)/saarbmg2_bin
 
 	##$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(MBR_BIN) $$(OUTPUT_DIR)/$(1)
+	tar czf $$(OUTPUT_DIR)/$(1)/saarbmg_symbols 	saarbmg_symbols.tgz
+	tar czf $$(OUTPUT_DIR)/$(1)/saarbmg1_bin		saarbmg1_bin.tgz
+	tar czf $$(OUTPUT_DIR)/$(1)/saarbmg2_bin		saarbmg2_bin.tgz
+	tar czf $$(OUTPUT_DIR)/$(1)/saarbmg_Diag_DB		saarbmg_Diag_DB.tgz
 	$$(log) "  done."
 
 endef
