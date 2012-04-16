@@ -6,9 +6,10 @@ BOOT_OUT_DIR:=$(BOOT_SRC_DIR)/out
 #OBM_NTLOADER_1:=ASPN_NTLOADER_avengers-a_slc.bin
 #OBM_NTLOADER_2:=ASPN_NTLOADER_spi.bin
 
-OBM_NTIM_1:=NEVO_Loader_eMMC_ARM_3_3_1.bin
-#OBM_NTIM_1:=TAVOR_SAAR_NTOBM_EMMC_MODE1.bin.rnd
-#OBM_NTIM_2:=ntim_a0_avengers-a_1.6F_256mb_400mhz_mode3_pm_spi.bin
+OBM_NTIM_1:=NEVO_NTLoader_eMMC_DDR533_ARM_3_3_1.bin
+OBM_NTIM_2:=NEVO_NTLoader_eMMC_DDR400_ARM_3_3_1.bin
+OBM_NTIM_3:=NEVO_TLoader_eMMC_DDR533_ARM_3_3_1.bin
+OBM_NTIM_4:=NEVO_TLoader_eMMC_DDR400_ARM_3_3_1.bin
 
 PRIMARY_GPT_BIN:=primary_gpt
 SECONDARY_GPT_BIN:=secondary_gpt
@@ -40,6 +41,9 @@ build_uboot_obm_$$(product): build_telephony_$$(product)
 	$(log) "start to copy uboot and obm files"
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/u-boot.bin $(OUTPUT_DIR)/$$(private_product)
 	$(hide)if [ -e $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_1) ]; then cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_1) $(OUTPUT_DIR)/$$(private_product); fi
+	$(hide)if [ -e $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_2) ]; then cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_2) $(OUTPUT_DIR)/$$(private_product); fi
+	$(hide)if [ -e $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_3) ]; then cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_3) $(OUTPUT_DIR)/$$(private_product); fi
+	$(hide)if [ -e $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_4) ]; then cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_4) $(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN_2) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN_2) $$(OUTPUT_DIR)/$$(private_product); fi
@@ -51,6 +55,9 @@ PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN):m:md5
 PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN_2):m:md5
 PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN_2):m:md5
 PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_1):m:md5
+PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_2):m:md5
+PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_3):m:md5
+PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_4):m:md5
 
 endef
 
