@@ -57,7 +57,7 @@ PUBLISHING_FILES+=delta_patches.base:o
 
 .PHONY:pkgsrc
 
-include $(BOARD)/pkg-source.mk
+include $(ABS_SOC)/pkg-source.mk
 
 save_prjlist: get_source_for_pkg
 	$(hide)echo "  save project list"
