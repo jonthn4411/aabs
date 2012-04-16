@@ -26,6 +26,6 @@ endif
 PUBLISHING_FILES+=$(ANDROID_VERSION)_RN.pdf:o
 
 publish_RN:
-	$(hide)cp $(BOARD)/$(ANDROID_VERSION)_RN.pdf $(OUTPUT_DIR)
+	$(hide)cp $(ABS_SOC)/$(ANDROID_VERSION)_RN.pdf $(OUTPUT_DIR)
 
 pkgsrc: publish_RN

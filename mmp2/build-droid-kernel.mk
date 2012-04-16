@@ -4,7 +4,7 @@
 #
 # Include goal for build UBoot and obm
 #
-include $(BOARD)/build-uboot-obm.mk
+include $(ABS_SOC)/build-uboot-obm.mk
 
 MY_SCRIPT_DIR:=$(TOP_DIR)/brownstone
 
