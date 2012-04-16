@@ -179,10 +179,16 @@ build_droid_update_pkgs_$$(product): build_uboot_obm_$$(product)
 	make mrvlotapackage
 	echo "    copy update packages..." && \
 		mkdir -p $$(OUTPUT_DIR)/$$(private_product) && \
-		cp -p $(SRC_DIR)/out/target/product/$$(private_device)/pxa978dkb_def-ota-mrvl.zip $(OUTPUT_DIR)/$$(private_product)/pxa978dkb_def-ota-mrvl.zip
+		cp -p $(SRC_DIR)/out/target/product/$$(private_device)/pxa978dkb_def-ota-mrvl.zip $(OUTPUT_DIR)/$$(private_product)/pxa978dkb_def-ota-mrvl_DDR400.zip
+		cp -p $(SRC_DIR)/out/target/product/$$(private_device)/pxa978dkb_def-ota-mrvl-recovery.zip $(OUTPUT_DIR)/$$(private_product)/pxa978dkb_def-ota-mrvl-recovery_DDR400.zip
+		cp -p $(SRC_DIR)/out/target/product/$$(private_device)/pxa978dkb_def-ota-mrvl.zip_DDR533 $(OUTPUT_DIR)/$$(private_product)/pxa978dkb_def-ota-mrvl_DDR533.zip
+		cp -p $(SRC_DIR)/out/target/product/$$(private_device)/pxa978dkb_def-ota-mrvl-recovery.zip_DDR533 $(OUTPUT_DIR)/$$(private_product)/pxa978dkb_def-ota-mrvl-recovery_DDR533.zip
 	$(log) "  done"
 
-PUBLISHING_FILES+=$$(product)/pxa978dkb_def-ota-mrvl.zip:m:md5
+PUBLISHING_FILES+=$$(product)/pxa978dkb_def-ota-mrvl_DDR400.zip:m:md5
+PUBLISHING_FILES+=$$(product)/pxa978dkb_def-ota-mrvl-recovery_DDR400.zip:m:md5
+PUBLISHING_FILES+=$$(product)/pxa978dkb_def-ota-mrvl_DDR533.zip:m:md5
+PUBLISHING_FILES+=$$(product)/pxa978dkb_def-ota-mrvl-recovery_DDR533.zip:m:md5
 endef
 
 

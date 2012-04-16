@@ -11,6 +11,11 @@ OBM_NTIM_2:=NEVO_NTLoader_eMMC_DDR400_ARM_3_3_1.bin
 OBM_NTIM_3:=NEVO_TLoader_eMMC_DDR533_ARM_3_3_1.bin
 OBM_NTIM_4:=NEVO_TLoader_eMMC_DDR400_ARM_3_3_1.bin
 
+DTIM_PRIMARY_DDR400:=DTim.Primary_DDR400
+DTIM_RECOVERY_DDR400:=DTim.Recovery_DDR400
+DTIM_PRIMARY_DDR533:=DTim.Primary_DDR533
+DTIM_RECOVERY_DDR533:=DTim.Recovery_DDR533
+
 PRIMARY_GPT_BIN:=primary_gpt
 SECONDARY_GPT_BIN:=secondary_gpt
 PRIMARY_GPT_BIN_2:=primary_gpt_8g
@@ -44,6 +49,10 @@ build_uboot_obm_$$(product): build_telephony_$$(product)
 	$(hide)if [ -e $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_2) ]; then cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_2) $(OUTPUT_DIR)/$$(private_product); fi
 	$(hide)if [ -e $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_3) ]; then cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_3) $(OUTPUT_DIR)/$$(private_product); fi
 	$(hide)if [ -e $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_4) ]; then cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_4) $(OUTPUT_DIR)/$$(private_product); fi
+	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(DTIM_PRIMARY_DDR400) $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(DTIM_RECOVERY_DDR400) $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(DTIM_PRIMARY_DDR533) $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(DTIM_RECOVERY_DDR533) $(OUTPUT_DIR)/$$(private_product)
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN_2) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN_2) $$(OUTPUT_DIR)/$$(private_product); fi
@@ -58,6 +67,10 @@ PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_1):m:md5
 PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_2):m:md5
 PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_3):m:md5
 PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_4):m:md5
+PUBLISHING_FILES+=$$(product)/$(DTIM_PRIMARY_DDR400):m:md5
+PUBLISHING_FILES+=$$(product)/$(DTIM_RECOVERY_DDR400):m:md5
+PUBLISHING_FILES+=$$(product)/$(DTIM_PRIMARY_DDR533):m:md5
+PUBLISHING_FILES+=$$(product)/$(DTIM_RECOVERY_DDR533):m:md5
 
 endef
 
