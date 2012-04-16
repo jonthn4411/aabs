@@ -181,7 +181,7 @@ generate_nobuild_notification_email()
 send_error_notification()
 {
 	generate_error_notification_email $1 | /usr/sbin/sendmail -t $envelopesender
-	generate_error_log_email $1 | /usr/sbin/sendmail -t $envelopesender
+	#generate_error_log_email $1 | /usr/sbin/sendmail -t $envelopesender
 }
 
 send_success_notification()
