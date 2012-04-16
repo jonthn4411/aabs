@@ -331,7 +331,7 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage $$(OUTPUT_DIR)/$(2)/saarbmg2_bin/zImage
 	
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage_maintenance $$(OUTPUT_DIR)/$(2)/saarbmg1_bin/zImage_maintenance
-	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage_maintenance $$(OUTPUT_DIR)/$(2)/saarbmg1_bin/zImage_maintenance
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage_maintenance $$(OUTPUT_DIR)/$(2)/saarbmg2_bin/zImage_maintenance
 
 	$$(hide)gzip -cf $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/vmlinux 	> $$(OUTPUT_DIR)/$(2)/saarbmg_symbols/vmlinux.gz
 	$$(hide)gzip -cf $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/System.map > $$(OUTPUT_DIR)/$(2)/saarbmg_symbols/System.map.gz
