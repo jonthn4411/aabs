@@ -243,7 +243,10 @@ export ABS_PRODUCT_CODE
 
 MAKEFILE=${ABS_SOC}/board.mk
 if [ ! -f "$MAKEFILE" ]; then
-    echo "The make file:$MAKEFILE can't be found."
+    MAKEFILE=common/board.mk
+fi
+if [ ! -f "$MAKEFILE" ]; then
+    echo "Neither ${ABS_SOC}/board.mk nor common/board.mk can be found."
     exit 1
 fi
 
