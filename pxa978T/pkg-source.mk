@@ -10,7 +10,7 @@ CHECKIN_PREBUILTLIB :=libyamaha_utils
 
 EXCLUDE_VCS=--exclude-vcs --exclude=.repo
 
-UBOOT_BASE_COMMIT:=aced78d852d0b009e8aaa1445af8cb40861ee549
+UBOOT_BASE_COMMIT:=1d5e7fb403257d62f0f2419cb83fdf6b0f02f215
 ifeq ($(ANDROID_VERSION),eclair)
 	KERNEL_BASE_COMMIT:=8e0ee43bc2c3e19db56a4adaa9a9b04ce885cd84
 else
