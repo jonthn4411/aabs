@@ -1,5 +1,4 @@
 ANDROID_VERSION:=$(ABS_DROID_BRANCH)
-MANIFEST_FILE:=$(ABS_DROID_MANIFEST)
 DROID_VARIANT:=$(ABS_DROID_VARIANT)
 
 ifeq ($(strip $(DROID_VARIANT)),)
@@ -33,14 +32,49 @@ include common/pkg-source.mk
 include $(ABS_SOC)/build-droid-kernel.mk
 
 #define the combined goal to include all build goals
+.PHONY:build
 define define-build
-build: build_$(1)
-
-build_$(1): build_droid_kernel_$(1)
+build: build_device_$(1)
 endef
-$(foreach bv, $(BUILD_VARIANTS), $(eval $(call define-build,$(bv) ) ) )
 
-clean:clean_droid_kernel clean_uboot
+define define-build-device
+tw:=$$(subst :,  , $(2))
+product:=$$(word 1, $$(tw))
+device:=$$(word 2, $$(tw))
+
+build_device_$(1): build_device_$(1)_$$(product)
+build_device_$(1)_$$(product): private_product:=$$(product)
+build_device_$(1)_$$(product): private_device:=$$(device)
+build_device_$(1)_$$(product): build_droid_kernel_$(1)_$$(product)
+endef
+
+$(foreach bv,$(BUILD_VARIANTS),\
+	$(eval $(call define-build,$(bv)))\
+	$(foreach bd,$(ABS_BUILD_DEVICES),\
+		$(eval $(call define-build-device,$(bv),$(bd)))) \
+)
+
+.PHONY:clean
+define define-clean
+clean: clean_device_$(1)
+endef
+
+define define-clean-device
+tw:=$$(subst :,  , $(2))
+product:=$$(word 1, $$(tw))
+device:=$$(word 2, $$(tw))
+
+clean_device_$(1): clean_device_$(1)_$$(product)
+clean_device_$(1)_$$(product): private_product:=$$(product)
+clean_device_$(1)_$$(product): private_device:=$$(device)
+clean_device_$(1)_$$(product): clean_droid_kernel_$(1)_$$(device)
+endef
+
+$(foreach bv,$(BUILD_VARIANTS),\
+	$(eval $(call define-clean,$(bv)))\
+	$(foreach bd,$(ABS_BUILD_DEVICES),\
+		$(eval $(call define-clean-device,$(bv),$(bd))))\
+)
 
 #
 # Include publish goal
