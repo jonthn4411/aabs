@@ -1,14 +1,14 @@
 ==============================================================================
-Marvell PXA920 Android Platform Release for Linux
+Marvell PXA920HS Android Platform Release for Linux
 Platform README
-Last update: 06/29/2011
-Version: DKBTD Gingerbread Beta5
+Last update: 04/20/2012
+Version: PXA920HS DKBTD Gingerbread Beta5sp6 for ZTE
 ==============================================================================
 
 1. Platform features
 1.1 Supported Components
 - Rebase to google android-2.3.4_r1 branch
-- Do key pad mapping, touch for PXA920 DKB platform
+- Do key pad mapping, touch for PXA920HS DKB platform
 - HIFI playback on headset and speaker
 - Audio routing for phone earpiece and headset
 - Audio recorder for built-in Mic and headset Mic
@@ -331,9 +331,9 @@ Linux-2.6.35
 
 1.5 Release package contents
 - ReleaseNotes.txt                                   :This readme.txt(include how to setup Android dir,build and burn flash)
-- PXA920_Android_Platform_Beta5_prebuilt_bin.zip     :Pre-built bin binaries
-- PXA920_Android_Platform_Beta5_src.tgz00            :Source code tarball (patch mode),part1
-- PXA920_Android_Platform_Beta5_src.tgz01            :Source code tarball (patch mode),part2
+- PXA920HS_Android_Platform_Beta5sp6_ZTE_prebuilt_bin.zip     :Pre-built bin binaries
+- PXA920HS_Android_Platform_Beta5sp6_ZTE_src.tgz00            :Source code tarball (patch mode),part1
+- PXA920HS_Android_Platform_Beta5sp6_ZTE_src.tgz01            :Source code tarball (patch mode),part2
   - setup_android.sh                                 :Script help to setup Android code base
   - android_patches.tgz                              :Marvell patches to Android Projects
   - android_src.tgz                                  :Source code for projects added by Marvell
@@ -350,7 +350,7 @@ Linux-2.6.35
 2.1 Hardware requirements
 - NAND flash 512 MB or larger
 - DDR SDRAM 512 MB or larger
-- PXA920 DKB Board
+- PXA920HS DKB Board
   - Debug board: TD_TTC_DEBUG PCB070110 REV3.0
   - Core board: TD_DKB_CORE PCB240210 REV3.01 / TD_DKB_CORE PCB110610 REV3.1
   - RF board: TD_DKB_RF REV3.0 / TD_DKB_RF REV3.11
@@ -365,14 +365,14 @@ Linux-2.6.35
 3. Usage of this package
 3.1 Install this package
 3.1.1 Download the Marvell packages:
-----PXA920_Android_Platform_Beta5_src.tgz00
-----PXA920_Android_Platform_Beta5_src.tgz01
-----PXA920_Android_Platform_Beta5_prebuilt_bin.zip
- $ cat PXA920_Android_Platform_Beta5_src.tgz00 PXA920_Android_Platform_Beta5_src.tgz01 > PXA920_Android_Platform_Beta5_src.tgz
+----PXA920HS_Android_Platform_Beta5sp6_ZTE_src.tgz00
+----PXA920HS_Android_Platform_Beta5sp6_ZTE_src.tgz01
+----PXA920HS_Android_Platform_Beta5sp6_ZTE_prebuilt_bin.zip
+ $ cat PXA920HS_Android_Platform_Beta5sp6_ZTE_src.tgz00 PXA920HS_Android_Platform_Beta5sp6_ZTE_src.tgz01 > PXA920HS_Android_Platform_Beta5sp6_ZTE_src.tgz
 3.1.2 Type the following command to install:
  $ mkdir [installed_directory]
  $ cd [installed_directory]
- $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA920_Android_Platform_Beta5_src.tgz
+ $ tar -xvzf [The PATH you downloaded Marvell Packages]/PXA920HS_Android_Platform_Beta5sp6_ZTE_src.tgz
 
 3.2 Setup Android directory
  $ mkdir [android_dir]
