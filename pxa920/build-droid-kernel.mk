@@ -115,6 +115,10 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(OUTPUT_DIR)/$$(private_product)
 	$(log) "  done"
+	$(hide)echo "    packge symbols system files..."
+	$(hide)cp -a $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/symbols/system $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cd $(OUTPUT_DIR)/$$(private_product) && tar czf symbols_system.tgz system && rm system -rf
+	$(log) "  done for package symbols system files. "
 ##!!## first time publish: all for two
 PUBLISHING_FILES+=$$(product)/userdata.img:m:md5
 PUBLISHING_FILES+=$$(product)/system.img:m:md5
