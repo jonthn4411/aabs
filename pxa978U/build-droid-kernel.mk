@@ -132,9 +132,9 @@ product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY: build_telephony_$$(product)
 ifeq ($(ABS_DROID_BRANCH),ics)
-PUBLISHING_FILES+=$$(product)/Arbel_REL7_PMD2NONE.bin:m:md5
-PUBLISHING_FILES+=$$(product)/Arbel_REL7_PMD2NONE_DIAG.mdb:m:md5
-PUBLISHING_FILES+=$$(product)/Arbel_REL7_PMD2NONE_NVM.mdb:m:md5
+PUBLISHING_FILES+=$$(product)/Arbel.bin:m:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DIAG.mdb:m:md5
+PUBLISHING_FILES+=$$(product)/Arbel_NVM.mdb:m:md5
 PUBLISHING_FILES+=$$(product)/NEVO_C0_Flash.bin:m:md5
 PUBLISHING_FILES+=$$(product)/nvm_ext2.img:m:md5
 PUBLISHING_FILES+=$$(product)/plugin_LYRA5V03_BANDS128.bin:m:md5
