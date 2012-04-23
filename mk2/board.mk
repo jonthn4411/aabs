@@ -36,6 +36,8 @@ include $(ABS_SOC)/droid.mk
 
 include $(ABS_SOC)/bootloader.mk
 
+include $(ABS_SOC)/droidupdate.mk
+
 ###### End a real build of Kernel, Android, Bootloader ######
 
 #
