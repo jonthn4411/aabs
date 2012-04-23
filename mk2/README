@@ -30,37 +30,27 @@ Files in this folder
 
   obm_src.tgz           OBM source code tar ball. Will be released.
 
--droid-gcc folder
+-prebuilt folder
  Files under droid-gcc folder are built with android-toolchain.
  If this folder is missing, it means that this package wasn't built with google gcc toolchain.
 
 -Kernel and Modules for Android
-  uImage.smp.android           The kernel image for SMP mode
-  uImage.up.android            The kernel image for no SMP mode
-  uImage.cm.android            The kernel image for coremorphall
-  modules_android_mmc.tgz  Kernel modules that built along with uImage.XX.android
+  uImage.smp	The kernel image for SMP mode
+  uImage.cm	The kernel image for coremorphall
 
 -Android File Systems
-  root_nfs_xxx.tgz          Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
-
-  ramdisk.img         Android ramdisk image.
-  system.img          Android system image.
-  userdata.img         Android userdata image.
-  update_droid.zip         that is a update package including kernel, ramdisk and system folder.
-
-  if xxx is "internal" means everything is built in the package, and should be used internally.
-
-  if xxx is "external" means the package can be delivered outside, components with license issue has been removed.
+  ramdisk.img             Android ramdisk image.
+  system.img              Android system image.
+  userdata.img            Android userdata image.
+  update_droid.zip        The update package including the normal kernel, ramdisk, bootloader and system folder.
+  update_recovery.zip     The update package including the recovery kernel, ramdisk and bootloader.
 
 How to get the 'latest' source code from git server
 =====================================
   1. $ mkdir <android_working_dir>
      $ cd <android_working_dir>
 
-  2. For orchid
-     $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b orchid-ics
-     For mk2
-     $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b mk2-ics
+  2. $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b mk2-ics --repo-url=ssh://shgit.marvell.com/git/android/tools/repo
 
   3. $ repo sync
 
@@ -68,14 +58,10 @@ How to get the 'latest' source code from git server
 
 How to get the code that the autobuild system uses for daily build and code drop
 =====================================
--Method I
   1. $ mkdir <android_working_dir>
      $ cd <android_working_dir>
 
-  2. For orchid
-     $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b orchid-ics
-     For mk2
-     $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b mk2-ics
+  2. $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git --repo-url=ssh://shgit.marvell.com/git/android/tools/repo
 
   3. copy 'manifest.xml' from autobuild system or code drop into my_droid_src/.repo/manifests/, name it as whatever you like, say 'my_manifest.xml'.
 
@@ -137,9 +123,6 @@ About Ntims
 1.For normal user:
   1)ntim.bin.tar is ntim tar file and is droid/emmc  
   2)Prefered ntims are as follows:
-    ------orchid------
-    orc/ntim_orc-1063-1063-532-532-399-399-399-200__4_1_dm_256kinterleave_400_1250mv.bin
-    -------mk2-----
     mk2/ntim_mk2-1063-1063-532-532-399-399-399-200__4_1_dm_256kinterleave_400_1250mv.bin
 
 2.For developer who use coremorphall:
@@ -186,7 +169,7 @@ ERROR: can't get kernel image
 ----------error ends------------------
 
 2) Kernel image:
->> tftp 0x1100000 uImage.smp.android
+>> tftp 0x1100000 uImage.smp
 >> mmc write 0x1100000 0x4c00 0x4000
 
 3) ramdisk
