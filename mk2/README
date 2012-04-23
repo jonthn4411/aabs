@@ -74,7 +74,7 @@ Set up environment before building Android
 =====================================
      $ cd <android_working_dir>  # replace <android_working_dir> with the actual android source root on your machine
      $ source build/envsetup.sh
-     $ chooseproduct yellowstone
+     $ chooseproduct mk2
 
 How to Build Uboot
 =====================================
@@ -96,11 +96,11 @@ How to Build kernel and android image
   2. build android
      $ cd <android_working_dir>
      $ source build/envsetup.sh
-     $ chooseproduct yellowstone
+     $ chooseproduct mk2
      $ export ANDROID_PREBUILT_MODULES=kernel/out/modules
      $ make
 
-  The android ramdisk.img, system.img and userdata.img are located at out/target/product/yellowstone
+  The android ramdisk.img, system.img and userdata.img are located at out/target/product/mk2
 
 Burning OBM and Uboot
 =====================
