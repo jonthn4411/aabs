@@ -1,12 +1,12 @@
 ==============================================================================
 Marvell PXA978 Android Platform Release for Linux
 Platform ReleaseNotes
-Last update: 03/27/2012
+Last update: 04/23/2012
 ==============================================================================
 
 1. Platform features
 1.1 Supported Components
-- Rebase to google android Ice Cream Sandwich 4.0.3
+- Rebase to google android Ice Cream Sandwich 4.0.4
 - Do key pad mapping, touch for PXA978 SAARC platform
 - Wi-Fi/BT support
 - Light sensor and g-sensor and compass sensor and proximity sensor and accleration sensor support
@@ -19,6 +19,7 @@ Last update: 03/27/2012
 - VoIP support 
 - headset hook switch support
 - Vibrator support
+- NFC support
 
 
 1.2 BSP features
@@ -213,12 +214,12 @@ GStreamer Path:
   - MPG     
   - FLV     
 
-<VERSION>=r2
+<VERSION>=r4
 ===========================================================================================
 1.6 Release package contents
 - ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
-- PXA978_Android_Platform_<VERSION>_prebuilt_bin.zip	:Pre-built bin binaries
-- PXA978_Android_Platform_<VERSION>_src.tgz        	:Source code tarball (patch mode)
+- PXA978U_Android_Platform_<VERSION>_prebuilt_bin.tgz	:Pre-built bin binaries
+- PXA978U_Android_Platform_<VERSION>_src.tgz        	:Source code tarball (patch mode)
   - setup_android.sh                                 	:Script help to setup Android code base from the xxx_src.tgz and xxx_patches.tgz
   - android_patches.tgz                              	:Marvell patches to Android Projects
   - android_src.tgz                                  	:Source code for projects added by Marvell
@@ -227,6 +228,7 @@ GStreamer Path:
   - kernel_src.tgz                                   	:Kernel base source code
   - uboot_patches.tgz                                	:Marvell patches to uboot_src.tgz
   - uboot_src.tgz                                    	:Uboot base source code
+  - obm_src.tgz                                    	    :OBM base source code
 - manifest.xml						:Marvell manifest
 - Software_Downloader.zip				:Software downloader for Microsfot Windows
 
@@ -339,7 +341,7 @@ Choose partition 0
 	PinMuxData.bin		    		--> address 0xC80000
 	u-boot.bin		    		--> address 0x1780000
 	zImage			    		--> address 0x1880000
-	Arbel_REL7_PMD2NONE.bin			--> address 0x1F80000
+	Arbel.bin   			--> address 0x1F80000
 	NEVO_C0_Flash.bin			--> address 0x2580000
 	plugin_LYRA5V03_BANDS128.bin		--> address 0x2740000
 
@@ -359,7 +361,7 @@ Software downloader is a tool for the images burning.
 	system.img
 	userdata.img
 	PinMuxData.bin
-	Arbel_REL7_PMD2NONE.bin
+	Arbel.bin
 	NEVO_C0_Flash.bin
 	plugin_LYRA5V03_BANDS128.bin
 	pxafs_lyra_ext2.img
