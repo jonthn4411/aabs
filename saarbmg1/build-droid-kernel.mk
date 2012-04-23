@@ -115,10 +115,10 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)cp -p -r $(SRC_DIR)/out/target/product/$$(private_device)/system_ext3.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/out/target/product/$$(private_device)/system_onenand.img $(OUTPUT_DIR)/$$(private_product)
 	$(log) "  done"
-        $(hide)echo "    packge symbols system files..."
-        $(hide)cp -a $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/symbols/system $(OUTPUT_DIR)/$$(private_product)
-        $(hide)cd $(OUTPUT_DIR)/$$(private_product) && tar czf symbols_system.tgz system && rm system -rf
-        $(log) "  done for package symbols system files. "
+	$(hide)echo "    packge symbols system files..."
+	$(hide)cp -a $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/symbols/system $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cd $(OUTPUT_DIR)/$$(private_product) && tar czf symbols_system.tgz system && rm system -rf
+	$(log) "  done for package symbols system files. "
 ##!!## first time publish: all for two
 PUBLISHING_FILES+=$$(product)/userdata_ext3.img:m:md5
 PUBLISHING_FILES+=$$(product)/system_ext3.img:m:md5
