@@ -1,4 +1,6 @@
 
+KERNEL_OUT:=$(KERNEL_OUT)/$(TARGET_PRODUCT)
+
 .PHONY: kernel
 kernel:
 	$(log) "KERNEL: Starting to build..."
@@ -8,18 +10,18 @@ kernel:
 		cd $(SRC_DIR)/kernel && make clean all 
 	$(log) "KERNEL: Copying output files..."
 	$(hide)mkdir -p $(OUTPUT_DIR)/prebuilt
-	$(hide)cp $(SRC_DIR)/kernel/out/uImage.smp          $(OUTPUT_DIR)/prebuilt/uImage.smp
-	$(hide)cp $(SRC_DIR)/kernel/out/uImage_recovery.smp $(OUTPUT_DIR)/prebuilt/uImage_recovery.smp
-	$(hide)cp $(SRC_DIR)/kernel/out/uImage.cm           $(OUTPUT_DIR)/prebuilt/uImage.cm
-	$(hide)cp $(SRC_DIR)/kernel/out/uImage_recovery.cm  $(OUTPUT_DIR)/prebuilt/uImage_recovery.cm
-	$(hide)cp $(SRC_DIR)/kernel/out/rdinit              $(OUTPUT_DIR)/prebuilt
+	$(hide)cp $(KERNEL_OUT)/uImage.smp          $(OUTPUT_DIR)/prebuilt/uImage.smp
+	$(hide)cp $(KERNEL_OUT)/uImage_recovery.smp $(OUTPUT_DIR)/prebuilt/uImage_recovery.smp
+	$(hide)cp $(KERNEL_OUT)/uImage.cm           $(OUTPUT_DIR)/prebuilt/uImage.cm
+	$(hide)cp $(KERNEL_OUT)/uImage_recovery.cm  $(OUTPUT_DIR)/prebuilt/uImage_recovery.cm
+	$(hide)cp $(KERNEL_OUT)/rdinit              $(OUTPUT_DIR)/prebuilt
 	$(hide)cp $(SRC_DIR)/kernel/rdroot/rdroot.tgz       $(OUTPUT_DIR)/prebuilt
 	$(hide)cp $(SRC_DIR)/kernel/kernel/vmlinux          $(OUTPUT_DIR)/prebuilt
 	$(hide)cp $(SRC_DIR)/kernel/kernel/System.map       $(OUTPUT_DIR)/prebuilt
 	$(hide)rm -fr $(OUTPUT_DIR)/prebuilt/modules
-	$(hide)cp -r $(SRC_DIR)/kernel/out/modules $(OUTPUT_DIR)/prebuilt/modules
+	$(hide)cp -r $(KERNEL_OUT)/modules $(OUTPUT_DIR)/prebuilt/modules
 	$(hide)cd $(OUTPUT_DIR)/prebuilt && tar czf modules.tgz modules/ 
-	$(hide)cd $(SRC_DIR)/kernel/out/ && \
+	$(hide)cd $(KERNEL_OUT)/ && \
 	        tar cvf telephony.tar telephony/ && \
 	        cp telephony.tar $(OUTPUT_DIR)/prebuilt
 	$(log) "KERNEL: Done:)"
@@ -38,7 +40,7 @@ PUBLISHING_FILES+=prebuilt/telephony.tar:m:md5
 #fixme(jason):all clean targets not verifeid yet
 .PHONEY: clean_kernel
 clean_kernel:
-	rm -rf $(SRC_DIR)/kernel/out
+	rm -rf $(KERNEL_OUT)
 
 build_device: kernel
 
