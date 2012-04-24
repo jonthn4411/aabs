@@ -75,6 +75,7 @@ pkgsrc: output_dir get_source_for_pkg
 
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
 	$(hide)cp $(BOARD)/ReleaseNotes-$(ANDROID_VERSION).txt $(OUTPUT_DIR)/ReleaseNotes.txt
+	$(hide)cp $(BOARD)/release_package_list $(OUTPUT_DIR)/
 	$(log) "  done."
 
 
@@ -93,6 +94,7 @@ PUBLISHING_FILES2+=obm_src.tgz:src:m:md5
 PUBLISHING_FILES2+=marvell_manifest.xml:src:m
 PUBLISHING_FILES2+=setup_android.sh:src:m
 PUBLISHING_FILES+=ReleaseNotes.txt:o
+PUBLISHING_FILES+=release_package_list:o
 
 
 
