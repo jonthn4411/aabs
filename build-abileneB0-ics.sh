@@ -2,8 +2,9 @@
 export ABS_SOC=abileneB0
 export ABS_BUILDHOST_DEF=buildhost.def
 
-# Used only in droid.mk
 export ABS_DROID_PRODUCT=abilene
+
+# Used only in droid.mk
 export ABS_DROID_VARIANT=userdebug
 export ABS_DROID_TYPE=release
 
