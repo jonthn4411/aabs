@@ -5,10 +5,9 @@ BOOT_SRC_DIR:=boot
 
 define define-bootloader-target
 
-BOOT_OUT_DIR:=$$(BOOT_SRC_DIR)/out/$(1)
-BOOT_OUT_CM_DIR:=$$(BOOT_OUT_DIR)/CM
-BOOT_OUT_NOR_DIR:=$$(BOOT_OUT_DIR)/NORMAL
-
+bootloader_$(1): BOOT_OUT_DIR:=$$(BOOT_SRC_DIR)/out/$(1)
+bootloader_$(1): BOOT_OUT_CM_DIR:=$$(BOOT_OUT_DIR)/CM
+bootloader_$(1): BOOT_OUT_NOR_DIR:=$$(BOOT_OUT_DIR)/NORMAL
 bootloader_$(1):
 	$$(log) "[BOOTLOADER]Starting to build all bootloader images"
 	$$(hide)cd $$(SRC_DIR) && \

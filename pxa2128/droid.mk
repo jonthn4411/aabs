@@ -2,7 +2,7 @@
 .PHONY: droid
 
 define define-droid-target
-DROID_OUT:=$$(SRC_DIR)/out/target/product/$(1)
+droid_$(1): DROID_OUT:=$$(SRC_DIR)/out/target/product/$(1)
 droid_$(1):
 	$$(log) "DROID: Starting to build..."
 	$$(hide)cd $$(SRC_DIR) && \
