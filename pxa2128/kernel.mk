@@ -17,7 +17,7 @@ kernel_build:
 	$(hide)mkdir -p $(OUTPUT_DIR)/$(SUPPER_PRODUCT)
 	$(hide)cp $(KERNEL_OUT)/telephony.tar $(OUTPUT_DIR)/$(SUPPER_PRODUCT)/
 
-#kernel: kernel_build
+kernel: kernel_build
 
 PUBLISHING_FILES+=$(SUPPER_PRODUCT)/telephony.tar:m:md5
 
