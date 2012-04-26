@@ -7,6 +7,6 @@ export ABS_BUILDHOST_DEF=buildhost.def
 export ABS_DROID_VARIANT=userdebug
 export ABS_DROID_TYPE=release
 
-export ABS_BUILD_DEVICES="abilene yellowstone"
+export ABS_BUILD_DEVICES="orchid abilene yellowstone"
 core/autobuild.sh $*
 
