@@ -1,5 +1,5 @@
 
-KERNEL_OUT:=$(SRC_DIR)/kernel/out/$(ABS_DROID_PRODUCT)
+KERNEL_OUT:=$(SRC_DIR)/kernel/out
 
 .PHONY: kernel
 kernel:
