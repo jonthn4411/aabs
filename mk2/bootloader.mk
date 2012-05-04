@@ -23,9 +23,6 @@ PUBLISHING_FILES+=prebuilt/emmc/dtim_platform_primary.bin:m:md5
 PUBLISHING_FILES+=prebuilt/emmc/dtim_platform_recovery.bin:m:md5
 PUBLISHING_FILES+=prebuilt/emmc/u-boot_recovery.bin:m:md5
 
-PUBLISHING_FILES+=prebuilt/emmc_cm/u-boot.bin:m:md5
-PUBLISHING_FILES+=prebuilt/emmc_cm/Wtm_rel_mmp3.bin:m:md5
-
 .PHONY:bootloader
 bootloader:
 	$(log) "[BOOTLOADER]Starting to build all bootloader images"
