@@ -179,6 +179,7 @@ build_telephony_$$(product): build_droid_$$(product)
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
+	make clean_telephony
 	make telephony
 
 	$$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
