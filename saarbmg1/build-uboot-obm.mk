@@ -23,6 +23,7 @@ define define-build-uboot-obm
 PUBLISHING_FILES_$(1)+=$(1)/saarbmg_symbols.tgz:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/saarbmg1_bin.tgz:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/saarbmg2_bin.tgz:o:md5
+PUBLISHING_FILES_$(1)+=$(1)/saarbmg2_plus_bin.tgz:o:md5
 PUBLISHING_FILES_$(1)+=$(1)/saarbmg_Diag_DB.tgz:o:md5
 
 
@@ -35,6 +36,7 @@ build_uboot_obm_$(1):
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)/saarbmg_symbols
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)/saarbmg1_bin
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)/saarbmg2_bin
+	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(1)/saarbmg2_plus_bin
 
 	$$(log) "start to copy uboot and obm files"
 
@@ -56,11 +58,19 @@ build_uboot_obm_$(1):
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot.256k.saarb			 $$(OUTPUT_DIR)/$(1)/saarbmg2_bin
 	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/obm_2k.bin.saarbmg2			 $$(OUTPUT_DIR)/$(1)/saarbmg2_bin
 
+	#-----------------------------
+	# copy saarbmg2_plus images
+	#-----------------------------
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot.256k_recovery.saarb	 $$(OUTPUT_DIR)/$(1)/saarbmg2_plus_bin
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/u-boot.256k.saarb			 $$(OUTPUT_DIR)/$(1)/saarbmg2_plus_bin
+	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/obm_2k.bin.saarbmg2_plus	 $$(OUTPUT_DIR)/$(1)/saarbmg2_plus_bin
+
 	##$$(hide)cp $$(SRC_DIR)/out/target/product/$$(ABS_PRODUCT_NAME)/$$(MBR_BIN) $$(OUTPUT_DIR)/$(1)
 	cd $$(OUTPUT_DIR)/$(1) && \
 	tar czf saarbmg_symbols.tgz  saarbmg_symbols && \
 	tar czf saarbmg1_bin.tgz saarbmg1_bin && \
 	tar czf saarbmg2_bin.tgz saarbmg2_bin && \
+	tar czf saarbmg2_plus_bin.tgz saarbmg2_plus_bin && \
 	tar czf saarbmg_Diag_DB.tgz saarbmg_Diag_DB
 	$$(log) "  done."
 

@@ -134,6 +134,7 @@ package_droid_slc_$(1)_$(2):
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)/saarbmg1_bin/Convert
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)/saarbmg2_bin/Convert
+	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)/saarbmg2_plus_bin/Convert
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)/saarbmg_symbols
 	
 	$$(hide)cd $$(OUTPUT_DIR)/$(2) && tar xzf modules_android_slc.tgz
@@ -166,6 +167,15 @@ package_droid_slc_$(1)_$(2):
 	cp -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/build.prop	$$(OUTPUT_DIR)/$(2)/saarbmg2_bin && \
 	cp -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img			$$(OUTPUT_DIR)/$(2)/saarbmg2_bin && \
 	cp -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery.img $$(OUTPUT_DIR)/$(2)/saarbmg2_bin/ramdisk-recovery.img
+
+	#-----------------------------
+	# copy saarbmg2_plus images
+	#-----------------------------
+	cp -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system_nand.img 	$$(OUTPUT_DIR)/$(2)/saarbmg2_plus_bin/Convert/system_nand.img && \
+	cp -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/userdata_nand.img $$(OUTPUT_DIR)/$(2)/saarbmg2_plus_bin/Convert/userdata_nand.img
+	cp -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/system/build.prop	$$(OUTPUT_DIR)/$(2)/saarbmg2_plus_bin && \
+	cp -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk.img			$$(OUTPUT_DIR)/$(2)/saarbmg2_plus_bin && \
+	cp -p $$(SRC_DIR)/out/target/product/$$(DROID_PRODUCT)/ramdisk-recovery.img $$(OUTPUT_DIR)/$(2)/saarbmg2_plus_bin/ramdisk-recovery.img
 
 	#-----------------------------
 	# Copy Android symbol
@@ -217,6 +227,18 @@ package_droid_slc_$(1)_$(2):
 	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/saarbmg2/TAVOR_PV2_C1_M09_AI_Flash.bin $$(OUTPUT_DIR)/$(2)/saarbmg2_bin/TAVOR_PV2_C1_M09_AI_Flash.bin
 	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/saarbmg2/TAVOR_PV2_E0_M11_AI_Flash.bin $$(OUTPUT_DIR)/$(2)/saarbmg2_bin/TAVOR_PV2_E0_M11_AI_Flash.bin
 	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/saarbmg2/TAVOR_PV2_E0_M14_AI_Flash.bin $$(OUTPUT_DIR)/$(2)/saarbmg2_bin/TAVOR_PV2_E0_M14_AI_Flash.bin
+
+	#-----------------------------
+	# copy telephony saarbmg2_plus images
+	#-----------------------------
+	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/saarbmg2_plus/Convert/pxafs_lyra.img.nand 	$$(OUTPUT_DIR)/$(2)/saarbmg2_plus_bin/Convert/pxafs_lyra.img.nand && \
+	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/saarbmg2_plus/Convert/nvm.img.nand 		$$(OUTPUT_DIR)/$(2)/saarbmg2_plus_bin/Convert/nvm.img.nand
+
+	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/saarbmg2_plus/saarb_mg2_plus_gb_lyra.blf 	$$(OUTPUT_DIR)/$(2)/saarbmg2_plus_bin/saarb_mg2_plus_gb_lyra.blf
+	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/saarbmg2_plus/Arbel_LYRA3T4.bin 			$$(OUTPUT_DIR)/$(2)/saarbmg2_plus_bin/Arbel_LYRA3T4.bin
+	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/saarbmg2_plus/plugin_LYRA3_T4_B1_128.bin 	$$(OUTPUT_DIR)/$(2)/saarbmg2_plus_bin/plugin_LYRA3_T4_B1_128.bin
+	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/saarbmg2_plus/mep2.bin 					$$(OUTPUT_DIR)/$(2)/saarbmg2_plus_bin/mep2.bin
+	cp -p $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/saarbmg2_plus/TAVOR_PV2_E0_M14_AI_Flash.bin $$(OUTPUT_DIR)/$(2)/saarbmg2_plus_bin/TAVOR_PV2_E0_M14_AI_Flash.bin
 
 	$$(log) "  done for telephony build"
 
@@ -324,15 +346,17 @@ build_kernel_$$(os)_$$(storage)_$(2): output_dir $$(if $$(findstring root,$$(roo
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)/saarbmg_symbols
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)/saarbmg1_bin
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)/saarbmg2_bin
+	$$(hide)mkdir -p $$(OUTPUT_DIR)/$(2)/saarbmg2_plus_bin
 
 	$$(log) "    copy kernel and module files ..."
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage $$(OUTPUT_DIR)/$(2)/zImage.$$(private_os).$$(private_storage) 
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage $$(OUTPUT_DIR)/$(2)/saarbmg1_bin/zImage
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage $$(OUTPUT_DIR)/$(2)/saarbmg2_bin/zImage
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage $$(OUTPUT_DIR)/$(2)/saarbmg2_plus_bin/zImage
 	
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage_maintenance $$(OUTPUT_DIR)/$(2)/saarbmg1_bin/zImage_maintenance
 	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage_maintenance $$(OUTPUT_DIR)/$(2)/saarbmg2_bin/zImage_maintenance
-
+	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage_maintenance $$(OUTPUT_DIR)/$(2)/saarbmg2_plus_bin/zImage_maintenance
 	$$(hide)gzip -cf $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/vmlinux 	> $$(OUTPUT_DIR)/$(2)/saarbmg_symbols/vmlinux.gz
 	$$(hide)gzip -cf $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/System.map > $$(OUTPUT_DIR)/$(2)/saarbmg_symbols/System.map.gz
 	
