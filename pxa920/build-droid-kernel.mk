@@ -9,7 +9,6 @@ DROID_VARIANT:=$(ABS_DROID_VARIANT)
 KERNELSRC_TOPDIR:=kernel
 DROID_OUT:=out/target/product
 
-OTA_PACKAGE:=dkb-ota-mrvl.zip
 
 define define-clean-droid-kernel-target
 tw:=$$(subst :,  , $(1) )
@@ -216,9 +215,9 @@ build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	make mrvlotapackage -j$(MAKE_JOBS)
 	$(hide)echo "  copy OTA package ..."
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$(OTA_PACKAGE) $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$(private_product)-ota-mrvl.zip $(OUTPUT_DIR)/$$(private_product)
 	$(log) "  done for OTA package build."
-+PUBLISHING_FILES+=$$(product)/$$(OTA_PACKAGE):o:md5
+PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl.zip:o:md5
 endef
 
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
