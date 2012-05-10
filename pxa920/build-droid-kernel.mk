@@ -215,7 +215,7 @@ build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	make mrvlotapackage -j$(MAKE_JOBS)
 	$(hide)echo "  copy OTA package ..."
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$(private_product)-ota-mrvl.zip $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl.zip $(OUTPUT_DIR)/$$(private_product)
 	$(log) "  done for OTA package build."
 PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl.zip:o:md5
 endef
