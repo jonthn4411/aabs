@@ -9,7 +9,7 @@ DROID_VARIANT:=$(ABS_DROID_VARIANT)
 KERNELSRC_TOPDIR:=kernel
 DROID_OUT:=out/target/product
 
-
+OTA_PACKAGE:=dkb-ota-mrvl.zip
 
 define define-clean-droid-kernel-target
 tw:=$$(subst :,  , $(1) )
@@ -47,7 +47,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product) build_telephony_$$(product)
+build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product) build_telephony_$$(product) build_droid_otapackage_$$(product)
 endef
 
 export KERNEL_TOOLCHAIN_PREFIX
@@ -181,9 +181,30 @@ build_telephony_$$(product): build_droid_$$(product)
 	$$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony ]; then cp -a $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/* /$(OUTPUT_DIR)/$$(private_product); fi
 	$(log) "  done."
 endef
+
+define define-build-droid-otapackage
+tw:=$$(subst :,  , $(1) )
+product:=$$(word 1, $$(tw) )
+device:=$$(word 2, $$(tw) )
+.PHONY: build_droid_otapackage_$$(product)
+build_droid_otapackage_$$(product): private_product:=$$(product)
+build_droid_otapackage_$$(product): private_device:=$$(device)
+build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
+	$(log) "[$$(private_product)] building android OTA package ..."
+	$(hide)cd $(SRC_DIR) && \
+	source ./build/envsetup.sh && \
+	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
+	make mrvlotapackage -j$(MAKE_JOBS)
+	$(hide)echo "  copy OTA package ..."
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$(OTA_PACKAGE) $(OUTPUT_DIR)/$$(private_product)
+	$(log) "  done for OTA package build."
++PUBLISHING_FILES+=$$(product)/$$(OTA_PACKAGE):o:md5
+endef
+
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-target,$(bv)) ) \
 				$(eval $(call define-build-telephony-target,$(bv)) ) \
+				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
 )
