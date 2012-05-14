@@ -241,7 +241,7 @@ echo
 echo 'Before the setup process can go on, you need first get a basic version of android.'
 echo 'First, please visit source.android.com to install the repo tool and setup the android build environment'
 echo 'Second, goto the android_working_dir you created and synced the basic code'
-echo '	#repo init -u git://android.git.kernel.org/platform/manifest -b master'
+echo '	#repo init -u https://android.googlesource.com/platform/manifest -b master'
 echo 'Third, switch the code base to marvell code base,'
 echo '	#cp marvell_manifest.xml .repo/manifests/'
 echo '	#repo init -m marvell_manifest.xml'
