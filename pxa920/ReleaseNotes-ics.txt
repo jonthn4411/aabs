@@ -1,8 +1,8 @@
 ==============================================================================
 Marvell PXA920 Android Platform Release for Linux
 Platform README
-Last update: 04/01/2012
-Version: DKBTD ICS Beta3
+Last update: 05/14/2012
+Version: PXA920 ICS Beta3 SP1
 ==============================================================================
 
 1. Platform features
@@ -450,7 +450,7 @@ After a short while, the binary and configuration will be generated under [andro
 You can copy all the files to overwrite [SW_Downloader_Dir] on the host PC.
 
 3.3.7 Building other products
- Please repeat steps 3.3.1 to 3.3.6, and change the product name to pxa920hdkb_def, pxa910dkb_def or pxa910hdkb_def if you need all these products' images
+ Please repeat steps 3.3.1 to 3.3.6, and change the product name to pxa920hdkb_def, pxa920sdkb_def, pxa920hsdkb_def, pxa910dkb_def or pxa910hdkb_def if you need all these products' images
 
 
 3.4 Flashing images and boot system (256MB is set as default)
@@ -458,14 +458,14 @@ Important Notes: Partition table is changed since beta3 release, please erase al
 3.4.1 CP version
         TD Beta6
 3.4.2 Burn following binaries to flash by using Software Downloader. Please see <TVTD_DKB3_0_SWDownloader_GUI_User_Guide.doc>. Please see 4.0 how to enter software downloader mode.
-1)       Please check your board, if the nand ID is JY504 (CS1), you can choose the configuration file:
-TVTD_DKB3_0_Linux_Beta_JY504_JY454_GB.blf
-2)       if the nand ID is JY345(CS2), you can choose the configuration file:
-TVTD_DKB3_0_Linux_Beta_JW345_GB.blf
-3) 	 if the nand ID is Hynix 4G, you can choose the configuration file:
-TVTD_DKB3_0_Linux_Beta_Hynix4G_GB.blf (Notes: TD DKB3.1 A0 board should use this configuration file)
-4) 	 if the nand ID is Micron 4G, you can choose the configuration file:
-TVTD_DKB3_0_Linux_Beta_Micron4G_GB.blf
+device		BLF file
+PXA910		TTC2_DKB3_0_Linux_Beta_Hynix4G_ICS.blf
+PXA920		TVTD_DKB3_0_Linux_Beta_Hynix4G_ICS.blf
+PXA920H		TVTD_LPDDR2_Linux_eMMC_ICS.blf
+PXA910H		TTC2_LPDDR2_Linux_eMMC_ICS_pxa910h.blf
+PXA910HS	TVTD_DKB3_0_Linux_Beta_Hynix4G_ICS_pxa920s.blf
+PXA920HS	TVTD_LPDDR2_Linux_eMMC_ICS_pxa920hs.blf
+
 
     TVTD_DKB3_0_Loader_3_2_13_LINUX.bin                         --> flash address 0x40000
     u-boot.bin                                                  --> flash address 0x80000
