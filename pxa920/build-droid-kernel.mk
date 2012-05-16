@@ -160,7 +160,7 @@ ifeq ($(product),pxa910hdkb_def)
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3.bin:m:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_DIAG.mdb:m:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:m:md5
-PUBLISHING_FILES+=$$(product)/TTC1_M05_AI_A1_Flash.bin:m:md5
+PUBLISHING_FILES+=$$(product)/TTC1_M06_AI_A1_Flash.bin:m:md5
 else
 ifeq ($(product),pxa920sdkb_def)
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3.bin:m:md5
