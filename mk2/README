@@ -142,9 +142,9 @@ Boot the device, and enter the uboot menu.
 >> set autostart no
 
 1) Partition table
->> tftpboot 0x1100000 primary_gpt_8g
+>> tftpboot 0x1100000 primary_gpt_16g
 >> mmc write 0x1100000 0 0x22
->> tftpboot 0x1100000 secondary_gpt_8g
+>> tftpboot 0x1100000 secondary_gpt_16g
 >> mmc write 0x1100000 0xECBFDF 0x21
 
 Please ignore only the following error, since it's not an actual error.
