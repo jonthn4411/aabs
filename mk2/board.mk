@@ -1,7 +1,7 @@
 # (fixme)jason
 # Remove these two variables
 # They are used in orchid/pkg-source.mk
-BOARD:=orchid
+BOARD:=mk2
 ANDROID_VERSION:=ics
 
 .PHONY:build clean

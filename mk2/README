@@ -30,20 +30,20 @@ Files in this folder
 
   obm_src.tgz           OBM source code tar ball. Will be released.
 
--prebuilt folder
+-droid-gcc folder
  Files under droid-gcc folder are built with android-toolchain.
  If this folder is missing, it means that this package wasn't built with google gcc toolchain.
 
 -Kernel and Modules for Android
-  uImage.smp	The kernel image for SMP mode
-  uImage.cm	The kernel image for coremorphall
+  uImage.smp  The kernel image for SMP mode
+  uImage.cm   The kernel image for coremorphall
 
 -Android File Systems
-  ramdisk.img             Android ramdisk image.
-  system.img              Android system image.
-  userdata.img            Android userdata image.
-  update_droid.zip        The update package including the normal kernel, ramdisk, bootloader and system folder.
-  update_recovery.zip     The update package including the recovery kernel, ramdisk and bootloader.
+  ramdisk.img           Android ramdisk image.
+  system.img            Android system image.
+  userdata.img          Android userdata image.
+  update_droid.zip      The update package including normal kernel, ramdisk, bootloader and system folder.
+  update_recovery.zip   The update package including recovery kernel, ramdisk and bootloader.
 
 How to get the 'latest' source code from git server
 =====================================
@@ -61,7 +61,7 @@ How to get the code that the autobuild system uses for daily build and code drop
   1. $ mkdir <android_working_dir>
      $ cd <android_working_dir>
 
-  2. $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git --repo-url=ssh://shgit.marvell.com/git/android/tools/repo
+  2. $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b mk2-ics --repo-url=ssh://shgit.marvell.com/git/android/tools/repo
 
   3. copy 'manifest.xml' from autobuild system or code drop into my_droid_src/.repo/manifests/, name it as whatever you like, say 'my_manifest.xml'.
 
@@ -112,40 +112,26 @@ Burning OBM and Uboot
    2)Choose flash: EMMC Flash
    3)Erase All Blocks
    4)Burn Date Files as follows:
+     Choose partition 0x0,burn:
+     (1)  dtim_platform_primary.bin     address [0x780000]
+     (2)  dtim_platform_recovery.bin    address [0x880000]
+     (3)  uImage.smp                    address [0x980000]
+     (4)  uImage_recovery.smp           address [0x1980000]
+     (5)  ramdisk.img                   address [0x1180000]
+     (6)  ramdisk_recovery.img          address [0x2180000]
      Choose partition 0x1
-        a)Burn "ntim_mk2-xxxxxxxxxxx.bin"/"ntim_orc-xxxxxxxxxxx.bin"                         address [0x000000]
-        b)Burn "Wtm_rel_mmp3.bin"                                                            address [0x020000]
+     (1)  tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_primary.bin /
+          tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_primary.bin   address [0x0]
+     (2)  tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_backup.bin /
+          tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_backup.bin    address [0x1400]
+     (3)  Wtm_rel_mmp3.bin                       address [0x4000]
+     (4)  Wtm_rel_mmp3_backup.bin                address [0x80000]
+     (5)  MMP3_LINUX_ARM_3_3_2_NTZ.bin           address [0x2C000]
+     (6)  MMP3_LINUX_ARM_3_3_2_NTZ_backup.bin    address [0xA8000]
      Choose partition 0x2
-        c)Burn "u-boot.bin"                                                                  address [0x000000]
+     (1)  u-boot.bin                             address [0x0]
+     (2)  u-boot_recovery.bin                    address [0x80000]
 
-About Ntims
-============
-1.For normal user:
-  1)ntim.bin.tar is ntim tar file and is droid/emmc  
-  2)Prefered ntims are as follows:
-    mk2/ntim_mk2-1063-1063-532-532-399-399-399-200__4_1_dm_256kinterleave_400_1250mv.bin
-
-2.For developer who use coremorphall:
-  ntim.bin.tar is ntim tar file and is droid/emmc_cm
-
-3.The naming meaning for NTIM binary
-  ntim_<board>-<mp1>-<mp2>-<mm>-<aclk>-<ddr1>-<ddr2>-<axi1>-<axi2>__<ppname>_<ddrcfgname>_<voltage>.bin
-    for example:
-  ntim_ylst_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1181mv.bin
-  Device: ylst_dis (yellowstone discrete)
-  MP1: 797
-  MP2: 797
-  MM:  399
-  ACLK:399
-  DDR1:532
-  DDR2:532
-  AXI1:399
-  AXI2:200
-  PP: 3_2
-  ddrcfgname: signle memory controller, using 400MHz timing
-  voltage 1181mv
-
-  
 Boot up Android on eMMC
 =====================================
 
@@ -153,7 +139,6 @@ Boot the device, and enter the uboot menu.
 
 0) By default, the initial device is set to eMMC.
    You can run the following struction to make sure:
->> mfpch emmc
 >> set autostart no
 
 1) Partition table
