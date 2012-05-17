@@ -167,7 +167,7 @@ ERROR: can't get kernel image
 
 5) user data
 >> tftpboot 0x1100000 userdata.img
->> unsparse mmc 0 0x1100000 0x4AB80000 0xA0000000
+>> unsparse mmc 0 0x1100000 0x4AB80000 0x9FFFC000
 
 After done, power-off and power-on again to boot mmp3 from emmc.
 
