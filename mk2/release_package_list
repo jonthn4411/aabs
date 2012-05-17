@@ -10,8 +10,8 @@ prebuilt/emmc/u-boot.bin mk2/prebuilt_bin/u-boot.bin
 prebuilt/emmc/u-boot_recovery.bin mk2/prebuilt_bin/u-boot_recovery.bin
 prebuilt/emmc/Wtm_rel_mmp3.bin mk2/prebuilt_bin/Wtm_rel_mmp3.bin
 prebuilt/emmc/Wtm_rel_mmp3_backup.bin mk2/prebuilt_bin/Wtm_rel_mmp3_backup.bin
-prebuilt/primary_gpt_8g mk2/prebuilt_bin/primary_gpt_8g
-prebuilt/secondary_gpt_8g mk2/prebuilt_bin/secondary_gpt_8g
+prebuilt/primary_gpt_16g mk2/prebuilt_bin/primary_gpt_16g
+prebuilt/secondary_gpt_16g mk2/prebuilt_bin/secondary_gpt_16g
 prebuilt/uImage.smp mk2/prebuilt_bin/uImage.smp
 prebuilt/uImage_recovery.smp mk2/prebuilt_bin/uImage_recovery.smp
 prebuilt/ramdisk.img mk2/prebuilt_bin/ramdisk.img
