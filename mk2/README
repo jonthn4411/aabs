@@ -145,7 +145,7 @@ Boot the device, and enter the uboot menu.
 >> tftpboot 0x1100000 primary_gpt_16g
 >> mmc write 0x1100000 0 0x22
 >> tftpboot 0x1100000 secondary_gpt_16g
->> mmc write 0x1100000 0xECBFDF 0x21
+>> mmc write 0x1100000 0x1DA9FDF 0x21
 
 Please ignore only the following error, since it's not an actual error.
 ----------error begins----------------
