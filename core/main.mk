@@ -49,7 +49,9 @@ OUTPUT_DIR:=$(OUTPUT_DIR).$(ABS_RELEASE_NAME)
 endif
 
 #number of concurrent jobs for make
-MAKE_JOBS:=16
+JOBS_FACTOR:=1.5
+CPUCORES:=$(shell $(TOP_DIR)/tools/cpucount.sh)
+MAKE_JOBS:=$(shell echo "scale=0; $(CPUCORES)*$(JOBS_FACTOR)/1" | bc)
 
 #We must initialize PUBLISHING_FILES_XXX to a simply expanded flavor variable
 PUBLISHING_FILES:=
