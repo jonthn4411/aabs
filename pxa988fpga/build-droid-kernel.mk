@@ -1,8 +1,7 @@
 #check if the required variables have been set.
 #$(call check-variables,BUILD_VARIANTS)
 
-DEMO_MEDIA_DIR:=/autobuild/demomedia
-MY_SCRIPT_DIR:=$(TOP_DIR)/pxa988fpga
+MY_SCRIPT_DIR:=$(TOP_DIR)/$(ABS_SOC)
 
 DROID_PRODUCT:=pxa988fpga
 KERNEL_IMAGE:=uImage

@@ -17,12 +17,12 @@ include core/changelog.mk
 #
 # Include goal for package source code.
 #
-include $(BOARD)/pkg-source.mk
+include $(ABS_SOC)/pkg-source.mk
 
 #
 # Include goal for build android and kernels.
 #
-include $(BOARD)/build-droid-kernel.mk
+include $(ABS_SOC)/build-droid-kernel.mk
 
 #define the combined goal to include all build goals
 define define-build
