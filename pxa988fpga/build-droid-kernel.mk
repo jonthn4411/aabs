@@ -24,7 +24,7 @@ clean_droid_$$(product):
 	$(log) "clean android ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh &&
-	chooseproduct $(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && choosevariant $(DROID_VFP) && \
+	chooseproduct $(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && choosevfp $(DROID_VFP) && \
 	make clean
 	$(log) "    done"
 
@@ -70,13 +70,13 @@ build_kernel_$$(product): output_dir
 	$(log) "[$$(private_product)]starting to build kernel ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
-	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && choosevariant $(DROID_VFP) && \
+	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && choosevfp $(DROID_VFP) && \
 	cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
 	make kernel
 	$(log) "[$$(private_product)]starting to build modules ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
-	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && choosevariant $(DROID_VFP) && \
+	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && choosevfp $(DROID_VFP) && \
 	cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
 	make modules
 	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
@@ -102,7 +102,7 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(log) "[$$(private_product)] building android source code ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
-	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && choosevariant $(DROID_VFP) && \
+	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && choosevfp $(DROID_VFP) && \
 	make -j8
 
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/root ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/root; fi
@@ -119,7 +119,7 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/* $(OUTPUT_DIR)/$$(private_product)/nfsroot/
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system $(OUTPUT_DIR)/$$(private_product)/nfsroot/
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/data $(OUTPUT_DIR)/$$(private_product)/nfsroot/
-	$(hide)cd $(OUTPUT_DIR)/$$(private_product) && tar czf nfsroot.tgz nfsroot && rm nfsroot-rf
+	$(hide)cd $(OUTPUT_DIR)/$$(private_product) && tar czf nfsroot.tgz nfsroot && rm nfsroot -rf
 	$(log) "  done"
 
 	$(hide)echo "    packge symbols system files..."
