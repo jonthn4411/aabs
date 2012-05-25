@@ -1,4 +1,4 @@
-ABS_BUILD_DEVICES:=pxa988fpga
+ABS_BUILD_DEVICES := pxa988fpga:pxa988fpga
 BOARD:=pxa988fpga
 ANDROID_VERSION:=ics
 PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
@@ -38,7 +38,7 @@ device:=$$(word 2, $$(tw) )
 
 build_device_$$(product): private_product:=$$(product)
 build_device_$$(product): private_device:=$$(device)
-build_device_$$(product): build_droid_kernel_$$(product) build_uboot_obm_$$(product)
+build_device_$$(product): build_droid_kernel_$$(product)
 build_device: build_device_$$(product)
 endef
 
@@ -53,7 +53,7 @@ product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 clean_device_$$(product): private_product:=$$(product)
 clean_device_$$(product): private_device:=$$(device)
-clean_device_$$(product): clean_uboot_obm_$$(product) clean_droid_kernel_$$(product)
+clean_device_$$(product): clean_droid_kernel_$$(product)
 clean_device:clean_device_$$(product)
 endef
 $(foreach bv, $(ABS_BUILD_DEVICES), $(eval $(call define-clean-device,$(bv) ) ) )

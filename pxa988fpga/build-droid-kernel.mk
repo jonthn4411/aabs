@@ -85,7 +85,7 @@ build_kernel_$$(product): output_dir
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/System.map $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/modules; fi &&\
 	mkdir -p $(OUTPUT_DIR)/$$(private_product)/modules
-	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/modules/* $(OUTPUT_DIR)/$$(private_product)/modules
+	$(hide)rsync -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/modules $(OUTPUT_DIR)/$$(private_product)/modules
 	$(log) "  done."
 endef
 
@@ -112,6 +112,7 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/build.prop $(OUTPUT_DIR)/$$(private_product)
 	$(log) "  done"
 
 	$(hide)echo "    packge nfs root ..."
