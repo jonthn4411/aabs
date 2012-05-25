@@ -115,7 +115,7 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(log) "  done"
 
 	$(hide)echo "    packge nfs root ..."
-    $(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)/nfsroot
+	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)/nfsroot
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/* $(OUTPUT_DIR)/$$(private_product)/nfsroot/
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system $(OUTPUT_DIR)/$$(private_product)/nfsroot/
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/data $(OUTPUT_DIR)/$$(private_product)/nfsroot/
