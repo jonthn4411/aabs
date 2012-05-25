@@ -1,3 +1,4 @@
+export ABS_SOC=pxa988fpga
 export ABS_BOARD=pxa988fpga
 export ABS_DROID_BRANCH=ics
 export ABS_PRODUCT_NAME=pxa988fpga
