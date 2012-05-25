@@ -1,0 +1,6 @@
+MANIFEST_BRANCH:=pxa988fpga-ics
+BOARD:=pxa988fpga
+ANDROID_VERSION:=ics
+PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
+
+include pxa988fpga/board.mk
