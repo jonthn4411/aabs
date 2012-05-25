@@ -29,7 +29,7 @@ function gen_init_nfs_sh()
 }
 
 echo "  modifying init.rc..." &&
-sed -i "/^[ tab]*mount[ tab]*.\+[ tab]*\(\/system\|\/data\|\/cache\|\/marvell\)/ s/mount/#(for nfs)mount/" init.rc &&
+sed -i "/^[ tab]*mount[ tab]*.\+[ tab]*\(\/system\|\/data\|\/cache\)/ s/mount/#(for nfs)mount/" init.rc &&
 sed -i "/^[ tab]*mount rootfs rootfs/ s/mount/#(for nfs)mount/" init.rc &&
 sed -i '/^[ tab]*mkdir \/sdcard 0000 system system/ {
 s/mkdir/#(for nfs)mkdir/ 
@@ -63,6 +63,7 @@ gen_init_nfs_sh init.nfs.sh &&
 chmod 0755 init.nfs.sh &&
 
 #don't mount sdcard in vold for NFS
+echo "  disable mount sdcard in vold"
 if [ -e "system/etc/vold.conf" ]; then
 sed -i '/^[ tab]*volume_sdcard/,/\}/ s/\(.*\)/#\1/' system/etc/vold.conf
 else
@@ -70,10 +71,6 @@ if [ -e "system/etc/vold.fstab" ]; then
 sed -i '/[ tab]*dev_mount sdcard \/mnt\/sdcard/ s/dev_mount/#(for nfs)dev_mount/' system/etc/vold.fstab
 fi
 fi
-
-#disable adb in NFS
-sed -i "s/insmod g_android.ko/#insmod g_android.ko/g" marvell/tel/run_adb.sh
-sed -i "s/setprop/#setprop/g" marvell/tel/run_adb.sh
 
 if [ $? -ne 0 ]; then
   exit 1

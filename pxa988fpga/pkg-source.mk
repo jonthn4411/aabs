@@ -60,20 +60,11 @@ pkgsrc: output_dir get_source_for_pkg
 	$(hide)echo "  package kernel source code..."
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_kernel_src_patch.sh $(KERNEL_BASE_COMMIT)
 
-	$(hide)echo "  package android source code..."
+	$(hide)echo "  package android source code...,$(ANDROID_VERSION) $(BOARD) "
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(TOP_DIR)/core
 
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
-	$(hide)if [ "$(ANDROID_VERSION)" = "ics" ];then \
-			cp $(BOARD)/ReleaseNotes.ics $(OUTPUT_DIR)/ReleaseNotes.txt && \
-			cp $(BOARD)/README.ics $(OUTPUT_DIR)/README; \
-		elif [ "$(ANDROID_VERSION)" = "gingerbread" ]; then \
-			cp $(BOARD)/ReleaseNotes.gb $(OUTPUT_DIR)/ReleaseNotes.txt && \
-			cp $(BOARD)/README.gb $(OUTPUT_DIR)/README; \
-		else \
-			cp $(BOARD)/ReleaseNotes.txt $(OUTPUT_DIR)/ && \
-			cp $(BOARD)/README $(OUTPUT_DIR)/README; \
-		fi
+	$(hide)cp $(BOARD)/ReleaseNotes-$(ANDROID_VERSION).txt $(OUTPUT_DIR)/ReleaseNotes.txt
 	$(log) "  done."
 
 
@@ -81,11 +72,12 @@ pkgsrc: output_dir get_source_for_pkg
 #m:means mandatory
 #o:means optional
 #md5: need to generate md5 sum
-PUBLISHING_FILES+=droid_all_src.tgz:o:md5 
-PUBLISHING_FILES+=android_src.tgz:m:md5 
-PUBLISHING_FILES+=android_patches.tgz:m:md5 
-PUBLISHING_FILES+=kernel_src.tgz:m:md5 
-PUBLISHING_FILES+=kernel_patches.tgz:m:md5 
-PUBLISHING_FILES+=marvell_manifest.xml:m
-PUBLISHING_FILES+=setup_android.sh:m
-PUBLISHING_FILES+=ReleaseNotes.txt:m
+PUBLISHING_FILES2+=droid_all_src.tgz:src:o:md5 
+PUBLISHING_FILES2+=android_src.tgz:src:m:md5 
+PUBLISHING_FILES2+=android_patches.tgz:src:m:md5 
+PUBLISHING_FILES2+=kernel_src.tgz:src:m:md5 
+PUBLISHING_FILES2+=kernel_patches.tgz:src:m:md5 
+PUBLISHING_FILES2+=marvell_manifest.xml:src:m
+PUBLISHING_FILES2+=setup_android.sh:src:m
+PUBLISHING_FILES+=ReleaseNotes.txt:o
+
