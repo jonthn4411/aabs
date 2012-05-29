@@ -153,10 +153,14 @@ Wrong Image Format for tftpboot command
 ERROR: can't get kernel image
 ----------error ends------------------
 
+Please ignore kernel and ramdisk if you're not using ntim images.
+(This README only tells you how to burn tim images not ntim's.)
 2) Kernel image:
 >> tftp 0x1100000 uImage.smp
 >> mmc write 0x1100000 0x4c00 0x4000
 
+Please ignore kernel and ramdisk if you're not using ntim images.
+(This README only tells you how to burn tim images not ntim's.)
 3) ramdisk
 >> tftpboot 0x1100000 ramdisk.img
 >> mmc write 0x1100000 0x8c00 0x4000
