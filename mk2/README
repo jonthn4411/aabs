@@ -1,21 +1,8 @@
 Files in this folder
 ====================
--Change logs and checksum file
-  changelog.build       GIT change log of each project since last build.
-  changelog.day         GIT change log of each project since yesterday.
-  changelog.week        GIT change log of each project since last week.
-  changelog.biweek      GIT change log of each project since 2 weeks ago.
-  changelog.month       GIT change log of each project since a month ago.
-
   checksums.md5 This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
 
--Source codes
- --Internal Use
-  manifest.xml          Saving the GIT commit number of each project used in this build. This is for internal use only.
-  droid_all_src.tgz     Completing source code tar ball, including everything, such as kernel, uboot, obm, android. This is for internal use only.
-
- --External Uses: the below files will be in the release package. To restore the complete source code that is used to build this package, please follow the intructions in Release Notes.
-
+-Source Code
   setup_android.sh  The script that is used to setup the code base of this build from the below tarball. For details about this, please refer to release notes.
 
   kernel_src.tgz        Kernel base source code tar ball.
@@ -29,78 +16,87 @@ Files in this folder
   uboot_patches.tgz     The patches that applied to uboot base source.
 
   obm_src.tgz           OBM source code tar ball. Will be released.
+  rdroot.tgz            root dir before ramdisk is loaded, used to build kernel.
 
--droid-gcc folder
- Files under droid-gcc folder are built with android-toolchain.
- If this folder is missing, it means that this package wasn't built with google gcc toolchain.
+-Prebuilt Images
+  dtim_platform_primary.bin
+  dtim_platform_recovery.bin
+  MMP3_LINUX_ARM_3_3_2_NTZ.bin
+  MMP3_LINUX_ARM_3_3_2_NTZ_backup.bin
+  tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_backup.bin
+  tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_primary.bin
+  tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_backup.bin
+  tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_primary.bin
+  tim/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_backup_b0p.txt
+  tim/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_primary_b0p.txt
+  tim/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_backup_b0p.txt
+  tim/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_primary_b0p.txt
+  Wtm_rel_mmp3.bin          Wtm image
+  Wtm_rel_mmp3_backup.bin   Wtm image for recovery
+  u-boot.bin                uboot image
+  u-boot_recovery.bin       uboot image for recovery
+  primary_gpt_8g            Primary partition table
+  secondary_gpt_8g          Secondary partition table
+  uImage.smp                Kernel image
+  uImage_recovery.smp       Kernel image for recovery
+  ramdisk.img               ramdisk image
+  ramdisk_recovery.img      ramdisk image for recovery
+  system.img                system image for release
+  userdata.img              user data image
+  symbols_lib.tgz           all libs with symbols, can be used in debugging crash log
 
--Kernel and Modules for Android
-  uImage.smp  The kernel image for SMP mode
-  uImage.cm   The kernel image for coremorphall
+How to use the Patch-based Source Code to build android
+=======================================================
+ 1 .Setting Up the Android Working Directory
 
--Android File Systems
-  ramdisk.img           Android ramdisk image.
-  system.img            Android system image.
-  userdata.img          Android userdata image.
-  update_droid.zip      The update package including normal kernel, ramdisk, bootloader and system folder.
-  update_recovery.zip   The update package including recovery kernel, ramdisk and bootloader.
+    Use the steps that follow to set up the code base.
+      note:Check the version of your Git. You can do this by typing git version. If the Git version is 1.6.x.x. You can go ahead with it.
 
-How to get the 'latest' source code from git server
-=====================================
-  1. $ mkdir <android_working_dir>
+           If the Git version is 1.7.1.x or later, open the ~/.gitconfig file and add the following section:
+           [am]
+               keepcr=true
+
+           If the Git version is 1.7.0.x, upgrade your Git to a version later than 1.7.1.x. You can download the package from http://git-scm.com/download.
+    
+   1)Unpack source archive
+     $ cat mk2_Android_Platform_beta_src.0? > source-by-patch.tgz
+     $ tar xzvf source-by-patch.tgz 
+   2)Go to http://source.android.com to download the "repo" tool and set up the build environment for Android.
+   3)Create the Android working directory and download the initial code base.
+     $ mkdir <android_working_dir>
      $ cd <android_working_dir>
+     $ repo init -u https://android.googlesource.com/platform/manifest -b master
+   4)Switch the code base specified by marvell_manifest.xml.
+     $ cp <source-by-patch>/marvell_manifest.xml .repo/manifests/
+     $ repo init -m marvell_manifest.xml
+     $ repo sync
+   5)Apply the Marvell patches:
+     $ cd <source-by-patch>
+     $ ./setup_android.sh <android_working_dir>
 
-  2. $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b mk2-ics --repo-url=ssh://shgit.marvell.com/git/android/tools/repo
-
-  3. $ repo sync
-
-  You may not have the access to our git server. In this situation, contact the administrator of our git server.
-
-How to get the code that the autobuild system uses for daily build and code drop
-=====================================
-  1. $ mkdir <android_working_dir>
-     $ cd <android_working_dir>
-
-  2. $ repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b mk2-ics --repo-url=ssh://shgit.marvell.com/git/android/tools/repo
-
-  3. copy 'manifest.xml' from autobuild system or code drop into my_droid_src/.repo/manifests/, name it as whatever you like, say 'my_manifest.xml'.
-
-  4. In <android_working_dir>, run repo-init again as below
-     $ repo init -m 'my_manifest.xml' # Don't need the full path of my_manifest.xml
-
-  5. $ repo sync
-
-Set up environment before building Android
-=====================================
-     $ cd <android_working_dir>  # replace <android_working_dir> with the actual android source root on your machine
+2. Building the Source Code
+   Use the steps that follow to build Android.
+   0)Setup Compiling Environment
+     $ cd <android_working_dir>  
      $ source build/envsetup.sh
      $ chooseproduct mk2
 
-How to Build Uboot
-=====================================
-  1. Go to the diretory <android_working_dir>/boot
-     $ cd <android_working_dir>/boot
-
-  2. Make uboot
-     $ make all
-
-How to Build kernel and android image
-=====================================
-  1. build kernel and modules
+   1)Build the kernel and modules:
      $ cd <android_working_dir>
      $ cd kernel
      $ make all
+     uImage is located at kernel/out, modules is located at kernel/out/modules
 
-  uImage is located at kernel/out, modules is located at kernel/out/modules
-
-  2. build android
-     $ cd <android_working_dir>
-     $ source build/envsetup.sh
-     $ chooseproduct mk2
+   2)Build android:
+     $ choosevariant <build variant> //Select "user" as the build variant if you are a normal user. Select "userdebug" or       "eng" to specify what you want to do.
      $ export ANDROID_PREBUILT_MODULES=kernel/out/modules
      $ make
 
-  The android ramdisk.img, system.img and userdata.img are located at out/target/product/mk2
+   3)Build U-Boot
+     $ cd <android_working_dir>/boot  
+     $ make all
+
+   The android ramdisk.img, system.img and userdata.img are located at out/target/product/mk2
 
 Burning OBM and Uboot
 =====================
@@ -120,17 +116,22 @@ Burning OBM and Uboot
      (5)  ramdisk.img                   address [0x1180000]
      (6)  ramdisk_recovery.img          address [0x2180000]
      Choose partition 0x1
-     (1)  tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_primary.bin /
-          tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_primary.bin   address [0x0]
-     (2)  Wtm_rel_mmp3.bin                       address [0x4000]
-     (3)  MMP3_LINUX_ARM_3_3_2_NTZ.bin           address [0x2C000]
-     (4)  u-boot.bin                             address [0x80000]
+     (1)  tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_primary.bin    OR
+          tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_primary.bin OR
+          tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_primary_b0p.bin      OR
+          tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_primary_b0p       address [0x0]
+     (2)  tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_backup.bin     OR
+          tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_backup.bin  OR
+          tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_backup_b0p.bin       OR
+          tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_backup_b0p.bin    address [0x1400]
+          Please be sure that you use primary-backup pairs!
+     (3)  Wtm_rel_mmp3.bin                       address [0x4000]
+     (4)  Wtm_rel_mmp3_backup.bin                address [0x80000]
+     (5)  MMP3_LINUX_ARM_3_3_2_NTZ.bin           address [0x2C000]
+     (6)  MMP3_LINUX_ARM_3_3_2_NTZ_backup.bin    address [0xA8000]
      Choose partition 0x2
-     (1)  tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_backup.bin /
-          tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_backup.bin    address [0x0]
-     (2)  Wtm_rel_mmp3_backup.bin                address [0x4000]
-     (3)  MMP3_LINUX_ARM_3_3_2_NTZ_backup.bin    address [0x2C000]
-     (4)  u-boot_recovery.bin                    address [0x80000]
+     (1)  u-boot.bin                             address [0x0]
+     (2)  u-boot_recovery.bin                    address [0x80000]
 
 Boot up Android on eMMC
 =====================================
@@ -153,23 +154,11 @@ Wrong Image Format for tftpboot command
 ERROR: can't get kernel image
 ----------error ends------------------
 
-Please ignore kernel and ramdisk if you're not using ntim images.
-(This README only tells you how to burn tim images not ntim's.)
-2) Kernel image:
->> tftp 0x1100000 uImage.smp
->> mmc write 0x1100000 0x4c00 0x4000
-
-Please ignore kernel and ramdisk if you're not using ntim images.
-(This README only tells you how to burn tim images not ntim's.)
-3) ramdisk
->> tftpboot 0x1100000 ramdisk.img
->> mmc write 0x1100000 0x8c00 0x4000
-
-4) system
+2) system
 >> tftpboot 0x1100000 system.img
 >> unsparse mmc 0 0x1100000 0x2AB80000 0x20000000
 
-5) user data
+3) user data
 >> tftpboot 0x1100000 userdata.img
 >> unsparse mmc 0 0x1100000 0x4AB80000 0x9FFFC000
 
