@@ -397,8 +397,7 @@ if [ "$FLAG_PUBLISH" = "true" ]; then
 	echo "Project:$PRODUCT_NAME" > $LAST_BUILD &&
 	echo "Build-Num:$BUILD_NUM" >> $LAST_BUILD &&
 	echo "Package:$PUBLISH_DIR" >> $LAST_BUILD 
-fi &&
-
+fi
 
 if [ $? -ne 0 ]; then #auto build fail, send an email
 	echo "error encountered!" 2>&1 | tee -a $STD_LOG
