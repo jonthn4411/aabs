@@ -80,12 +80,12 @@ build_kernel_$$(product): output_dir
 	cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
 	make modules
 	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
-	$(hide)cp $(SRC_DIR)/$(KERNELSRC_TOPDIR)/out/uImage $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/out/target/product/$$(private_device)/kernel/uImage $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(KERNELSRC_TOPDIR)/kernel/vmlinux $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(KERNELSRC_TOPDIR)/kernel/System.map $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/modules; fi &&\
 	mkdir -p $(OUTPUT_DIR)/$$(private_product)/modules
-	$(hide)cp $(SRC_DIR)/$(KERNELSRC_TOPDIR)/out/modules/* $(OUTPUT_DIR)/$$(private_product)/modules
+	$(hide)cp $(SRC_DIR)//out/target/product/$$(private_device)/kernel/modules/* $(OUTPUT_DIR)/$$(private_product)/modules
 	$(log) "  done."
 endef
 
@@ -164,7 +164,7 @@ build_telephony_$$(product): build_droid_$$(product)
 
 	$$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
 	$$(log) "    copy telephony files ..."
-	$$(hide)if [ -d $(SRC_DIR)/$(KERNELSRC_TOPDIR)/out/telephony ]; then cp -a $(SRC_DIR)/$(KERNELSRC_TOPDIR)/out/telephony/* /$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -d $(SRC_DIR)/out/target/product/$$(private_device)/telephony ]; then cp -a $(SRC_DIR)/out/target/product/$$(private_device)/telephony/* /$(OUTPUT_DIR)/$$(private_product); fi
 	$(log) "  done."
 endef
 
