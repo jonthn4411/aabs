@@ -1,7 +1,6 @@
 #check if the required variables have been set.
 #$(call check-variables,BUILD_VARIANTS)
 BOOT_SRC_DIR:=boot
-BOOT_OUT_DIR:=$(BOOT_SRC_DIR)/out
 
 OBM_NTIM_1:=obm.bin.saarcnevo
 OBM_NTIM_2:=PinMuxData.bin
@@ -34,10 +33,10 @@ build_uboot_obm_$$(product): build_telephony_$$(product)
 	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
 
 	$(log) "start to copy uboot and obm files"
-	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/u-boot.bin $(OUTPUT_DIR)/$$(private_product)
-	$(hide)if [ -e $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_1) ]; then cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_1) $(OUTPUT_DIR)/$$(private_product); fi
-	$(hide)if [ -e $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_2) ]; then cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_2) $(OUTPUT_DIR)/$$(private_product); fi
-	$(hide)if [ -e $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_3) ]; then cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_3) $(OUTPUT_DIR)/$$(private_product); fi
+	$(hide)cp $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/u-boot.bin $(OUTPUT_DIR)/$$(private_product)
+	$(hide)if [ -e $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(OBM_NTIM_1) ]; then cp $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(OBM_NTIM_1) $(OUTPUT_DIR)/$$(private_product); fi
+	$(hide)if [ -e $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(OBM_NTIM_2) ]; then cp $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(OBM_NTIM_2) $(OUTPUT_DIR)/$$(private_product); fi
+	$(hide)if [ -e $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(OBM_NTIM_3) ]; then cp $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(OBM_NTIM_3) $(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN_2) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN_2) $$(OUTPUT_DIR)/$$(private_product); fi
