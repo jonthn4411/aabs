@@ -10,8 +10,8 @@ kernel:
 		cd $(SRC_DIR)/kernel && make clean all 
 	$(log) "KERNEL: Copying output files..."
 	$(hide)mkdir -p $(OUTPUT_DIR)/prebuilt
-	$(hide)cp $(KERNEL_OUT)/uImage.smp          $(OUTPUT_DIR)/prebuilt/uImage.smp
-	$(hide)cp $(KERNEL_OUT)/uImage_recovery.smp $(OUTPUT_DIR)/prebuilt/uImage_recovery.smp
+	$(hide)cp $(KERNEL_OUT)/uImage          $(OUTPUT_DIR)/prebuilt/uImage
+	$(hide)cp $(KERNEL_OUT)/uImage_recovery $(OUTPUT_DIR)/prebuilt/uImage_recovery
 	$(hide)cp $(KERNEL_OUT)/uImage.cm           $(OUTPUT_DIR)/prebuilt/uImage.cm
 	$(hide)cp $(KERNEL_OUT)/uImage_recovery.cm  $(OUTPUT_DIR)/prebuilt/uImage_recovery.cm
 	$(hide)cp $(KERNEL_OUT)/rdinit              $(OUTPUT_DIR)/prebuilt
@@ -23,8 +23,8 @@ kernel:
 	$(hide)cd $(OUTPUT_DIR)/prebuilt && tar czf modules.tgz modules/ 
 	$(log) "KERNEL: Done:)"
 
-PUBLISHING_FILES+=prebuilt/uImage.smp:m:md5
-PUBLISHING_FILES+=prebuilt/uImage_recovery.smp:m:md5
+PUBLISHING_FILES+=prebuilt/uImage:m:md5
+PUBLISHING_FILES+=prebuilt/uImage_recovery:m:md5
 PUBLISHING_FILES+=prebuilt/uImage.cm:m:md5
 PUBLISHING_FILES+=prebuilt/uImage_recovery.cm:m:md5
 PUBLISHING_FILES+=prebuilt/rdinit:m:md5

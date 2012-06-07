@@ -35,7 +35,7 @@ Files in this folder
  If this folder is missing, it means that this package wasn't built with google gcc toolchain.
 
 -Kernel and Modules for Android
-  uImage.smp	The kernel image for SMP mode
+  uImage	The kernel image for SMP mode
   uImage.cm	The kernel image for coremorphall
 
 -Android File Systems
@@ -173,7 +173,7 @@ ERROR: can't get kernel image
 ----------error ends------------------
 
 2) Kernel image:
->> tftp 0x1100000 uImage.smp
+>> tftp 0x1100000 uImage
 >> mmc write 0x1100000 0x4c00 0x4000
 
 3) ramdisk
