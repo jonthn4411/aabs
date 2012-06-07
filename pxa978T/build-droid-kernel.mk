@@ -189,10 +189,10 @@ build_droid_update_pkgs_$$(product): build_uboot_obm_$$(product)
 		cp -p $(SRC_DIR)/out/target/product/$$(private_device)/$$(private_product)-ota-mrvl-recovery.zip_DDR533 $(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-recovery_DDR533.zip
 	$(log) "  done"
 
-PUBLISHING_FILES+=$$(product)/$$(private_product)-ota-mrvl_DDR400.zip:m:md5
-PUBLISHING_FILES+=$$(product)/$$(private_product)-ota-mrvl-recovery_DDR400.zip:m:md5
-PUBLISHING_FILES+=$$(product)/$$(private_product)-ota-mrvl_DDR533.zip:m:md5
-PUBLISHING_FILES+=$$(product)/$$(private_product)-ota-mrvl-recovery_DDR533.zip:m:md5
+PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl_DDR400.zip:m:md5
+PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl-recovery_DDR400.zip:m:md5
+PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl_DDR533.zip:m:md5
+PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl-recovery_DDR533.zip:m:md5
 endef
 
 
