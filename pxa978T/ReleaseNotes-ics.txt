@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA978 Android Platform Release for Linux
 Platform ReleaseNotes
-Last update: 02/27/2012
+Last update: 06/07/2012
 ==============================================================================
 
 1. Platform features
@@ -229,7 +229,7 @@ GStreamer Path:
   - uboot_src.tgz                                    	:Uboot base source code
   - obm_src.tgz                                         :OBM source code
 - manifest.xml						:Marvell manifest
-- Software_Downloader.zip                              :Software downloader for Microsfot Windows
+- Software_Downloader.zip                               :Software downloader for Microsoft Windows
 
 2. System Requirements
 2.1 Hardware requirements
@@ -273,7 +273,7 @@ GStreamer Path:
  $ choosevariant userdebug
  $ cd [android_dir]/kernel
  $ make kernel
-After a short while, the binaries will be generated under [android]/kernel/out/zImage
+After a short while, the binaries will be generated under [android_dir]/out/target/product/pxa978dkb/kernel
 
 3.3.2 Build Modules
  $ cd [android_dir]
@@ -283,7 +283,7 @@ After a short while, the binaries will be generated under [android]/kernel/out/z
  $ cd [android_dir]/kernel
  $ make modules
 Note: Please make kernel before making modules
-After a short while, the binaries will be generated under [android]/kernel/out/modules
+After a short while, the binaries will be generated under [android_dir]/out/target/product/pxa978dkb/kernel/modules
 
 3.3.3 Buid PXA Android by:
  $ cd [android_dir]
@@ -291,7 +291,7 @@ After a short while, the binaries will be generated under [android]/kernel/out/m
  $ chooseproduct pxa978dkb_def
  $ choosevariant userdebug
  $ make -j4
-Note: The binaries will be generated under src/android/out/target/product/pxa978dkb/.
+After a short while, the binaries will be generated under [android_dir]/out/target/product/pxa978dkb
 Note: Currently we use Android default toolchain to compile Android, kernel and telephony. After you run choosecombo, you can check your PATH setting and make sure it has included the path for google arm-eabi toolchain. Please donot pecify other android toolchain version. 
 
 3.3.4 Building telephony
@@ -302,7 +302,7 @@ Note: Currently we use Android default toolchain to compile Android, kernel and 
  $ cd [android_dir]/kernel
  $ make telephony
 Note: Please make android before making telephony
-After a short while, the binary will be generated under [android]/kernel/out/telephony/
+After a short while, the binary will be generated under [android_dir]/out/target/product/pxa978dkb/telephony
 
 3.3.5 Building uboot
  $ cd [android_dir]
@@ -311,7 +311,7 @@ After a short while, the binary will be generated under [android]/kernel/out/tel
  $ choosevariant userdebug
  $ cd [android_dir]/boot
  $ make uboot
-After a short while, the binary will be generated under [android]/boot/out/u-boot.bin
+After a short while, the binary will be generated under [android_dir]/out/target/product/pxa978dkb/uboot-obm
 Notes: kernel should be built before uboot as uboot will get cmd info from kernel config
 
 3.3.6 Building OBM
@@ -321,44 +321,58 @@ Notes: kernel should be built before uboot as uboot will get cmd info from kerne
  $ choosevariant userdebug
  $ cd [android_dir]/boot
  $ make obm 
-After a short while, the binary will be generated under [android]/boot/out/
+After a short while, the binary and configuration will be generated under [android_dir]/out/target/product/pxa978dkb/uboot-obm
+
+3.3.7 Building other products
+ Please repeat steps 3.3.1 to 3.3.6, and change the product name to pxa978ariel_def if you need all these products' images. pxa978T-ics manifest supports two product now: pxa978dkb_def and pxa978ariel_def
 
 3.4 Burn images and boot system(Nevo)
 3.4.1 Burn binaries by Software Downloader
-1) put the following binary files in <softwareDownloader>/NEVO_DKB/eMMC/
-	NEVO_Loader_eMMC_ARM_3_3_1.bin
-        u-boot.bin
-        Arbel_DIGRF3.bin
-        NV_M06_AI_C0_Flash.bin
+1) put the following binary files in <softwareDownloader>/NEVO_DKB/
+	Arbel_DIGRF3.bin
+	DTim.Primary_DDR400
+	DTim.Primary_DDR533
+	DTim.Recovery_DDR400
+	DTim.Recovery_DDR533
+	NEVO_NTLoader_eMMC_DDR400_ARM_3_3_1.bin
+	NEVO_NTLoader_eMMC_DDR533_ARM_3_3_1.bin
+	NEVO_TLoader_eMMC_DDR400_ARM_3_3_1.bin
+	NEVO_TLoader_eMMC_DDR533_ARM_3_3_1.bin
+	NV_M06_AI_C0_Flash.bin
 	NV_M06_AI_C0_L2_I_RAM_SECOND.bin
-        primary_gpt
-        secondary_gpt
-        zImage
-        system.img
-        userdata.img
-        ramdisk.img
-        ramdisk-recovery.img
-        pxafs_ext4.img
+	primary_gpt
+	pxafs_ext4.img
+	ramdisk.img
+	ramdisk-recovery.img
+	ReliableData.bin
+	secondary_gpt
+	system.img
+	u-boot.bin
+	uImage
+	userdata.img
 
-2) open software downloader, and then open the configure file <softwareDownloader>/NEVO_DKB/eMMC/Nevo_TD_trusted_eMMC.blf
+2) open software downloader, and then open the configure file <softwareDownloader>/NEVO_DKB/Nevo_TD_trusted_DDR533_eMMC.blf(or DDR400.blf)
 	partition 1:
-        ntim_nand.bin                                           --> flash address 0x00000000 (this binary is automatically created by SoftwareDownloader, when press "start" button)
-        NEVO_Loader_ARM_3_3_1.bin                               --> flash address 0x00001000
+	tim_emmc.bin                                            --> flash address 0x00000000 (this binary is automatically created by SoftwareDownloader, when press "start" button)
+	NEVO_TLoader_eMMC_DDR533_ARM_3_3_1.bin                  --> flash address 0x00001000
 	partition 0:
 	u-boot.bin                                              --> flash address 0x01780000
-        Arbel_DIGRF3.bin	                                --> flash address 0x02B80000
-        NV_M06_AI_C0_Flash.bin                                  --> flash address 0x03280000
-        NV_M06_AI_C0_L2_I_RAM_SECOND.bin	                --> flash address 0x03580000
-        primary_gpt                                             --> flash address 0x00000000
-        secondary_gpt                                           --> flash address 0xFFFFFFFF
-        u-boot.bin                                              --> flash address 0x00100000(for recovery)
-        zImage                                                  --> flash address 0x00200000(for recovery)
-        ramdisk-recovery.img                                    --> flash address 0x00600000
-        zImage                                                  --> flash address 0x01880000
-        ramdisk.img                                             --> flash address 0x01C80000
-        pxafs_ext4.img                                          --> flash address 0x24180000
-        system.img                                         --> flash address 0x26980000
-        userdata.img                                       --> flash address 0x46980000
+	Arbel_DIGRF3.bin	                                --> flash address 0x02B80000
+	NV_M06_AI_C0_Flash.bin                                  --> flash address 0x03280000
+	NV_M06_AI_C0_L2_I_RAM_SECOND.bin	                --> flash address 0x03580000
+	uImage                                                  --> flash address 0x01880000
+	ramdisk.img                                             --> flash address 0x01C80000
+	u-boot.bin                                              --> flash address 0x00100000(for recovery)
+	uImage                                                  --> flash address 0x00200000(for recovery)
+	ramdisk-recovery.img                                    --> flash address 0x00600000
+	primary_gpt                                             --> flash address 0x00000000
+	pxafs_ext4.img                                          --> flash address 0x24180000
+	system.img                                              --> flash address 0x26980000
+	userdata.img                                            --> flash address 0x46980000
+	secondary_gpt                                           --> flash address 0xFFFFFFFF
+	ReliableData.bin                                        --> flash address 0x00080000
+	DTim.Primary                                            --> flash address 0x01D80000
+	DTim.recovery                                           --> flash address 0x01E00000
 3) Press "start" button (the button with the green bulb icon), wait for the icon become red color.
 4) Connect the USB cable between the host machine and the board.
 5) Power on the board, 
@@ -389,10 +403,10 @@ Choose partition 0
 3.4.3 Start your favorite terminal emulator with the appropriate 
       COM port set to 115200,8N1. Power on the board and wait for NEVODKB>> prompt to appear
 
-3.4.4 Command line images burning
+3.4.4 Command line images burning(mmc write is no longer works for new uboot in tursted mode any more, please burn binaries by Software Downloader)
 3.4.4.1 Enter the following command to upload the kernel image into the RAM and burn into flash:
 For EMMC, issue the following commands:
-NEVODKB>>tftp zImage
+NEVODKB>>tftp uImage
 NEVODKB>>mmc write 0xC400 0x2000
 
 Note 1: You need to configure the host network interface:
@@ -427,7 +441,7 @@ For EMMC, issue the following commands:
 NEVODKB>>tftp u-boot.bin 
 NEVODKB>>mmc write 0x800 0x800
 
-NEVODKB>>tftp zImage
+NEVODKB>>tftp uImage
 NEVODKB>>mmc write 0x1000 0x2000
 
 NEVODKB>>tftp ramdisk-recovery.img 
@@ -448,6 +462,8 @@ Reboot the system.
 4. Known issues and workarounds
 4.1 How to disable GC860?
 	-remove /system/lib/egl/egl.cfg from android rootfs
+4.2 How to disable gps
+	-remove /system/lib/liblsm_gsd4t.so
 
 ----------------------------
 
