@@ -11,20 +11,28 @@ Files in this folder
 -Source codes
   manifest.xml		Saving the GIT commit number of each project used in this build.
 
--droid-gcc folder
- Files under droid-gcc folder are built with android-toolchain.
- If this folder is missing, it means that this package wasn't built with android  gcc toolchain.
- root_nfs_internal.tgz 	used for mmc and nfs case
+-src folder             Android package mode tarball
+  - setup_android.sh                                    :Script help to setup Android code base
+  - android_patches.tgz                                 :Marvell patches to Android Projects
+  - android_src.tgz                                     :Source code for projects added by Marvell
+  - marvell_manifest.xml                                :Manifest xml file to download Android eclair as a base
+  - kernel_patches.tgz                                  :Marvell patches to kernel_src.tgz
+  - kernel_src.tgz                                      :Kernel base source code
+  - uboot_patches.tgz                                   :Marvell patches to uboot_src.tgz
+  - uboot_src.tgz                                       :Uboot base source code
+  - obm_src.tgz                                         :OBM source code
 
--mrvl-gcc folder
- Files under mrvl-gcc folder are built with marvell gcc toolchain.
- If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
- 
+-pxa978saarc_def folder
+ Files under these folders are products' images.
+ If this folder is missing, it means that this package wasn't built with android  gcc toolchain.
+
+-./tools/Software_Downloader.zip    :Software downloader
+
 -OBM and UBoot
     obm.bin.saarcnevo				OBM for saarcnevo
     PinMuxData.bin				OBM data 
     u-boot.bin					NTLoader image
-    Arbel_REL7_PMD2NONE.bin			CP Arbel image
+    Arbel.bin			CP Arbel image
     NEVO_C0_Flash.bin				CP image
     plugin_LYRA5V03_BANDS128.bin		CP image
  
@@ -62,7 +70,7 @@ Choose partition 0
 	PinMuxData.bin		    		--> address 0xC80000
 	u-boot.bin		    		--> address 0x1780000
 	zImage			    		--> address 0x1880000
-	Arbel_REL7_PMD2NONE.bin			--> address 0x1F80000
+	Arbel.bin	    			--> address 0x1F80000
 	NEVO_C0_Flash.bin			--> address 0x2580000
 	plugin_LYRA5V03_BANDS128.bin		--> address 0x2740000
 
@@ -140,7 +148,7 @@ Setup Android on NFS
 Burn binaries by Software Downloader
 ============================
 1) put the following binary files in <softwareDownloader>/Bin/images/
-    Arbel_REL7_PMD2NONE.bin
+    Arbel.bin
     NEVO_C0_Flash.bin
     PinMuxData.bin
     nvm_ext2.img
@@ -162,7 +170,7 @@ Burn binaries by Software Downloader
         obm.bin.saarcnevo                                       --> flash address 0x00000000
     partition 0:
         u-boot.bin                                              --> flash address 0x01780000
-        Arbel_DIGRF3.bin                                        --> flash address 0x01F80000
+        Arbel.bin                                        --> flash address 0x01F80000
         NEVO_C0_Flash.bin                                       --> flash address 0x02580000
         PinMuxData.bin                                          --> flash address 0x00C80000
         plugin_LYRA5V03_BANDS128.bin                            --> flash address 0x02740000
@@ -195,3 +203,94 @@ Update your obm/uboot image and try again.
 +How to disable GC860 completly
 ----------------------------------------------------------------
 You can do this by: rm /system/lib/egl/egl.cfg, so android UI and 3D applications will use SW version instead of GC860. To save 16MB from GC860 low level driver, you can: rm /system/lib/modules/galcore.ko
+
++How to disable gps
+----------------------------------------------------------------
+	-remove /system/lib/liblsm_gsd4t.so
+
++How to control cpufreqd?
+----------------------------------------------------------------
+1) List all available Profiles
+$ cpufreqd-get
+
+2) List the current applied Profiles for all cpus
+$ cpufreqd-get -l
+
+3) Make cpufreqd run in manual mode
+$ cpufreqd-set manual
+
+4) Specify a profile to cpufreqd
+$ cpufreqd-set number
+
+note: number is an integer and means the sequence number of profile.
+
+5) Make cpufreqd run in dynamic mode
+$ cpufreqd-set dynamic
+
++How to dump the current memory status (including both pmem and normal memory)?
+----------------------------------------------------------------
+# echo m > /proc/sysrq-trigger
+# dmesg
+
++How to use a dailybuild manifest to fetch the codes from Marvell internal git server.
+----------------------------------------------------------------
+To get the pxa978U-ics source code:
+$repo init -u ssh://shgit.marvell.com/git/android/platform/manifest.git -b pxa978U-ics --repo-url ssh://shgit.marvell.com/git/android/tools/repo.git
+$cp the latest manifest.xml to .repo/manifests which can be got from autobuild server
+$repo init -m manifest.xml
+$repo sync
+
+1) Build Linux Kernel
+$ cd [android_dir]
+$ . build/envsetup.sh
+$ chooseproduct pxa978saarc_def
+$ choosevariant userdebug
+$ cd [android_dir]/kernel
+$ make kernel
+After a short while, the binaries will be generated under [android_dir]/out/target/product/pxa978saarc/kernel
+
+2) Build Modules
+$ cd [android_dir]
+$ . build/envsetup.sh
+$ chooseproduct pxa978saarc_def
+$ choosevariant userdebug
+$ cd [android_dir]/kernel
+$ make modules
+Note: Please make kernel before making modules
+After a short while, the binaries will be generated under [android_dir]/out/target/product/pxa978saarc/kernel/modules
+
+3) Buid PXA Android
+$ cd [android_dir]
+$ . build/envsetup.sh
+$ chooseproduct pxa978saarc_def
+$ choosevariant userdebug
+$ make -j4
+After a short while, the binaries will be generated under [android_dir]/out/target/product/pxa978saarc
+
+4) Building telephony
+$ cd [android_dir]
+$ . build/envsetup.sh
+$ chooseproduct pxa978dkb_def
+$ choosevariant userdebug
+$ cd [android_dir]/kernel
+$ make telephony
+Note: Please make android before making telephony
+After a short while, the binary will be generated under [android_dir]/out/target/product/pxa978saarc/telephony
+
+5) Building uboot
+$ cd [android_dir]
+$ . build/envsetup.sh
+$ chooseproduct pxa978dkb_def
+$ choosevariant userdebug
+$ cd [android_dir]/boot
+$ make uboot
+After a short while, the binary will be generated under [android_dir]/out/target/product/pxa978saarc/uboot-obm
+
+6) Building obm
+$ cd [android_dir]
+$ . build/envsetup.sh
+$ chooseproduct pxa978dkb_def
+$ choosevariant userdebug
+$ cd [android_dir]/boot
+$ make obm
+After a short while, the binary and configuration will be generated under [android_dir]/out/target/product/pxa978saarc/uboot-obm
