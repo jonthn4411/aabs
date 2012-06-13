@@ -20,6 +20,8 @@ PRIMARY_GPT_BIN:=primary_gpt
 SECONDARY_GPT_BIN:=secondary_gpt
 PRIMARY_GPT_BIN_2:=primary_gpt_8g
 SECONDARY_GPT_BIN_2:=secondary_gpt_8g
+PRIMARY_GPT_BIN_3:=primary_gpt_4g
+SECONDARY_GPT_BIN_3:=secondary_gpt_4g
 
 PRODUCT_OUT:=common
 #format: <file name>:<dst folder>:[m|o]:[md5]
@@ -49,28 +51,37 @@ build_uboot_obm_$$(product): build_telephony_$$(product)
 	$(hide)if [ -e $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(OBM_NTIM_2) ]; then cp $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(OBM_NTIM_2) $(OUTPUT_DIR)/$$(private_product); fi
 	$(hide)if [ -e $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(OBM_NTIM_3) ]; then cp $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(OBM_NTIM_3) $(OUTPUT_DIR)/$$(private_product); fi
 	$(hide)if [ -e $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(OBM_NTIM_4) ]; then cp $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(OBM_NTIM_4) $(OUTPUT_DIR)/$$(private_product); fi
-	$(hide)cp $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(DTIM_PRIMARY_DDR400) $(OUTPUT_DIR)/$$(private_product)
-	$(hide)cp $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(DTIM_RECOVERY_DDR400) $(OUTPUT_DIR)/$$(private_product)
-	$(hide)cp $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(DTIM_PRIMARY_DDR533) $(OUTPUT_DIR)/$$(private_product)
-	$(hide)cp $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(DTIM_RECOVERY_DDR533) $(OUTPUT_DIR)/$$(private_product)
+	$(hide)if [ -e $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(DTIM_PRIMARY_DDR400) ]; then cp $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(DTIM_PRIMARY_DDR400) $(OUTPUT_DIR)/$$(private_product); fi
+	$(hide)if [ -e $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(DTIM_RECOVERY_DDR400) ]; then cp $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(DTIM_RECOVERY_DDR400) $(OUTPUT_DIR)/$$(private_product); fi
+	$(hide)if [ -e $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(DTIM_PRIMARY_DDR533) ]; then cp $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(DTIM_PRIMARY_DDR533) $(OUTPUT_DIR)/$$(private_product); fi
+	$(hide)if [ -e $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(DTIM_RECOVERY_DDR533) ]; then cp $(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$(DTIM_RECOVERY_DDR533) $(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN_2) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN_2) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN_2) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN_2) $$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN_3) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN_3) $$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN_3) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN_3) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(log) "  done."
 PUBLISHING_FILES+=$$(product)/u-boot.bin:m:md5
-PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN):m:md5
-PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN):m:md5
-PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN_2):m:md5
-PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN_2):m:md5
 PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_1):m:md5
 PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_2):m:md5
 PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_3):m:md5
 PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_4):m:md5
+ifeq ($(product),pxa978dkb_def)
+PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN):m:md5
+PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN):m:md5
+PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN_2):m:md5
+PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN_2):m:md5
 PUBLISHING_FILES+=$$(product)/$(DTIM_PRIMARY_DDR400):m:md5
 PUBLISHING_FILES+=$$(product)/$(DTIM_RECOVERY_DDR400):m:md5
 PUBLISHING_FILES+=$$(product)/$(DTIM_PRIMARY_DDR533):m:md5
 PUBLISHING_FILES+=$$(product)/$(DTIM_RECOVERY_DDR533):m:md5
+else
+ifeq ($(product),pxa978ariel_def)
+PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN_3):m:md5
+PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN_3):m:md5
+endif
+endif
 
 endef
 
