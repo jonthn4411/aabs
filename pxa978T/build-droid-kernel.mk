@@ -178,7 +178,7 @@ build_droid_update_pkgs_$$(product): private_device:=$$(device)
 build_droid_update_pkgs_$$(product): build_uboot_obm_$$(product)
 	$$(log) "[$$(private_product)]generating update packages..."
 
-ifeq ($(product),pxa978dkb_def)
+ifeq ($$(product),pxa978dkb_def)
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \

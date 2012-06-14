@@ -67,7 +67,7 @@ PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_1):m:md5
 PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_2):m:md5
 PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_3):m:md5
 PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_4):m:md5
-ifeq ($(product),pxa978dkb_def)
+ifeq ($$(product),pxa978dkb_def)
 PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN):m:md5
 PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN):m:md5
 PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN_2):m:md5
@@ -77,7 +77,7 @@ PUBLISHING_FILES+=$$(product)/$(DTIM_RECOVERY_DDR400):m:md5
 PUBLISHING_FILES+=$$(product)/$(DTIM_PRIMARY_DDR533):m:md5
 PUBLISHING_FILES+=$$(product)/$(DTIM_RECOVERY_DDR533):m:md5
 else
-ifeq ($(product),pxa978ariel_def)
+ifeq ($$(product),pxa978ariel_def)
 PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN_3):m:md5
 PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN_3):m:md5
 endif
