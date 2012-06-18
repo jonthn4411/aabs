@@ -23,8 +23,8 @@ PUBLISHING_FILES+=prebuilt/emmc/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_
 PUBLISHING_FILES+=prebuilt/emmc/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_backup_b0p.bin:m:md5
 PUBLISHING_FILES+=prebuilt/emmc/Wtm_rel_mmp3.bin:m:md5
 PUBLISHING_FILES+=prebuilt/emmc/Wtm_rel_mmp3_backup.bin:m:md5
-PUBLISHING_FILES+=prebuilt/emmc/MMP3_LINUX_ARM_3_3_2_NTZ.bin:m:md5
-PUBLISHING_FILES+=prebuilt/emmc/MMP3_LINUX_ARM_3_3_2_NTZ_backup.bin:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/MMP3_LINUX_ARM_NTZ.bin:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/MMP3_LINUX_ARM_NTZ_backup.bin:m:md5
 PUBLISHING_FILES+=prebuilt/emmc/dtim_primary.txt:m:md5
 PUBLISHING_FILES+=prebuilt/emmc/dtim_recovery.txt:m:md5
 PUBLISHING_FILES+=prebuilt/emmc/dtim_platform_primary.bin:m:md5
@@ -52,8 +52,8 @@ bootloader:
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_*_b0p.*   $(OUTPUT_DIR)/prebuilt/emmc
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/Wtm_rel_mmp3.bin $(OUTPUT_DIR)/prebuilt/emmc
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/Wtm_rel_mmp3_backup.bin $(OUTPUT_DIR)/prebuilt/emmc
-	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/MMP3_LINUX_ARM_3_3_2_NTZ.bin $(OUTPUT_DIR)/prebuilt/emmc
-	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/MMP3_LINUX_ARM_3_3_2_NTZ_backup.bin $(OUTPUT_DIR)/prebuilt/emmc
+	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/MMP3_LINUX_ARM_NTZ.bin $(OUTPUT_DIR)/prebuilt/emmc
+	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/MMP3_LINUX_ARM_NTZ_backup.bin $(OUTPUT_DIR)/prebuilt/emmc
 	$(log) "[BOOTLOADER]Done:)"
 
 .PHONY:clean_bootloader
