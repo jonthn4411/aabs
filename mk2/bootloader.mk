@@ -94,21 +94,21 @@ bootloader:
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/MMP3_LINUX_ARM_NTZ.bin $(OUTPUT_DIR)/prebuilt/emmc
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/MMP3_LINUX_ARM_NTZ_backup.bin $(OUTPUT_DIR)/prebuilt/emmc
 
-	$(hide)mkdir -p $(OUTPUT_DIR)/prebuilt/EB_JO
+	$(hide)mkdir -p $(OUTPUT_DIR)/prebuilt/emmc/EB_JO
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_product/EB_JO/tim_mk2-*.txt                 $(OUTPUT_DIR)/prebuilt/emmc/EB_JO
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_product/EB_JO/MMP3_LINUX_ARM_NTZ.bin        $(OUTPUT_DIR)/prebuilt/emmc/EB_JO
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_product/EB_JO/MMP3_LINUX_ARM_NTZ_backup.bin $(OUTPUT_DIR)/prebuilt/emmc/EB_JO
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_product/EB_JO/Wtm_rel_mmp3_backup.bin       $(OUTPUT_DIR)/prebuilt/emmc/EB_JO
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_product/EB_JO/Wtm_rel_mmp3.bin              $(OUTPUT_DIR)/prebuilt/emmc/EB_JO
 
-	$(hide)mkdir -p $(OUTPUT_DIR)/prebuilt/PB_JO
+	$(hide)mkdir -p $(OUTPUT_DIR)/prebuilt/emmc/PB_JO
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_product/PB_JO/tim_mk2-*.txt                 $(OUTPUT_DIR)/prebuilt/emmc/PB_JO
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_product/PB_JO/MMP3_LINUX_ARM_NTZ.bin        $(OUTPUT_DIR)/prebuilt/emmc/PB_JO
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_product/PB_JO/MMP3_LINUX_ARM_NTZ_backup.bin $(OUTPUT_DIR)/prebuilt/emmc/PB_JO
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_product/PB_JO/Wtm_rel_mmp3_backup.bin       $(OUTPUT_DIR)/prebuilt/emmc/PB_JO
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_product/PB_JO/Wtm_rel_mmp3.bin              $(OUTPUT_DIR)/prebuilt/emmc/PB_JO
 
-	$(hide)mkdir -p $(OUTPUT_DIR)/prebuilt/PB
+	$(hide)mkdir -p $(OUTPUT_DIR)/prebuilt/emmc/PB
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_product/PB/tim_mk2-*.txt                 $(OUTPUT_DIR)/prebuilt/emmc/PB
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_product/PB/MMP3_LINUX_ARM_NTZ.bin        $(OUTPUT_DIR)/prebuilt/emmc/PB
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_product/PB/MMP3_LINUX_ARM_NTZ_backup.bin $(OUTPUT_DIR)/prebuilt/emmc/PB
