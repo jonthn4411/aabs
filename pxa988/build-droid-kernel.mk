@@ -85,7 +85,7 @@ build_kernel_$$(product): output_dir
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/System.map $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/modules; fi &&\
 	mkdir -p $(OUTPUT_DIR)/$$(private_product)/modules
-	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/modules/* $(OUTPUT_DIR)/$$(private_product)/modules
+	$(hide)cp -af $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/modules  $(OUTPUT_DIR)/$$(private_product)/
 	$(log) "  done."
 endef
 
