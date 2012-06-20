@@ -100,6 +100,8 @@ How to use the Patch-based Source Code to build android
 
 Burning OBM and Uboot
 =====================
+0. If you don't want to fuse the chip, please choose images from prebuilt/emmc/.
+   Otherwise, please choose images from prebuilt/emmc/PB_JO/.
 1. Install the latest XDB with version 5.1 or later (\\Sh-fs03\debugger_public\Official_Release\eXtreme_Debugger_*)
 2. Get the boot binaries (uboot & obm) from autobuild server
 3. Flash OBM and U-boot into EMMC using XDB
