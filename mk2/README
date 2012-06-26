@@ -102,6 +102,8 @@ Burning OBM and Uboot
 =====================
 0. If you don't want to fuse the chip, please choose images from prebuilt/emmc/.
    Otherwise, please choose images from prebuilt/emmc/PB_JO/.
+   Run PRE_SetupClocks.xdb before you burn mk2 devices that have been fused.
+   Run print_MMP3_FuseVal.xdb to check the status of a fused mk2 devices.
 1. Install the latest XDB with version 5.1 or later (\\Sh-fs03\debugger_public\Official_Release\eXtreme_Debugger_*)
 2. Get the boot binaries (uboot & obm) from autobuild server
 3. Flash OBM and U-boot into EMMC using XDB
