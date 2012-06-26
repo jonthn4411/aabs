@@ -70,6 +70,9 @@ PUBLISHING_FILES+=prebuilt/emmc/PB/Wtm_rel_mmp3.bin:m:md5
 PUBLISHING_FILES+=prebuilt/emmc/PB/MMP3_LINUX_ARM_NTZ_backup.bin:m:md5
 PUBLISHING_FILES+=prebuilt/emmc/PB/MMP3_LINUX_ARM_NTZ.bin:m:md5
 
+PUBLISHING_FILES+=prebuilt/emmc/print_MMP3_FuseVal.xdb:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/PRE_SetupClocks.xdb:m:md5
+
 .PHONY:bootloader
 bootloader:
 	$(log) "[BOOTLOADER]Starting to build all bootloader images"
@@ -93,6 +96,8 @@ bootloader:
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/Wtm_rel_mmp3_backup.bin $(OUTPUT_DIR)/prebuilt/emmc
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/MMP3_LINUX_ARM_NTZ.bin $(OUTPUT_DIR)/prebuilt/emmc
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/MMP3_LINUX_ARM_NTZ_backup.bin $(OUTPUT_DIR)/prebuilt/emmc
+
+	$(hide)cp $(SRC_DIR)/device/marvell/mk2/development/* $(OUTPUT_DIR)/prebuilt/emmc/
 
 	$(hide)mkdir -p $(OUTPUT_DIR)/prebuilt/emmc/EB_JO
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_product/EB_JO/tim_mk2-*.*                   $(OUTPUT_DIR)/prebuilt/emmc/EB_JO
