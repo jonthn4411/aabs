@@ -392,6 +392,9 @@ if [ "$FLAG_PUBLISH" = "true" ]; then
 	get_new_publish_dir
 	export PUBLISH_DIR
 	mkdir -p $PUBLISH_DIR
+	BACKUP_DIR_BASE=/git/android/manifest_bkup
+	BACKUP_DIR=${BACKUP_DIR_BASE}${PUBLISH_DIR#*${PUBLISH_DIR_BASE}}
+	export BACKUP_DIR
 	cp ${ABS_SOC}/README $PUBLISH_DIR/README &&
 	make -f ${MAKEFILE} publish -e 2>&1 | tee -a $STD_LOG &&
 	
