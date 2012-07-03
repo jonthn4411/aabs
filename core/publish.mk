@@ -41,6 +41,21 @@ publish_$$(name):
 publish: publish_$$(name)
 endef
 
+define define-backup-file-target
+name:=$(1)
+
+.PHONY: backup_$$(name)
+
+backup_$$(name): private_name:=$$(name)
+backup_$$(name):
+	@echo "Backup" $$(private_name)
+	@ssh ${BACKUP_SERVER} "mkdir -p ${BACKUP_DIR}"
+	@scp $$(OUTPUT_DIR)/$$(private_name) $$(BACKUP_SERVER):$$(BACKUP_DIR)
+
+publish: backup_$$(name)
+
+endef
+
 .PHONY: publish_dir
 publish_dir:
 	$(hide)if [ -z "$(PUBLISH_DIR)" ]; then \
@@ -61,4 +76,5 @@ publish: publish_dir clean_md5_file
 $(foreach pf, $(PUBLISHING_FILES), $(eval $(call define-publishing-file-target, $(pf) ) ) )
 
 $(foreach bv, $(BUILD_VARIANTS), $(foreach pf, $(PUBLISHING_FILES_$(bv)), $(eval $(call define-publishing-file-target, $(pf) ) ) ) )
+$(foreach pf, $(BACKUP_FILES), $(eval $(call define-backup-file-target, $(pf) ) ) )
 
