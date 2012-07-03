@@ -39,6 +39,7 @@ space:= #a designated space
 
 PUBLISHING_FILES:=
 PUBLISHING_FILES2:=
+BACKUP_FILES:=
 TOP_DIR:=$(shell pwd)
 
 SRC_DIR:=src.$(ABS_PRODUCT_CODE)

@@ -33,4 +33,6 @@ source: output_dir
 #md5: need to generate md5 sum
 PUBLISHING_FILES+=manifest.xml:m
 PUBLISHING_FILES+=abs.commit:m
+BACKUP_FILES+=manifest.xml
+BACKUP_FILES+=abs.commit
 
