@@ -37,6 +37,7 @@ hide:=@
 space:= #a designated space
 
 PUBLISHING_FILES:=
+BACKUP_FILES:=
 TOP_DIR:=$(shell pwd)
 
 SRC_DIR:=src.$(PRODUCT_CODE)
