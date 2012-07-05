@@ -408,7 +408,7 @@ fi &&
 if [ "$FLAG_PUBLISH" = "true" ]; then
 	get_new_publish_dir
 	export PUBLISH_DIR
-	BACKUP_DIR_BASE=/git/android/manifest_bkup
+	BACKUP_DIR_BASE=/git/android/manifest_bkup/${ABS_SOC}
 	BACKUP_DIR=${BACKUP_DIR_BASE}${PUBLISH_DIR#*${PUBLISH_DIR_BASE}}
 	export BACKUP_DIR
 	make -f ${MAKEFILE} publish -e 2>&1 | tee -a $STD_LOG &&
