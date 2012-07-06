@@ -46,7 +46,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product) build_telephony_$$(product)
+build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product)
 endef
 
 export KERNEL_TOOLCHAIN_PREFIX
@@ -129,13 +129,6 @@ PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
 endef
 
 
-define define-build-telephony-target
-tw:=$$(subst :,  , $(1) )
-product:=$$(word 1, $$(tw) )
-device:=$$(word 2, $$(tw) )
-.PHONY: build_telephony_$$(product)
-PUBLISHING_FILES+=$$(product)/pxafs.img:m:md5
-PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:m:md5
 PUBLISHING_FILES+=$$(product)/ReliableData.bin:m:md5
 ifeq ($(product),pxa988dkb_def)
@@ -146,23 +139,6 @@ PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A0_Flash.bin:m:md5
 PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A1_Flash.bin:m:md5
 PUBLISHING_FILES+=$$(product)/TTD_M06_AI_Y0_Flash.bin:m:md5
 endif
-
-build_telephony_$$(product): private_product:=$$(product)
-build_telephony_$$(product): private_device:=$$(device)
-build_telephony_$$(product): build_droid_$$(product)
-	$(log) "[$$(private_product)]starting to build telephony..."
-	$(hide)cd $(SRC_DIR) && \
-	source ./build/envsetup.sh && \
-	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
-	make clean_telephony && \
-	make telephony
-
-	$$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
-	$$(log) "    copy telephony files ..."
-	$$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony ]; then cp -a $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/* /$(OUTPUT_DIR)/$$(private_product); fi
-	$(log) "  done."
-endef
 
 define define-build-droid-otapackage
 tw:=$$(subst :,  , $(1) )
@@ -186,6 +162,5 @@ endef
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-target,$(bv)) ) \
-				$(eval $(call define-build-telephony-target,$(bv)) ) \
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
 )
