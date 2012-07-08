@@ -113,11 +113,11 @@ build_droid_$$(product): build_kernel_$$(product)
 #	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-recovery.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/build.prop $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/* $(OUTPUT_DIR)/$$(private_product)/
 	$(log) "  done"
 	$(hide)echo "    packge symbols system files..."
-	$(hide)cp -a $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/symbols/system $(OUTPUT_DIR)/$$(private_product)
-	$(hide)cd $(OUTPUT_DIR)/$$(private_product) && tar czf symbols_system.tgz system && rm system -rf
+	$(hide)tar zcf $(OUTPUT_DIR)/$$(private_product)/symbols_system.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ symbols
 	$(log) "  done for package symbols system files. "
 ##!!## first time publish: all for two
 PUBLISHING_FILES+=$$(product)/userdata.img:m:md5
@@ -127,10 +127,9 @@ PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
 #PUBLISHING_FILES+=$$(product)/ramdisk-recovery.img:m:md5
 PUBLISHING_FILES+=$$(product)/build.prop:o:md5
 PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
-endef
 
-PUBLISHING_FILES+=$$(product)/pxafs.img
-PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz
+PUBLISHING_FILES+=$$(product)/pxafs.img:o:md5
+PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
 
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:m:md5
 PUBLISHING_FILES+=$$(product)/ReliableData.bin:m:md5
@@ -145,6 +144,7 @@ PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A0_Flash.bin:m:md5
 PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A1_Flash.bin:m:md5
 PUBLISHING_FILES+=$$(product)/TTD_M06_AI_Y0_Flash.bin:m:md5
 endif
+endef
 
 define define-build-droid-otapackage
 tw:=$$(subst :,  , $(1) )
