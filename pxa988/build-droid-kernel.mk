@@ -113,6 +113,7 @@ build_droid_$$(product): build_kernel_$$(product)
 #	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-recovery.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/* $(OUTPUT_DIR)/$$(private_product)/
 	$(log) "  done"
 	$(hide)echo "    packge symbols system files..."
 	$(hide)cp -a $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/symbols/system $(OUTPUT_DIR)/$$(private_product)
@@ -128,10 +129,15 @@ PUBLISHING_FILES+=$$(product)/build.prop:o:md5
 PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
 endef
 
+PUBLISHING_FILES+=$$(product)/pxafs.img
+PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz
 
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:m:md5
 PUBLISHING_FILES+=$$(product)/ReliableData.bin:m:md5
 ifeq ($(product),pxa988dkb_def)
+PUBLISHING_FILES+=$$(product)Arbel_DIGRF3_NVM.mdb:m:md5
+PUBLISHING_FILES+=$$(product)Arbel_DIGRF3.bin:m:md5
+PUBLISHING_FILES+=$$(product)Arbel_DIGRF3_DIAG.mdb:m:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS.bin:m:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_NVM.mdb:m:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_DIAG.mdb:m:md5
