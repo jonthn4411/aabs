@@ -144,7 +144,7 @@ Boot the device, and enter the uboot menu.
 
 0) By default, the initial device is set to eMMC.
    You can run the following struction to make sure:
->> set autostart no
+>> setenv autostart no
 
 1) Partition table
 >> tftpboot 0x1100000 primary_gpt_16g
