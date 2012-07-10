@@ -297,3 +297,21 @@ $ choosevariant userdebug
 $ cd [android_dir]/boot
 $ make obm
 After a short while, the binary and configuration will be generated under [android_dir]/out/target/product/pxa978dkb/uboot-obm
+
++CPA (Code Performance Analyzer) simple guide
+----------------------------------------------------------------------
+================================================================
+1) Launch mpdc on device (require root permission)
+
+adb shell (with root permission)
+# load_mpdc.sh
+# mpdc_svr &
+
+2) Run CPA on Host (CPA/analyzer/cpa)
+3) Create a project (normally we use the option of "Hotspot Sampling")
+4) Start the profiling by pressing "Start"
+5) choose ADB connection in dialog
+
+Please get the latest analyzer at:
+\\sh1sbak004\CPARelease\CPA 3.0
+Note: please read the readme.txt and apply the patch in \\sh1sbak004\CPARelease\CPA 3.0\patch before launch CPA on your PC.
