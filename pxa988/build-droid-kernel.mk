@@ -134,9 +134,9 @@ PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:m:md5
 PUBLISHING_FILES+=$$(product)/ReliableData.bin:m:md5
 ifeq ($(product),pxa988dkb_def)
-PUBLISHING_FILES+=$$(product)Arbel_DIGRF3_NVM.mdb:m:md5
-PUBLISHING_FILES+=$$(product)Arbel_DIGRF3.bin:m:md5
-PUBLISHING_FILES+=$$(product)Arbel_DIGRF3_DIAG.mdb:m:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:m:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3.bin:m:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_DIAG.mdb:m:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS.bin:m:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_NVM.mdb:m:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_DIAG.mdb:m:md5
