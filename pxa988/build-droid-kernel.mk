@@ -131,18 +131,18 @@ PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/pxafs.img:o:md5
 PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
 
-PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:m:md5
-PUBLISHING_FILES+=$$(product)/ReliableData.bin:m:md5
+PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:o:md5
+PUBLISHING_FILES+=$$(product)/ReliableData.bin:o:md5
 ifeq ($(product),pxa988dkb_def)
-PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:m:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3.bin:m:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_DIAG.mdb:m:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS.bin:m:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_NVM.mdb:m:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_DIAG.mdb:m:md5
-PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A0_Flash.bin:m:md5
-PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A1_Flash.bin:m:md5
-PUBLISHING_FILES+=$$(product)/TTD_M06_AI_Y0_Flash.bin:m:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3.bin:o:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS.bin:o:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A0_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A1_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/TTD_M06_AI_Y0_Flash.bin:o:md5
 endif
 endef
 
