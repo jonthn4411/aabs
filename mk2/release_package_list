@@ -26,7 +26,6 @@ android_src.tgz src/android_src.tgz
 kernel_patches.tgz src/kernel_patches.tgz
 kernel_src.tgz src/kernel_src.tgz
 obm_src.tgz src/obm_src.tgz
-prebuilt/rdroot.tgz src/rdroot.tgz
 uboot_patches.tgz src/uboot_patches.tgz
 uboot_src.tgz src/uboot_src.tgz
 checksums.md5 checksums.md5
