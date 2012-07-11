@@ -2,7 +2,7 @@
 # Remove these two variables
 # They are used in orchid/pkg-source.mk
 BOARD:=mk2
-ANDROID_VERSION:=ics
+ANDROID_VERSION:=jellybean
 
 .PHONY:build clean
 
@@ -34,9 +34,9 @@ include $(ABS_SOC)/kernel.mk
 
 include $(ABS_SOC)/droid.mk
 
-include $(ABS_SOC)/bootloader.mk
+#include $(ABS_SOC)/bootloader.mk
 
-include $(ABS_SOC)/droidupdate.mk
+#include $(ABS_SOC)/droidupdate.mk
 
 ###### End a real build of Kernel, Android, Bootloader ######
 
