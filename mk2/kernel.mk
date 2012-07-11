@@ -5,7 +5,7 @@ kernel:
 	$(hide)cd $(SRC_DIR) && \
 		source ./build/envsetup.sh && \
 		chooseproduct $(ABS_DROID_PRODUCT) && choosetype $(ABS_DROID_TYPE) && choosevariant $(ABS_DROID_VARIANT) && \
-		cd $(SRC_DIR)/kernel && make clean all 
+		cd $(SRC_DIR)/kernel && make all
 	$(log) "KERNEL: Copying output files..."
 	$(hide)mkdir -p $(OUTPUT_DIR)/prebuilt
 	$(hide)cp $(SRC_DIR)/kernel/out/uImage.smp          $(OUTPUT_DIR)/prebuilt/uImage.smp
