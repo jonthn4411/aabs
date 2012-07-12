@@ -80,6 +80,11 @@ else
 ifeq ($$(product),pxa978ariel_def)
 PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN_3):m:md5
 PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN_3):m:md5
+else
+ifeq ($$(product),pxa978ariel_cmcc)
+PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN_3):m:md5
+PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN_3):m:md5
+endif
 endif
 endif
 
