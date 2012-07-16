@@ -1,0 +1,43 @@
+pxa920sdkb_def/Arbel_DIGRF3.bin pxa920sdkb_def/prebuilt_bin/Arbel_DIGRF3.bin
+pxa920sdkb_def/Arbel_DIGRF3_DIAG.mdb pxa920sdkb_def/prebuilt_bin/Arbel_DIGRF3_DIAG.mdb
+pxa920sdkb_def/Arbel_DIGRF3_NVM.mdb pxa920sdkb_def/prebuilt_bin/Arbel_DIGRF3_NVM.mdb
+pxa920sdkb_def/Boerne_DIAG.mdb.txt pxa920sdkb_def/prebuilt_bin/Boerne_DIAG.mdb.txt
+pxa920sdkb_def/pxafs.img  pxa920sdkb_def/prebuilt_bin/pxafs.img
+pxa920sdkb_def/ramdisk.img pxa920sdkb_def/prebuilt_bin/ramdisk.img
+pxa920sdkb_def/ramdisk-recovery.img pxa920sdkb_def/prebuilt_bin/ramdisk-recovery.img
+pxa920sdkb_def/system.img pxa920sdkb_def/prebuilt_bin/system.img
+pxa920sdkb_def/u-boot.bin pxa920sdkb_def/prebuilt_bin/u-boot.bin
+pxa920sdkb_def/userdata.img pxa920sdkb_def/prebuilt_bin/userdata.img
+pxa920sdkb_def/uImage pxa920sdkb_def/prebuilt_bin/uImage
+pxa920sdkb_def/uImage pxa920sdkb_def/prebuilt_bin/uImage-mt
+pxa920sdkb_def/920S_M07_AI_A3_Flash.bin pxa920sdkb_def/prebuilt_bin/920S_M07_AI_A3_Flash.bin
+pxa920sdkb_def/ReliableData.bin pxa920sdkb_def/prebuilt_bin/ReliableData.bin
+
+pxa920hsdkb_def/Arbel_DIGRF3.bin pxa920hsdkb_def/prebuilt_bin/Arbel_DIGRF3.bin
+pxa920hsdkb_def/Arbel_DIGRF3_DIAG.mdb pxa920hsdkb_def/prebuilt_bin/Arbel_DIGRF3_DIAG.mdb
+pxa920hsdkb_def/Arbel_DIGRF3_NVM.mdb pxa920hsdkb_def/prebuilt_bin/Arbel_DIGRF3_NVM.mdb
+pxa920hsdkb_def/Boerne_DIAG.mdb.txt pxa920hsdkb_def/prebuilt_bin/Boerne_DIAG.mdb.txt
+pxa920hsdkb_def/pxafs.img  pxa920hsdkb_def/prebuilt_bin/pxafs.img
+pxa920hsdkb_def/ramdisk.img pxa920hsdkb_def/prebuilt_bin/ramdisk.img
+pxa920hsdkb_def/ramdisk-recovery.img pxa920hsdkb_def/prebuilt_bin/ramdisk-recovery.img
+pxa920hsdkb_def/system.img pxa920hsdkb_def/prebuilt_bin/system.img
+pxa920hsdkb_def/u-boot.bin pxa920hsdkb_def/prebuilt_bin/u-boot.bin
+pxa920hsdkb_def/userdata.img pxa920hsdkb_def/prebuilt_bin/userdata.img
+pxa920hsdkb_def/uImage pxa920hsdkb_def/prebuilt_bin/uImage
+pxa920hsdkb_def/uImage pxa920hsdkb_def/prebuilt_bin/uImage-mt
+pxa920hsdkb_def/920S_M07_AI_A3_Flash.bin pxa920hsdkb_def/prebuilt_bin/920S_M07_AI_A3_Flash.bin
+pxa920hsdkb_def/ReliableData.bin pxa920hsdkb_def/prebuilt_bin/ReliableData.bin
+
+src/android_patches.tgz src/android_patches.tgz
+src/android_src.tgz  src/android_src.tgz
+src/kernel_patches.tgz src/kernel_patches.tgz
+src/kernel_src.tgz src/kernel_src.tgz
+src/marvell_manifest.xml src/marvell_manifest.xml
+src/obm_src.tgz src/obm_src.tgz
+src/setup_android.sh src/setup_android.sh
+src/uboot_patches.tgz src/uboot_patches.tgz
+src/uboot_src.tgz src/uboot_src.tgz
+
+manifest.xml manifest.xml
+changelog.month changelog.month
+pxa920sdkb_def/Software_Downloader.zip Software_Downloader.zip
