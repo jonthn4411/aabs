@@ -144,12 +144,20 @@ PUBLISHING_FILES+=$$(product)/NV_M06_AI_C0_L2_I_RAM_SECOND.bin:m:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:m:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_DIAG.mdb:m:md5
 else
+ifeq ($(ABS_DROID_BRANCH),jb)
+PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3.bin:m:md5
+PUBLISHING_FILES+=$$(product)/NV_M06_AI_C0_Flash.bin:m:md5
+PUBLISHING_FILES+=$$(product)/NV_M06_AI_C0_L2_I_RAM_SECOND.bin:m:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:m:md5
+PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_DIAG.mdb:m:md5
+else
 PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS.bin:m:md5
 PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A0_Flash.bin:m:md5
 PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A1_Flash.bin:m:md5
 PUBLISHING_FILES+=$$(product)/TTD_M06_AI_Y0_Flash.bin:m:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_NVM.mdb:m:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_DIAG.mdb:m:md5
+endif
 endif
 
 build_telephony_$$(product): private_product:=$$(product)
