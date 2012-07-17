@@ -3,6 +3,9 @@ BOARD:=pxa978T
 ANDROID_VERSION:=$(ABS_DROID_BRANCH)
 PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
 
+ifeq ($(ABS_DROID_BRANCH),jb)
+ABS_BUILD_DEVICES := pxa978dkb_def:pxa978dkb
+endif
 
 include core/main.mk
 
