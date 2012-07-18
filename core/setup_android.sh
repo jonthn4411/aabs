@@ -32,6 +32,20 @@ install_android_source()
 	done
 }
 
+fix_bad_android_patches()
+{
+	patch=$1
+
+	# Fix inappropriate commit message caused "git am" reporting "Patch is empty.  Was it split wrong?" error
+	if [[ $patch =~ .\/packages\/apps\/Contacts\/[0-9]+-Remember-the-flag-suppressing-special-char.* ]]; then
+		echo "!!!Fixing bad patch $patch..."
+		tempf=$(mktemp)
+		sed '8,11s/^/>/' $patch_root_dir/$patch > $tempf
+		cp -f $tempf $patch_root_dir/$patch
+		rm -f $tempf
+	fi
+}
+
 apply_android_patches()
 {
 	if [ ! -e $PKG_DROIDPATCH ]; then
@@ -49,8 +63,9 @@ apply_android_patches()
 	patch_root_dir=$(pwd)
 	android_patch_list=$(find . -type f -name "*.patch" | sort) &&
 	for android_patch in $android_patch_list; do
+		fix_bad_android_patches $android_patch
 		android_project=$(dirname $android_patch)
-		echo "    applying patches on $android_project ..."
+		echo "    applying patch $android_patch ..."
 		cd $android_working_dir/$android_project 
 		if [ $? -ne 0 ]; then
 			echo "$android_project does not exist in android_working_dir:$android_working_dir"
