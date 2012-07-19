@@ -2,7 +2,7 @@
 # Remove these two variables
 # They are used in orchid/pkg-source.mk
 BOARD:=mk2
-ANDROID_VERSION:=jellybean
+ANDROID_VERSION:=jb
 
 .PHONY:build clean
 

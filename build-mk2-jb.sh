@@ -9,7 +9,7 @@ export ABS_DROID_TYPE=release
 
 # Misc
 # Are they redundant?
-export ABS_DROID_BRANCH=jellybean
+export ABS_DROID_BRANCH=jb
 export ABS_PRODUCT_NAME=MMP3
 export ABS_BOARD=mk2
 
