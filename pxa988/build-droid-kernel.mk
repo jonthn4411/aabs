@@ -116,6 +116,9 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/build.prop $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/* $(OUTPUT_DIR)/$$(private_product)/
 	$(log) "  done"
+	$(hide)echo "    packge kernel modules files..."
+	$(hide)tar zcf $(OUTPUT_DIR)/$$(private_product)/modules.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel modules
+	$(log) "  done for package kernel modules files. "
 	$(hide)echo "    packge symbols system files..."
 	$(hide)tar zcf $(OUTPUT_DIR)/$$(private_product)/symbols_system.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ symbols
 	$(log) "  done for package symbols system files. "
@@ -127,6 +130,7 @@ PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
 #PUBLISHING_FILES+=$$(product)/ramdisk-recovery.img:m:md5
 PUBLISHING_FILES+=$$(product)/build.prop:o:md5
 PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
+PUBLISHING_FILES+=$$(product)/modules.tgz:o:md5
 
 PUBLISHING_FILES+=$$(product)/pxafs.img:o:md5
 PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
