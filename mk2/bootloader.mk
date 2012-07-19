@@ -5,14 +5,6 @@ BOOT_OUT_CM_DIR:=$(BOOT_OUT_DIR)/CM
 BOOT_OUT_NOR_DIR:=$(BOOT_OUT_DIR)/NORMAL
 
 PUBLISHING_FILES+=prebuilt/emmc/u-boot.bin:m:md5
-PUBLISHING_FILES+=prebuilt/emmc/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_primary.txt:m:md5
-PUBLISHING_FILES+=prebuilt/emmc/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_backup.txt:m:md5
-PUBLISHING_FILES+=prebuilt/emmc/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_primary.txt:m:md5
-PUBLISHING_FILES+=prebuilt/emmc/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_backup.txt:m:md5
-PUBLISHING_FILES+=prebuilt/emmc/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_backup.bin:m:md5
-PUBLISHING_FILES+=prebuilt/emmc/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_primary.bin:m:md5
-PUBLISHING_FILES+=prebuilt/emmc/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_backup.bin:m:md5
-PUBLISHING_FILES+=prebuilt/emmc/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_primary.bin:m:md5
 PUBLISHING_FILES+=prebuilt/emmc/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_primary_b0p.txt:m:md5
 PUBLISHING_FILES+=prebuilt/emmc/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_primary_b0p.bin:m:md5
 PUBLISHING_FILES+=prebuilt/emmc/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_backup_b0p.txt:m:md5
