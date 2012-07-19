@@ -1,7 +1,7 @@
 prebuilt/emmc/dtim_platform_primary.bin mk2/prebuilt_bin/dtim_platform_primary.bin
 prebuilt/emmc/dtim_platform_recovery.bin mk2/prebuilt_bin/dtim_platform_recovery.bin
-prebuilt/emmc/MMP3_LINUX_ARM_NTZ_backup.bin mk2/prebuilt_bin/MMP3_LINUX_ARM_NTZ_backup.bin
-prebuilt/emmc/MMP3_LINUX_ARM_NTZ.bin mk2/prebuilt_bin/MMP3_LINUX_ARM_NTZ.bin
+prebuilt/emmc/MMP3_LINUX_ARM_TZ_backup.bin mk2/prebuilt_bin/MMP3_LINUX_ARM_TZ_backup.bin
+prebuilt/emmc/MMP3_LINUX_ARM_TZ.bin mk2/prebuilt_bin/MMP3_LINUX_ARM_TZ.bin
 prebuilt/emmc/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_backup.bin mk2/prebuilt_bin/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_backup.bin
 prebuilt/emmc/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_primary.bin mk2/prebuilt_bin/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_primary.bin
 prebuilt/emmc/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_backup.bin mk2/prebuilt_bin/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_backup.bin
