@@ -330,13 +330,9 @@ After a short while, the binary and configuration will be generated under [andro
 3.4.1 Burn binaries by Software Downloader
 1) put the following binary files in <softwareDownloader>/NEVO_DKB/
 	Arbel_DIGRF3.bin
-	DTim.Primary_DDR400
 	DTim.Primary_DDR533
-	DTim.Recovery_DDR400
 	DTim.Recovery_DDR533
-	NEVO_NTLoader_eMMC_DDR400_ARM_3_3_1.bin
 	NEVO_NTLoader_eMMC_DDR533_ARM_3_3_1.bin
-	NEVO_TLoader_eMMC_DDR400_ARM_3_3_1.bin
 	NEVO_TLoader_eMMC_DDR533_ARM_3_3_1.bin
 	NV_M06_AI_C0_Flash.bin
 	NV_M06_AI_C0_L2_I_RAM_SECOND.bin
@@ -351,7 +347,7 @@ After a short while, the binary and configuration will be generated under [andro
 	uImage
 	userdata.img
 
-2) open software downloader, and then open the configure file <softwareDownloader>/NEVO_DKB/Nevo_TD_trusted_DDR533_eMMC.blf(or DDR400.blf)
+2) open software downloader, and then open the configure file <softwareDownloader>/NEVO_DKB/Nevo_TD_NonTrusted_DDR533_eMMC.blf
 	partition 1:
 	tim_emmc.bin                                            --> flash address 0x00000000 (this binary is automatically created by SoftwareDownloader, when press "start" button)
 	NEVO_TLoader_eMMC_DDR533_ARM_3_3_1.bin                  --> flash address 0x00001000
