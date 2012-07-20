@@ -1,4 +1,10 @@
 ABS_BUILD_DEVICES := pxa978dkb_def:pxa978dkb pxa978ariel_def:pxa978ariel pxa978ariel_cmcc:pxa978ariel_cmcc
+
+#Add on patches for special products, will call apply-patch.sh in the folder to apply those patches
+#product:relative path in SRC_DIR
+CMCC_OT_PATCHES:=vendor/marvell/carrier/cmcc_ot_patches
+ABS_PRODUCT_ADDON_PATCH := pxa978dkb_def: pxa978ariel_def: pxa978ariel_cmcc:$(CMCC_OT_PATCHES)
+
 BOARD:=pxa978T
 ANDROID_VERSION:=$(ABS_DROID_BRANCH)
 PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
