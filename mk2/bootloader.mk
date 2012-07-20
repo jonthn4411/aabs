@@ -82,8 +82,6 @@ bootloader:
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/dtim_*.txt $(OUTPUT_DIR)/prebuilt/emmc
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/dtim_platform_*.bin $(OUTPUT_DIR)/prebuilt/emmc
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/u-boot_recovery.bin $(OUTPUT_DIR)/prebuilt/emmc
-	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_*.*    $(OUTPUT_DIR)/prebuilt/emmc
-	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_*.* $(OUTPUT_DIR)/prebuilt/emmc
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_*_b0p.*      $(OUTPUT_DIR)/prebuilt/emmc
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_*_b0p.*   $(OUTPUT_DIR)/prebuilt/emmc
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_dtim/Wtm_rel_mmp3.bin $(OUTPUT_DIR)/prebuilt/emmc
