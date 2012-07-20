@@ -46,7 +46,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product) build_telephony_$$(product) build_droid_update_pkgs_$$(product)
+build_droid_kernel_$$(product): apply_patch_$$(product) build_kernel_$$(product) build_droid_$$(product) build_telephony_$$(product) build_droid_update_pkgs_$$(product) remove_patch_$$(product)
 endef
 
 export KERNEL_TOOLCHAIN_PREFIX
@@ -195,8 +195,21 @@ endif
 
 endef
 
+define define-apply-patch-target
+tw:=$$(subst :,  , $(1) )
+product:=$$(word 1, $$(tw) )
+patch_dir:=$$(word 2, $$(tw) )
+.PHONY:apply_patch_$$(product) remove_patch_$$(product)
+apply_patch_$$(product): private_patch_dir:=$$(patch_dir)
+apply_patch_$$(product):
+	$(hide)if [ -n "$$(private_patch_dir)" ]; then cd $(SRC_DIR)/$$(private_patch_dir) && ./apply-patch.sh; fi
+remove_patch_$$(product): private_patch_dir:=$$(patch_dir)
+remove_patch_$$(product):
+	$(hide)if [ -n "$$(private_patch_dir)" ] ; then cd $(SRC_DIR) && repo sync; fi
+endef
 
-
+$(foreach bv,$(ABS_PRODUCT_ADDON_PATCH),$(eval $(call define-apply-patch-target,$(bv)) )\
+)
 
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
