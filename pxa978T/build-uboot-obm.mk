@@ -14,7 +14,8 @@ DTIM_RECOVERY_DDR533:=DTim.Recovery_DDR533
 
 BLF_1:=Nevo_TD_NonTrusted_DDR533_eMMC.blf
 BLF_2:=Nevo_TD_Trusted_DDR533_eMMC.blf
-BLF_3:=ariel.blf
+BLF_3:=pxa978ariel_def.blf
+BLF_4:=pxa978ariel_cmcc.blf
 
 PRIMARY_GPT_BIN:=primary_gpt
 SECONDARY_GPT_BIN:=secondary_gpt
@@ -60,6 +61,7 @@ build_uboot_obm_$$(product): build_telephony_$$(product)
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$$(BLF_1) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$$(BLF_1) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$$(BLF_2) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$$(BLF_2) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$$(BLF_3) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$$(BLF_3) $$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$$(BLF_4) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$$(BLF_4) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(log) "  done."
 PUBLISHING_FILES+=$$(product)/u-boot.bin:m:md5
 PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_1):m:md5
@@ -82,7 +84,7 @@ else
 ifeq ($$(product),pxa978ariel_cmcc)
 PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN_3):m:md5
 PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN_3):m:md5
-PUBLISHING_FILES+=$$(product)/$(BLF_3):m:md5
+PUBLISHING_FILES+=$$(product)/$(BLF_4):m:md5
 endif
 endif
 endif
