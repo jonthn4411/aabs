@@ -57,9 +57,9 @@ build_uboot_obm_$$(product): build_telephony_$$(product)
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN_2) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN_2) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN_3) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN_3) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN_3) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN_3) $$(OUTPUT_DIR)/$$(private_product); fi
-	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(BLF_1) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(BLF_1) $$(OUTPUT_DIR)/$$(private_product); fi
-	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(BLF_2) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(BLF_2) $$(OUTPUT_DIR)/$$(private_product); fi
-	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(BLF_3) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(BLF_3) $$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$$(BLF_1) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$$(BLF_1) $$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$$(BLF_2) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$$(BLF_2) $$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$$(BLF_3) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/uboot-obm/$$(BLF_3) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(log) "  done."
 PUBLISHING_FILES+=$$(product)/u-boot.bin:m:md5
 PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_1):m:md5
