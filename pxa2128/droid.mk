@@ -6,7 +6,7 @@ build_product_droid_$(1):
 	$$(hide)cd $$(SRC_DIR) && \
 	       source ./build/envsetup.sh && \
 	       chooseproduct $(1) && choosetype $$(ABS_DROID_TYPE) && choosevariant $$(ABS_DROID_VARIANT) && \
-	       make -j$$(DROID_MAKE_JOBS)
+	       make -j$$(ABS_DROID_MAKE_JOBS)
 	$$(log) "DROID-$(1): Copying output files..."
 	$$(hide)cp -p $$(DROID_OUT)/primary_gpt_16g      $$(OUTPUT_DIR)/$(1)/
 	$$(hide)cp -p $$(DROID_OUT)/secondary_gpt_16g    $$(OUTPUT_DIR)/$(1)/
