@@ -424,9 +424,6 @@ else
 		echo "    sending email notification..." 2>&1 | tee -a $STD_LOG
 		send_success_notification
 	fi
-    if [ "$FLAG_PUBLISH" = "true" ] && [ "$FLAG_TEMP" = "false" ] && [ "$FLAG_AUTOTEST" = "true" ]; then
-	    perl tools/submitBuildInfo.pl -link \\\\$(get_publish_server_ip)${PUBLISH_DIR//\//\\} 2>&1 | tee -a $STD_LOG
-    fi
 fi
 
 

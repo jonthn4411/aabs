@@ -71,8 +71,8 @@ name:=$(1)
 backup_$$(name): private_name:=$$(name)
 backup_$$(name):
 	@echo "Backup" $$(private_name)
-	@ssh ${BACKUP_SERVER} "mkdir -p ${BACKUP_DIR}"
-	@scp $$(OUTPUT_DIR)/$$(private_name) $$(BACKUP_SERVER):$$(BACKUP_DIR)
+	@mkdir -p ${BACKUP_DIR}
+	@cp $$(OUTPUT_DIR)/$$(private_name) $$(BACKUP_DIR)
 
 publish: backup_$$(name)
 
