@@ -213,7 +213,7 @@ apply_patch_$$(product):
 	$(hide)if [ -n "$$(private_patch_dir)" ]; then cd $(SRC_DIR)/$$(private_patch_dir) && ./apply-patch.sh; fi
 remove_patch_$$(product): private_patch_dir:=$$(patch_dir)
 remove_patch_$$(product):
-	$(hide)if [ -n "$$(private_patch_dir)" ] ; then cd $(SRC_DIR) && repo sync; fi
+	$(hide)if [ -n "$$(private_patch_dir)" ] ; then cd $(SRC_DIR) && repo sync -l; fi
 endef
 
 $(foreach bv,$(ABS_PRODUCT_ADDON_PATCH),$(eval $(call define-apply-patch-target,$(bv)) )\
