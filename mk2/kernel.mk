@@ -14,6 +14,7 @@ kernel:
 	$(hide)cp $(SRC_DIR)/kernel/out/uImage_recovery.cm  $(OUTPUT_DIR)/prebuilt/uImage_recovery.cm
 	$(hide)cp $(SRC_DIR)/kernel/kernel/vmlinux          $(OUTPUT_DIR)/prebuilt
 	$(hide)cp $(SRC_DIR)/kernel/kernel/System.map       $(OUTPUT_DIR)/prebuilt
+	$(hide)cp $(SRC_DIR)/vendor/marvell/generic/security/tzsw/src/_tzsw.bin $(OUTPUT_DIR)/prebuilt/tzsw.bin
 	$(hide)rm -fr $(OUTPUT_DIR)/prebuilt/modules
 	$(hide)cp -r $(SRC_DIR)/kernel/out/modules $(OUTPUT_DIR)/prebuilt/modules
 	$(hide)cd $(OUTPUT_DIR)/prebuilt && tar czf modules.tgz modules/ 
@@ -26,6 +27,7 @@ PUBLISHING_FILES+=prebuilt/uImage_recovery.cm:m:md5
 PUBLISHING_FILES+=prebuilt/vmlinux:o:md5
 PUBLISHING_FILES+=prebuilt/System.map:o:md5
 PUBLISHING_FILES+=prebuilt/modules.tgz:m:md5
+PUBLISHING_FILES+=prebuilt/tzsw.bin:m:md5
 
 #fixme(jason):all clean targets not verifeid yet
 .PHONEY: clean_kernel
