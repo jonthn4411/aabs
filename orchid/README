@@ -146,16 +146,10 @@ About Ntims
 ============
 1.For normal user:
   1)ntim.bin.tar is ntim tar file and is droid/emmc  
-  2)Prefered ntims are as follows:
-    ------orchid------
-    orc/ntim_orc-1063-1063-532-532-399-399-399-200__4_1_dm_256kinterleave_400_1250mv.bin
-    -------mk2-----
-    mk2/ntim_mk2-1063-1063-532-532-399-399-399-200__4_1_dm_256kinterleave_400_1250mv.bin
+  2)Prefered ntim image
+    orc/ntim_orc-797-797-399-399-399-399-399-200__3_1_sm_400_1250mv.bin
 
-2.For developer who use coremorphall:
-  ntim.bin.tar is ntim tar file and is droid/emmc_cm
-
-3.The naming meaning for NTIM binary
+2.The naming meaning for NTIM binary
   ntim_<board>-<mp1>-<mp2>-<mm>-<aclk>-<ddr1>-<ddr2>-<axi1>-<axi2>__<ppname>_<ddrcfgname>_<voltage>.bin
     for example:
   ntim_ylst_dis-797-797-399-399-532-532-399-200__3_2_sm_533_1181mv.bin
