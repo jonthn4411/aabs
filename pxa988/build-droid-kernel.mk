@@ -147,6 +147,8 @@ PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A0_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A1_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/TTD_M06_AI_Y0_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW.bin:o:md5
+PUBLISHING_FILES+=$$(product)/WK_M08_AI_Y1_removelo_Y0_Flash.bin:o:md5
 endif
 endef
 
