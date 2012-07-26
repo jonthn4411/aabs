@@ -20,6 +20,8 @@ pxa978dkb_def/u-boot.bin pxa978dkb_def/prebuilt_bin/u-boot.bin
 pxa978dkb_def/userdata.img pxa978dkb_def/prebuilt_bin/userdata.img
 pxa978dkb_def/uImage pxa978dkb_def/prebuilt_bin/uImage
 pxa978dkb_def/ReliableData.bin pxa978dkb_def/prebuilt_bin/ReliableData.bin
+pxa978dkb_def/Nevo_TD_Trusted_DDR533_eMMC.blf pxa978dkb_def/prebuilt_bin/Nevo_TD_Trusted_DDR533_eMMC.blf
+pxa978dkb_def/Nevo_TD_NonTrusted_DDR533_eMMC.blf pxa978dkb_def/prebuilt_bin/Nevo_TD_NonTrusted_DDR533_eMMC.blf
 pxa978ariel_def/Arbel_DIGRF3.bin pxa978ariel_def/prebuilt_bin/Arbel_DIGRF3.bin
 pxa978ariel_def/Arbel_DIGRF3_DIAG.mdb pxa978ariel_def/prebuilt_bin/Arbel_DIGRF3_DIAG.mdb
 pxa978ariel_def/Arbel_DIGRF3_NVM.mdb pxa978ariel_def/prebuilt_bin/Arbel_DIGRF3_NVM.mdb
@@ -39,6 +41,7 @@ pxa978ariel_def/system.img pxa978ariel_def/prebuilt_bin/system.img
 pxa978ariel_def/u-boot.bin pxa978ariel_def/prebuilt_bin/u-boot.bin
 pxa978ariel_def/uImage pxa978ariel_def/prebuilt_bin/uImage
 pxa978ariel_def/userdata.img pxa978ariel_def/prebuilt_bin/userdata.img
+pxa978ariel_def/pxa978ariel_def.blf pxa978ariel_def/prebuilt_bin/pxa978ariel_def.blf
 pxa978ariel_cmcc/Arbel_DIGRF3.bin pxa978ariel_cmcc/prebuilt_bin/Arbel_DIGRF3.bin
 pxa978ariel_cmcc/Arbel_DIGRF3_DIAG.mdb pxa978ariel_cmcc/prebuilt_bin/Arbel_DIGRF3_DIAG.mdb
 pxa978ariel_cmcc/Arbel_DIGRF3_NVM.mdb pxa978ariel_cmcc/prebuilt_bin/Arbel_DIGRF3_NVM.mdb
@@ -58,6 +61,7 @@ pxa978ariel_cmcc/system.img pxa978ariel_cmcc/prebuilt_bin/system.img
 pxa978ariel_cmcc/u-boot.bin pxa978ariel_cmcc/prebuilt_bin/u-boot.bin
 pxa978ariel_cmcc/uImage pxa978ariel_cmcc/prebuilt_bin/uImage
 pxa978ariel_cmcc/userdata.img pxa978ariel_cmcc/prebuilt_bin/userdata.img
+pxa978ariel_cmcc/pxa978ariel_cmcc.blf pxa978ariel_cmcc/prebuilt_bin/pxa978ariel_cmcc.blf
 src/android_patches.tgz src/android_patches.tgz
 src/android_src.tgz  src/android_src.tgz
 src/kernel_patches.tgz src/kernel_patches.tgz
