@@ -1,7 +1,7 @@
 ==============================================================================
 Marvell PXA978 Android Platform Release for Linux
 Platform ReleaseNotes
-Last update: 06/08/2012
+Last update: 07/26/2012
 ==============================================================================
 
 1. Platform features
@@ -213,7 +213,7 @@ GStreamer Path:
   - MPG     
   - FLV     
 
-<VERSION>=r2
+<VERSION>=r7
 ===========================================================================================
 1.6 Release package contents
 - ReleaseNotes.txt                               	:This txt file(include how to setup Android dir,build and burn flash)
@@ -228,7 +228,8 @@ GStreamer Path:
   - uboot_patches.tgz                                	:Marvell patches to uboot_src.tgz
   - uboot_src.tgz                                    	:Uboot base source code
 - manifest.xml						:Marvell manifest
-- Software_Downloader.zip				:Software downloader for Microsfot Windows
+- SWD_3_0_6_setup.exe				:Software downloader for Microsfot Windows
+- nevo_ics_emmc_for_saarc3.5.blf    :blf files for burning SaarC 3.5 board
 
 2. System Requirements
 2.1 Hardware requirements
@@ -348,9 +349,13 @@ Choose partition 0
 
 3.4.3 Software downloader
 Software downloader is a tool for the images burning. 
-1. unzip the Software_Downloader.zip
-2. run Software_Downloader/vcredist_x86/vcredist_x86.exe to install required DLL libraries
-3. create a folder Software_Downloader/Bin/images, and put all binaries into it:
+1: Install the new SWD 3.0.6
+2. if you have old SWD installed, then you need to remove old USB driver as the following. 
+    2.1 Open SWD 3.0.2 & connect on 3.0sarrc.
+    2.2: Turn on SWD and 3.0sarrc, the board will enter the SWD mode.
+    2.3: Open the Windows Device Manager, Under the "Ports" section you should see a device appear - "Marvell PTK Generic Port Device Driver"
+    2.4: "Update Driver Software" window, select the "Browse my computer" option and select the "..\Marvell\USB\", which is SWD 3.0.6 installation directory
+3. create a folder, and put all binaries & nevo_ics_emmc_for_saarc3.5.blf into it:
 	obm.bin.saarcnevo
 	u-boot.bin
 	ramdisk.img
@@ -367,8 +372,9 @@ Software downloader is a tool for the images burning.
 	secondary_gpt
 	zImage-recovery
 	ramdisk-recovery.img
-4. run Software_Downloader/Bin/SWDownloader.exe
-5. Open Software_Downloader/Bin/Nevo_SaarC_C0_LINUX_EMMC.blf to burn the binaries. 
+4. run "SWDownloader.exe" by shortcut on the desktop, or in installation directory ..\Marvell\SWDownloader\Bin
+5. Open nevo_ics_emmc_for_saarc3.5 to burn the binaries. 
+notes:if you don't have USB driver installed, system will let you install USB driver. then you need to install the driver in "..\Marvell\USB\", which is SWD 3.0.6 installation directory.
 
 3.4.4 Command line images burning
 3.4.4.1 Enter the following command to upload the kernel image into the RAM and burn into flash:
@@ -503,5 +509,4 @@ Santa Clara, CA 95054, USA
 Tel: 1.408.222.2500
 Fax: 1.408.752.9028
 Email: commsales@marvell.com
-
 
