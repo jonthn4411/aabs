@@ -126,17 +126,19 @@ Burning OBM and Uboot
           tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_primary_b0p.bin      OR
           tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_primary_b0p.bin   address [0x0]
           Please be sure that you use primary-backup pairs!
-     (2)  Wtm_rel_mmp3.bin                       address [0x4000]
-     (3)  MMP3_LINUX_ARM_TZ.bin                 address [0x2C000]
-     (4)  u-boot.bin                             address [0x80000]
+     (2)  Wtm_rel_mmp3.bin              address [0x4000]
+     (3)  MMP3_LINUX_ARM_TZ.bin         address [0x2C000]
+     (4)  u-boot.bin                    address [0x80000]
+     (4)  tzl.bin                       address [0x4c000]
      Choose partition 0x2
      (1)  tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_backup.bin     OR
           tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_backup.bin  OR
           tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_backup_b0p.bin       OR
           tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_backup_b0p.bin    address [0x0]
-     (2)  Wtm_rel_mmp3_backup.bin                address [0x4000]
-     (3)  MMP3_LINUX_ARM_TZ_backup.bin          address [0x2C000]
-     (4)  u-boot_recovery.bin                    address [0x80000]
+     (2)  Wtm_rel_mmp3_backup.bin       address [0x4000]
+     (3)  MMP3_LINUX_ARM_TZ_backup.bin  address [0x2C000]
+     (4)  u-boot_recovery.bin           address [0x80000]
+     (4)  tzl_backup.bin                address [0x4c000]
 
 Boot up Android on eMMC
 =====================================
