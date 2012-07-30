@@ -40,6 +40,7 @@ build_uboot_obm_$$(product):
 
 	$(log) "start to copy uboot and obm files"
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uboot-obm/u-boot.bin $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uboot-obm/u-boot.bin $(OUTPUT_DIR)/$$(private_product)/u-boot-mt.bin
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uboot-obm/Software_Downloader.zip $(OUTPUT_DIR)/$$(private_product)
 	#$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$(OBM_NTIM_1) ]; then cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_1) $(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN) $$(OUTPUT_DIR)/$$(private_product); fi
@@ -48,6 +49,7 @@ build_uboot_obm_$$(product):
 	#$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN_2) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN_2) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(log) "  done."
 PUBLISHING_FILES+=$$(product)/u-boot.bin:m:md5
+PUBLISHING_FILES+=$$(product)/u-boot-mt.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Software_Downloader.zip:m:md5
 PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN):o:md5
 PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN):o:md5
