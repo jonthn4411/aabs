@@ -49,7 +49,7 @@ device:=$$(word 2, $$(tw) )
 build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product)
 endef
 
-MAKE_JOBS := 16
+MAKE_JOBS := 8
 export KERNEL_TOOLCHAIN_PREFIX
 export MAKE_JOBS
 
