@@ -223,7 +223,7 @@ print_usage()
 	echo "  temp: indicate a temporarily build, the build will be published to a temp folder:$TEMP_PUBLISH_DIR. If email is specified, only build_maintainer is notified."
 	echo "  ccache: using ccache to speedup the build process."
 	echo "  force: no matter if there is any change since last build, always rebuild."
-	echo "  autotest: use submitBuildInfo.pl to inform QA a build is ready."
+	echo "  autotest: it's temporarily not supported."
 	echo "  nobuild:don't build any targets."
 	echo "  help: print this list."
 }
@@ -424,11 +424,8 @@ else
 		echo "    sending email notification..." 2>&1 | tee -a $STD_LOG
 		send_success_notification
 	fi
-    if [ "$FLAG_PUBLISH" = "true" ] && [ "$FLAG_TEMP" = "false" ] && [ "$FLAG_AUTOTEST" = "true" ]; then
-	    perl tools/submitBuildInfo.pl -link \\\\$(get_publish_server_ip)${PUBLISH_DIR//\//\\} 2>&1 | tee -a $STD_LOG
-    fi
+	if [ "$FLAG_PUBLISH" = "true" ] && [ "$FLAG_TEMP" = "false" ] && [ "$FLAG_AUTOTEST" = "true" ]; then
+		echo "Sorry, autotest isn't supported temporarily."
+	fi
 fi
-
-
-
 
