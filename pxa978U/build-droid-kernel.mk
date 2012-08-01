@@ -149,6 +149,10 @@ PUBLISHING_FILES+=$$(product)/plugin_LYRA5V04_BANDS128.bin:m:md5
 PUBLISHING_FILES+=$$(product)/pxafs_lyra_ext2.img:m:md5
 PUBLISHING_FILES+=$$(product)/pxafs_symbols.tgz:m:md5
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG_MTIL.mdb.txt:m:md5
+PUBLISHING_FILES+=$$(product)/nevo_C0_ics_emmc_APSE.blf:m:md5
+PUBLISHING_FILES+=$$(product)/nevo_D0_ics_emmc_APSE.blf:m:md5
+PUBLISHING_FILES+=$$(product)/nevo_C0_ics_emmc_PTK.blf:m:md5
+PUBLISHING_FILES+=$$(product)/nevo_D0_ics_emmc_PTK.blf:m:md5
 endif
 
 build_telephony_$$(product): private_product:=$$(product)
@@ -164,6 +168,13 @@ build_telephony_$$(product): build_droid_$$(product)
 	$$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
 	$$(log) "    copy telephony files ..."
 	$$(hide)if [ -d $(SRC_DIR)/out/target/product/$$(private_device)/telephony ]; then cp -a $(SRC_DIR)/out/target/product/$$(private_device)/telephony/* /$(OUTPUT_DIR)/$$(private_product); fi
+	$(log) "  done."
+
+	$$(log) "    copy blf files ..."
+	$$(hide)if [ -f $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/nevo_C0_ics_emmc_APSE.blf ]; then cp $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/nevo_C0_ics_emmc_APSE.blf /$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -f $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/nevo_D0_ics_emmc_APSE.blf ]; then cp $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/nevo_D0_ics_emmc_APSE.blf /$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -f $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/nevo_C0_ics_emmc_PTK.blf ]; then cp $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/nevo_C0_ics_emmc_PTK.blf /$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -f $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/nevo_D0_ics_emmc_PTK.blf ]; then cp $(SRC_DIR)/vendor/marvell/generic/telephony/prebuilt_bin/nevo_D0_ics_emmc_PTK.blf /$(OUTPUT_DIR)/$$(private_product); fi
 	$(log) "  done."
 endef
 
