@@ -52,6 +52,7 @@ endif
 endif
 endif
 endif
+endif
 
 .PHONY:pkgsrc
 pkgsrc: output_dir get_source_for_pkg
