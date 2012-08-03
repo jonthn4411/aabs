@@ -70,6 +70,8 @@ PUBLISHING_FILES+=prebuilt/emmc/PB/Wtm_rel_mmp3.bin:m:md5
 PUBLISHING_FILES+=prebuilt/emmc/PB/MMP3_LINUX_ARM_NTZ_backup.bin:m:md5
 PUBLISHING_FILES+=prebuilt/emmc/PB/MMP3_LINUX_ARM_NTZ.bin:m:md5
 
+PUBLISHING_FILES+=prebuilt/emmc/coremorphall.bin:o:md5
+
 PUBLISHING_FILES+=prebuilt/emmc/print_MMP3_FuseVal.xdb:m:md5
 PUBLISHING_FILES+=prebuilt/emmc/PRE_SetupClocks.xdb:m:md5
 
@@ -119,6 +121,8 @@ bootloader:
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_product/PB/MMP3_LINUX_ARM_NTZ_backup.bin $(OUTPUT_DIR)/prebuilt/emmc/PB
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_product/PB/Wtm_rel_mmp3_backup.bin       $(OUTPUT_DIR)/prebuilt/emmc/PB
 	$(hide)cp $(SRC_DIR)/$(BOOT_OUT_DIR)/tim_product/PB/Wtm_rel_mmp3.bin              $(OUTPUT_DIR)/prebuilt/emmc/PB
+
+	$(hide)cp $(SRC_DIR)/$(BOOT_SRC_DIR)/core_morph_sw/coremorphall.bin               $(OUTPUT_DIR)/prebuilt/emmc/
 
 	$(log) "[BOOTLOADER]Done:)"
 
