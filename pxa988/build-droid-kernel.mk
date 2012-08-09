@@ -161,7 +161,7 @@ PUBLISHING_FILES+=$$(product)/ramdisk-recovery.img:o:md5
 PUBLISHING_FILES+=$$(product)/build.prop:o:md5
 PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/modules.tgz:o:md5
-PUBLISHING_FILES+=$$(product)/tools.img:m:md5
+PUBLISHING_FILES+=$$(product)/tools.img:o:md5
 
 PUBLISHING_FILES+=$$(product)/pxafs.img:o:md5
 PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
