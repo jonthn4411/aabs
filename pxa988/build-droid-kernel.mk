@@ -9,6 +9,17 @@ DROID_VARIANT:=$(ABS_DROID_VARIANT)
 KERNELSRC_TOPDIR:=kernel
 DROID_OUT:=out/target/product
 
+MAKE_EXT4FS := out/host/linux-x86/bin/make_ext4fs
+TOOLS_LIST := \
+xbin/strace \
+xbin/showslab \
+bin/wpa_cli \
+xbin/l2ping \
+xbin/l2test \
+xbin/latencytop \
+xbin/netperf \
+xbin/netserver \
+bin/gdbjithelper
 
 define define-clean-droid-kernel-target
 tw:=$$(subst :,  , $(1) )
@@ -120,6 +131,21 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/* $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(log) "  done"
+
+	$(log) "[$$(private_product)] rebuilding android source code with eng for tools ..."
+	$(hide)cd $(SRC_DIR) && \
+	source ./build/envsetup.sh && \
+	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant eng && \
+	 make -j8
+
+	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools ]; then rm -fr $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools; fi
+	$(hide)echo "  copy and make tools image ..."
+	$(hide)mkdir -p $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools/bin
+	$(hide)cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/symbols/system && \
+	cp -af $(TOOLS_LIST) $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools/bin
+	$(hide)$(SRC_DIR)/$(MAKE_EXT4FS) -s -l 65536k -b 1024 -L tool $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools.img $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools.img $(OUTPUT_DIR)/$$(private_product)/
+
 	$(hide)echo "    packge kernel modules files..."
 	$(hide)tar zcf $(OUTPUT_DIR)/$$(private_product)/modules.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel modules
 	$(log) "  done for package kernel modules files. "
@@ -135,6 +161,7 @@ PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/build.prop:o:md5
 PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/modules.tgz:o:md5
+PUBLISHING_FILES+=$$(product)/tools.img:m:md5
 
 PUBLISHING_FILES+=$$(product)/pxafs.img:o:md5
 PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
