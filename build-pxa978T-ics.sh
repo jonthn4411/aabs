@@ -6,7 +6,7 @@ if [ -z "ABS_BUILDHOST_DEF" ]; then
     ABS_BUILDHOST_DEF=buildhost.def
 fi
 export ABS_BUILDHOST_DEF
-
+export ABS_MANIFEST_BRANCH="$ABS_SOC-$ABS_DROID_BRANCH"
 export ABS_UNIQUE_MANIFEST_BRANCH=1
 
 core/autobuild.sh $*
