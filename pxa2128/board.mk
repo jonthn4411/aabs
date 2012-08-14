@@ -20,7 +20,7 @@ include $(ABS_SOC)/kernel.mk
 
 include $(ABS_SOC)/droid.mk
 
-include $(ABS_SOC)/bootloader.mk
+#include $(ABS_SOC)/bootloader.mk
 
 #include $(ABS_SOC)/droidupdate.mk
 
