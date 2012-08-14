@@ -1,6 +1,8 @@
 #check if the required variables have been set.
 $(call check-variables, ABS_SOC ABS_DROID_BRANCH ABS_DROID_VARIANT)
 
+include $(ABS_SOC)/tools-list.mk
+
 MY_SCRIPT_DIR:=$(TOP_DIR)/$(ABS_SOC)
 
 DROID_TYPE:=release
@@ -10,16 +12,6 @@ KERNELSRC_TOPDIR:=kernel
 DROID_OUT:=out/target/product
 
 MAKE_EXT4FS := out/host/linux-x86/bin/make_ext4fs
-TOOLS_LIST := \
-xbin/strace \
-xbin/showslab \
-bin/wpa_cli \
-xbin/l2ping \
-xbin/l2test \
-xbin/latencytop \
-xbin/netperf \
-xbin/netserver \
-bin/gdbjithelper
 
 define define-clean-droid-kernel-target
 tw:=$$(subst :,  , $(1) )
