@@ -110,6 +110,8 @@ build_droid_$$(product): build_kernel_$$(product)
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	make -j8 && \
+	tar zcf $(OUTPUT_DIR)/$$(private_product)/modules.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel modules && \
+	tar zcf $(OUTPUT_DIR)/$$(private_product)/symbols_system.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ symbols && \
 	cd vendor/marvell/generic/security && \
 	git reset --hard HEAD && git checkout shgit/security-1_0 && mm -B && \
 	cd $(SRC_DIR)/vendor/marvell/generic/security/wtpsp/drv/src && \
@@ -145,12 +147,6 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)$(SRC_DIR)/$(MAKE_EXT4FS) -s -l 65536k -b 1024 -L tool $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools.img $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools.img $(OUTPUT_DIR)/$$(private_product)/
 
-	$(hide)echo "    packge kernel modules files..."
-	$(hide)tar zcf $(OUTPUT_DIR)/$$(private_product)/modules.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel modules
-	$(log) "  done for package kernel modules files. "
-	$(hide)echo "    packge symbols system files..."
-	$(hide)tar zcf $(OUTPUT_DIR)/$$(private_product)/symbols_system.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ symbols
-	$(log) "  done for package symbols system files. "
 ##!!## first time publish: all for two
 PUBLISHING_FILES+=$$(product)/userdata.img:m:md5
 PUBLISHING_FILES+=$$(product)/system.img:m:md5
@@ -158,7 +154,6 @@ PUBLISHING_FILES+=$$(product)/ramdisk.img:m:md5
 PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/ramdisk-recovery.img:o:md5
 PUBLISHING_FILES+=$$(product)/build.prop:o:md5
-PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/modules.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/tools.img:o:md5
 PUBLISHING_FILES+=$$(product)/security.tgz:o:md5
