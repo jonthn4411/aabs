@@ -109,7 +109,14 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	make -j8
+	make -j8 && \
+	cd vendor/marvell/generic/security && \
+	git reset --hard HEAD && git checkout shgit/security-1_0 && mm -B && \
+	cd $(SRC_DIR)/vendor/marvell/generic/security/wtpsp/drv/src && \
+	make KDIR=$(SRC_DIR)/kernel/kernel ARCH=arm CROSS_COMPILE=arm-eabi- M=$(PWD) && cp -a geu.ko $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/lib/modules && \
+	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
+	tar zcvf $(OUTPUT_DIR)/$$(private_product)/security.tgz system/lib/libparseTim.so system/lib/libwtpsp.so system/lib/libwtpsp_ss.so system/lib/modules/geu.ko && \
+	cd $(SRC_DIR)
 
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/root ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/root; fi
 	$(hide)echo "  copy root directory ..." 
@@ -154,6 +161,7 @@ PUBLISHING_FILES+=$$(product)/build.prop:o:md5
 PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/modules.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/tools.img:o:md5
+PUBLISHING_FILES+=$$(product)/security.tgz:o:md5
 
 PUBLISHING_FILES+=$$(product)/pxafs.img:o:md5
 PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
