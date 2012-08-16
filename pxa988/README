@@ -44,9 +44,9 @@ Files in this folder
   secondary_gpt
 
 - CP image
-  WK_CP_2CHIP_SPRW.bin									:CP Arbel image, TD, Wukong
-  WK_M08_AI_Y1_removelo_Y0_Flash.bin					:CP MSA image, TD, Wukong
-  radio.img												:Merged Arbel + MSA to radio.img for fastboot
+  WK_CP_2CHIP_SPRW.bin                                  :CP Arbel image, TD, Wukong
+  WK_M08_AI_Y1_removelo_Y0_Flash.bin                    :CP MSA image, TD, Wukong
+  radio.img                                             :Merged Arbel + MSA to radio.img for fastboot
   ReliableData.bin                                      :IMEI
 
 -Kernel and Modules for Android
@@ -60,9 +60,9 @@ Files in this folder
 
 -Software_Downloader.zip                                :Software downloader
 
-Burn binaries with SWD
+Image burn
 ======================
-eWiki: https://ewiki.marvell.com/display/APSESH/PXA928+Android+Images+Downloading
+eWiki: https://ewiki.marvell.com/display/APSESH/PXA988+Android+Images+Downloading
 
 FAQ
 ======================
@@ -70,4 +70,8 @@ eWiki: https://ewiki.marvell.com/display/APSESH/PXA988+Q+and+A
 
 Source code build
 ======================
-eWiki: https://ewiki.marvell.com/display/APSESH/PXA928+Builds
+eWiki: https://ewiki.marvell.com/display/APSESH/PXA988+Builds
+
+Release history
+======================
+eWiki: https://ewiki.marvell.com/display/APSESH/PXA988+Release
