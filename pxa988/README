@@ -10,8 +10,7 @@ Files in this folder
   changelog.biweek                                      GIT change log of each project since 2 weeks ago.
   changelog.month                                       GIT change log of each project since a month ago.
   changelog.build                                       GIT change log of each project since last build
-
-  checksums.md5	                                        This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
+  checksums.md5                                         This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
 
 -Source codes
   manifest.xml	                                        Saving the GIT commit number of each project used in this build.
@@ -27,30 +26,23 @@ Files in this folder
   - uboot_src.tgz                                       :Uboot base source code
   - obm_src.tgz                                         :OBM source code
 
--droid-gcc folder
- Files under droid-gcc folder are built with android-toolchain.
- If this folder is missing, it means that this package wasn't built with android  gcc toolchain.
- root_nfs_internal.tgz 	used for mmc and nfs case
-
--mrvl-gcc folder
- Files under mrvl-gcc folder are built with marvell gcc toolchain.
- If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
-
 -OBM and UBoot
   u-boot.bin                                            :uboot for dkb
+  u-boot-mt.bin                                         :copy of uboot for maintenance
 
 - GPT
-  primary_gpt
-  secondary_gpt
+  primary_gpt                                           :eMMC partition table
+  secondary_gpt                                         :eMMC partition table backup
 
-- CP image
+- CP images
   WK_CP_2CHIP_SPRW.bin                                  :CP Arbel image, TD, Wukong
   WK_M08_AI_Y1_removelo_Y0_Flash.bin                    :CP MSA image, TD, Wukong
   radio.img                                             :Merged Arbel + MSA to radio.img for fastboot
   ReliableData.bin                                      :IMEI
 
 -Kernel and Modules for Android
-  uImage												:Kernel image
+  uImage                                                :Kernel image
+  uImage-mt                                             :copy of kernel for maintenance
 
 -Android File Systems
   system.img                                            :Android system image for file system.
@@ -58,7 +50,24 @@ Files in this folder
   ramdisk.img                                           :Android root image for file system.
   ramdisk-recovery.img                                  :Recovery ramdisk
 
--Software_Downloader.zip                                :Software downloader
+-Software_Downloader.zip                                :Software downloader, blf and OBM included
+
+-Debug files
+  tools.img                                             :Debug tools collections, mounted when set in android setting
+  vmlinux                                               :ELF kernel
+  modules.tgz                                           :Kernel modules
+  System.map                                            :Kernel maps
+
+-Security
+  security.tgz                                          :Security internal build
+
+
+PXA988 eWiki for developer
+======================
+
+Source code build
+======================
+eWiki: https://ewiki.marvell.com/display/APSESH/PXA988+Builds
 
 Image burn
 ======================
@@ -67,10 +76,6 @@ eWiki: https://ewiki.marvell.com/display/APSESH/PXA988+Android+Images+Downloadin
 FAQ
 ======================
 eWiki: https://ewiki.marvell.com/display/APSESH/PXA988+Q+and+A
-
-Source code build
-======================
-eWiki: https://ewiki.marvell.com/display/APSESH/PXA988+Builds
 
 Release history
 ======================

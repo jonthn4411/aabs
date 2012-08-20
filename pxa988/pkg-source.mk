@@ -1,8 +1,6 @@
 include core/pkg-source.mk
 
-INTERNAL_PROJECTS :=vendor/marvell/external/helix
 INTERNAL_PROJECTS +=vendor/marvell/external/gps_sirf
-INTERNAL_PROJECTS +=vendor/marvell/external/flash
 INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbPlayer
 INTERNAL_PROJECTS +=vendor/marvell/generic/apps/CmmbStack
 
@@ -75,7 +73,6 @@ pkgsrc: output_dir get_source_for_pkg
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(TOP_DIR)/core
 
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
-	$(hide)cp $(BOARD)/ReleaseNotes-$(ANDROID_VERSION).txt $(OUTPUT_DIR)/ReleaseNotes.txt
 	$(log) "  done."
 
 
@@ -93,7 +90,3 @@ PUBLISHING_FILES2+=uboot_patches.tgz:src:m:md5
 PUBLISHING_FILES2+=obm_src.tgz:src:m:md5 
 PUBLISHING_FILES2+=marvell_manifest.xml:src:m
 PUBLISHING_FILES2+=setup_android.sh:src:m
-PUBLISHING_FILES+=ReleaseNotes.txt:o
-
-
-
