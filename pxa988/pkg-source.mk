@@ -91,4 +91,4 @@ PUBLISHING_FILES2+=uboot_patches.tgz:src:m:md5
 PUBLISHING_FILES2+=obm_src.tgz:src:m:md5 
 PUBLISHING_FILES2+=marvell_manifest.xml:src:m
 PUBLISHING_FILES2+=setup_android.sh:src:m
-PUBLISHING_FILES2+=release_package_list:o
+PUBLISHING_FILES+=release_package_list:o
