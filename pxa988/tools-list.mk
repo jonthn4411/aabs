@@ -19,4 +19,11 @@ bin/msocket_testport \
 bin/schedtest \
 bin/testid3 \
 bin/vt_test \
-xbin/procrank
+xbin/procrank \
+xbin/iwconfig \
+xbin/iwlist \
+xbin/iwpriv \
+xbin/iwspy \
+xbin/iwgetid \
+xbin/iwevent \
+xbin/macadd
