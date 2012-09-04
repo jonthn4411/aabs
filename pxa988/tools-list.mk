@@ -17,4 +17,5 @@ xbin/hcitool \
 xbin/l2ping \
 bin/hciattach \
 xbin/rfcomm \
-xbin/avinfo
+xbin/avinfo \
+xbin/cpueater
