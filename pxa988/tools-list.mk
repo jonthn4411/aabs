@@ -18,4 +18,8 @@ xbin/l2ping \
 bin/hciattach \
 xbin/rfcomm \
 xbin/avinfo \
-xbin/cpueater
+xbin/cpueater \
+bin/i2cdetect \
+bin/i2cdump \
+bin/i2cset \
+bin/i2cget
