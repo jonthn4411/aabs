@@ -164,6 +164,15 @@ PUBLISHING_FILES+=$$(product)/pxafs.img:o:md5
 PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/radio.img:o:md5
 
+PUBLISHING_FILES+=$$(product)/EM_CP.bin:o:md5
+PUBLISHING_FILES+=$$(product)/EM_CP_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/EM_CP_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/EM_M08_AI_Z1_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/KL_CP.bin:o:md5
+PUBLISHING_FILES+=$$(product)/KL_CP_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/KL_CP_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/KUNLUN_Z0_M14_AI_Flash.bin:o:md5
+
 PUBLISHING_FILES+=$$(product)/KUNLUN_Arbel.bin:o:md5
 PUBLISHING_FILES+=$$(product)/KUNLUN_Arbel_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/KUNLUN_Arbel_NVM.mdb:o:md5
