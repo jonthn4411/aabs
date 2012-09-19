@@ -1,4 +1,4 @@
-ABS_ALL_PRODUCTS := mk2 thunderstonem
+ABS_ALL_PRODUCTS := mk2
 BOARD:=pxa2128
 ANDROID_VERSION:=$(ABS_DROID_BRANCH)
 PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
@@ -20,7 +20,7 @@ include $(ABS_SOC)/kernel.mk
 
 include $(ABS_SOC)/droid.mk
 
-#include $(ABS_SOC)/bootloader.mk
+include $(ABS_SOC)/bootloader.mk
 
 #include $(ABS_SOC)/droidupdate.mk
 
