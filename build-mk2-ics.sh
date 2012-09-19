@@ -4,7 +4,7 @@ export ABS_BUILDHOST_DEF=buildhost.def
 
 # Used only in droid.mk
 export ABS_DROID_PRODUCT=mk2
-export ABS_DROID_VARIANT=user
+export ABS_DROID_VARIANT=userdebug
 export ABS_DROID_TYPE=release
 
 # Misc
