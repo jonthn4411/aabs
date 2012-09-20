@@ -1,3 +1,75 @@
+Quick Start
+====================
+
+If all you need to boot up a MK2 Jelly Bean and care nothing about recovery, this section has the right thing.
+PC-shell$ mkdir pxa2128-jb
+PC-shell$ repo init -b pxa2128-jb -u ssh://shgit.marvell.com/git/android/manifest
+PC-shell$ repo sync
+PC-shell$ . build/envsetup.sh
+PC-shell$ cd kernel; make all
+PC-shell$ cd -; make -j10000000000
+PC-shell$ cd boot; make all
+
+
+Burn the following images with XDB
+If you cannot find the images, take a look into these folders
+i)  out/target/product/mk2/
+ii) boot/out/tim_dtim/
+
+Choose partition 0x0
+(1)  dtim_platform_primary.bin              address [0x780000]
+(3)  uImage                                 address [0x980000]
+(5)  ramdisk.img                            address [0x1180000]
+Choose partition 0x1
+(1)  tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_primary_b0p.bin
+                                            address [0x0]
+(2)  Wtm_rel_mmp3.bin                       address [0x4000]
+(3)  MMP3_LINUX_ARM_TZ.bin                  address [0x2C000]
+(4)  tzl.bin                                address [0x4c000]
+(5)  u-boot.bin                             address [0x80000]
+
+
+Now you can boot up to Marvell's U-boot
+uboot>> setenv autostart no
+uboot>> tftpboot 0x1100000 primary_gpt_16g
+uboot>> mmc write 0x1100000 0 0x22
+uboot>> tftpboot 0x1100000 secondary_gpt_16g
+uboot>> mmc write 0x1100000 0x1DA9FDF 0x21
+uboot>> tftpboot 0x1100000 system.img
+uboot>> unsparse mmc 0 0x1100000 0x2AB80000 0x20000000
+uboot>> tftpboot 0x1100000 userdata.img
+uboot>> unsparse mmc 0 0x1100000 0x4AB80000 0x9FFFC000
+uboot>> reset
+
+Congratuations, go and buy yourself some jelly beans.
+
+If you've changed ramdisk.img, don't burn it. Instead, you do this:
+uboot>>tftp 0x2900000 ramdisk.img; boot
+
+If you've changed kernel, do this:
+uboot>>tftp uImage
+
+If you've changed both of them, do this:
+uboot>>tftp 0x2900000 ramdisk.img; tftp uImage
+
+
+
+
+
+
+
+===================
+= Further Reading =
+===================
+         |
+         V
+
+
+
+
+
+
+
 Files in this folder
 ====================
   checksums.md5 This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
