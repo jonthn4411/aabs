@@ -163,6 +163,8 @@ PUBLISHING_FILES+=$$(product)/security.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/pxafs.img:o:md5
 PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/radio.img:o:md5
+PUBLISHING_FILES+=$$(product)/radio-emei.img:o:md5
+PUBLISHING_FILES+=$$(product)/radio-kunlun.img:o:md5
 
 PUBLISHING_FILES+=$$(product)/EM_CP.bin:o:md5
 PUBLISHING_FILES+=$$(product)/EM_CP_DIAG.mdb:o:md5
