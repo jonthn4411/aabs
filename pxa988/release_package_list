@@ -11,10 +11,13 @@ pxa988dkb_def/u-boot-mt.bin pxa988dkb_def/prebuilt_bin/u-boot-mt.bin
 pxa988dkb_def/userdata.img pxa988dkb_def/prebuilt_bin/userdata.img
 pxa988dkb_def/uImage pxa988dkb_def/prebuilt_bin/uImage
 pxa988dkb_def/uImage pxa988dkb_def/prebuilt_bin/uImage-mt
-pxa988dkb_def/radio.img pxa988dkb_def/prebuilt_bin/radio.img
+pxa988dkb_def/radio-emei.img pxa988dkb_def/prebuilt_bin/radio-emei.img
+pxa988dkb_def/radio-kunlun.img pxa988dkb_def/prebuilt_bin/radio-kunlun.img
 pxa988dkb_def/ReliableData.bin pxa988dkb_def/prebuilt_bin/ReliableData.bin
-pxa988dkb_def/WK_CP_2CHIP_SPRW.bin pxa988dkb_def/prebuilt_bin/WK_CP_2CHIP_SPRW.bin
-pxa988dkb_def/WK_M08_AI_Y1_removelo_Y0_Flash.bin pxa988dkb_def/prebuilt_bin/WK_M08_AI_Y1_removelo_Y0_Flash.bin
+pxa988dkb_def/EM_CP.bin pxa988dkb_def/prebuilt_bin/EM_CP.bin
+pxa988dkb_def/EM_M08_AI_Z1_Flash.bin pxa988dkb_def/prebuilt_bin/EM_M08_AI_Z1_Flash.bin
+pxa988dkb_def/KL_CP.bin pxa988dkb_def/prebuilt_bin/KL_CP.bin
+pxa988dkb_def/KUNLUN_Z0_M14_AI_Flash.bin pxa988dkb_def/prebuilt_bin/KUNLUN_Z0_M14_AI_Flash.bin
 
 src/android_patches.tgz src/android_patches.tgz
 src/android_src.tgz  src/android_src.tgz
