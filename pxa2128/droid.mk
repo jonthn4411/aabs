@@ -11,6 +11,7 @@ build_product_droid_$(1):
 	$$(hide)cp -p $$(DROID_OUT)/primary_gpt_16g      $$(OUTPUT_DIR)/$(1)/
 	$$(hide)cp -p $$(DROID_OUT)/secondary_gpt_16g    $$(OUTPUT_DIR)/$(1)/
 	$$(hide)cp -p $$(DROID_OUT)/ramdisk.img          $$(OUTPUT_DIR)/$(1)/
+	$$(hide)cp -p $$(DROID_OUT)/ramdisk_recovery.img $$(OUTPUT_DIR)/$(1)/
 	$$(hide)cp -p $$(DROID_OUT)/system.img           $$(OUTPUT_DIR)/$(1)/
 	$$(hide)cp -p $$(DROID_OUT)/userdata.img         $$(OUTPUT_DIR)/$(1)/
 	$$(hide)tar czf $$(OUTPUT_DIR)/$(1)/symbols_lib.tgz $$(DROID_OUT)/symbols/system/lib
@@ -19,6 +20,7 @@ build_product_droid_$(1):
 PUBLISHING_FILES+=$(1)/primary_gpt_16g:m:md5
 PUBLISHING_FILES+=$(1)/secondary_gpt_16g:m:md5
 PUBLISHING_FILES+=$(1)/ramdisk.img:m:md5
+PUBLISHING_FILES+=$(1)/ramdisk_recovery.img:m:md5
 PUBLISHING_FILES+=$(1)/system.img:m:md5
 PUBLISHING_FILES+=$(1)/userdata.img:o:md5
 PUBLISHING_FILES+=$(1)/symbols_lib.tgz:o:md5
