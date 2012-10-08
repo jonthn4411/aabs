@@ -3,7 +3,7 @@ Quick Start
 
 If all you need to boot up a MK2 Jelly Bean and care nothing about recovery, this section has the right thing.
 PC-shell$ mkdir pxa2128-jb
-PC-shell$ repo init -b pxa2128-jb -u ssh://shgit.marvell.com/git/android/manifest
+hC-shell$ repo init -b pxa2128-jb -u ssh://shgit.marvell.com/git/android/platform/manifest
 PC-shell$ repo sync
 PC-shell$ . build/envsetup.sh
 PC-shell$ cd kernel; make all
