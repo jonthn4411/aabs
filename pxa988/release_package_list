@@ -7,10 +7,8 @@ pxa988dkb_def/system.img pxa988dkb_def/prebuilt_bin/system.img
 pxa988dkb_def/tools.img pxa988dkb_def/prebuilt_bin/tools.img
 pxa988dkb_def/tools.tgz pxa988dkb_def/prebuilt_bin/tools.tgz
 pxa988dkb_def/u-boot.bin pxa988dkb_def/prebuilt_bin/u-boot.bin
-pxa988dkb_def/u-boot-mt.bin pxa988dkb_def/prebuilt_bin/u-boot-mt.bin
 pxa988dkb_def/userdata.img pxa988dkb_def/prebuilt_bin/userdata.img
 pxa988dkb_def/uImage pxa988dkb_def/prebuilt_bin/uImage
-pxa988dkb_def/uImage pxa988dkb_def/prebuilt_bin/uImage-mt
 pxa988dkb_def/radio-emei.img pxa988dkb_def/prebuilt_bin/radio-emei.img
 pxa988dkb_def/radio-kunlun.img pxa988dkb_def/prebuilt_bin/radio-kunlun.img
 pxa988dkb_def/ReliableData.bin pxa988dkb_def/prebuilt_bin/ReliableData.bin
