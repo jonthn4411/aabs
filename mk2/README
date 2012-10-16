@@ -19,28 +19,28 @@ Files in this folder
   rdroot.tgz            root dir before ramdisk is loaded, used to build kernel.
 
 -Prebuilt Images
-  dtim_platform_primary.bin
-  dtim_platform_recovery.bin
+  tim/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_backup_b0p.bin
+  tim/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_primary_b0p.bin
+  tim/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_backup_b0p.bin
+  tim/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_primary_b0p.bin
   MMP3_LINUX_ARM_NTZ.bin
   MMP3_LINUX_ARM_NTZ_backup.bin
-  tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_backup.bin
-  tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_primary.bin
-  tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_backup.bin
-  tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_primary.bin
-  tim/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_backup_b0p.txt
-  tim/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_primary_b0p.txt
-  tim/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_backup_b0p.txt
-  tim/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_primary_b0p.txt
-  Wtm_rel_mmp3.bin          Wtm image
-  Wtm_rel_mmp3_backup.bin   Wtm image for recovery
+  Wtm_rel_mmp3.bin
+  Wtm_rel_mmp3_backup.bin
+  tzl.bin
+  tzl_backup.bin
+
+  dtim_platform_primary.bin
+  dtim_platform_recovery.bin
   u-boot.bin                uboot image
   u-boot_recovery.bin       uboot image for recovery
-  primary_gpt_8g            Primary partition table
-  secondary_gpt_8g          Secondary partition table
   uImage                    Kernel image
   uImage_recovery           Kernel image for recovery
   ramdisk.img               ramdisk image
   ramdisk_recovery.img      ramdisk image for recovery
+
+  primary_gpt_8g            Primary partition table
+  secondary_gpt_8g          Secondary partition table
   system.img                system image for release
   userdata.img              user data image
   symbols_lib.tgz           all libs with symbols, can be used in debugging crash log
@@ -114,28 +114,25 @@ Burning OBM and Uboot
    4)Burn Date Files as follows:
      Choose partition 0x0,burn:
      (1)  dtim_platform_primary.bin     address [0x780000]
-     (2)  dtim_platform_recovery.bin    address [0x880000]
-     (3)  uImage                        address [0x980000]
-     (4)  uImage_recovery               address [0x1980000]
-     (5)  ramdisk.img                   address [0x1180000]
+     (2)  uImage                        address [0x980000] 
+     (3)  ramdisk.img                   address [0x1180000]
+     (4)  dtim_platform_recovery.bin    address [0x880000]
+     (5)  uImage_recovery               address [0x1980000]
      (6)  ramdisk_recovery.img          address [0x2180000]
      Choose partition 0x1
-     (1)  tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_primary.bin    OR
-          tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_primary.bin OR
-          tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_primary_b0p.bin      OR
+     (1)  tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_primary_b0p.bin      OR
           tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_primary_b0p.bin   address [0x0]
-          Please be sure that you use primary-backup pairs!
      (2)  Wtm_rel_mmp3.bin                       address [0x4000]
      (3)  MMP3_LINUX_ARM_NTZ.bin                 address [0x2C000]
-     (4)  u-boot.bin                             address [0x80000]
+     (4)  tzl.bin                                address [0x4c000]
+     (5)  u-boot.bin                             address [0x80000]
      Choose partition 0x2
-     (1)  tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_noch2_400_1250mv_backup.bin     OR
-          tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_noch2_400_1325mv_backup.bin  OR
-          tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_backup_b0p.bin       OR
+     (1)  tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_backup_b0p.bin       OR
           tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_backup_b0p.bin    address [0x0]
      (2)  Wtm_rel_mmp3_backup.bin                address [0x4000]
      (3)  MMP3_LINUX_ARM_NTZ_backup.bin          address [0x2C000]
-     (4)  u-boot_recovery.bin                    address [0x80000]
+     (4)  tzl_backup.bin                         address [0x4c000]
+     (5)  u-boot_recovery.bin                    address [0x80000]
 
 Boot up Android on eMMC
 =====================================
