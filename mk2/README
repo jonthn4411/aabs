@@ -37,8 +37,8 @@ Files in this folder
   u-boot_recovery.bin       uboot image for recovery
   primary_gpt_8g            Primary partition table
   secondary_gpt_8g          Secondary partition table
-  uImage.smp                Kernel image
-  uImage_recovery.smp       Kernel image for recovery
+  uImage                    Kernel image
+  uImage_recovery           Kernel image for recovery
   ramdisk.img               ramdisk image
   ramdisk_recovery.img      ramdisk image for recovery
   system.img                system image for release
@@ -115,8 +115,8 @@ Burning OBM and Uboot
      Choose partition 0x0,burn:
      (1)  dtim_platform_primary.bin     address [0x780000]
      (2)  dtim_platform_recovery.bin    address [0x880000]
-     (3)  uImage.smp                    address [0x980000]
-     (4)  uImage_recovery.smp           address [0x1980000]
+     (3)  uImage                        address [0x980000]
+     (4)  uImage_recovery               address [0x1980000]
      (5)  ramdisk.img                   address [0x1180000]
      (6)  ramdisk_recovery.img          address [0x2180000]
      Choose partition 0x1

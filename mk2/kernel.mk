@@ -8,8 +8,8 @@ kernel:
 		cd $(SRC_DIR)/kernel && make all
 	$(log) "KERNEL: Copying output files..."
 	$(hide)mkdir -p $(OUTPUT_DIR)/prebuilt
-	$(hide)cp $(SRC_DIR)/kernel/out/uImage          $(OUTPUT_DIR)/prebuilt/uImage.smp
-	$(hide)cp $(SRC_DIR)/kernel/out/uImage_recovery $(OUTPUT_DIR)/prebuilt/uImage_recovery.smp
+	$(hide)cp $(SRC_DIR)/kernel/out/uImage          $(OUTPUT_DIR)/prebuilt/uImage
+	$(hide)cp $(SRC_DIR)/kernel/out/uImage_recovery $(OUTPUT_DIR)/prebuilt/uImage_recovery
 	$(hide)cp $(SRC_DIR)/kernel/kernel/vmlinux          $(OUTPUT_DIR)/prebuilt
 	$(hide)cp $(SRC_DIR)/kernel/kernel/System.map       $(OUTPUT_DIR)/prebuilt
 	$(log) "KERNEL: Done:)"
