@@ -2,20 +2,20 @@
 BOOT_SRC_DIR:=boot
 BOOT_OUT_DIR:=$(BOOT_SRC_DIR)/out
 
-PUBLISHING_FILES+=mk2/emmc/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_primary_b0p.bin:m:md5
-PUBLISHING_FILES+=mk2/emmc/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_backup_b0p.bin:m:md5
-PUBLISHING_FILES+=mk2/emmc/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_primary_b0p.bin:m:md5
-PUBLISHING_FILES+=mk2/emmc/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_backup_b0p.bin:m:md5
-PUBLISHING_FILES+=mk2/emmc/Wtm_rel_mmp3.bin:m:md5
-PUBLISHING_FILES+=mk2/emmc/Wtm_rel_mmp3_backup.bin:m:md5
-PUBLISHING_FILES+=mk2/emmc/MMP3_LINUX_ARM_TZ.bin:m:md5
-PUBLISHING_FILES+=mk2/emmc/MMP3_LINUX_ARM_TZ_backup.bin:m:md5
-PUBLISHING_FILES+=mk2/emmc/tzl.bin:m:md5
-PUBLISHING_FILES+=mk2/emmc/tzl_backup.bin:m:md5
-PUBLISHING_FILES+=mk2/emmc/dtim_platform_primary.bin:m:md5
-PUBLISHING_FILES+=mk2/emmc/dtim_platform_recovery.bin:m:md5
-PUBLISHING_FILES+=mk2/emmc/u-boot.bin:m:md5
-PUBLISHING_FILES+=mk2/emmc/u-boot_recovery.bin:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_primary_b0p.bin:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_backup_b0p.bin:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_primary_b0p.bin:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/tim_mk2-1196-1196-598-598-399-399-399-200__1p2g_1_sm_400_1275mv_backup_b0p.bin:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/Wtm_rel_mmp3.bin:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/Wtm_rel_mmp3_backup.bin:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/MMP3_LINUX_ARM_TZ.bin:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/MMP3_LINUX_ARM_TZ_backup.bin:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/tzl.bin:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/tzl_backup.bin:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/dtim_platform_primary.bin:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/dtim_platform_recovery.bin:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/u-boot.bin:m:md5
+PUBLISHING_FILES+=prebuilt/emmc/u-boot_recovery.bin:m:md5
 
 PUBLISHING_FILES+=prebuilt/emmc/EB_JO/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_backup_b0p.bin:m:md5
 PUBLISHING_FILES+=prebuilt/emmc/EB_JO/tim_mk2-1063-1063-532-532-399-399-399-200__4_1_sm_400_1275mv_primary_b0p.bin:m:md5
