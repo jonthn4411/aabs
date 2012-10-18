@@ -49,7 +49,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product)
+build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product) build_droid_otapackage_$$(product)
 endef
 
 MAKE_JOBS := 8
@@ -123,7 +123,7 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk.img $(OUTPUT_DIR)/$$(private_product)
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk.img $(OUTPUT_DIR)/$$(private_product)/ramdisk-recovery.img
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-recovery.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/build.prop $(OUTPUT_DIR)/$$(private_product)
@@ -211,15 +211,20 @@ build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	make mrvlotapackage -j$(MAKE_JOBS)
+	make mrvlotapackage
 	$(hide)echo "  copy OTA package ..."
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl.zip $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl-recovery.zip $(OUTPUT_DIR)/$$(private_product)
 	$(log) "  done for OTA package build."
+
 PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl.zip:o:md5
+PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl-recovery.zip:o:md5
+
 endef
 
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-target,$(bv)) ) \
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
+				$(eval $(call define-build-droid-update-pkgs,$(bv)) ) \
 )
