@@ -49,7 +49,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product) build_droid_otapackage_$$(product)
+build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product) build_droid_otapackage_$$(product) build_droid_tool_$$(product)
 endef
 
 MAKE_JOBS := 8
@@ -133,21 +133,6 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(log) "  done"
 
-	$(log) "[$$(private_product)] rebuilding android source code with eng for tools ..."
-	$(hide)cd $(SRC_DIR) && \
-	source ./build/envsetup.sh && \
-	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant eng && \
-	 make -j8
-
-	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools ]; then rm -fr $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools; fi
-	$(hide)echo "  copy and make tools image ..."
-	$(hide)mkdir -p $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools/bin
-	$(hide)cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/symbols/system && \
-	cp -af $(TOOLS_LIST) $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools/bin
-	$(hide)$(SRC_DIR)/$(MAKE_EXT4FS) -s -l 65536k -b 1024 -L tool $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools.img $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools.img $(OUTPUT_DIR)/$$(private_product)/
-	tar zcvf $(OUTPUT_DIR)/$$(private_product)/tools.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device) tools
-
 ##!!## first time publish: all for two
 PUBLISHING_FILES+=$$(product)/userdata.img:m:md5
 PUBLISHING_FILES+=$$(product)/system.img:m:md5
@@ -156,8 +141,6 @@ PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/ramdisk-recovery.img:o:md5
 PUBLISHING_FILES+=$$(product)/build.prop:o:md5
 PUBLISHING_FILES+=$$(product)/modules.tgz:o:md5
-PUBLISHING_FILES+=$$(product)/tools.img:o:md5
-PUBLISHING_FILES+=$$(product)/tools.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/security.tgz:o:md5
 
 PUBLISHING_FILES+=$$(product)/pxafs.img:o:md5
@@ -222,9 +205,37 @@ PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl-recovery.zip:o:md5
 
 endef
 
+define define-build-droid-tool
+tw:=$$(subst :,  , $(1) )
+product:=$$(word 1, $$(tw) )
+device:=$$(word 2, $$(tw) )
+.PHONY: build_droid_tool_$$(product)
+build_droid_tool_$$(product): private_product:=$$(product)
+build_droid_tool_$$(product): private_device:=$$(device)
+build_droid_tool_$$(product): build_droid_$$(product)
+	$(log) "[$$(private_product)] rebuilding android source code with eng for tools ..."
+	$(hide)cd $(SRC_DIR) && \
+	source ./build/envsetup.sh && \
+	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant eng && \
+	make -j8
+	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools ]; then rm -fr $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools; fi
+	$(hide)echo "  copy and make tools image ..."
+	$(hide)mkdir -p $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools/bin
+	$(hide)cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/symbols/system && \
+	cp -af $(TOOLS_LIST) $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools/bin
+	$(hide)$(SRC_DIR)/$(MAKE_EXT4FS) -s -l 65536k -b 1024 -L tool $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools.img $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools.img $(OUTPUT_DIR)/$$(private_product)/
+	tar zcvf $(OUTPUT_DIR)/$$(private_product)/tools.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device) tools
+
+PUBLISHING_FILES+=$$(product)/tools.img:o:md5
+PUBLISHING_FILES+=$$(product)/tools.tgz:o:md5
+
+endef
+
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-target,$(bv)) ) \
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
+				$(eval $(call define-build-droid-tool,$(bv)) ) \
 )
