@@ -49,7 +49,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product) build_droid_otapackage_$$(product) build_droid_tool_$$(product)
+build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product) build_droid_otapackage_$$(product) build_droid_security_$$(product) build_droid_tool_$$(product)
 endef
 
 MAKE_JOBS := 8
@@ -109,14 +109,7 @@ build_droid_$$(product): build_kernel_$$(product)
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	make -j8 && \
 	tar zcf $(OUTPUT_DIR)/$$(private_product)/modules.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel modules && \
-	tar zcf $(OUTPUT_DIR)/$$(private_product)/symbols_system.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ symbols && \
-	cd vendor/marvell/generic/security && \
-	git reset --hard HEAD && git checkout shgit/security-1_0 && mm -B && \
-	cd $(SRC_DIR)/vendor/marvell/generic/security/wtpsp/drv/src && \
-	make KDIR=$(SRC_DIR)/kernel/kernel ARCH=arm CROSS_COMPILE=arm-eabi- M=$(PWD) && cp -a geu.ko $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/lib/modules && \
-	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
-	tar zcvf $(OUTPUT_DIR)/$$(private_product)/security.tgz system/lib/libparseTim.so system/lib/libwtpsp.so system/lib/libwtpsp_ss.so system/lib/modules/geu.ko && \
-	cd $(SRC_DIR)
+	tar zcf $(OUTPUT_DIR)/$$(private_product)/symbols_system.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ symbols
 
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/root ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/root; fi
 	$(hide)echo "  copy root directory ..." 
@@ -141,7 +134,6 @@ PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/ramdisk-recovery.img:o:md5
 PUBLISHING_FILES+=$$(product)/build.prop:o:md5
 PUBLISHING_FILES+=$$(product)/modules.tgz:o:md5
-PUBLISHING_FILES+=$$(product)/security.tgz:o:md5
 
 PUBLISHING_FILES+=$$(product)/pxafs.img:o:md5
 PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
@@ -232,10 +224,33 @@ PUBLISHING_FILES+=$$(product)/tools.tgz:o:md5
 
 endef
 
+define define-build-droid-security
+tw:=$$(subst :,  , $(1) )
+product:=$$(word 1, $$(tw) )
+device:=$$(word 2, $$(tw) )
+.PHONY: build_droid_security_$$(product)
+build_droid_security_$$(product): private_product:=$$(product)
+build_droid_security_$$(product): private_device:=$$(device)
+build_droid_security_$$(product): build_droid_$$(product)
+	$(log) "[$$(private_product)] building security ..."
+	$(hide)cd $(SRC_DIR) && \
+	cd vendor/marvell/generic/security && \
+	git reset --hard HEAD && git checkout shgit/security-1_0 && mm -B && \
+	cd $(SRC_DIR)/vendor/marvell/generic/security/wtpsp/drv/src && \
+	make KDIR=$(SRC_DIR)/kernel/kernel ARCH=arm CROSS_COMPILE=arm-eabi- M=$(PWD) && cp -a geu.ko $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/lib/modules && \
+	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
+	tar zcvf $(OUTPUT_DIR)/$$(private_product)/security.tgz system/lib/libparseTim.so system/lib/libwtpsp.so system/lib/libwtpsp_ss.so system/lib/modules/geu.ko && \
+	cd $(SRC_DIR)
+
+PUBLISHING_FILES+=$$(product)/security.tgz:o:md5
+
+endef
+
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-target,$(bv)) ) \
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
 				$(eval $(call define-build-droid-tool,$(bv)) ) \
+				$(eval $(call define-build-droid-security,$(bv)) ) \
 )
