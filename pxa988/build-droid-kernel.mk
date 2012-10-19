@@ -234,6 +234,8 @@ build_droid_security_$$(product): private_device:=$$(device)
 build_droid_security_$$(product): build_droid_$$(product)
 	$(log) "[$$(private_product)] building security ..."
 	$(hide)cd $(SRC_DIR) && \
+	source ./build/envsetup.sh && \
+	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	cd vendor/marvell/generic/security && \
 	git reset --hard HEAD && git checkout shgit/security-1_0 && mm -B && \
 	cd $(SRC_DIR)/vendor/marvell/generic/security/wtpsp/drv/src && \
