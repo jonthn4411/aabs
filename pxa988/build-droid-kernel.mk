@@ -1,7 +1,11 @@
 #check if the required variables have been set.
 $(call check-variables, ABS_SOC ABS_DROID_BRANCH ABS_DROID_VARIANT)
 
+ifneq ($(ABS_DROID_BRANCH),jb4.2)
 include $(ABS_SOC)/tools-list.mk
+else
+TOOLS_LIST := xbin/iperf
+endif
 
 MY_SCRIPT_DIR:=$(TOP_DIR)/$(ABS_SOC)
 
@@ -116,20 +120,18 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk.img $(OUTPUT_DIR)/$$(private_product)
-	ifneq ($(ABS_DROID_BRANCH), jb4.2)
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-recovery.img $(OUTPUT_DIR)/$$(private_product)
-	else
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk.img $(OUTPUT_DIR)/$$(private_product)/ramdisk-recovery.img
-	endif
+	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-recovery.img ]; then \
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-recovery.img $(OUTPUT_DIR)/$$(private_product); \
+	else \
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk.img $(OUTPUT_DIR)/$$(private_product)/ramdisk-recovery.img; fi
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/build.prop $(OUTPUT_DIR)/$$(private_product)
-	ifneq ($(ABS_DROID_BRANCH), jb4.2)
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/* $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/ ]; then \
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/* $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img $(OUTPUT_DIR)/$$(private_product)/; fi
-	endif
 	$(log) "  done"
 
 ##!!## first time publish: all for two
@@ -179,6 +181,7 @@ PUBLISHING_FILES+=$$(product)/WK_M08_AI_Y1_removelo_Y0_Flash.bin:o:md5
 endif
 endef
 
+ifneq ($(ABS_DROID_BRANCH),jb4.2)
 define define-build-droid-otapackage
 tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
@@ -187,7 +190,6 @@ device:=$$(word 2, $$(tw) )
 build_droid_otapackage_$$(product): private_product:=$$(product)
 build_droid_otapackage_$$(product): private_device:=$$(device)
 build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
-	ifneq ($(ABS_DROID_BRANCH), jb4.2)
 	$(log) "[$$(private_product)] building android OTA package ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -197,16 +199,26 @@ build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl.zip $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl-recovery.zip $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/PACKAGING/target_files_intermediates/$$(private_product)-target_files-eng.$$(USER).zip $(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-intermediates.zip
-	$(log) "  done for OTA package build."
-	else
-	$(log) "[$$(private_product)] no android OTA package build ..."
 	endif
+	$(log) "  done for OTA package build."
 
 PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl.zip:o:md5
 PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl-recovery.zip:o:md5
 PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl-intermediates.zip:o:md5
 
 endef
+else
+define define-build-droid-otapackage
+tw:=$$(subst :,  , $(1) )
+product:=$$(word 1, $$(tw) )
+device:=$$(word 2, $$(tw) )
+.PHONY: build_droid_otapackage_$$(product)
+build_droid_otapackage_$$(product): private_product:=$$(product)
+build_droid_otapackage_$$(product): private_device:=$$(device)
+build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
+	$(log) "[$$(private_product)] no android OTA package build ..."
+endef
+endif
 
 define define-build-droid-tool
 tw:=$$(subst :,  , $(1) )
@@ -235,6 +247,7 @@ PUBLISHING_FILES+=$$(product)/tools.tgz:o:md5
 
 endef
 
+ifneq ($(ABS_DROID_BRANCH),jb4.2)
 define define-build-droid-security
 tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
@@ -243,7 +256,6 @@ device:=$$(word 2, $$(tw) )
 build_droid_security_$$(product): private_product:=$$(product)
 build_droid_security_$$(product): private_device:=$$(device)
 build_droid_security_$$(product): build_droid_$$(product)
-	ifneq ($(ABS_DROID_BRANCH), jb4.2)
 	$(log) "[$$(private_product)] building security ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -255,13 +267,23 @@ build_droid_security_$$(product): build_droid_$$(product)
 	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
 	tar zcvf $(OUTPUT_DIR)/$$(private_product)/security.tgz system/lib/libparseTim.so system/lib/libwtpsp.so system/lib/libwtpsp_ss.so system/lib/modules/geu.ko && \
 	cd $(SRC_DIR)
-	else
-	$(log) "[$$(private_product)] no security build ..."
-	endif
 
 PUBLISHING_FILES+=$$(product)/security.tgz:o:md5
 
 endef
+else
+define define-build-droid-security
+tw:=$$(subst :,  , $(1) )
+product:=$$(word 1, $$(tw) )
+device:=$$(word 2, $$(tw) )
+.PHONY: build_droid_security_$$(product)
+build_droid_security_$$(product): private_product:=$$(product)
+build_droid_security_$$(product): private_device:=$$(device)
+build_droid_security_$$(product): build_droid_$$(product)
+	$(log) "[$$(private_product)] no security build ..."
+
+endef
+endif
 
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
