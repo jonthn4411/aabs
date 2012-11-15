@@ -43,8 +43,12 @@ else
 ifeq ($(ANDROID_VERSION),jb)
 	DROID_BASE:=android-4.1.2_r1
 else
+ifeq ($(ANDROID_VERSION),jb4.2)
+	DROID_BASE:=android-4.2_r1
+else
 	DROID_BASE:=shgit/honeycomb-mr2-release
 	HEAD_MANIFEST:=head_manifest.hc
+endif
 endif
 endif
 endif

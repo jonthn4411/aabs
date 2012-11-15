@@ -116,14 +116,20 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk.img $(OUTPUT_DIR)/$$(private_product)
+	ifneq ($(ABS_DROID_BRANCH), jb4.2)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-recovery.img $(OUTPUT_DIR)/$$(private_product)
+	else
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk.img $(OUTPUT_DIR)/$$(private_product)/ramdisk-recovery.img
+	endif
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/build.prop $(OUTPUT_DIR)/$$(private_product)
+	ifneq ($(ABS_DROID_BRANCH), jb4.2)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/* $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img $(OUTPUT_DIR)/$$(private_product)/; fi
+	endif
 	$(log) "  done"
 
 ##!!## first time publish: all for two
@@ -153,7 +159,6 @@ PUBLISHING_FILES+=$$(product)/KUNLUN_Z0_M14_AI_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/KUNLUN_Arbel.bin:o:md5
 PUBLISHING_FILES+=$$(product)/KUNLUN_Arbel_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/KUNLUN_Arbel_NVM.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/KUNLUN_Z0_M14_AI_Flash.bin:o:md5
 
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:o:md5
@@ -182,6 +187,7 @@ device:=$$(word 2, $$(tw) )
 build_droid_otapackage_$$(product): private_product:=$$(product)
 build_droid_otapackage_$$(product): private_device:=$$(device)
 build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
+	ifneq ($(ABS_DROID_BRANCH), jb4.2)
 	$(log) "[$$(private_product)] building android OTA package ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -192,6 +198,9 @@ build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl-recovery.zip $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/PACKAGING/target_files_intermediates/$$(private_product)-target_files-eng.$$(USER).zip $(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-intermediates.zip
 	$(log) "  done for OTA package build."
+	else
+	$(log) "[$$(private_product)] no android OTA package build ..."
+	endif
 
 PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl.zip:o:md5
 PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl-recovery.zip:o:md5
@@ -234,6 +243,7 @@ device:=$$(word 2, $$(tw) )
 build_droid_security_$$(product): private_product:=$$(product)
 build_droid_security_$$(product): private_device:=$$(device)
 build_droid_security_$$(product): build_droid_$$(product)
+	ifneq ($(ABS_DROID_BRANCH), jb4.2)
 	$(log) "[$$(private_product)] building security ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -245,6 +255,9 @@ build_droid_security_$$(product): build_droid_$$(product)
 	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
 	tar zcvf $(OUTPUT_DIR)/$$(private_product)/security.tgz system/lib/libparseTim.so system/lib/libwtpsp.so system/lib/libwtpsp_ss.so system/lib/modules/geu.ko && \
 	cd $(SRC_DIR)
+	else
+	$(log) "[$$(private_product)] no security build ..."
+	endif
 
 PUBLISHING_FILES+=$$(product)/security.tgz:o:md5
 
