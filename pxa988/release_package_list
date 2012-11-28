@@ -22,10 +22,6 @@ pxa988dkb_def/KL_CP_DIAG.mdb pxa988dkb_def/prebuilt_bin/KL_CP_DIAG.mdb
 pxa988dkb_def/EM_CP_NVM.mdb pxa988dkb_def/prebuilt_bin/EM_CP_NVM.mdb
 pxa988dkb_def/EM_CP_DIAG.mdb pxa988dkb_def/prebuilt_bin/EM_CP_DIAG.mdb
 pxa988dkb_def/modules.tgz pxa988dkb_def/prebuilt_bin/modules.tgz
-pxa988dkb_def/pxa988dkb_def-ota-mrvl.zip pxa988dkb_def/prebuilt_bin/pxa988dkb_def-ota-mrvl.zip
-pxa988dkb_def/pxa988dkb_def-ota-mrvl-recovery.zip pxa988dkb_def/prebuilt_bin/pxa988dkb_def-ota-mrvl-recovery.zip
-pxa988dkb_def/pxa988dkb_def-ota-mrvl-intermediates.zip pxa988dkb_def/prebuilt_bin/pxa988dkb_def-ota-mrvl-intermediates.zip
-pxa988dkb_def/symbols_system.tgz pxa988dkb_def/prebuilt_bin/symbols_system.tgz
 pxa988dkb_def/vmlinux pxa988dkb_def/prebuilt_bin/vmlinux
 pxa988dkb_def/System.map pxa988dkb_def/prebuilt_bin/System.map
 
