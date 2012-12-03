@@ -10,3 +10,4 @@ export TEMP_PUBLISH_DIR_BASE=/autobuild/temp
 
 #file name that is to read the ip address of the publish server. If the file doesn't exists, ip address of the building host is used.
 export PUBLISH_SERVER_IP_FILE=/autobuild/publish_server_ip
+export BACKUP_SERVER=${GIT_SERVER}
