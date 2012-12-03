@@ -77,7 +77,7 @@ pkgsrc: output_dir get_source_for_pkg
 	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(TOP_DIR)/core
 
 	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
-	$(hide)cp $(BOARD)/release_package_list $(OUTPUT_DIR)/release_package_list
+	$(hide)cp pxa988/release_package_list $(OUTPUT_DIR)/release_package_list
 	$(log) "  done."
 
 
