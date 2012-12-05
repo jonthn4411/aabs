@@ -68,6 +68,7 @@ build_droid_root_$$(product): output_dir
 	$$(hide)cd $$(SRC_DIR) && \
 	. $$(TOP_DIR)/tools/apb $$(private_product) && \
 	choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
+	choosevfp neon && \
 	make -j$$(MAKE_JOBS)
 	echo "    generating symbols_lib.tgz..." && \
 		cp -a $$(SRC_DIR)/out/target/product/$$(private_device)/symbols/system/lib $$(OUTPUT_DIR)/$$(private_product) && \
