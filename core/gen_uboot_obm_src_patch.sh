@@ -34,8 +34,10 @@ cd $boot_dir &&
 echo "  packaging obm source code:" &&
 if [ -d "obm/.git" ]; then
     cd obm && git archive --format=tar --prefix=obm/ HEAD |gzip > ../obm_src.tgz && cd - 
-else
+elif [ -d "obm" ]; then
     tar czvf obm_src.tgz ./obm
+else
+    touch obm_src.tgz
 fi &&
 mv obm_src.tgz $output_dir &&
 rm -fr obm 
