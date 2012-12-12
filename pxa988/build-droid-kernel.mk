@@ -181,7 +181,7 @@ PUBLISHING_FILES+=$$(product)/WK_M08_AI_Y1_removelo_Y0_Flash.bin:o:md5
 endif
 endef
 
-ifneq ($(ABS_DROID_BRANCH),jb4.2)
+ifneq ($(ABS_DROID_BRANCH),other)
 define define-build-droid-otapackage
 tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
