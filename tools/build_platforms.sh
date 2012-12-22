@@ -112,10 +112,17 @@ if [ -x build-${platform}.sh ]; then
 		echo "[aabs]will-run:./build-${platform}.sh clobber source pkgsrc publish autotest email $rlsname" | tee -a $LOG
 	else
 		if [ "$FLAG_TEMP_BUILD" = "true" ]; then
-			./build-${platform}.sh clobber source pkgsrc publish temp $rlsname
+			if [ "$FLAG_PRODUCT_BUILD" = "true" ]; then
+				./build-${platform}.sh clobber source pkgsrc publish temp force product $rlsname
+			else
+				./build-${platform}.sh clobber source pkgsrc publish temp $rlsname
+			fi
 		else
-
-			./build-${platform}.sh clobber source pkgsrc publish autotest email $rlsname
+			if [ "$FLAG_PRODUCT_BUILD" = "true" ]; then
+				./build-${platform}.sh clobber source pkgsrc publish autotest email force product $rlsname
+			else
+				./build-${platform}.sh clobber source pkgsrc publish autotest email $rlsname
+			fi
 		fi
 	fi
 else

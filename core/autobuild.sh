@@ -225,6 +225,7 @@ print_usage()
 	echo "  force: no matter if there is any change since last build, always rebuild."
 	echo "  autotest: it's temporarily not supported."
 	echo "  nobuild:don't build any targets."
+	echo "  product: export PRODUCT_MODE_BUILD=true, SoC platform define the product mode behavior by itself."
 	echo "  help: print this list."
 }
 
@@ -275,6 +276,7 @@ FLAG_CCACHE=false
 FLAG_FORCE=false
 FLAG_BUILD=true
 FLAG_AUTOTEST=false
+FLAG_PRODUCT=false
 ABS_RELEASE_NAME=
 RLS_SUFFIX=
 
@@ -290,6 +292,7 @@ for flag in $*; do
 		force)FLAG_FORCE=true;;
 		nobuild)FLAG_BUILD=false;;
 		autotest)FLAG_AUTOTEST=true;;
+		product)FLAG_PRODUCT=true;;
 		help) print_usage; exit 2;;
 		*) 
 		if [ ! "${flag%%:*}" == "${flag}" ] && [ "${flag%%:*}" == "rls" ]; then
@@ -354,6 +357,12 @@ if [ "$FLAG_CCACHE" = "true" ]; then
 	export USE_CCACHE=true
 	echo "ccache is enabled."
 fi &&
+
+if [ "$FLAG_PRODUCT" = "true" ]; then
+	export PRODUCT_MODE_BUILD=true
+	echo "product mode build is enabled."
+fi &&
+
 
 if [ "$FLAG_CLOBBER" = "true" ]; then 
 	make -f ${MAKEFILE} clobber 2>&1 | tee -a $STD_LOG
