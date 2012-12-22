@@ -16,6 +16,8 @@ KERNELSRC_TOPDIR:=kernel
 DROID_OUT:=out/target/product
 
 MAKE_EXT4FS := out/host/linux-x86/bin/make_ext4fs
+MKBOOTFS := out/host/linux-x86/bin/mkbootfs
+MINIGZIP := out/host/linux-x86/bin/minigzip
 
 define define-clean-droid-kernel-target
 tw:=$$(subst :,  , $(1) )
@@ -134,14 +136,25 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(log) "  done"
 
+	$(hide)if [ "$(PRODUCT_MODE_BUILD)" = "true" ]; then \
+	sed -i "s/ro.secure=1/ro.secure=0/" $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/default.prop  && \
+	sed -i "s/ro.debuggable=0/ro.debuggable=1/" $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/default.prop  && \
+	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
+	$(SRC_DIR)/$(MKBOOTFS) root | $(SRC_DIR)/$(MINIGZIP) > ramdisk-rooted.img && \
+	cat ramdisk-rooted.img < /dev/zero | head -c 1048576 > ramdisk-rooted.img.pad && \
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-rooted.img.pad $(OUTPUT_DIR)/$$(private_product)/ramdisk-rooted.img && \
+	touch $(OUTPUT_DIR)/product_mode_build.txt; fi
+
 ##!!## first time publish: all for two
 PUBLISHING_FILES+=$$(product)/userdata.img:m:md5
 PUBLISHING_FILES+=$$(product)/system.img:m:md5
 PUBLISHING_FILES+=$$(product)/ramdisk.img:m:md5
+PUBLISHING_FILES+=$$(product)/ramdisk-rooted.img:o:md5
 PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/ramdisk-recovery.img:o:md5
 PUBLISHING_FILES+=$$(product)/build.prop:o:md5
 PUBLISHING_FILES+=$$(product)/modules.tgz:o:md5
+PUBLISHING_FILES+=product_mode_build.txt:o
 
 PUBLISHING_FILES+=$$(product)/pxafs.img:o:md5
 PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
