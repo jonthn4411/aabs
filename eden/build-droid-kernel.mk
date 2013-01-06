@@ -43,6 +43,10 @@ product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
 
 PUBLISHING_FILES+=$$(product)/boot.img:o:md5
+PUBLISHING_FILES+=$$(product)/system.img:m:md5
+PUBLISHING_FILES+=$$(product)/userdata.img:o:md5
+PUBLISHING_FILES+=$$(product)/ramdisk.img:o:md5
+PUBLISHING_FILES+=$$(product)/cache.img:o:md5
 
 .PHONY: build_droid_root_$$(product)
 build_droid_root_$$(product): private_product:=$$(product)
@@ -56,6 +60,10 @@ build_droid_root_$$(product): output_dir
 	choosevfp neon && \
 	make -j$$(MAKE_JOBS)
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/boot.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/boot.img $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/system.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/system.img $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/userdata.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/userdata.img $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/ramdisk.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/ramdisk.img $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/cache.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/cache.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	echo "    generating symbols_lib.tgz..." && \
 		cp -a $$(SRC_DIR)/out/target/product/$$(private_device)/symbols/system/lib $$(OUTPUT_DIR)/$$(private_product) && \
 		cd $$(OUTPUT_DIR)/$$(private_product) && tar czf symbols_lib.tgz lib && rm lib -rf
