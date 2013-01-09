@@ -1,11 +1,7 @@
 #check if the required variables have been set.
 $(call check-variables, ABS_SOC ABS_DROID_BRANCH ABS_DROID_VARIANT)
 
-ifneq ($(ABS_DROID_BRANCH),jb4.2)
 include $(ABS_SOC)/tools-list.mk
-else
-TOOLS_LIST := xbin/iperf
-endif
 
 MY_SCRIPT_DIR:=$(TOP_DIR)/$(ABS_SOC)
 
