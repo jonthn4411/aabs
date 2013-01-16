@@ -124,7 +124,7 @@ endef
 #example: android:mlc:pxa168_android_mlc_defconfig:root
 # kernel_configs:=
 #
-kernel_configs:=android:eden:ttd2_and_defconfig
+kernel_configs:=android:eden:ttd2_and_defconfig: android_gc:eden:ttd2_up_gc_and_defconfig:
 
 export MAKE_JOBS
 
@@ -146,11 +146,9 @@ PUBLISHING_FILES+=$$(product)/zImage.$$(os):o:md5
 PUBLISHING_FILES+=$$(product)/zImage_recovery.$$(os):o:md5
 PUBLISHING_FILES+=$$(product)/uImage.$$(os):o:md5
 PUBLISHING_FILES+=$$(product)/uImage_recovery.$$(os):o:md5
-PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
-PUBLISHING_FILES+=$$(product)/System.map:o:md5
+PUBLISHING_FILES+=$$(product)/vmlinux.$$(os):o:md5
+PUBLISHING_FILES+=$$(product)/System.map.$$(os):o:md5
 PUBLISHING_FILES+=$$(product)/modules_$$(os)_$$(storage).tgz:o:md5
-
-koutput:=$$(SRC_DIR)/out/target/product/$$(device)/kbuild-$$(kernel_cfg)
 
 build_kernel_$$(product): build_kernel_$$(os)_$$(storage)_$$(product)
 
@@ -159,7 +157,7 @@ build_kernel_$$(os)_$$(storage)_$$(product): private_os:=$$(os)
 build_kernel_$$(os)_$$(storage)_$$(product): private_storage:=$$(storage)
 build_kernel_$$(os)_$$(storage)_$$(product): private_root:=$$(root)
 build_kernel_$$(os)_$$(storage)_$$(product): private_kernel_cfg:=$$(kernel_cfg)
-build_kernel_$$(os)_$$(storage)_$$(product): private_root:=$$(root)
+build_kernel_$$(os)_$$(storage)_$$(product): koutput:=$$(SRC_DIR)/out/target/product/$$(device)/kbuild-$$(kernel_cfg)
 build_kernel_$$(os)_$$(storage)_$$(product): output_dir
 	$$(log) "[$$(private_product)]starting to build kernel for booting $$(private_os) from $$(private_storage) ..."
 	$$(log) "    kernel_config: $$(private_kernel_cfg): ..."
@@ -172,8 +170,8 @@ build_kernel_$$(os)_$$(storage)_$$(product): output_dir
 	$$(log) "    copy kernel and module files ..."
 	$$(hide)if [ -f $$(koutput)/arch/arm/boot/zImage ]; then cp $$(koutput)/arch/arm/boot/zImage $$(OUTPUT_DIR)/$$(private_product)/zImage.$$(private_os); fi
 	$$(hide)if [ -f $$(koutput)/arch/arm/boot/uImage ]; then cp $$(koutput)/arch/arm/boot/uImage $$(OUTPUT_DIR)/$$(private_product)/uImage.$$(private_os); fi
-	$$(hide)cp $$(koutput)/vmlinux $$(OUTPUT_DIR)/$$(private_product)
-	$$(hide)cp $$(koutput)/System.map $$(OUTPUT_DIR)/$$(private_product)
+	$$(hide)cp $$(koutput)/vmlinux $$(OUTPUT_DIR)/$$(private_product)/vmlinux.$$(private_os)
+	$$(hide)cp $$(koutput)/System.map $$(OUTPUT_DIR)/$$(private_product)/System.map.$$(private_os)
 	$$(log) "  done."
 endef
 
