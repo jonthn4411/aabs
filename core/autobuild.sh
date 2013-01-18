@@ -239,7 +239,12 @@ if [ -z "$ABS_BUILDHOST_DEF" ] || [ ! -e $ABS_BUILDHOST_DEF ]; then
 fi
 . $ABS_BUILDHOST_DEF
 
-ABS_PRODUCT_CODE=${ABS_SOC}-${ABS_DROID_BRANCH}
+if [ -z "$ABS_CHILD_NAME" ]; then
+  ABS_PRODUCT_CODE=${ABS_SOC}-${ABS_DROID_BRANCH}
+else
+  ABS_PRODUCT_CODE=${ABS_SOC}-${ABS_DROID_BRANCH}${ABS_CHILD_NAME}
+  ABS_PARENT_PRODUCT_CODE=${ABS_SOC}-${ABS_DROID_BRANCH}
+fi
 export ABS_PRODUCT_CODE
 
 MAKEFILE=${ABS_SOC}/board.mk
@@ -314,17 +319,24 @@ done
 set -o pipefail
 
 if [ ! -z "$ABS_RELEASE_NAME" ]; then
-    RELEASE_FULL_NAME=rls_${ABS_PRODUCT_CODE/-/_}_${ABS_RELEASE_NAME}
+    RELEASE_FULL_NAME=rls_$(echo $ABS_PRODUCT_CODE | sed 's/-/_/g')_${ABS_RELEASE_NAME}
 fi
 
 if [ -z "$ABS_MANIFEST_BRANCH" ]; then
     if [ ! -z "$ABS_RELEASE_NAME" ]; then
         ABS_MANIFEST_BRANCH=$RELEASE_FULL_NAME
+        if [ ! -z "$ABS_CHILD_NAME" ]; then
+            ABS_PARENT_BRANCH=rls_$(echo $ABS_PARENT_PRODUCT_CODE | sed 's/-/_/g')_${ABS_RELEASE_NAME}
+        fi
     else
         ABS_MANIFEST_BRANCH=$ABS_PRODUCT_CODE
+        if [ ! -z "$ABS_CHILD_NAME" ]; then
+            ABS_PARENT_BRANCH=$ABS_PARENT_PRODUCT_CODE
+        fi
     fi
 fi
 export ABS_MANIFEST_BRANCH
+export ABS_PARENT_BRANCH
 
 LAST_BUILD=LAST_BUILD.${ABS_MANIFEST_BRANCH}
 STD_LOG="build-${ABS_PRODUCT_CODE}${RLS_SUFFIX}.log"
@@ -353,6 +365,8 @@ fi
 
 echo "[$(date)]:starting build ${ABS_PRODUCT_CODE}${RLS_SUFFIX} ..." > $STD_LOG
 
+export LAST_BUILD_LOC=$PUBLISH_DIR_BASE
+
 if [ "$FLAG_CCACHE" = "true" ]; then
 	export USE_CCACHE=true
 	echo "ccache is enabled."
@@ -363,7 +377,6 @@ if [ "$FLAG_PRODUCT" = "true" ]; then
 	echo "product mode build is enabled."
 fi &&
 
-
 if [ "$FLAG_CLOBBER" = "true" ]; then 
 	make -f ${MAKEFILE} clobber 2>&1 | tee -a $STD_LOG
 fi &&
@@ -372,7 +385,6 @@ if [ "$FLAG_SOURCE" = "true" ]; then
 	make -f ${MAKEFILE} "source" 2>&1 | tee -a $STD_LOG
 fi &&
 
-export LAST_BUILD_LOC=$PUBLISH_DIR_BASE
 make -f ${MAKEFILE} changelog 2>&1 | tee -a $STD_LOG &&
 
 change_since_last_build=$(make -f ${MAKEFILE} get_change_summary_since_last_build) &&

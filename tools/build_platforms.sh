@@ -63,7 +63,7 @@ if [ ! ${platform%%:*} == "$platform" ]; then
 	if [ ! -z "$version" ]; then
 		rlsname=rls:$version
 		aabs_branch=rls_${platform}_$version
-		aabs_branch=${aabs_branch/-/_}			
+		aabs_branch=$(echo $aabs_branch | sed 's/-/_/g')
 	fi
 fi
 

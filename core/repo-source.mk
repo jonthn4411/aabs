@@ -24,6 +24,7 @@ source: output_dir
 #if an expection happened, repo doesn't exit with a non-zero value, we use below command to make sure the manifest.xml is generated.
 	$(hide)ls $(OUTPUT_DIR)/manifest.xml > /dev/null
 	$(hide)git rev-parse HEAD >$(OUTPUT_DIR)/abs.commit
+	$(hide)$(TOP_DIR)/core/automerge.sh $(OUTPUT_DIR) $(SRC_DIR) $(ABS_MANIFEST_BRANCH) $(LAST_BUILD_LOC)
 	$(log) "  done."
 
 
@@ -33,6 +34,7 @@ source: output_dir
 #md5: need to generate md5 sum
 PUBLISHING_FILES+=manifest.xml:m
 PUBLISHING_FILES+=abs.commit:m
+PUBLISHING_FILES+=changelog.automerge:o
 BACKUP_FILES+=manifest.xml
 BACKUP_FILES+=abs.commit
 
