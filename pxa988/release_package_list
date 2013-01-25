@@ -4,8 +4,6 @@ pxa988dkb_def/secondary_gpt  pxa988dkb_def/prebuilt_bin/secondary_gpt
 pxa988dkb_def/ramdisk.img pxa988dkb_def/prebuilt_bin/ramdisk.img
 pxa988dkb_def/ramdisk-recovery.img pxa988dkb_def/prebuilt_bin/ramdisk-recovery.img
 pxa988dkb_def/system.img pxa988dkb_def/prebuilt_bin/system.img
-pxa988dkb_def/tools.img pxa988dkb_def/prebuilt_bin/tools.img
-pxa988dkb_def/tools.tgz pxa988dkb_def/prebuilt_bin/tools.tgz
 pxa988dkb_def/u-boot.bin pxa988dkb_def/prebuilt_bin/u-boot.bin
 pxa988dkb_def/userdata.img pxa988dkb_def/prebuilt_bin/userdata.img
 pxa988dkb_def/uImage pxa988dkb_def/prebuilt_bin/uImage
