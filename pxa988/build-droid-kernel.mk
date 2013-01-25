@@ -158,10 +158,12 @@ PUBLISHING_FILES+=$$(product)/radio.img:o:md5
 PUBLISHING_FILES+=$$(product)/radio-emei.img:o:md5
 PUBLISHING_FILES+=$$(product)/radio-kunlun.img:o:md5
 
+PUBLISHING_FILES+=$$(product)/HL_CP.bin:o:md5
 PUBLISHING_FILES+=$$(product)/EM_CP.bin:o:md5
 PUBLISHING_FILES+=$$(product)/EM_CP_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/EM_CP_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/EM_M08_AI_Z1_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_M08_AI_Z1_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/KL_CP.bin:o:md5
 PUBLISHING_FILES+=$$(product)/KL_CP_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/KL_CP_NVM.mdb:o:md5
