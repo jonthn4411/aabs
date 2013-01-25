@@ -53,7 +53,6 @@ Files in this folder
 -Software_Downloader.zip                                :Software downloader, blf and OBM included
 
 -Debug files
-  tools.img                                             :Debug tools collections, mounted when set in android setting
   vmlinux                                               :ELF kernel
   modules.tgz                                           :Kernel modules
   System.map                                            :Kernel maps
