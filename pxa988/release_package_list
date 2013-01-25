@@ -11,7 +11,9 @@ pxa988dkb_def/radio-emei.img pxa988dkb_def/prebuilt_bin/radio-emei.img
 pxa988dkb_def/radio-kunlun.img pxa988dkb_def/prebuilt_bin/radio-kunlun.img
 pxa988dkb_def/ReliableData.bin pxa988dkb_def/prebuilt_bin/ReliableData.bin
 pxa988dkb_def/EM_CP.bin pxa988dkb_def/prebuilt_bin/EM_CP.bin
+pxa988dkb_def/HL_CP.bin pxa988dkb_def/prebuilt_bin/HL_CP.bin
 pxa988dkb_def/EM_M08_AI_Z1_Flash.bin pxa988dkb_def/prebuilt_bin/EM_M08_AI_Z1_Flash.bin
+pxa988dkb_def/HL_M08_AI_Z1_Flash.bin pxa988dkb_def/prebuilt_bin/HL_M08_AI_Z1_Flash.bin
 pxa988dkb_def/KL_CP.bin pxa988dkb_def/prebuilt_bin/KL_CP.bin
 pxa988dkb_def/KUNLUN_Z0_M14_AI_Flash.bin pxa988dkb_def/prebuilt_bin/KUNLUN_Z0_M14_AI_Flash.bin
 pxa988dkb_def/KUNLUN_A0_M15_AI_Flash.bin pxa988dkb_def/prebuilt_bin/KUNLUN_A0_M15_AI_Flash.bin
