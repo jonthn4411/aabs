@@ -124,7 +124,7 @@ endef
 #example: android:mlc:pxa168_android_mlc_defconfig:root
 # kernel_configs:=
 #
-kernel_configs:=android:eden:ttd2_and_defconfig: android_gc:eden:ttd2_up_gc_and_defconfig:
+kernel_configs:=android:eden:eden_and_defconfig: android_hantro:eden:eden_hantro_defconfig: android_gc:eden:eden_up_gc_and_defconfig:
 
 export MAKE_JOBS
 
