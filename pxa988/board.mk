@@ -1,4 +1,4 @@
-ABS_BUILD_DEVICES := pxa988ff_cmcc:pxa988ff
+ABS_BUILD_DEVICES := pxa988ff_def:pxa988ff
 #ABS_BUILD_DEVICES := pxa988dkb_def:pxa988dkb pxa988ff_cmcc:pxa988ff
 BOARD:=$(ABS_BOARD)
 ANDROID_VERSION:=$(ABS_DROID_BRANCH)
