@@ -26,6 +26,17 @@ pxa988dkb_def/modules.tgz pxa988dkb_def/prebuilt_bin/modules.tgz
 pxa988dkb_def/vmlinux pxa988dkb_def/prebuilt_bin/vmlinux
 pxa988dkb_def/System.map pxa988dkb_def/prebuilt_bin/System.map
 
+pxa988dkb_def/EM_DSDS_CP.bin pxa988dkb_def/prebuilt_bin/EM_DSDS_CP.bin
+pxa988dkb_def/EM_DSDS_CP_DIAG.mdb pxa988dkb_def/prebuilt_bin/EM_DSDS_CP_DIAG.mdb
+pxa988dkb_def/EM_DSDS_CP_NVM.mdb pxa988dkb_def/prebuilt_bin/EM_DSDS_CP_NVM.mdb 
+pxa988dkb_def/EM_M08_AI_Z1_DSDS_Flash.bin pxa988dkb_def/prebuilt_bin/EM_M08_AI_Z1_DSDS_Flash.bin
+pxa988dkb_def/KL_DSDS_CP.bin pxa988dkb_def/prebuilt_bin/KL_DSDS_CP.bin
+pxa988dkb_def/KL_DSDS_CP_DIAG.mdb pxa988dkb_def/prebuilt_bin/KL_DSDS_CP_DIAG.mdb
+pxa988dkb_def/KL_DSDS_CP_NVM.mdb pxa988dkb_def/prebuilt_bin/KL_DSDS_CP_NVM.mdb
+pxa988dkb_def/KUNLUN_A0_M15_AI_DSDS_Flash.bin pxa988dkb_def/prebuilt_bin/KUNLUN_A0_M15_AI_DSDS_Flash.bin
+pxa988dkb_def/KUNLUN_Z0_M14_AI_DSDS_Flash.bin pxa988dkb_def/prebuilt_bin/KUNLUN_Z0_M14_AI_DSDS_Flash.bin
+
+
 pxa1088dkb_def/build.prop pxa1088dkb_def/prebuilt_bin/build.prop
 pxa1088dkb_def/primary_gpt pxa1088dkb_def/prebuilt_bin/primary_gpt
 pxa1088dkb_def/secondary_gpt  pxa1088dkb_def/prebuilt_bin/secondary_gpt
