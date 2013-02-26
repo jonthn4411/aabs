@@ -179,6 +179,11 @@ PUBLISHING_FILES+=$$(product)/KL_DSDS_CP_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/KL_DSDS_CP_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/KUNLUN_A0_M15_AI_DSDS_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/KUNLUN_Z0_M14_AI_DSDS_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_TD_DSDS_CP.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_TD_DSDS_CP_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HL_TD_DSDS_CP_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HL_TD_M08_AI_A0_DSDS_Flash.bin:o:md5
+
 
 PUBLISHING_FILES+=$$(product)/KUNLUN_Arbel.bin:o:md5
 PUBLISHING_FILES+=$$(product)/KUNLUN_Arbel_DIAG.mdb:o:md5
