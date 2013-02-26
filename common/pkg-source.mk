@@ -35,6 +35,10 @@ ifeq ($(ANDROID_VERSION),ics)
 else
 ifeq ($(ANDROID_VERSION),jb)
 	DROID_BASE:=android-4.1.2_r1
+else
+ifeq ($(ANDROID_VERSION),jb42)
+	DROID_BASE:=android-4.2_r1
+endif
 endif
 endif
 endif
