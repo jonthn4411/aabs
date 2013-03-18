@@ -1,3 +1,4 @@
+ifneq ($(strip $(ABS_VIRTUAL_BUILD) ),true)
 #check if the required variables have been set.
 $(call check-variables,ABS_MANIFEST_BRANCH GIT_MANIFEST GIT_REPO)
 #ABS_MANIFEST_FILE is optional
@@ -35,4 +36,4 @@ PUBLISHING_FILES+=manifest.xml:m
 PUBLISHING_FILES+=abs.commit:m
 BACKUP_FILES+=manifest.xml
 BACKUP_FILES+=abs.commit
-
+endif

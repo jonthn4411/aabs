@@ -61,7 +61,12 @@ PUBLISHING_FILES:=
 #convert the relative directory to absolute directory.
 #
 OUTPUT_DIR:=$(TOP_DIR)/$(OUTPUT_DIR)
+ifeq ($(strip $(ABS_VIRTUAL_BUILD)),true)
+SRC_DIR:=$(ABS_SOURCE_DIR)
+else
 SRC_DIR:=$(TOP_DIR)/$(SRC_DIR)
+endif
+
 
 
 #Selecting the toolchain
@@ -97,7 +102,9 @@ output_dir:
 .PHONY: clobber
 clobber:
 	$(log) "clean source directory..."
-	$(hide)sudo rm -fr $(SRC_DIR)
+	$(hide)if [ "$$ABS_VIRTUAL_BUILD" != "true" ]; then \
+	           sudo rm -fr $(SRC_DIR); \
+	       fi
 	$(log) "clean output directory..."
 	$(hide)sudo rm -fr $(OUTPUT_DIR)
 	$(log) "  done."
