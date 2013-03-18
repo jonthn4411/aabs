@@ -20,6 +20,7 @@ print_usage()
 	echo "    [no-checkout]: don't checkout aabs project for build. this should be used for testing this script."
     echo "    [dry-run]: don't actully run the build, this should be used for testing this script."
     echo "    [help]: show this message"
+    echo "    For virtual build, you must export ABS_SOURCE_DIR and ABS_PUBLISH_DIR"
 }
 
 LOG=build_platforms.log
@@ -108,14 +109,30 @@ fi
 
 echo "[aabs][$(get_date)]:start to build:$platform $rlsname" | tee -a $LOG
 if [ -x build-${platform}.sh ]; then
+    if [ -n "$ABS_SOURCE_DIR" -a -n "$ABS_PUBLISH_DIR" ]; then
+        export ABS_VIRTUAL_BUILD=true
+        TARGET_SOURCE=""
+        TARGET_PKGSRC=""
+    else
+        export ABS_VIRTUAL_BUILD=""
+        TARGET_SOURCE="source"
+        TARGET_PKGSRC="pkgsrc"
+    fi
 	if [ "$dryrun_flag" == true ]; then
 		echo "[aabs]will-run:./build-${platform}.sh clobber source pkgsrc publish autotest email $rlsname" | tee -a $LOG
 	else
 		if [ "$FLAG_TEMP_BUILD" = "true" ]; then
-			./build-${platform}.sh clobber source pkgsrc publish temp $rlsname
+			if [ "$FLAG_PRODUCT_BUILD" = "true" ]; then
+				./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish temp force product $rlsname
+			else
+				./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish temp $rlsname
+			fi
 		else
-
-			./build-${platform}.sh clobber source pkgsrc publish autotest email $rlsname
+			if [ "$FLAG_PRODUCT_BUILD" = "true" ]; then
+				./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest email force product $rlsname
+			else
+				./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest email $rlsname
+			fi
 		fi
 	fi
 else

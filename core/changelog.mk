@@ -1,3 +1,4 @@
+ifneq ($(strip $(ABS_VIRTUAL_BUILD) ),true)
 #check if the required variables have been set.
 $(call check-variables, ABS_PRODUCT_CODE ABS_MANIFEST_BRANCH)
 
@@ -59,3 +60,4 @@ get_change_summary_since_last_build:
 	if [ ! -z "$$AABS_PRODUCT" ] || [ ! -z "$$AABS" ]; then PRJS="$(AABS_PRJ) $$PRJS"; fi && \
 	echo $$PRJS 
 
+endif
