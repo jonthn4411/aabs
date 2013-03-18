@@ -1,3 +1,4 @@
+ifneq ($(strip $(ABS_VIRTUAL_BUILD) ),true)
 include core/pkg-source.mk
 
 INTERNAL_PROJECTS +=vendor/marvell/external/gps_sirf
@@ -96,3 +97,4 @@ PUBLISHING_FILES2+=obm_src.tgz:src:m:md5
 PUBLISHING_FILES2+=marvell_manifest.xml:src:m
 PUBLISHING_FILES2+=setup_android.sh:src:m
 PUBLISHING_FILES+=release_package_list:o
+endif

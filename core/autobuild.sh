@@ -342,17 +342,20 @@ LAST_BUILD=LAST_BUILD.${ABS_MANIFEST_BRANCH}
 STD_LOG="build-${ABS_PRODUCT_CODE}${RLS_SUFFIX}.log"
 
 #TEMP_PUBLISH_DIR_BASE and OFFICIAL_PUBLISH_DIR_BASE should be defined buildhost.def
-if [ "$FLAG_TEMP" = "true" ]; then
+if [ "$ABS_VIRTUAL_BUILD" = "true" ]; then
+    PUBLISH_DIR_BASE=$ABS_PUBLISH_DIR
+	PUBLISH_DIR_BASE=${PUBLISH_DIR_BASE}/${ABS_SOC}
+elif [ "$FLAG_TEMP" = "true" ]; then
 	PUBLISH_DIR_BASE=$TEMP_PUBLISH_DIR_BASE
 	dev_team=$build_maintainer
 	announce_list=""
 	PUBLISH_DIR_BASE=${PUBLISH_DIR_BASE}/${ABS_SOC}
-	mkdir -p ${PUBLISH_DIR_BASE}
 else
 	PUBLISH_DIR_BASE=$OFFICIAL_PUBLISH_DIR_BASE
 	PUBLISH_DIR_BASE=${PUBLISH_DIR_BASE}/${ABS_SOC}
-	mkdir -p ${PUBLISH_DIR_BASE}
 fi
+mkdir -p ${PUBLISH_DIR_BASE}
+
 LAST_BUILD=$PUBLISH_DIR_BASE/$LAST_BUILD
 
 if [ "$FLAG_TEMP" = "true" ]; then
@@ -385,11 +388,20 @@ if [ "$FLAG_SOURCE" = "true" ]; then
 	make -f ${MAKEFILE} "source" 2>&1 | tee -a $STD_LOG
 fi &&
 
-make -f ${MAKEFILE} changelog 2>&1 | tee -a $STD_LOG &&
+#
+# Check changes from last build
+# 1. build for new changes
+# 2. always build if enforced
+# 3. always build for virtual build
+#
+if [ "$ABS_VIRTUAL_BUILD" = "true" ]; then
+    echo "Virtual Build: we'll skip checking changes"
+else
+    make -f ${MAKEFILE} changelog 2>&1 | tee -a $STD_LOG
+    change_since_last_build=$(make -f ${MAKEFILE} get_change_summary_since_last_build)
+fi
 
-change_since_last_build=$(make -f ${MAKEFILE} get_change_summary_since_last_build) &&
-
-if [ -z "$change_since_last_build" ]; then
+if [ -z "$change_since_last_build" -a "$ABS_VIRTUAL_BUILD" != "true" ]; then
 	echo "No significant change is identified since last build." | tee -a $STD_LOG 
 	if [ "$FLAG_FORCE" = "true" ]; then
 		echo "force flag is set, continue build."
@@ -416,7 +428,11 @@ if [ "$FLAG_PUBLISH" = "true" ]; then
 	get_new_publish_dir
 	export PUBLISH_DIR
 	mkdir -p $PUBLISH_DIR
-	BACKUP_DIR_BASE=/git/android/manifest_bkup/${ABS_SOC}
+    if [ "$ABS_VIRTUAL_BUILD" = "true" ]; then
+        BACKUP_DIR_BASE=/git/android/manifest_bkup/virtual_build/${ABS_SOC}
+    else
+        BACKUP_DIR_BASE=/git/android/manifest_bkup/${ABS_SOC}
+    fi
 	BACKUP_DIR=${BACKUP_DIR_BASE}${PUBLISH_DIR#*${PUBLISH_DIR_BASE}}
 	export BACKUP_DIR
 	cp ${ABS_SOC}/README $PUBLISH_DIR/README &&
