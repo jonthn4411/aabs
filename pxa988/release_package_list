@@ -77,7 +77,7 @@ pxa1088dkb_def/HL_TD_DSDS_CP.bin pxa1088dkb_def/prebuilt_bin/HL_TD_DSDS_CP.bin
 pxa1088dkb_def/HL_TD_DSDS_CP_DIAG.mdb pxa1088dkb_def/prebuilt_bin/HL_TD_DSDS_CP_DIAG.mdb
 pxa1088dkb_def/HL_TD_DSDS_CP_NVM.mdb pxa1088dkb_def/prebuilt_bin/HL_TD_DSDS_CP_NVM.mdb
 pxa1088dkb_def/HL_TD_M08_AI_A0_DSDS_Flash.bin pxa1088dkb_def/prebuilt_bin/HL_TD_M08_AI_A0_DSDS_Flash.bin
-
+pxa1088dkb_def/tee_tw.bin pxa1088dkb_def/prebuilt_bin/tee_tw.bin
 
 manifest.xml manifest.xml
 changelog.month changelog.month

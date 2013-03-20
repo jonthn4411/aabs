@@ -306,9 +306,11 @@ build_droid_security_$$(product): build_droid_$$(product)
 	make KDIR=$(SRC_DIR)/kernel/kernel ARCH=arm CROSS_COMPILE=arm-eabi- M=$(PWD) && cp -a geu.ko $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/lib/modules && \
 	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
 	tar zcvf $(OUTPUT_DIR)/$$(private_product)/security.tgz system/lib/libparseTim.so system/lib/libwtpsp.so system/lib/libwtpsp_ss.so system/lib/modules/geu.ko && \
-	cd $(SRC_DIR)
+	cd $(SRC_DIR) \
+	cp -p $(SRC_DIR)/vendor/marvell/generic/security/tee/bin/tee_tw.bin $(OUTPUT_DIR)/$$(private_product)
 
 PUBLISHING_FILES+=$$(product)/security.tgz:o:md5
+PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
 
 endef
 else
