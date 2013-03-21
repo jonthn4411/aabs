@@ -283,7 +283,8 @@ build_droid_security_$$(product): build_droid_$$(product)
 	make KDIR=$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/kbuild-pxa1088_defconfig ARCH=arm CROSS_COMPILE=$(SRC_DIR)/prebuilts/gcc/linux-x86/arm/arm-eabi-4.6/bin/arm-eabi- M=$(PWD) && cp -a geu.ko $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/lib/modules && \
 	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
 	tar zcvf $(OUTPUT_DIR)/$$(private_product)/security.tgz system/lib/libparseTim.so system/lib/libwtpsp.so system/lib/libwtpsp_ss.so system/lib/modules/geu.ko && \
-	cd $(SRC_DIR) \
+	cd $(SRC_DIR)
+	$(log) "[$$(private_product)] copy tee_tw.bin ..."
 	cp -p $(SRC_DIR)/vendor/marvell/generic/security/tee/bin/tee_tw.bin $(OUTPUT_DIR)/$$(private_product)
 
 PUBLISHING_FILES+=$$(product)/security.tgz:o:md5
