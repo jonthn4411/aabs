@@ -264,7 +264,7 @@ PUBLISHING_FILES+=$$(product)/tools.tgz:o:md5
 
 endef
 
-ifneq ($(ABS_DROID_BRANCH),jb4.2)
+#ifneq ($(ABS_DROID_BRANCH),jb4.2)
 define define-build-droid-security
 tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
@@ -290,19 +290,19 @@ PUBLISHING_FILES+=$$(product)/security.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
 
 endef
-else
-define define-build-droid-security
-tw:=$$(subst :,  , $(1) )
-product:=$$(word 1, $$(tw) )
-device:=$$(word 2, $$(tw) )
-.PHONY: build_droid_security_$$(product)
-build_droid_security_$$(product): private_product:=$$(product)
-build_droid_security_$$(product): private_device:=$$(device)
-build_droid_security_$$(product): build_droid_$$(product)
-	$(log) "[$$(private_product)] no security build ..."
+#else
+#define define-build-droid-security
+#tw:=$$(subst :,  , $(1) )
+#product:=$$(word 1, $$(tw) )
+#device:=$$(word 2, $$(tw) )
+#.PHONY: build_droid_security_$$(product)
+#build_droid_security_$$(product): private_product:=$$(product)
+#build_droid_security_$$(product): private_device:=$$(device)
+#build_droid_security_$$(product): build_droid_$$(product)
+#	$(log) "[$$(private_product)] no security build ..."
 
-endef
-endif
+#endef
+#endif
 
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
