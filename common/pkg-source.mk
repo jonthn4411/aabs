@@ -1,5 +1,3 @@
-include core/pkg-source.mk
-
 COMMON_DIR=$(TOP_DIR)/common
 EXCLUDE_VCS=--exclude-vcs --exclude=.repo
 

@@ -247,14 +247,7 @@ else
 fi
 export ABS_PRODUCT_CODE
 
-MAKEFILE=${ABS_SOC}/board.mk
-if [ ! -f "$MAKEFILE" ]; then
-    MAKEFILE=common/board.mk
-fi
-if [ ! -f "$MAKEFILE" ]; then
-    echo "Neither ${ABS_SOC}/board.mk nor common/board.mk can be found."
-    exit 1
-fi
+MAKEFILE=core/main.mk
 
 export PUBLISH_DIR="PUBLISH_DIR-Not-Defined"
 BUILD_NUM="BUILD_NUM-Not-Defined"

@@ -1,5 +1,3 @@
-include core/pkg-source.mk
-
 INTERNAL_PROJECTS :=vendor/marvell/external/helix
 INTERNAL_PROJECTS +=vendor/marvell/external/gps_sirf
 INTERNAL_PROJECTS +=vendor/marvell/external/flash
@@ -99,5 +97,4 @@ PUBLISHING_FILES+=obm_src.tgz:m:md5
 PUBLISHING_FILES+=marvell_manifest.xml:m
 PUBLISHING_FILES+=setup_android.sh:m
 PUBLISHING_FILES+=ReleaseNotes.txt:m
-
 

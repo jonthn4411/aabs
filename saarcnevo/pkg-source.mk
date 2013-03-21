@@ -1,5 +1,3 @@
-include core/pkg-source.mk
-
 INTERNAL_PROJECTS :=vendor/marvell/external/helix
 INTERNAL_PROJECTS +=vendor/marvell/external/flash
 INTERNAL_PROJECTS +=vendor/marvell/$(DROID_PRODUCT)/.git

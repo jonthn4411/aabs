@@ -1,5 +1,3 @@
-include core/pkg-source.mk
-
 INTERNAL_PROJECTS :=
 
 EXCLUDE_VCS=--exclude-vcs --exclude=.repo

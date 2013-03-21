@@ -1,3 +1,4 @@
+ifneq ($(strip $(ABS_VIRTUAL_BUILD) ),true)
 #make sure the last character of $(SRC_DIR) is not "/"
 .PHONY:get_source_for_pkg
 get_source_for_pkg: output_dir
@@ -21,4 +22,7 @@ get_source_for_pkg: output_dir
 	repo sync -l 
 
 
+# Platform hook
+-include $(ABS_SOC)/pkg-source.mk
+endif
 

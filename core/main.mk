@@ -130,4 +130,27 @@ help:
 	@echo "    Publish Directory: $(PUBLISH_DIR)"
 	@echo " "
 
+#
+# Include goal for repo source code
+#
+include core/repo-source.mk
 
+#
+# Include goal for generate changelog
+#
+include core/changelog.mk
+
+#
+# Include goal for package source code.
+#
+include core/pkg-source.mk
+
+#
+# Platform Build Scripts
+#
+include $(ABS_SOC)/board.mk
+
+#
+# Include publish goal
+#
+include core/publish.mk

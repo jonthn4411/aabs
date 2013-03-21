@@ -1,5 +1,3 @@
-include core/pkg-source.mk
-
 INTERNAL_PROJECTS :=vendor/marvell/external/helix
 INTERNAL_PROJECTS +=vendor/marvell/external/flash
 INTERNAL_PROJECTS +=vendor/marvell/$(DROID_PRODUCT)/.git
@@ -101,6 +99,4 @@ PUBLISHING_FILES2+=marvell_manifest.xml:src:m
 PUBLISHING_FILES2+=setup_android.sh:src:m
 PUBLISHING_FILES+=ReleaseNotes.txt:o
 PUBLISHING_FILES+=release_package_list:o
-
-
 

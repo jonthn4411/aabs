@@ -3,24 +3,6 @@ BOARD:=pxa920
 ANDROID_VERSION:=ics
 PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
 
-
-include core/main.mk
-
-#
-# Include goal for repo source code
-#
-include core/repo-source.mk
-
-#
-# Include goal for generate changelog
-#
-include core/changelog.mk
-
-#
-# Include goal for package source code.
-#
-include $(ABS_SOC)/pkg-source.mk
-
 #
 # Include goal for build android and kernels.
 #
@@ -67,10 +49,4 @@ clean_device_$$(product): clean_uboot_obm_$$(product) clean_droid_kernel_$$(prod
 clean_device:clean_device_$$(product)
 endef
 $(foreach bv, $(ABS_BUILD_DEVICES), $(eval $(call define-clean-device,$(bv) ) ) )
-
-#
-# Include publish goal
-#
-include core/publish.mk
-
 

@@ -5,23 +5,6 @@ ifeq ($(strip $(DROID_VARIANT)),)
 	DROID_VARIANT:=user
 endif
 
-include core/main.mk
-
-#
-# Include goal for repo source code
-#
-include core/repo-source.mk
-
-#
-# Include goal for generate changelog
-#
-include core/changelog.mk
-
-#
-# Include goal for package source code.
-#
-include common/pkg-source.mk
-
 #
 # Include goal for build uboot, obm, android and kernels.
 #
@@ -61,9 +44,4 @@ endef
 
 $(foreach bd,$(ABS_BUILD_DEVICES),\
 	$(eval $(call define-clean-device,$(bd))))
-
-#
-# Include publish goal
-#
-include core/publish.mk
 
