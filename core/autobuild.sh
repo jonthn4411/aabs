@@ -7,6 +7,8 @@
 #   clobber: force to have a completely clean build. All the source code, intermediate files are removed.
 #   email: generate email notification after the build.
 
+source ${soc}/build-${platform}.sh
+
 get_ip()
 {
 OS=`uname`

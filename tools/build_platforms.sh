@@ -57,6 +57,7 @@ platform=${platforms# }
 platform=${platform% }
 rlsname=
 version=
+soc=
 aabs_branch=master
 if [ ! ${platform%%:*} == "$platform" ]; then
 	version=${platform##*:}
@@ -67,6 +68,7 @@ if [ ! ${platform%%:*} == "$platform" ]; then
 		aabs_branch=$(echo $aabs_branch | sed 's/-/_/g')
 	fi
 fi
+soc=${platform%%-*}
 
 if [ "$no_checkout" = "false" ]; then
 	echo "[aabs][$(get_date)]:start to fetch AABS itself..." | tee -a $LOG
@@ -108,7 +110,7 @@ if [ "$no_checkout" = "false" ]; then
 fi
 
 echo "[aabs][$(get_date)]:start to build:$platform $rlsname" | tee -a $LOG
-if [ -x build-${platform}.sh ]; then
+if [ -x ${soc}/build-${platform}.sh ]; then
     if [ -n "$ABS_SOURCE_DIR" -a -n "$ABS_PUBLISH_DIR" ]; then
         export ABS_VIRTUAL_BUILD=true
         TARGET_SOURCE=""
@@ -123,15 +125,15 @@ if [ -x build-${platform}.sh ]; then
 	else
 		if [ "$FLAG_TEMP_BUILD" = "true" ]; then
 			if [ "$FLAG_PRODUCT_BUILD" = "true" ]; then
-				./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish temp force product $rlsname
+				soc=$soc platform=$platform ./core/autobuild.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish temp force product $rlsname
 			else
-				./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish temp $rlsname
+				soc=$soc platform=$platform ./core/autobuild.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish temp $rlsname
 			fi
 		else
 			if [ "$FLAG_PRODUCT_BUILD" = "true" ]; then
-				./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest email force product $rlsname
+				soc=$soc platform=$platform ./core/autobuild.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest email force product $rlsname
 			else
-				./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest email $rlsname
+				soc=$soc platform=$platform ./core/autobuild.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest email $rlsname
 			fi
 		fi
 	fi
