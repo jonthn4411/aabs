@@ -239,7 +239,7 @@ fi
 if [ -z "$ABS_BUILDHOST_DEF" ] || [ ! -e $ABS_BUILDHOST_DEF ]; then
   ABS_BUILDHOST_DEF=buildhost.def
 fi
-. $ABS_BUILDHOST_DEF
+. core/${ABS_BUILDHOST_DEF}
 
 if [ -z "$ABS_CHILD_NAME" ]; then
   ABS_PRODUCT_CODE=${ABS_SOC}-${ABS_DROID_BRANCH}
