@@ -26,7 +26,7 @@ rm -fr $output_dir/android_patches &&
 mkdir -p $output_dir/android_patches &&
 
 if [ -z "$head_manifest" ] || [ ! -f $head_manifest ]; then
-	head_manifest=$output_dir/../common/head_manifest.default
+	head_manifest=$output_dir/../core/head_manifest.default
 fi
 
 cat $head_manifest > $output_manifest
