@@ -428,7 +428,7 @@ fi
 if [ $? -ne 0 ]; then #auto build fail, send an email
 	echo "error encountered!" 2>&1 | tee -a $STD_LOG
 	echo "~~<result>FAIL</result>"
-	if [ "$FLAG_EMAIL" = "true" ]; then
+	if [ "$FLAG_EMAIL" = "true" -a "$ABS_VIRTUAL_BUILD" != "true" ]; then
 		echo "    sending email notification..." 2>&1 | tee -a $STD_LOG
 		send_error_notification "$(make -f ${MAKEFILE} get_changelog_build)"
 	fi
