@@ -105,24 +105,24 @@ pkg_all_src: get_source_for_pkg
 
 pkg_kernel_src: output_dir
 	$(hide)echo "  package kernel source code..."
-	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_kernel_src_patch.sh $(KERNEL_BASE_COMMIT)
+	$(hide)cd $(OUTPUT_DIR) && $(ABS_TOP_DIR)/core/gen_kernel_src_patch.sh $(KERNEL_BASE_COMMIT)
 
 pkg_boot_src: output_dir
 	$(hide)echo "  package uboot obm source code..."
-	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_uboot_obm_src_patch.sh $(UBOOT_BASE_COMMIT)
+	$(hide)cd $(OUTPUT_DIR) && $(ABS_TOP_DIR)/core/gen_uboot_obm_src_patch.sh $(UBOOT_BASE_COMMIT)
 
 pkg_droid_src: output_dir
 	$(hide)echo "  package android source code..."
-	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(TOP_DIR)/core core/$(HEAD_MANIFEST)
+	$(hide)cd $(OUTPUT_DIR) && $(ABS_TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(ABS_TOP_DIR)/core core/$(HEAD_MANIFEST)
 
 LAST_MS1_FILE=${LAST_BUILD_LOC}/"LAST_MS1.${ABS_RELEASE_FULL_NAME}"
 
 delta_patches: output_dir pkg_droid_src
 	$(hide)echo "  extract delta patches since ms1..."
-	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_delta_patch.sh $(SRC_DIR) $(TOP_DIR)/tools $(LAST_MS1_FILE) $(OUTPUT_DIR)/changelog.ms1
+	$(hide)cd $(OUTPUT_DIR) && $(ABS_TOP_DIR)/core/gen_delta_patch.sh $(SRC_DIR) $(ABS_TOP_DIR)/tools $(LAST_MS1_FILE) $(OUTPUT_DIR)/changelog.ms1
 
 publish_setup_sh: output_dir
-	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
+	$(hide)cp $(ABS_TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
 
 pkgsrc: save_prjlist
 pkgsrc: remove_internal_src

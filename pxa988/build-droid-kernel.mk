@@ -3,7 +3,7 @@ $(call check-variables, ABS_SOC ABS_DROID_BRANCH ABS_DROID_VARIANT)
 
 include $(ABS_SOC)/tools-list.mk
 
-MY_SCRIPT_DIR:=$(TOP_DIR)/$(ABS_SOC)
+MY_SCRIPT_DIR:=$(ABS_TOP_DIR)/$(ABS_SOC)
 
 DROID_TYPE:=release
 DROID_VARIANT:=$(ABS_DROID_VARIANT)

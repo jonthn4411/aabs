@@ -2,7 +2,7 @@
 #$(call check-variables,BUILD_VARIANTS)
 
 DEMO_MEDIA_DIR:=/autobuild/demomedia
-MY_SCRIPT_DIR:=$(TOP_DIR)/dkbtdemmc
+MY_SCRIPT_DIR:=$(ABS_TOP_DIR)/dkbtdemmc
 
 ifeq ($(ANDROID_VERSION),eclair)
        DROID_PRODUCT:=dkbtd

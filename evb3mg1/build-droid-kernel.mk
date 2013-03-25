@@ -2,7 +2,7 @@
 #$(call check-variables,BUILD_VARIANTS)
 
 DEMO_MEDIA_DIR:=/autobuild/demomedia
-MY_SCRIPT_DIR:=$(TOP_DIR)/$(ABS_BOARD)
+MY_SCRIPT_DIR:=$(ABS_TOP_DIR)/$(ABS_BOARD)
 
 DROID_PRODUCT:=$(ABS_PRODUCT_NAME)
 DROID_TYPE:=release

@@ -26,17 +26,17 @@ pkgsrc: output_dir get_source_for_pkg
 	$(hide)cd $(OUTPUT_DIR) && tar czf droid_all_src.tgz $(EXCLUDE_VCS) source/
 
 	$(hide)echo "  package kernel source code..."
-	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_kernel_src_patch.sh $(KERNEL_BASE_COMMIT)
+	$(hide)cd $(OUTPUT_DIR) && $(ABS_TOP_DIR)/core/gen_kernel_src_patch.sh $(KERNEL_BASE_COMMIT)
 
 	#$(hide)echo "  package uboot obm source code..."
-	#$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_uboot_obm_src_patch.sh $(UBOOT_BASE_COMMIT)
+	#$(hide)cd $(OUTPUT_DIR) && $(ABS_TOP_DIR)/core/gen_uboot_obm_src_patch.sh $(UBOOT_BASE_COMMIT)
 	$(hide)echo "	FIXME:as no obm in evbpv2, just use the local gen_uboot_obm_src_patch.sh, fix it later!!"
-	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/$(ABS_BOARD)/gen_uboot_src_patch_FIXME.sh $(UBOOT_BASE_COMMIT)
+	$(hide)cd $(OUTPUT_DIR) && $(ABS_TOP_DIR)/$(ABS_BOARD)/gen_uboot_src_patch_FIXME.sh $(UBOOT_BASE_COMMIT)
 
 	$(hide)echo "  package android source code..."
-	$(hide)cd $(OUTPUT_DIR) && $(TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(TOP_DIR)/core
+	$(hide)cd $(OUTPUT_DIR) && $(ABS_TOP_DIR)/core/gen_droid_src_patch.sh $(DROID_BASE) $(ABS_TOP_DIR)/core
 
-	$(hide)cp $(TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
+	$(hide)cp $(ABS_TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
 	$(hide)cp $(BOARD)/ReleaseNotes.txt $(OUTPUT_DIR)
 	$(log) "  done."
 

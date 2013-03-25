@@ -25,7 +25,7 @@ source: output_dir
 #if an expection happened, repo doesn't exit with a non-zero value, we use below command to make sure the manifest.xml is generated.
 	$(hide)ls $(OUTPUT_DIR)/manifest.xml > /dev/null
 	$(hide)git rev-parse HEAD >$(OUTPUT_DIR)/abs.commit
-	$(hide)$(TOP_DIR)/core/automerge.sh $(OUTPUT_DIR) $(SRC_DIR) $(ABS_MANIFEST_BRANCH) $(LAST_BUILD_LOC)
+	$(hide)$(ABS_TOP_DIR)/core/automerge.sh $(OUTPUT_DIR) $(SRC_DIR) $(ABS_MANIFEST_BRANCH) $(LAST_BUILD_LOC)
 	$(log) "  done."
 
 

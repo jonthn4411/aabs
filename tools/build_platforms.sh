@@ -28,6 +28,13 @@ LOG=build_platforms.log
 #enable pipefail so that if make fail the exit of whole command is non-zero value.
 set -o pipefail
 
+#
+# Get AABS top directory
+#
+cd $(dirname $(dirname $0))
+export ABS_TOP_DIR=$(pwd)
+echo "[AABS]:Entering ${ABS_TOP_DIR}..."
+
 #For release build, the aabs will be branched, too. So we can only do one platform build a time.
 #And for release build, we should checkout the rls_<board>_<droid>_<version> branch; for dev build, we should checkout the master 
 
@@ -110,7 +117,7 @@ if [ "$no_checkout" = "false" ]; then
 fi
 
 echo "[aabs][$(get_date)]:start to build:$platform $rlsname" | tee -a $LOG
-if [ -x ${soc}/build-${platform}.sh ]; then
+if [ -x ${ABS_TOP_DIR}/${soc}/build-${platform}.sh ]; then
     if [ -n "$ABS_SOURCE_DIR" -a -n "$ABS_PUBLISH_DIR" ]; then
         export ABS_VIRTUAL_BUILD=true
         TARGET_SOURCE=""
@@ -121,7 +128,7 @@ if [ -x ${soc}/build-${platform}.sh ]; then
         TARGET_PKGSRC="pkgsrc"
     fi
 	if [ "$dryrun_flag" == true ]; then
-		echo "[aabs]will-run:./build-${platform}.sh clobber source pkgsrc publish autotest email $rlsname" | tee -a $LOG
+		echo "[aabs]will-run:./core/autobuild.sh clobber source pkgsrc publish autotest email $rlsname" | tee -a $LOG
 	else
 		if [ "$FLAG_TEMP_BUILD" = "true" ]; then
 			if [ "$FLAG_PRODUCT_BUILD" = "true" ]; then
@@ -138,7 +145,7 @@ if [ -x ${soc}/build-${platform}.sh ]; then
 		fi
 	fi
 else
-	echo "[aabs]!!!./build-${platform}.sh not exist or not excutable" | tee -a $LOG
+	echo "[aabs][error] ${ABS_TOP_DIR}/${soc}/build-${platform}.sh not exist or not excutable" | tee -a $LOG
 fi
 echo "[aabs][$(get_date)]:build done." | tee -a $LOG
 

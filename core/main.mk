@@ -40,7 +40,6 @@ space:= #a designated space
 PUBLISHING_FILES:=
 PUBLISHING_FILES2:=
 BACKUP_FILES:=
-TOP_DIR:=$(shell pwd)
 
 SRC_DIR:=src.$(ABS_PRODUCT_CODE)
 OUTPUT_DIR:=out.$(ABS_PRODUCT_CODE)
@@ -51,7 +50,7 @@ endif
 
 #number of concurrent jobs for make
 JOBS_FACTOR:=1.5
-CPUCORES:=$(shell $(TOP_DIR)/tools/cpucount.sh)
+CPUCORES:=$(shell $(ABS_TOP_DIR)/tools/cpucount.sh)
 MAKE_JOBS:=$(shell echo "scale=0; $(CPUCORES)*$(JOBS_FACTOR)/1" | bc)
 
 #We must initialize PUBLISHING_FILES_XXX to a simply expanded flavor variable
@@ -60,11 +59,11 @@ PUBLISHING_FILES:=
 #
 #convert the relative directory to absolute directory.
 #
-OUTPUT_DIR:=$(TOP_DIR)/$(OUTPUT_DIR)
+OUTPUT_DIR:=$(ABS_TOP_DIR)/$(OUTPUT_DIR)
 ifeq ($(strip $(ABS_VIRTUAL_BUILD)),true)
 SRC_DIR:=$(ABS_SOURCE_DIR)
 else
-SRC_DIR:=$(TOP_DIR)/$(SRC_DIR)
+SRC_DIR:=$(ABS_TOP_DIR)/$(SRC_DIR)
 endif
 
 

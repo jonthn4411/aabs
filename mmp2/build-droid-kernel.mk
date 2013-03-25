@@ -24,7 +24,7 @@ clean_droid_$$(product): private_device:=$$(device)
 clean_droid_$$(product):
 	$(log) "clean android ..."
 	$(hide)cd $(SRC_DIR) && \
-	. $(TOP_DIR)/tools/apb $$(private_product) && \
+	. $(ABS_TOP_DIR)/tools/apb $$(private_product) && \
 	choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	make clean
 	$(log) "    done"
@@ -35,7 +35,7 @@ clean_kernel_$$(product): private_device:=$$(device)
 clean_kernel_$$(product):
 	$(log) "clean kernel ..."
 	$(hide)cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
-	. $(TOP_DIR)/tools/apb $$(private_product) && \
+	. $(ABS_TOP_DIR)/tools/apb $$(private_product) && \
 	choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	make clean
 	$(log) "    done"
@@ -70,7 +70,7 @@ build_droid_root_$$(product): output_dir
 	$$(hide)cd $$(OUTPUT_DIR)/$$(private_product) && tar xzf modules_android_mmc.tgz
 	$$(log) "[$$(private_product)]building android source code ..."
 	$$(hide)cd $$(SRC_DIR) && \
-	. $$(TOP_DIR)/tools/apb $$(private_product) && \
+	. $$(ABS_TOP_DIR)/tools/apb $$(private_product) && \
 	choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS)
 	echo "    copy GPT files..." && \
@@ -118,7 +118,7 @@ build_droid_update_pkgs_$$(product): private_device:=$$(device)
 build_droid_update_pkgs_$$(product): output_dir
 	$$(log) "[$$(private_product)]generating update packages..."
 	$$(hide)cd $$(SRC_DIR) && \
-	. $$(TOP_DIR)/tools/apb $$(private_product) && \
+	. $$(ABS_TOP_DIR)/tools/apb $$(private_product) && \
 	choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make droidupdate
 	echo "    copy update packages..." && \
@@ -176,7 +176,7 @@ package_droid_nfs_$$(product)_$(2):
 	$$(hide)if [ -d $$(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $$(OUTPUT_DIR)/$$(private_product)/modules; fi
 	$$(hide)cd $$(OUTPUT_DIR)/$$(private_product) && tar xzf modules_android_mmc.tgz && cp -r modules $$(OUTPUT_DIR)/$$(private_product)/root_nfs/system/lib/
 	$$(log) "  modifying root nfs folder..."
-	$$(hide)cd $$(OUTPUT_DIR)/$$(private_product)/root_nfs && $$(TOP_DIR)/$$(private_device)/twist_root_nfs.sh
+	$$(hide)cd $$(OUTPUT_DIR)/$$(private_product)/root_nfs && $$(ABS_TOP_DIR)/$$(private_device)/twist_root_nfs.sh
 	$$(log) "  packaging the root_nfs.tgz..."
 	$$(hide)cd $$(OUTPUT_DIR)/$$(private_product) && tar czf root_nfs_$(2).tgz root_nfs/
 	$$(log) "  done for package_droid_nfs_$$(private_product)_$(2)."
@@ -228,7 +228,7 @@ build_kernel_$$(os)_$$(storage)_$$(product): output_dir
 	$$(log) "[$$(private_product)]starting to build kernel for booting $$(private_os) from $$(private_storage) ..."
 	$$(log) "    kernel_config: $$(private_kernel_cfg): ..."
 	$$(hide)cd $$(SRC_DIR)/ && \
-	. $(TOP_DIR)/tools/apb $$(private_product) && \
+	. $(ABS_TOP_DIR)/tools/apb $$(private_product) && \
 	choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	cd $$(KERNELSRC_TOPDIR) && \
 	KERNEL_CONFIG=$$(private_kernel_cfg) make clean all 

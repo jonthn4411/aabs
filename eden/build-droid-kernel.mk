@@ -24,7 +24,7 @@ clean_droid_$$(product): private_device:=$$(device)
 clean_droid_$$(product):
 	$(log) "clean android ..."
 	$(hide)cd $(SRC_DIR) && \
-	. $(TOP_DIR)/tools/apb $$(private_product) && \
+	. $(ABS_TOP_DIR)/tools/apb $$(private_product) && \
 	choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	make clean
 	$(log) "    done"
@@ -35,7 +35,7 @@ clean_kernel_$$(product): private_device:=$$(device)
 clean_kernel_$$(product):
 	$(log) "clean kernel ..."
 	$(hide)cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
-	. $(TOP_DIR)/tools/apb $$(private_product) && \
+	. $(ABS_TOP_DIR)/tools/apb $$(private_product) && \
 	choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	make clean
 	$(log) "    done"
@@ -66,7 +66,7 @@ build_droid_root_$$(product): build_kernel_$$(product)
 build_droid_root_$$(product): output_dir
 	$$(log) "[$$(private_product)]building android source code ..."
 	$$(hide)cd $$(SRC_DIR) && \
-	. $$(TOP_DIR)/tools/apb $$(private_product) && \
+	. $$(ABS_TOP_DIR)/tools/apb $$(private_product) && \
 	choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS)
 	echo "    generating symbols_lib.tgz..." && \
@@ -115,7 +115,7 @@ package_droid_nfs_$$(product)_$(2):
 	$$(hide)cp -r -p $$(SRC_DIR)/out/target/product/$$(private_device)/root $$(OUTPUT_DIR)/$$(private_product)/root_nfs && \
 	cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/system $$(OUTPUT_DIR)/$$(private_product)/root_nfs
 	$$(log) "  modifying root nfs folder..."
-	$$(hide)cd $$(OUTPUT_DIR)/$$(private_product)/root_nfs && $$(TOP_DIR)/$$(ABS_SOC)/twist_root_nfs.sh
+	$$(hide)cd $$(OUTPUT_DIR)/$$(private_product)/root_nfs && $$(ABS_TOP_DIR)/$$(ABS_SOC)/twist_root_nfs.sh
 	$$(log) "  packaging the root_nfs.tgz..."
 	$$(hide)cd $$(OUTPUT_DIR)/$$(private_product) && tar czf root_nfs_$(2).tgz root_nfs/
 	$$(log) "  done for package_droid_nfs_$$(private_product)_$(2)."
@@ -167,7 +167,7 @@ build_kernel_$$(os)_$$(storage)_$$(product): output_dir
 	$$(log) "[$$(private_product)]starting to build kernel for booting $$(private_os) from $$(private_storage) ..."
 	$$(log) "    kernel_config: $$(private_kernel_cfg): ..."
 	$$(hide)cd $$(SRC_DIR)/ && \
-	. $(TOP_DIR)/tools/apb $$(private_product) && \
+	. $(ABS_TOP_DIR)/tools/apb $$(private_product) && \
 	choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	cd $$(KERNELSRC_TOPDIR) && \
 	KERNEL_CONFIG=$$(private_kernel_cfg) make clean all
