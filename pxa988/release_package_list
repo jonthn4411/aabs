@@ -10,6 +10,9 @@ pxa988dkb_def/uImage pxa988dkb_def/prebuilt_bin/uImage
 pxa988dkb_def/radio-emei.img pxa988dkb_def/prebuilt_bin/radio-emei.img
 pxa988dkb_def/radio-kunlun.img pxa988dkb_def/prebuilt_bin/radio-kunlun.img
 pxa988dkb_def/radio-helan-td.img pxa988dkb_def/prebuilt_bin/radio-helan-td.img
+pxa988dkb_def/nvm-emei.img pxa988dkb_def/prebuilt_bin/nvm-emei.img
+pxa988dkb_def/nvm-kunlun.img pxa988dkb_def/prebuilt_bin/nvm-kunlun.img
+pxa988dkb_def/nvm-helan-td.img pxa988dkb_def/prebuilt_bin/nvm-helan-td.img
 pxa988dkb_def/ReliableData.bin pxa988dkb_def/prebuilt_bin/ReliableData.bin
 pxa988dkb_def/EM_CP.bin pxa988dkb_def/prebuilt_bin/EM_CP.bin
 pxa988dkb_def/HL_TD_CP.bin pxa988dkb_def/prebuilt_bin/HL_TD_CP.bin
@@ -41,6 +44,9 @@ pxa988t7_def/uImage pxa988t7_def/prebuilt_bin/uImage
 pxa988t7_def/radio-emei.img pxa988t7_def/prebuilt_bin/radio-emei.img
 pxa988t7_def/radio-kunlun.img pxa988t7_def/prebuilt_bin/radio-kunlun.img
 pxa988t7_def/radio-helan-td.img pxa988t7_def/prebuilt_bin/radio-helan-td.img
+pxa988t7_def/nvm-emei.img pxa988t7_def/prebuilt_bin/nvm-emei.img
+pxa988t7_def/nvm-kunlun.img pxa988t7_def/prebuilt_bin/nvm-kunlun.img
+pxa988t7_def/nvm-helan-td.img pxa988t7_def/prebuilt_bin/nvm-helan-td.img
 pxa988t7_def/ReliableData.bin pxa988t7_def/prebuilt_bin/ReliableData.bin
 pxa988t7_def/EM_CP.bin pxa988t7_def/prebuilt_bin/EM_CP.bin
 pxa988t7_def/HL_TD_CP.bin pxa988t7_def/prebuilt_bin/HL_TD_CP.bin
@@ -72,6 +78,9 @@ pxa1088dkb_def/uImage pxa1088dkb_def/prebuilt_bin/uImage
 pxa1088dkb_def/radio-emei.img pxa1088dkb_def/prebuilt_bin/radio-emei.img
 pxa1088dkb_def/radio-kunlun.img pxa1088dkb_def/prebuilt_bin/radio-kunlun.img
 pxa1088dkb_def/radio-helan-td.img pxa1088dkb_def/prebuilt_bin/radio-helan-td.img
+pxa1088dkb_def/nvm-emei.img pxa1088dkb_def/prebuilt_bin/nvm-emei.img
+pxa1088dkb_def/nvm-kunlun.img pxa1088dkb_def/prebuilt_bin/nvm-kunlun.img
+pxa1088dkb_def/nvm-helan-td.img pxa1088dkb_def/prebuilt_bin/nvm-helan-td.img
 pxa1088dkb_def/ReliableData.bin pxa1088dkb_def/prebuilt_bin/ReliableData.bin
 pxa1088dkb_def/EM_CP.bin pxa1088dkb_def/prebuilt_bin/EM_CP.bin
 pxa1088dkb_def/HL_TD_CP.bin pxa1088dkb_def/prebuilt_bin/HL_TD_CP.bin
