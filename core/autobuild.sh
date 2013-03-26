@@ -90,6 +90,35 @@ generate_error_notification_email()
 	EOF
 }
 
+#
+# virtual build only
+#
+vb_generate_error_notification_email()
+{
+	# --- Email (all stdout will be the email)
+	# Generate header
+	cat <<-EOF
+	From: $build_maintainer
+	To: $dev_team
+	Subject: $BUILD_TAG [$ABS_PRODUCT_CODE${RLS_SUFFIX}] autobuild failed! please check
+
+	This is an automated email from the autobuild script. It was
+	generated because an error encountered while building the code.
+
+	Ending part of build log is followed:
+	=========================== Build LOG =====================
+
+	$(tail -200 $STD_LOG 2>/dev/null)
+
+	===========================================================
+
+	Complete Time: $(date)
+	Build Host: $(hostname)
+	---
+	Team of $ABS_PRODUCT_CODE
+	EOF
+}
+
 #$1: changelog.build
 generate_error_log_email()
 {
@@ -184,6 +213,12 @@ send_error_notification()
 {
 	generate_error_notification_email $1 | /usr/sbin/sendmail -t $envelopesender
 	#generate_error_log_email $1 | /usr/sbin/sendmail -t $envelopesender
+}
+
+# virtual build only
+vb_send_error_notification()
+{
+	vb_generate_error_notification_email | /usr/sbin/sendmail -t $envelopesender
 }
 
 send_success_notification()
@@ -443,11 +478,15 @@ fi
 
 if [ $? -ne 0 ]; then #auto build fail, send an email
 	echo "error encountered!" 2>&1 | tee -a $STD_LOG
-	echo "~~<result>FAIL</result>"
-	if [ "$FLAG_EMAIL" = "true" -a "$ABS_VIRTUAL_BUILD" != "true" ]; then
-		echo "    sending email notification..." 2>&1 | tee -a $STD_LOG
-		send_error_notification "$(make -f ${MAKEFILE} get_changelog_build)"
-	fi
+    echo "[AABS]-----------------FAILED-------------------"
+    if [ "$FLAG_EMAIL" = "true" ]; then
+        echo "[AABS]sending email notification..." 2>&1 | tee -a $STD_LOG
+        if [ "$ABS_VIRTUAL_BUILD" = "true" ]; then
+            vb_send_error_notification
+        else
+            send_error_notification "$(make -f ${MAKEFILE} get_changelog_build)"
+        fi
+    fi
 else
 	echo "build successfully. Cheers!Package:$PUBLISH_DIR " 2>&1 | tee -a $STD_LOG
 	echo "~~<result>PASS</result>"
@@ -460,4 +499,6 @@ else
 		echo "Sorry, autotest isn't supported temporarily."
 	fi
 fi
+
+echo "[AABS]-------------------END-------------------"
 
