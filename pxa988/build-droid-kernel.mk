@@ -158,7 +158,7 @@ PUBLISHING_FILES+=$$(product)/radio.img:o:md5
 PUBLISHING_FILES+=$$(product)/radio-emei.img:o:md5
 PUBLISHING_FILES+=$$(product)/radio-kunlun.img:o:md5
 PUBLISHING_FILES+=$$(product)/nvm-emei.img:o:md5
-PUBLISHING_FILES+=$$(product)/nvm-kulun.img:o:md5
+PUBLISHING_FILES+=$$(product)/nvm-kunlun.img:o:md5
 PUBLISHING_FILES+=$$(product)/nvm-helan-td.img:o:md5
 
 PUBLISHING_FILES+=$$(product)/HL_CP.bin:o:md5
