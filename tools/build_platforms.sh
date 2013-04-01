@@ -9,19 +9,38 @@ get_date()
 
 print_usage()
 {
-	echo
-	echo "Usage: $0 <platform>[:release-name] [no-checkout] [dry-run] [help]"
-	echo "    The scrip will checkout the master branch to build the dev build and rls_<platform>_<release-name> branch to build the rls build."
-	echo ""
-	echo "    <platform>: should take the form like avlite-donut avlite-eclair etc. release-name can be like beta1, alpha2"
-	echo "    [release-name]: only valid if there is no \$ABS_MANIFEST_BRANCH defined"
-	echo "       1. if it is not specified, platform is used as the manifest branch name;"
-	echo "       2. otherwise, rls_<platform>_<release-name> is used as the manifest branch name, the - in platform name is replaced with _"
-	echo "    [no-checkout]: don't checkout aabs project for build. this should be used for testing this script."
-    echo "    [dry-run]: don't actully run the build, this should be used for testing this script."
-    echo "    [help]: show this message"
-    echo "    For virtual build, you must export ABS_SOURCE_DIR and ABS_PUBLISH_DIR"
+    echo "
+Usage: $0 <platform>[:release-name] [OPTIONS]
+
+The scrip will checkout the master branch to build the dev build and rls_<platform>_<release-name> branch to build the rls build.
+
+platform        should take the form like avlite-donut avlite-eclair etc. release-name can be like beta1, alpha2
+
+release-name    only valid if there is no \$ABS_MANIFEST_BRANCH defined
+                1. if it is not specified, platform is used as the manifest branch name;
+                2. otherwise, rls_<platform>_<release-name> is used as the manifest branch name, the - in platform name is replaced with _
+
+OPTIONS
+
+no-checkout     use local AABS. By default, AABS will be updated and switched to master or rls_<platform>_<release-name> branch.
+
+dry-run         don't actully run the build, this should be only used for testing this script.
+
+help            show this message
+
+-----
+
+NOTES
+
+   For virtual build, you must export ABS_SOURCE_DIR and ABS_PUBLISH_DIR
+"
 }
+
+for flag in $@; do
+    case $flag in
+        help) print_usage; exit 0;;
+    esac
+done
 
 LOG=build_platforms.log
 
@@ -47,7 +66,6 @@ for flag in $@; do
 	case $flag in
 		dry-run) dryrun_flag=true; all_flags="$all_flags $flag";;
 		no-checkout) no_checkout=true;;
-		help) print_usage; exit 2;;
 		*)
 		platforms="$platforms $flag";; 
 	esac
