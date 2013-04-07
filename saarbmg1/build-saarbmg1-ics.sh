@@ -5,6 +5,5 @@ export PATH=/usr/lib/jvm/java-6-sun/bin/:$PATH
 if [ -z "ABS_BUILDHOST_DEF" ]; then
     ABS_BUILDHOST_DEF=buildhost.def
 fi
-export ABS_DROID_VARIANT=userdebug
 export ABS_UNIQUE_MANIFEST_BRANCH=1
 

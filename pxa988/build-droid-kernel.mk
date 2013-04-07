@@ -1,12 +1,17 @@
 #check if the required variables have been set.
-$(call check-variables, ABS_SOC ABS_DROID_BRANCH ABS_DROID_VARIANT)
+$(call check-variables, ABS_SOC ABS_DROID_BRANCH)
 
 include $(ABS_SOC)/tools-list.mk
 
 MY_SCRIPT_DIR:=$(ABS_TOP_DIR)/$(ABS_SOC)
 
 DROID_TYPE:=release
-DROID_VARIANT:=$(ABS_DROID_VARIANT)
+
+ifneq ($(PLATFORM_ANDROID_VARIANT),)
+       DROID_VARIANT:=$(PLATFORM_ANDROID_VARIANT)
+else
+       DROID_VARIANT:=userdebug
+endif
 
 KERNELSRC_TOPDIR:=kernel
 DROID_OUT:=out/target/product
@@ -136,7 +141,7 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wt.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wt.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(log) "  done"
 
-	$(hide)if [ "$(PRODUCT_MODE_BUILD)" = "true" ]; then \
+	$(hide)if [ "$(PLATFORM_ANDROID_VARIANT)" = "user" ]; then \
 	sed -i "s/ro.secure=1/ro.secure=0/" $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/default.prop  && \
 	sed -i "s/ro.debuggable=0/ro.debuggable=1/" $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/default.prop  && \
 	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \

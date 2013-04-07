@@ -3,10 +3,6 @@ BOARD:=pxa988
 ANDROID_VERSION:=$(ABS_DROID_BRANCH)
 PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
 
-ifeq ($(PRODUCT_MODE_BUILD), true)
-	export ABS_DROID_VARIANT:=user
-endif
-
 #
 # Include goal for build android and kernels.
 #

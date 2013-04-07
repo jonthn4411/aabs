@@ -32,7 +32,9 @@ help            show this message
 
 NOTES
 
-   For virtual build, you must export ABS_SOURCE_DIR and ABS_PUBLISH_DIR
+   1. For virtual build, you must export ABS_SOURCE_DIR and ABS_PUBLISH_DIR
+   2. To specify android variant, export PLATFORM_ANDROID_VARIANT=<user|userdebug|eng>
+   3. To force it to build, export ABS_FORCE_BUILD=true
 "
 }
 
@@ -145,21 +147,16 @@ if [ -x ${ABS_TOP_DIR}/${soc}/build-${platform}.sh ]; then
         TARGET_SOURCE="source"
         TARGET_PKGSRC="pkgsrc"
     fi
+    if [ "$ABS_FORCE_BUILD" = "true" ]; then
+        FORCE_BUILD="force"
+    fi
 	if [ "$dryrun_flag" == true ]; then
 		echo "[aabs]will-run:./core/autobuild.sh clobber source pkgsrc publish autotest email $rlsname" | tee -a $LOG
 	else
 		if [ "$FLAG_TEMP_BUILD" = "true" ]; then
-			if [ "$FLAG_PRODUCT_BUILD" = "true" ]; then
-				soc=$soc platform=$platform ./core/autobuild.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish temp force product $rlsname
-			else
-				soc=$soc platform=$platform ./core/autobuild.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish temp $rlsname
-			fi
+			soc=$soc platform=$platform ./core/autobuild.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish temp $FORCE_BUILD $rlsname
 		else
-			if [ "$FLAG_PRODUCT_BUILD" = "true" ]; then
-				soc=$soc platform=$platform ./core/autobuild.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest email force product $rlsname
-			else
-				soc=$soc platform=$platform ./core/autobuild.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest email $rlsname
-			fi
+			soc=$soc platform=$platform ./core/autobuild.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest email $FORCE_BUILD $rlsname
 		fi
 	fi
 else

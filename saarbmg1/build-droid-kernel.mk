@@ -1,10 +1,15 @@
 #check if the required variables have been set.
-$(call check-variables, ABS_SOC ABS_DROID_BRANCH ABS_DROID_VARIANT)
+$(call check-variables, ABS_SOC ABS_DROID_BRANCH)
 
 MY_SCRIPT_DIR:=$(ABS_TOP_DIR)/$(ABS_SOC)
 
 DROID_TYPE:=release
-DROID_VARIANT:=$(ABS_DROID_VARIANT)
+
+ifneq ($(PLATFORM_ANDROID_VARIANT),)
+       DROID_VARIANT:=$(PLATFORM_ANDROID_VARIANT)
+else
+       DROID_VARIANT:=userdebug
+endif
 
 KERNELSRC_TOPDIR:=kernel
 

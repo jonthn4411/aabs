@@ -78,7 +78,7 @@ bootloader:
 	$(log) "[BOOTLOADER]Starting to build all bootloader images"
 	$(hide)cd $(SRC_DIR) && \
 		source ./build/envsetup.sh && \
-		chooseproduct $(ABS_DROID_PRODUCT) && choosetype $(ABS_DROID_TYPE) && choosevariant $(ABS_DROID_VARIANT) && \
+		chooseproduct $(ABS_DROID_PRODUCT) && choosetype $(ABS_DROID_TYPE) && choosevariant $(PLATFORM_ANDROID_VARIANT) && \
 		cd $(SRC_DIR)/$(BOOT_SRC_DIR) && make all
 	$(hide)mkdir -p $(OUTPUT_DIR)/prebuilt
 	$(hide)mkdir -p $(OUTPUT_DIR)/prebuilt/emmc

@@ -1,10 +1,16 @@
+ifneq ($(PLATFORM_ANDROID_VARIANT),)
+       DROID_VARIANT:=$(PLATFORM_ANDROID_VARIANT)
+else
+       DROID_VARIANT:=userdebug
+endif
+
 DROID_OUT:=$(SRC_DIR)/out/target/product/$(ABS_DROID_PRODUCT)
 .PHONY: droid
 droid:
 	$(log) "DROID: Starting to build..."
 	$(hide)cd $(SRC_DIR) && \
 		source ./build/envsetup.sh && \
-		chooseproduct $(ABS_DROID_PRODUCT) && choosetype $(ABS_DROID_TYPE) && choosevariant $(ABS_DROID_VARIANT) && \
+		chooseproduct $(ABS_DROID_PRODUCT) && choosetype $(ABS_DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 		make -j$(MAKE_JOBS)
 	$(log) "DROID: Copying output files..."
 	$(hide)cp -p $(DROID_OUT)/primary_gpt_16g       $(OUTPUT_DIR)/prebuilt/

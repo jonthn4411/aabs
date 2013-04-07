@@ -1,10 +1,16 @@
 
+ifneq ($(PLATFORM_ANDROID_VARIANT),)
+       DROID_VARIANT:=$(PLATFORM_ANDROID_VARIANT)
+else
+       DROID_VARIANT:=userdebug
+endif
+
 .PHONY: kernel
 kernel:
 	$(log) "KERNEL: Starting to build..."
 	$(hide)cd $(SRC_DIR) && \
 		source ./build/envsetup.sh && \
-		chooseproduct $(ABS_DROID_PRODUCT) && choosetype $(ABS_DROID_TYPE) && choosevariant $(ABS_DROID_VARIANT) && \
+		chooseproduct $(ABS_DROID_PRODUCT) && choosetype $(ABS_DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 		cd $(SRC_DIR)/kernel && make all
 	$(log) "KERNEL: Copying output files..."
 	$(hide)mkdir -p $(OUTPUT_DIR)/prebuilt

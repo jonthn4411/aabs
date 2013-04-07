@@ -14,8 +14,8 @@ endif
 
 DROID_TYPE:=release
 
-ifneq ($(ABS_DROID_VARIANT),)
-       DROID_VARIANT:=$(ABS_DROID_VARIANT)
+ifneq ($(PLATFORM_ANDROID_VARIANT),)
+       DROID_VARIANT:=$(PLATFORM_ANDROID_VARIANT)
 else
        DROID_VARIANT:=user
 endif
