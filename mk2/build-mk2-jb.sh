@@ -13,6 +13,3 @@ export ABS_DROID_BRANCH=jb
 export ABS_PRODUCT_NAME=MMP3
 export ABS_BOARD=mk2
 
-
-core/autobuild.sh $*
-

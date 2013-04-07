@@ -10,4 +10,3 @@ export ABS_BUILDHOST_DEF
 
 export ABS_UNIQUE_MANIFEST_BRANCH=1
 
-core/autobuild.sh $*
