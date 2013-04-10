@@ -131,6 +131,9 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-td.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-td.img $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wb.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wb.img $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wt.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wt.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(log) "  done"
 
 	$(hide)if [ "$(PRODUCT_MODE_BUILD)" = "true" ]; then \
@@ -184,6 +187,18 @@ PUBLISHING_FILES+=$$(product)/HL_TD_CP_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/HL_TD_CP_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/HL_TD_M08_AI_A0_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/radio-helan-td.img:o:md5
+PUBLISHING_FILES+=$$(product)/HELAN_A0_M16_AI_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_WB_CP.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_WB_CP_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HL_WB_CP_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HLWT_TD_CP.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HLWT_TD_CP_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HLWT_TD_CP_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HLWT_TD_M08_AI_A0_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/nvm-helan-wb.img:o:md5
+PUBLISHING_FILES+=$$(product)/nvm-helan-wt.img:o:md5
+PUBLISHING_FILES+=$$(product)/radio-helan-wb.img:o:md5
+PUBLISHING_FILES+=$$(product)/radio-helan-wt.img:o:md5
 
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:o:md5
