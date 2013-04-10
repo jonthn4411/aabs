@@ -147,7 +147,7 @@ build_droid_$$(product): build_kernel_$$(product)
 
 ##!!## first time publish: all for two
 PUBLISHING_FILES+=$$(product)/userdata.img:m:md5
-PUBLISHING_FILES+=$$(product)/userdata_4g.img:m:md5
+PUBLISHING_FILES+=$$(product)/userdata_4g.img:o:md5
 PUBLISHING_FILES+=$$(product)/system.img:m:md5
 PUBLISHING_FILES+=$$(product)/ramdisk.img:m:md5
 PUBLISHING_FILES+=$$(product)/ramdisk-rooted.img:o:md5

@@ -51,8 +51,8 @@ PUBLISHING_FILES+=$$(product)/u-boot.bin:m:md5
 PUBLISHING_FILES+=$$(product)/Software_Downloader.zip:m:md5
 PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN):o:md5
 PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN):o:md5
-PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN_2):m:md5
-PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN_2):m:md5
+PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN_2):o:md5
+PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN_2):o:md5
 #PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_1):m:md5
 
 endef
