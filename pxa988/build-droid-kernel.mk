@@ -184,6 +184,18 @@ PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:o:md5
 PUBLISHING_FILES+=$$(product)/ReliableData.bin:o:md5
+
+PUBLISHING_FILES+=$$(product)/DKBI.bin:o:md5
+PUBLISHING_FILES+=$$(product)/NZ_CP.bin:o:md5
+PUBLISHING_FILES+=$$(product)/NZ_CP.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/NZ_CP_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/NZ_M08_AI_B0_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/OBMI.bin:o:md5
+PUBLISHING_FILES+=$$(product)/NZReliableData.bin:o:md5
+PUBLISHING_FILES+=$$(product)/TABLET_CP.bin:o:md5
+PUBLISHING_FILES+=$$(product)/TABLET_MSA.bin.bin:o:md5
+
+
 ifeq ($(product),pxa988dkb_def)
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3.bin:o:md5

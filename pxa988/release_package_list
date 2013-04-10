@@ -28,6 +28,15 @@ pxa1088dkb_def/HL_TD_CP_DIAG.mdb pxa1088dkb_def/prebuilt_bin/HL_TD_CP_DIAG.mdb
 pxa1088dkb_def/modules.tgz pxa1088dkb_def/prebuilt_bin/modules.tgz
 pxa1088dkb_def/vmlinux pxa1088dkb_def/prebuilt_bin/vmlinux
 pxa1088dkb_def/System.map pxa1088dkb_def/prebuilt_bin/System.map
+pxa1088dkb_def/DKBI.bin pxa1088dkb_def/prebuilt_bin/DKBI.bin
+pxa1088dkb_def/NZ_CP.bin pxa1088dkb_def/prebuilt_bin/NZ_CP.bin
+pxa1088dkb_def/NZ_CP.mdb pxa1088dkb_def/prebuilt_bin/NZ_CP.mdb
+pxa1088dkb_def/NZ_CP_NVM.mdb pxa1088dkb_def/prebuilt_bin/NZ_CP_NVM.mdb
+pxa1088dkb_def/NZ_M08_AI_B0_Flash.bin pxa1088dkb_def/prebuilt_bin/NZ_M08_AI_B0_Flash.bin
+pxa1088dkb_def/NZReliableData.bin pxa1088dkb_def/prebuilt_bin/NZReliableData.bin
+pxa1088dkb_def/OBMI.bin pxa1088dkb_def/prebuilt_bin/OBMI.bin
+pxa1088dkb_def/TABLET_CP.bin pxa1088dkb_def/prebuilt_bin/TABLET_CP.bin
+pxa1088dkb_def/TABLET_MSA.bin pxa1088dkb_def/prebuilt_bin/TABLET_MSA.bin
 
 manifest.xml manifest.xml
 changelog.month changelog.month
