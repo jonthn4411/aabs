@@ -460,7 +460,15 @@ if [ "$FLAG_PUBLISH" = "true" ]; then
 	export BACKUP_DIR
 	cp ${ABS_SOC}/README $PUBLISH_DIR/README &&
 	make -f ${MAKEFILE} publish -e 2>&1 | tee -a $STD_LOG &&
-	
+    # Don't forget patches of the virtual build
+    if [ "$ABS_VIRTUAL_BUILD" = "true" ]; then
+        pushd $ABS_SOURCE_DIR
+        repo forall -c ${ABS_TOP_DIR}/core/odvb_patches.sh ${ABS_SOURCE_DIR}/odvb_patches
+        zip -r patches.zip odvb_patches
+        cp patches.zip $PUBLISH_DIR
+        popd
+    fi
+
 	update_changelogs $PUBLISH_DIR $BUILD_NUM &&
 		
 	#saving the build info to file:$LAST_BUILD
