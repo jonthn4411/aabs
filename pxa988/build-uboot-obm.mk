@@ -13,8 +13,8 @@ DROID_OUT:=out/target/product
 
 PRIMARY_GPT_BIN:=primary_gpt
 SECONDARY_GPT_BIN:=secondary_gpt
-#PRIMARY_GPT_BIN_2:=primary_gpt_8g
-#SECONDARY_GPT_BIN_2:=secondary_gpt_8g
+PRIMARY_GPT_BIN_2:=primary_gpt_4g
+SECONDARY_GPT_BIN_2:=secondary_gpt_4g
 
 PRODUCT_OUT:=common
 #format: <file name>:<dst folder>:[m|o]:[md5]
@@ -44,15 +44,15 @@ build_uboot_obm_$$(product):
 	#$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$(OBM_NTIM_1) ]; then cp $(SRC_DIR)/$(BOOT_OUT_DIR)/$(OBM_NTIM_1) $(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN) $$(OUTPUT_DIR)/$$(private_product); fi
-	#$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN_2) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN_2) $$(OUTPUT_DIR)/$$(private_product); fi
-	#$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN_2) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN_2) $$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN_2) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN_2) $$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN_2) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN_2) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(log) "  done."
 PUBLISHING_FILES+=$$(product)/u-boot.bin:m:md5
 PUBLISHING_FILES+=$$(product)/Software_Downloader.zip:m:md5
 PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN):o:md5
 PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN):o:md5
-#PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN_2):m:md5
-#PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN_2):m:md5
+PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN_2):m:md5
+PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN_2):m:md5
 #PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_1):m:md5
 
 endef
