@@ -55,8 +55,8 @@ build_droid_root_$$(product): build_kernel_$$(product)
 build_droid_root_$$(product): output_dir
 	$$(log) "[$$(private_product)]building android source code ..."
 	$$(hide)cd $$(SRC_DIR) && \
-	. $$(ABS_TOP_DIR)/tools/apb $$(private_product) && \
-	choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
+	. build/envsetup.sh && \
+	lunch $$(private_product)-$$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS)
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/boot.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/boot.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/system.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/system.img $$(OUTPUT_DIR)/$$(private_product)/; fi
@@ -161,8 +161,8 @@ build_kernel_$$(os)_$$(storage)_$$(product): output_dir
 	$$(log) "[$$(private_product)]starting to build kernel for booting $$(private_os) from $$(private_storage) ..."
 	$$(log) "    kernel_config: $$(private_kernel_cfg): ..."
 	$$(hide)cd $$(SRC_DIR)/ && \
-	. $(ABS_TOP_DIR)/tools/apb $$(private_product) && \
-	choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
+	. build/envsetup.sh && \
+	lunch $$(private_product)-$$(DROID_VARIANT) && \
 	cd $$(KERNELSRC_TOPDIR) && \
 	KERNEL_CONFIG=$$(private_kernel_cfg) make clean all
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$$(private_product)

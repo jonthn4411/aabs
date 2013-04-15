@@ -20,8 +20,8 @@ build_uboot_obm_$$(product): private_device:=$$(device)
 build_uboot_obm_$$(product): build_droid_root_$$(product)
 	$$(log) "starting($$(private_product) to build uboot"
 	$$(hide)cd $$(SRC_DIR) && \
-	. $$(ABS_TOP_DIR)/tools/apb $$(private_product) && \
-	choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
+	. build/envsetup.sh && \
+	lunch $$(private_product)-$$(DROID_VARIANT) && \
 	cd $$(BOOT_SRC_DIR) && \
 	make all
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$$(private_product)/
@@ -41,8 +41,8 @@ clean_uboot_obm_$$(product): private_device:=$$(device)
 clean_uboot_obm_$$(product):
 	$(log) "cleaning uboot and obm..."
 	$(hide)cd $(SRC_DIR)/$(BOOT_SRC_DIR) && \
-	. $$(ABS_TOP_DIR)/tools/apb $$(private_product) && \
-	choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
+	. build/envsetup.sh && \
+	lunch $$(private_product)-$$(DROID_VARIANT) && \
 	make clean
 	$(log) "    done."
 endef
