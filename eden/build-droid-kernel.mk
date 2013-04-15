@@ -15,29 +15,12 @@ product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
 
 .PHONY:clean_droid_kernel_$$(product)
-clean_droid_kernel_$$(product): clean_droid_$$(product)
-clean_droid_kernel_$$(product): clean_kernel_$$(product)
-
-.PHONY:clean_droid_$$(product)
-clean_droid_$$(product): private_product:=$$(product)
-clean_droid_$$(product): private_device:=$$(device)
-clean_droid_$$(product):
+clean_droid_kernel_$$(product): private_product:=$$(product)
+clean_droid_kernel_$$(product): private_device:=$$(device)
+clean_droid_kernel_$$(product):
 	$(log) "clean android ..."
-	$(hide)cd $(SRC_DIR) && \
-	. $(ABS_TOP_DIR)/tools/apb $$(private_product) && \
-	choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	make clean
-	$(log) "    done"
-
-.PHONY:clean_kernel_$$(product)
-clean_kernel_$$(product): private_product:=$$(product)
-clean_kernel_$$(product): private_device:=$$(device)
-clean_kernel_$$(product):
-	$(log) "clean kernel ..."
-	$(hide)cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
-	. $(ABS_TOP_DIR)/tools/apb $$(private_product) && \
-	choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	make clean
+	$(hide)cd $$(SRC_DIR) && \
+	rm -rf out/target/product/$$(private_device)
 	$(log) "    done"
 endef
 
@@ -59,6 +42,12 @@ tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
 
+PUBLISHING_FILES+=$$(product)/boot.img:o:md5
+PUBLISHING_FILES+=$$(product)/system.img:m:md5
+PUBLISHING_FILES+=$$(product)/userdata.img:o:md5
+PUBLISHING_FILES+=$$(product)/ramdisk.img:o:md5
+PUBLISHING_FILES+=$$(product)/cache.img:o:md5
+
 .PHONY: build_droid_root_$$(product)
 build_droid_root_$$(product): private_product:=$$(product)
 build_droid_root_$$(product): private_device:=$$(device)
@@ -69,6 +58,11 @@ build_droid_root_$$(product): output_dir
 	. $$(ABS_TOP_DIR)/tools/apb $$(private_product) && \
 	choosetype $$(DROID_TYPE) && choosevariant $$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS)
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/boot.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/boot.img $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/system.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/system.img $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/userdata.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/userdata.img $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/ramdisk.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/ramdisk.img $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/cache.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/cache.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	echo "    generating symbols_lib.tgz..." && \
 		cp -a $$(SRC_DIR)/out/target/product/$$(private_device)/symbols/system/lib $$(OUTPUT_DIR)/$$(private_product) && \
 		cd $$(OUTPUT_DIR)/$$(private_product) && tar czf symbols_lib.tgz lib && rm lib -rf
@@ -129,7 +123,7 @@ endef
 #example: android:mlc:pxa168_android_mlc_defconfig:root
 # kernel_configs:=
 #
-kernel_configs:=android:eden:ttd2_and_defconfig
+kernel_configs:=android:eden:eden_and_defconfig:
 
 export MAKE_JOBS
 
@@ -151,9 +145,9 @@ PUBLISHING_FILES+=$$(product)/zImage.$$(os):o:md5
 PUBLISHING_FILES+=$$(product)/zImage_recovery.$$(os):o:md5
 PUBLISHING_FILES+=$$(product)/uImage.$$(os):o:md5
 PUBLISHING_FILES+=$$(product)/uImage_recovery.$$(os):o:md5
-PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
-PUBLISHING_FILES+=$$(product)/System.map:o:md5
-PUBLISHING_FILES+=$$(product)/modules_$$(os)_$$(storage).tgz:m:md5
+PUBLISHING_FILES+=$$(product)/vmlinux.$$(os):o:md5
+PUBLISHING_FILES+=$$(product)/System.map.$$(os):o:md5
+PUBLISHING_FILES+=$$(product)/modules_$$(os)_$$(storage).tgz:o:md5
 
 build_kernel_$$(product): build_kernel_$$(os)_$$(storage)_$$(product)
 
@@ -162,7 +156,7 @@ build_kernel_$$(os)_$$(storage)_$$(product): private_os:=$$(os)
 build_kernel_$$(os)_$$(storage)_$$(product): private_storage:=$$(storage)
 build_kernel_$$(os)_$$(storage)_$$(product): private_root:=$$(root)
 build_kernel_$$(os)_$$(storage)_$$(product): private_kernel_cfg:=$$(kernel_cfg)
-build_kernel_$$(os)_$$(storage)_$$(product): private_root:=$$(root)
+build_kernel_$$(os)_$$(storage)_$$(product): koutput:=$$(SRC_DIR)/out/target/product/$$(device)/kbuild-$$(kernel_cfg)
 build_kernel_$$(os)_$$(storage)_$$(product): output_dir
 	$$(log) "[$$(private_product)]starting to build kernel for booting $$(private_os) from $$(private_storage) ..."
 	$$(log) "    kernel_config: $$(private_kernel_cfg): ..."
@@ -173,37 +167,20 @@ build_kernel_$$(os)_$$(storage)_$$(product): output_dir
 	KERNEL_CONFIG=$$(private_kernel_cfg) make clean all
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$$(private_product)
 	$$(log) "    copy kernel and module files ..."
-	$$(hide)if [ -f $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage ]; then cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage $$(OUTPUT_DIR)/$$(private_product)/zImage.$$(private_os); fi
-	$$(hide)if [ -f $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage_recovery ]; then cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/zImage_recovery $$(OUTPUT_DIR)/$$(private_product)/zImage_recovery.$$(private_os); fi
-	$$(hide)if [ -f $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage ]; then cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage $$(OUTPUT_DIR)/$$(private_product)/uImage.$$(private_os); fi
-	$$(hide)if [ -f $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage_recovery ]; then cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/uImage_recovery $$(OUTPUT_DIR)/$$(private_product)/uImage_recovery.$$(private_os); fi
-	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/vmlinux $$(OUTPUT_DIR)/$$(private_product)
-	$$(hide)cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/kernel/System.map $$(OUTPUT_DIR)/$$(private_product)
-	$$(hide)if [ -d $$(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $$(OUTPUT_DIR)/$$(private_product)/modules; fi &&\
-	mkdir -p $$(OUTPUT_DIR)/$$(private_product)/modules
-	$$(hide)if [ -d $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules ]; then cp $$(SRC_DIR)/$$(KERNELSRC_TOPDIR)/out/modules/* $$(OUTPUT_DIR)/$$(private_product)/modules; fi
-	$$(hide)cd $$(OUTPUT_DIR)/$$(private_product) && tar czf modules_$$(private_os)_$$(private_storage).tgz modules/
-	$(log) "  done."
+	$$(hide)if [ -f $$(koutput)/arch/arm/boot/zImage ]; then cp $$(koutput)/arch/arm/boot/zImage $$(OUTPUT_DIR)/$$(private_product)/zImage.$$(private_os); fi
+	$$(hide)if [ -f $$(koutput)/arch/arm/boot/uImage ]; then cp $$(koutput)/arch/arm/boot/uImage $$(OUTPUT_DIR)/$$(private_product)/uImage.$$(private_os); fi
+	$$(hide)cp $$(koutput)/vmlinux $$(OUTPUT_DIR)/$$(private_product)/vmlinux.$$(private_os)
+	$$(hide)cp $$(koutput)/System.map $$(OUTPUT_DIR)/$$(private_product)/System.map.$$(private_os)
+	$$(log) "  done."
 endef
 
 $(foreach bd,$(ABS_BUILD_DEVICES),\
-	$(eval $(call define-build-droid-kernel,$(bd))) \
-	$(foreach kc,$(kernel_configs), \
-		$(eval $(call define-kernel-target,$(bd),$(kc)))) \
-	$(eval $(call define-build-droid-root,$(bd))) \
-	$(eval $(call define-build-uboot-obm,$(bd))) \
-	$(eval $(call define-build-droid-config,$(bd),internal)) \
-	$(eval $(call package-droid-nfs-config,$(bd),internal)) \
-)
-#$(foreach bd,$(ABS_BUILD_DEVICES),\
-	$(eval $(call define-build-droid-kernel,$(bd))) \
-	$(foreach kc,$(kernel_configs), \
-		$(eval $(call define-kernel-target,$(bd),$(kc)))) \
 	$(eval $(call define-clean-droid-kernel,$(bd))) \
+	$(eval $(call define-build-droid-kernel,$(bd))) \
+	$(foreach kc,$(kernel_configs), \
+		$(eval $(call define-kernel-target,$(bd),$(kc)))) \
 	$(eval $(call define-build-droid-root,$(bd))) \
-	$(eval $(call define-clean-uboot-obm,$(bd))) \
 	$(eval $(call define-build-uboot-obm,$(bd))) \
 	$(eval $(call define-build-droid-config,$(bd),internal)) \
 	$(eval $(call package-droid-nfs-config,$(bd),internal)) \
 )
-
