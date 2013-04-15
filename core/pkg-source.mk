@@ -127,6 +127,11 @@ PUBLISHING_FILES2+=delta_patches.base:src:o
 publish_setup_sh: output_dir
 	$(hide)cp $(ABS_TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
 
+publish_RN:
+	$(hide)cp $(ABS_SOC)/$(ANDROID_VERSION)_RN.pdf $(OUTPUT_DIR)
+
+PUBLISHING_FILES+=$(ANDROID_VERSION)_RN.pdf:o
+
 # Platform hook
 -include $(ABS_SOC)/pkg-source.mk
 endif

@@ -80,15 +80,6 @@ endif
 endif
 endif
 
-#format: <file name>:[m|o]:[md5]
-#m:means mandatory
-#o:means optional
-#md5: need to generate md5 sum
-PUBLISHING_FILES+=$(ANDROID_VERSION)_RN.pdf:o
-
-publish_RN:
-	>...$(hide)cp $(ABS_SOC)/$(ANDROID_VERSION)_RN.pdf $(OUTPUT_DIR)
-
 pkgsrc: publish_RN
 
 save_prjlist: get_source_for_pkg
