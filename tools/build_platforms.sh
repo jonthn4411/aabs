@@ -113,10 +113,12 @@ if [ -x build-${platform}.sh ]; then
         export ABS_VIRTUAL_BUILD=true
         TARGET_SOURCE=""
         TARGET_PKGSRC=""
+        TARGET_EMAIL=""
     else
         export ABS_VIRTUAL_BUILD=""
         TARGET_SOURCE="source"
         TARGET_PKGSRC="pkgsrc"
+        TARGET_EMAIL="email"
     fi
 	if [ "$dryrun_flag" == true ]; then
 		echo "[aabs]will-run:./build-${platform}.sh clobber source pkgsrc publish autotest email $rlsname" | tee -a $LOG
@@ -129,9 +131,9 @@ if [ -x build-${platform}.sh ]; then
 			fi
 		else
 			if [ "$FLAG_PRODUCT_BUILD" = "true" ]; then
-				./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest email force product $rlsname
+				./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest $TARGET_EMAIL force product $rlsname
 			else
-				./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest email $rlsname
+				./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest $TARGET_EMAIL $rlsname
 			fi
 		fi
 	fi
