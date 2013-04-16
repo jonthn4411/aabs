@@ -142,10 +142,12 @@ if [ -x ${ABS_TOP_DIR}/${soc}/build-${platform}.sh ]; then
         export ABS_VIRTUAL_BUILD=true
         TARGET_SOURCE=""
         TARGET_PKGSRC=""
+        TARGET_EMAIL=""
     else
         export ABS_VIRTUAL_BUILD=""
         TARGET_SOURCE="source"
         TARGET_PKGSRC="pkgsrc"
+        TARGET_EMAIL="email"
     fi
     if [ "$ABS_FORCE_BUILD" = "true" ]; then
         FORCE_BUILD="force"
@@ -154,9 +156,9 @@ if [ -x ${ABS_TOP_DIR}/${soc}/build-${platform}.sh ]; then
 		echo "[aabs]will-run:./core/autobuild.sh clobber source pkgsrc publish autotest email $rlsname" | tee -a $LOG
 	else
 		if [ "$FLAG_TEMP_BUILD" = "true" ]; then
-			soc=$soc platform=$platform ./core/autobuild.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish temp $FORCE_BUILD $rlsname
+			soc=$soc platform=$platform ./core/autobuild.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish temp $TARGET_EMAIL $FORCE_BUILD $rlsname
 		else
-			soc=$soc platform=$platform ./core/autobuild.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest email $FORCE_BUILD $rlsname
+			soc=$soc platform=$platform ./core/autobuild.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest $TARGET_EMAIL $FORCE_BUILD $rlsname
 		fi
 	fi
 else
