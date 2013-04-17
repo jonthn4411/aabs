@@ -1,4 +1,4 @@
-ABS_BUILD_DEVICES := pxa978dkb_def:pxa978dkb pxa978ariel_def:pxa978ariel pxa978ariel_cmcc:pxa978ariel_cmcc
+ABS_BUILD_DEVICES ?= pxa978dkb_def:pxa978dkb pxa978ariel_def:pxa978ariel pxa978ariel_cmcc:pxa978ariel_cmcc
 
 #Add on patches for special products, will call apply-patch.sh in the folder to apply those patches
 #product:relative path in SRC_DIR
@@ -10,7 +10,7 @@ ANDROID_VERSION:=$(ABS_DROID_BRANCH)
 PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
 
 ifeq ($(ABS_DROID_BRANCH),jb)
-ABS_BUILD_DEVICES := pxa978dkb_def:pxa978dkb
+ABS_BUILD_DEVICES ?= pxa978dkb_def:pxa978dkb
 endif
 
 #

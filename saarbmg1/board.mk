@@ -1,4 +1,4 @@
-ABS_BUILD_DEVICES := saarbmg1:saarbmg1
+ABS_BUILD_DEVICES ?= saarbmg1:saarbmg1
 BOARD:=saarbmg1
 ANDROID_VERSION:=ics
 PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)

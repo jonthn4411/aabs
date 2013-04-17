@@ -1,4 +1,4 @@
-ABS_BUILD_DEVICES := pxa920dkb_def:pxa920dkb pxa920hdkb_def:pxa920hdkb pxa910hdkb_def:pxa910hdkb
+ABS_BUILD_DEVICES ?= pxa920dkb_def:pxa920dkb pxa920hdkb_def:pxa920hdkb pxa910hdkb_def:pxa910hdkb
 BOARD:=pxa920s
 ANDROID_VERSION:=ics
 PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
