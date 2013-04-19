@@ -3,7 +3,6 @@ BOARD:=pxa988
 ANDROID_VERSION:=$(ABS_DROID_BRANCH)
 PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
 
-
 include core/main.mk
 
 #

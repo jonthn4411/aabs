@@ -21,6 +21,8 @@ print_usage()
     echo "    [dry-run]: don't actully run the build, this should be used for testing this script."
     echo "    [help]: show this message"
     echo "    For virtual build, you must export ABS_SOURCE_DIR and ABS_PUBLISH_DIR"
+    echo "    To specify android variant, export PLATFORM_ANDROID_VARIANT=<user|userdebug|eng>"
+    echo "    To force it to build, export ABS_FORCE_BUILD=true"
 }
 
 LOG=build_platforms.log
@@ -120,21 +122,16 @@ if [ -x build-${platform}.sh ]; then
         TARGET_PKGSRC="pkgsrc"
         TARGET_EMAIL="email"
     fi
+    if [ "$ABS_FORCE_BUILD" = "true" ]; then
+        FORCE_BUILD="force"
+    fi
 	if [ "$dryrun_flag" == true ]; then
 		echo "[aabs]will-run:./build-${platform}.sh clobber source pkgsrc publish autotest email $rlsname" | tee -a $LOG
 	else
 		if [ "$FLAG_TEMP_BUILD" = "true" ]; then
-			if [ "$FLAG_PRODUCT_BUILD" = "true" ]; then
-				./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish temp force product $rlsname
-			else
-				./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish temp $rlsname
-			fi
+			./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish temp $FORCE_BUILD $rlsname
 		else
-			if [ "$FLAG_PRODUCT_BUILD" = "true" ]; then
-				./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest $TARGET_EMAIL force product $rlsname
-			else
-				./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest $TARGET_EMAIL $rlsname
-			fi
+			./build-${platform}.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest $TARGET_EMAIL $FORCE_BUILD $rlsname
 		fi
 	fi
 else
