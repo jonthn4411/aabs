@@ -296,8 +296,9 @@ device:=$$(word 2, $$(tw) )
 build_droid_security_$$(product): private_product:=$$(product)
 build_droid_security_$$(product): private_device:=$$(device)
 build_droid_security_$$(product): build_droid_$$(product)
-	$(log) "[$$(private_product)] copy tee_tw.bin ..."
+	$(log) "[$$(private_product)] copy tee files ..."
 	cp -p $(SRC_DIR)/vendor/marvell/generic/security/tee/bin/tee_tw.bin $(OUTPUT_DIR)/$$(private_product)
+	cp -p $(SRC_DIR)/vendor/marvell/generic/security/sstd/img/teesst.img $(OUTPUT_DIR)/$$(private_product)
 	$(log) "[$$(private_product)] building security ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -312,6 +313,7 @@ build_droid_security_$$(product): build_droid_$$(product)
 
 PUBLISHING_FILES+=$$(product)/security.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
+PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
 
 endef
 #else
