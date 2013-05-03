@@ -30,6 +30,13 @@ LOG=build_platforms.log
 #enable pipefail so that if make fail the exit of whole command is non-zero value.
 set -o pipefail
 
+#
+# Get AABS top directory
+#
+cd $(dirname $(dirname $0))
+export ABS_TOP_DIR=$(pwd)
+echo "[AABS]:Entering ${ABS_TOP_DIR}..."
+
 #For release build, the aabs will be branched, too. So we can only do one platform build a time.
 #And for release build, we should checkout the rls_<board>_<droid>_<version> branch; for dev build, we should checkout the master 
 

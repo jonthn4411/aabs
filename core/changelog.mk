@@ -26,7 +26,7 @@ endif
 .PHONY:changelog
 changelog:
 	$(log) "starting to generate change logs..."
-	$(hide)$(TOP_DIR)/core/gen_chglog.sh $(OUTPUT_DIR) $(SRC_DIR) $(ABS_MANIFEST_BRANCH) $(LAST_BUILD_LOC) 
+	$(hide)$(ABS_TOP_DIR)/core/gen_chglog.sh $(OUTPUT_DIR) $(SRC_DIR) $(ABS_MANIFEST_BRANCH) $(LAST_BUILD_LOC)
 	$(log) "  done"
 
 .PHONY:get_changelog_build
