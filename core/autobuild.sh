@@ -119,49 +119,13 @@ vb_generate_error_notification_email()
 	EOF
 }
 
-#$1: changelog.build
-generate_error_log_email()
-{
-	# --- Email (all stdout will be the email)
-	# Generate header
-	cat <<-EOF
-	From: $build_maintainer
-	To: $build_maintainer
-	Subject: $BUILD_TAG [$ABS_PRODUCT_CODE${RLS_SUFFIX}] autobuild failed! Full log is attached.
-
-	This is an automated email from the autobuild script. It was
-	generated because an error encountered while building the code.
-	The error can be resulted from newly checked in codes. 
-	Please check the change log (if it is generated successfully) 
-    and build log below and fix the error as early as possible.
-
-	=========================== Change LOG ====================
-
-	$(cat ${1}  2>/dev/null)
-	
-	===========================================================
-
-	
-	=========================== Build LOG =====================
-
-	$(cat $STD_LOG 2>/dev/null)
-	
-	===========================================================
-
-	Complete Time: $(date)
-	Build Host: $(hostname)
-	---
-	Team of $ABS_PRODUCT_CODE
-	EOF
-}
-
 generate_success_notification_email()
 {
 	# --- Email (all stdout will be the email)
 	# Generate header
 	cat <<-EOF
 	From: $build_maintainer
-	To: $dev_team;
+	To: $announce_list;
 	Subject: $BUILD_TAG [$ABS_PRODUCT_CODE${RLS_SUFFIX}] build $BUILD_NUM is ready.
 
 	This is an automated email from the autobuild script. It was
@@ -212,7 +176,6 @@ generate_nobuild_notification_email()
 send_error_notification()
 {
 	generate_error_notification_email $1 | /usr/sbin/sendmail -t $envelopesender
-	#generate_error_log_email $1 | /usr/sbin/sendmail -t $envelopesender
 }
 
 # virtual build only
