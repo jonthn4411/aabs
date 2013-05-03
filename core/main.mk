@@ -102,10 +102,10 @@ output_dir:
 clobber:
 	$(log) "clean source directory..."
 	$(hide)if [ "$$ABS_VIRTUAL_BUILD" != "true" ]; then \
-	           sudo rm -fr $(SRC_DIR); \
+	           rm -fr $(SRC_DIR); \
 	       fi
 	$(log) "clean output directory..."
-	$(hide)sudo rm -fr $(OUTPUT_DIR)
+	$(hide)rm -fr $(OUTPUT_DIR)
 	$(log) "  done."
 	
 .PHONY: help
