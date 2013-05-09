@@ -233,7 +233,7 @@ if [ -z "$ABS_SOC" ] || [ -z "$ABS_DROID_BRANCH" ]; then
   return 1
 fi
 
-if [ -z "$ABS_BUILDHOST_DEF" ] || [ ! -e $ABS_BUILDHOST_DEF ]; then
+if [ -z "$ABS_BUILDHOST_DEF" ] || [ ! -e core/$ABS_BUILDHOST_DEF ]; then
   ABS_BUILDHOST_DEF=buildhost.def
 fi
 . core/${ABS_BUILDHOST_DEF}
