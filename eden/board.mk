@@ -12,15 +12,20 @@ endif
 #
 include $(ABS_SOC)/build-droid-kernel.mk
 
+# Include goal for build software downloader
+include $(ABS_SOC)/build-swd.mk
+
 #define the combined goal to include all build goals
 .PHONY:build
+
+build: build_device
+build: build_swd
 
 define define-build-device
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
 
-build: build_device
 build_device: build_device_$$(product)
 build_device_$$(product): private_product:=$$(product)
 build_device_$$(product): private_device:=$$(device)
@@ -32,12 +37,14 @@ $(foreach bd,$(ABS_BUILD_DEVICES),\
 
 .PHONY:clean
 
+clean: clean_device
+clean: clean_swd
+
 define define-clean-device
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
 
-clean: clean_device
 clean_device: clean_device_$$(product)
 clean_device_$$(product): private_product:=$$(product)
 clean_device_$$(product): private_device:=$$(device)
