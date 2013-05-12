@@ -71,7 +71,7 @@ How to get source code from git server
   1. repo init -u ssh://shgit.marvell.com/git/android/platform/manifest -b <branch-name>
   2. repo sync
 
-  <branch-name> : for example eden-jb
+  <branch-name> : for example eden-jb42
 
 How to build kernel and android image (Please follow the sequence:
 setup env -> kernel/modules -> android -> uboot/obm -> update packages)
@@ -79,14 +79,14 @@ setup env -> kernel/modules -> android -> uboot/obm -> update packages)
   1. setup build environment
      $ cd <android_working_dir>
      $ . build/envsetup.sh
-     $ lunch edenfpga_def-<build variant>
+     $ lunch concord_def-<build variant>
      //Select "user" if you are a normal user.
      //otherwise, choose "userdebug" or "eng" to specify what you want to do.
 
   2. build kernel and modules
      $ cd <android_working_dir>
      $ cd kernel
-     $ make all
+     $ KERNEL_CONFIG=xxx make all
 
   uImage is at kernel/out, and the modules place at kernel/out/modules
 
@@ -104,9 +104,37 @@ setup env -> kernel/modules -> android -> uboot/obm -> update packages)
   The uboot bin and obm are at boot/out/.
 
 
+Flash instructions in uboot
+=====================
+  tftp primary_gpt
+  mmc write 0x107fc0 0 0x22
+
+  tftp secondary_gpt
+  mmc write 0x107fc0 0x1d59fdf 0x21
+
+  tftp uImage.android
+  mmc write 0x107fc0 0x8000 0x2000
+
+  tftp ramdisk.img
+  mmc write 0x107fc0 0xa000 0x800
+
+  tftp system.img
+  unsparse mmc 0 0x107fc0 0x1500000 0x20000000
+
+  tftp cache.img
+  unsparse mmc 0 0x107fc0 0x29f00000 0x20000000
+
+  /* workaround for userdata.img */
+  unsparse mmc 0 0x107fc0 0x49f00000 0x20000000
+
+
 How to Disable GC
 =====================
-remove or rename egl.cfg which located in /system/lib/egl/
+remove or rename:
+  /system/lib/modules/galcore.ko
+  /system/lib/egl/egl.cfg
+  /system/lib/hw/gralloc.mrvl.so
+  /system/lib/hw/hwcomposer.mrvl.so
 
 
 Setup Android on eMMC
@@ -161,6 +189,9 @@ Known Issues about running Android on NFS
 
 FAQ
 =====
++How to avoid entering the suspend state
+#svc power stayon true
+
 +How to modify the files after the system_xxx.img has been burned to the flash?
 -------------------------------------------------------------------------------
 Please remount the system partition with rw mode by
