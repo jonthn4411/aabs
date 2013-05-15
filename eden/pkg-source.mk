@@ -21,3 +21,9 @@ remove_internal_src: get_source_for_pkg
 
 pkgsrc: remove_internal_src
 
+eden_SW_schedule: $(ABS_SOC)/Eden_Plat_SW_Schedule.xlsx
+	$(hide)echo " publish matrix worksheet"
+	$(hide)cp $(ABS_SOC)/Eden_Plat_SW_Schedule.xlsx $(OUTPUT_DIR)/
+
+pkgsrc: eden_SW_schedule
+
