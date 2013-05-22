@@ -1,48 +1,46 @@
 BOOT_SRC_DIR:=boot
 BOOT_OUT_DIR:=$(BOOT_SRC_DIR)/out
-UBOOT:=u-boot.bin
 
-#$1:build variant
-define define-build-uboot-obm
+#$1:build device
+#$2:uboot_config
+define define-uboot-target
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
+
+tw:=$$(subst :,  , $(2))
+boot_cfg:=$$(word 1, $$(tw))
 
 #format: <file name>:[m|o]:[md5]
 #m:means mandatory
 #o:means optional
 #md5: need to generate md5 sum
-PUBLISHING_FILES+=$$(product)/$(UBOOT):m:md5
+PUBLISHING_FILES+=$$(product)/u-boot.bin.$$(boot_cfg):m:md5
 
-.PHONY:build_uboot_obm_$$(product)
-build_uboot_obm_$$(product): private_product:=$$(product)
-build_uboot_obm_$$(product): private_device:=$$(device)
-build_uboot_obm_$$(product): build_droid_root_$$(product)
+build_uboot_$$(product): build_uboot_$$(boot_cfg)
+
+.PHONY:build_uboot_$$(boot_cfg)
+build_uboot_$$(boot_cfg): private_product:=$$(product)
+build_uboot_$$(boot_cfg): private_device:=$$(device)
+build_uboot_$$(boot_cfg): private_cfg:=$$(boot_cfg)
+build_uboot_$$(boot_cfg): uoutput:=$$(SRC_DIR)/out/target/product/$$(device)/ubuild-$$(boot_cfg)
+build_uboot_$$(boot_cfg): output_dir
 	$$(log) "starting($$(private_product) to build uboot"
 	$$(hide)cd $$(SRC_DIR) && \
 	. build/envsetup.sh && \
 	lunch $$(private_product)-$$(DROID_VARIANT) && \
 	cd $$(BOOT_SRC_DIR) && \
-	make all
+	UBOOT_CONFIG=$$(private_cfg) make uboot
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$$(private_product)/
 	$$(log) "start to copy uboot files"
-	$$(hide)cp $$(SRC_DIR)/$$(BOOT_OUT_DIR)/$$(UBOOT) $$(OUTPUT_DIR)/$$(private_product)/
+	$$(hide)if [ -f $$(uoutput)/u-boot.bin ]; then cp $$(uoutput)/u-boot.bin $$(OUTPUT_DIR)/$$(private_product)/u-boot.bin.$$(private_cfg); fi
 	$$(log) "  done."
 endef
 
-define define-clean-uboot-obm
+#$1:build variant
+define define-build-obm
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
 
-.PHONY:clean_uboot_obm_$$(product)
-clean_uboot_obm_$$(product): private_product:=$$(product)
-clean_uboot_obm_$$(product): private_device:=$$(device)
-clean_uboot_obm_$$(product):
-	$(log) "cleaning uboot and obm..."
-	$(hide)cd $(SRC_DIR)/$(BOOT_SRC_DIR) && \
-	. build/envsetup.sh && \
-	lunch $$(private_product)-$$(DROID_VARIANT) && \
-	make clean
-	$(log) "    done."
 endef

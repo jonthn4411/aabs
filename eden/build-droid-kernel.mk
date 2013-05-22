@@ -32,8 +32,9 @@ device:=$$(word 2, $$(tw))
 
 build_droid_kernel_$$(product): build_kernel_$$(product)
 build_droid_kernel_$$(product): build_droid_root_$$(product)
-build_droid_kernel_$$(product): build_uboot_obm_$$(product)
+build_droid_kernel_$$(product): build_uboot_$$(product)
 build_droid_kernel_$$(product): build_droid_pkgs_$$(product)
+#build_droid_kernel_$$(product): build_obm_$$(product)
 endef
 
 #$1:build device
@@ -120,20 +121,10 @@ package_droid_nfs_$$(product)_$(2):
 	$$(log) "  done for package_droid_nfs_$$(private_product)_$(2)."
 endef
 
-#<os>:<storage>:<kernel_cfg>:<root>
-# os: the operating system
-# storage: the OS will startup from which storage
-# kernel_cfg:kernel config file used to build the kernel
-# root: optional. If specified, indicating that the kernel ?Image has a root RAM file system.
-#example: android:mlc:pxa168_android_mlc_defconfig:root
-# kernel_configs:=
-#
-kernel_configs:=android:eden:eden_and_defconfig:
-
 export MAKE_JOBS
 
-#$1:kernel_config
-#$2:build device
+#$1:build device
+#$2:kernel_config
 define define-kernel-target
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
@@ -141,9 +132,7 @@ device:=$$(word 2, $$(tw))
 
 tw:=$$(subst :,  , $(2))
 os:=$$(word 1, $$(tw))
-storage:=$$(word 2, $$(tw))
-kernel_cfg:=$$(word 3, $$(tw))
-root:=$$(word 4, $$(tw))
+kernel_cfg:=$$(word 2, $$(tw))
 
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
 PUBLISHING_FILES+=$$(product)/zImage.$$(os):o:md5
@@ -152,26 +141,24 @@ PUBLISHING_FILES+=$$(product)/uImage.$$(os):o:md5
 PUBLISHING_FILES+=$$(product)/uImage_recovery.$$(os):o:md5
 PUBLISHING_FILES+=$$(product)/vmlinux.$$(os):o:md5
 PUBLISHING_FILES+=$$(product)/System.map.$$(os):o:md5
-PUBLISHING_FILES+=$$(product)/modules_$$(os)_$$(storage).tgz:o:md5
 
-build_kernel_$$(product): build_kernel_$$(os)_$$(storage)_$$(product)
+build_kernel_$$(product): build_kernel_$$(os)_$$(kernel_cfg)
 
-.PHONY: build_kernel_$$(os)_$$(storage)_$$(product)
-build_kernel_$$(os)_$$(storage)_$$(product): private_os:=$$(os)
-build_kernel_$$(os)_$$(storage)_$$(product): private_storage:=$$(storage)
-build_kernel_$$(os)_$$(storage)_$$(product): private_root:=$$(root)
-build_kernel_$$(os)_$$(storage)_$$(product): private_kernel_cfg:=$$(kernel_cfg)
-build_kernel_$$(os)_$$(storage)_$$(product): koutput:=$$(SRC_DIR)/out/target/product/$$(device)/kbuild-$$(kernel_cfg)
-build_kernel_$$(os)_$$(storage)_$$(product): output_dir
-	$$(log) "[$$(private_product)]starting to build kernel for booting $$(private_os) from $$(private_storage) ..."
-	$$(log) "    kernel_config: $$(private_kernel_cfg): ..."
+.PHONY: build_kernel_$$(os)_$$(kernel_cfg)
+build_kernel_$$(os)_$$(kernel_cfg): private_os:=$$(os)
+build_kernel_$$(os)_$$(kernel_cfg): private_product:=$$(product)
+build_kernel_$$(os)_$$(kernel_cfg): private_cfg:=$$(kernel_cfg)
+build_kernel_$$(os)_$$(kernel_cfg): koutput:=$$(SRC_DIR)/out/target/product/$$(device)/kbuild-$$(kernel_cfg)
+build_kernel_$$(os)_$$(kernel_cfg): output_dir
+	$$(log) "build kernel for booting $$(private_os) on $$(private_product)..."
+	$$(log) "    kernel_config: $$(private_cfg): ..."
 	$$(hide)cd $$(SRC_DIR)/ && \
 	. build/envsetup.sh && \
 	lunch $$(private_product)-$$(DROID_VARIANT) && \
 	cd $$(KERNELSRC_TOPDIR) && \
-	KERNEL_CONFIG=$$(private_kernel_cfg) make clean all
+	KERNEL_CONFIG=$$(private_cfg) make clean all
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$$(private_product)
-	$$(log) "    copy kernel and module files ..."
+	$$(log) "    copy kernel files ..."
 	$$(hide)if [ -f $$(koutput)/arch/arm/boot/zImage ]; then cp $$(koutput)/arch/arm/boot/zImage $$(OUTPUT_DIR)/$$(private_product)/zImage.$$(private_os); fi
 	$$(hide)if [ -f $$(koutput)/arch/arm/boot/uImage ]; then cp $$(koutput)/arch/arm/boot/uImage $$(OUTPUT_DIR)/$$(private_product)/uImage.$$(private_os); fi
 	$$(hide)cp $$(koutput)/vmlinux $$(OUTPUT_DIR)/$$(private_product)/vmlinux.$$(private_os)
@@ -179,13 +166,23 @@ build_kernel_$$(os)_$$(storage)_$$(product): output_dir
 	$$(log) "  done."
 endef
 
+# <os>:<kernel_cfg>:
+# os: the operating system
+# kernel_cfg:kernel config file used to build the kernel
+# example: android:pxa610_android_defconfig:
+#
+kernel_configs:=android:eden_and_defconfig:
+boot_configs:=eden_concord_sharp_1080p eden_concord_otm_720p eden_concord_lg_720p
+
 $(foreach bd,$(ABS_BUILD_DEVICES),\
 	$(eval $(call define-clean-droid-kernel,$(bd))) \
 	$(eval $(call define-build-droid-kernel,$(bd))) \
 	$(foreach kc,$(kernel_configs), \
 		$(eval $(call define-kernel-target,$(bd),$(kc)))) \
 	$(eval $(call define-build-droid-root,$(bd))) \
-	$(eval $(call define-build-uboot-obm,$(bd))) \
+	$(foreach bc,$(boot_configs), \
+		$(eval $(call define-uboot-target,$(bd),$(bc)))) \
+	$(eval $(call define-build-obm,$(bd))) \
 	$(eval $(call define-build-droid-config,$(bd),internal)) \
 	$(eval $(call package-droid-nfs-config,$(bd),internal)) \
 )
