@@ -297,7 +297,7 @@ build_droid_security_$$(product): private_product:=$$(product)
 build_droid_security_$$(product): private_device:=$$(device)
 build_droid_security_$$(product): build_droid_$$(product)
 	$(log) "[$$(private_product)] copy tee files ..."
-	cp -p $(SRC_DIR)/vendor/marvell/generic/security/tee/bin/tee_tw.bin $(OUTPUT_DIR)/$$(private_product)
+	cp -p $(SRC_DIR)/vendor/marvell/generic/security/tee/tw/bin/tee_tw.bin $(OUTPUT_DIR)/$$(private_product)
 	cp -p $(SRC_DIR)/vendor/marvell/generic/security/sstd/img/teesst.img $(OUTPUT_DIR)/$$(private_product)
 	$(log) "[$$(private_product)] building security ..."
 	$(hide)cd $(SRC_DIR) && \
