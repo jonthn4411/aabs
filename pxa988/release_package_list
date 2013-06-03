@@ -57,6 +57,37 @@ pxa1088dkb_def/modules.tgz pxa1088dkb_def/prebuilt_bin/modules.tgz
 pxa1088dkb_def/vmlinux pxa1088dkb_def/prebuilt_bin/vmlinux
 pxa1088dkb_def/System.map pxa1088dkb_def/prebuilt_bin/System.map
 
+pxa1088dkb_fhd/build.prop pxa1088dkb_fhd/prebuilt_bin/build.prop
+pxa1088dkb_fhd/primary_gpt pxa1088dkb_fhd/prebuilt_bin/primary_gpt
+pxa1088dkb_fhd/secondary_gpt  pxa1088dkb_fhd/prebuilt_bin/secondary_gpt
+pxa1088dkb_fhd/ramdisk.img pxa1088dkb_fhd/prebuilt_bin/ramdisk.img
+pxa1088dkb_fhd/ramdisk-recovery.img pxa1088dkb_fhd/prebuilt_bin/ramdisk-recovery.img
+pxa1088dkb_fhd/system.img pxa1088dkb_fhd/prebuilt_bin/system.img
+pxa1088dkb_fhd/u-boot.bin pxa1088dkb_fhd/prebuilt_bin/u-boot.bin
+pxa1088dkb_fhd/userdata.img pxa1088dkb_fhd/prebuilt_bin/userdata.img
+pxa1088dkb_fhd/uImage pxa1088dkb_fhd/prebuilt_bin/uImage
+pxa1088dkb_fhd/radio-emei.img pxa1088dkb_fhd/prebuilt_bin/radio-emei.img
+pxa1088dkb_fhd/radio-kunlun.img pxa1088dkb_fhd/prebuilt_bin/radio-kunlun.img
+pxa1088dkb_fhd/radio-helan-td.img pxa1088dkb_fhd/prebuilt_bin/radio-helan-td.img
+pxa1088dkb_fhd/ReliableData.bin pxa1088dkb_fhd/prebuilt_bin/ReliableData.bin
+pxa1088dkb_fhd/EM_CP.bin pxa1088dkb_fhd/prebuilt_bin/EM_CP.bin
+pxa1088dkb_fhd/HL_TD_CP.bin pxa1088dkb_fhd/prebuilt_bin/HL_TD_CP.bin
+pxa1088dkb_fhd/EM_M08_AI_Z1_Flash.bin pxa1088dkb_fhd/prebuilt_bin/EM_M08_AI_Z1_Flash.bin
+pxa1088dkb_fhd/HL_TD_M08_AI_A0_Flash.bin pxa1088dkb_fhd/prebuilt_bin/HL_TD_M08_AI_A0_Flash.bin
+pxa1088dkb_fhd/KL_CP.bin pxa1088dkb_fhd/prebuilt_bin/KL_CP.bin
+pxa1088dkb_fhd/KUNLUN_Z0_M14_AI_Flash.bin pxa1088dkb_fhd/prebuilt_bin/KUNLUN_Z0_M14_AI_Flash.bin
+pxa1088dkb_fhd/KUNLUN_A0_M15_AI_Flash.bin pxa1088dkb_fhd/prebuilt_bin/KUNLUN_A0_M15_AI_Flash.bin
+pxa1088dkb_fhd/Boerne_DIAG.mdb.txt pxa1088dkb_fhd/prebuilt_bin/Boerne_DIAG.mdb.txt
+pxa1088dkb_fhd/KL_CP_NVM.mdb pxa1088dkb_fhd/prebuilt_bin/KL_CP_NVM.mdb
+pxa1088dkb_fhd/KL_CP_DIAG.mdb pxa1088dkb_fhd/prebuilt_bin/KL_CP_DIAG.mdb
+pxa1088dkb_fhd/EM_CP_NVM.mdb pxa1088dkb_fhd/prebuilt_bin/EM_CP_NVM.mdb
+pxa1088dkb_fhd/EM_CP_DIAG.mdb pxa1088dkb_fhd/prebuilt_bin/EM_CP_DIAG.mdb
+pxa1088dkb_fhd/HL_TD_CP_NVM.mdb pxa1088dkb_fhd/prebuilt_bin/HL_TD_CP_NVM.mdb
+pxa1088dkb_fhd/HL_TD_CP_DIAG.mdb pxa1088dkb_fhd/prebuilt_bin/HL_TD_CP_DIAG.mdb
+pxa1088dkb_fhd/modules.tgz pxa1088dkb_fhd/prebuilt_bin/modules.tgz
+pxa1088dkb_fhd/vmlinux pxa1088dkb_fhd/prebuilt_bin/vmlinux
+pxa1088dkb_fhd/System.map pxa1088dkb_fhd/prebuilt_bin/System.map
+
 manifest.xml manifest.xml
 changelog.month changelog.month
 pxa988dkb_def/Software_Downloader.zip Software_Downloader.zip

@@ -1,4 +1,4 @@
-ABS_BUILD_DEVICES := pxa1088dkb_def:pxa1088dkb pxa988dkb_def:pxa988dkb
+ABS_BUILD_DEVICES := pxa1088dkb_def:pxa1088dkb pxa1088dkb_fhd:pxa1088dkb pxa988dkb_def:pxa988dkb
 BOARD:=pxa988
 ANDROID_VERSION:=$(ABS_DROID_BRANCH)
 PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
