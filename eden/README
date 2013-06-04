@@ -118,15 +118,10 @@ Flash instructions in uboot
   tftp ramdisk.img
   mmc write 0x107fc0 0xa000 0x800
 
-  tftp system.img
-  unsparse mmc 0 0x107fc0 0x1500000 0x20000000
+  tftp 0x10000000 system.img
+  unsparse mmc 0 0x10000000 0x1500000 0x20000000
 
-  tftp cache.img
-  unsparse mmc 0 0x107fc0 0x29f00000 0x20000000
-
-  /* workaround for userdata.img */
-  unsparse mmc 0 0x107fc0 0x49f00000 0x20000000
-
+  /* we don't need to flash both cache.img & userdata.img */
 
 How to Disable GC
 =====================
