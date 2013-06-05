@@ -87,6 +87,8 @@ setup env -> kernel/modules -> android -> uboot/obm -> update packages)
      $ cd <android_working_dir>
      $ cd kernel
      $ KERNEL_CONFIG=xxx make all
+     or using the default kernel config
+     $ make all
 
   uImage is at kernel/out, and the modules place at kernel/out/modules
 
@@ -143,6 +145,11 @@ Flash images with software downloader
        u-boot.bin.eden_concord_lg_720p
        u-boot.bin.eden_concord_otm_720p
        u-boot.bin.eden_concord_sharp_1080p
+
+Daughter cards
+=====================
+  8787 combo wib card is not applicable as EDEN hasn't supported
+  26M clock from RF card.
 
 How to Disable GC
 =====================
