@@ -128,6 +128,21 @@ Flash instructions in uboot
   tftp userdata.img
   unsparse mmc 0 0x107fc0 0x49f00000 0x400000000
 
+Flash images with software downloader
+=====================
+  1) There are 2 blf files, respectively for socket board and soldered board
+  EDEN_Nontrusted_eMMC_socket.blf
+  EDEN_Nontrusted_eMMC.blf
+
+  2) There are 3 u-boot.bin, respectively for
+       LG 5" 720p,
+       OTM 4.5" 720p
+       Sharp 4.5" 1080p
+     LCD
+     please rename the corresponding binary to u-boot.bin before flashing.
+       u-boot.bin.eden_concord_lg_720p
+       u-boot.bin.eden_concord_otm_720p
+       u-boot.bin.eden_concord_sharp_1080p
 
 How to Disable GC
 =====================
