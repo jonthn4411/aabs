@@ -132,11 +132,18 @@ Flash instructions in uboot
 
 Flash images with software downloader
 =====================
-  1) There are 2 blf files, respectively for socket board and soldered board
+  1) How to enter the software downloading mode
+     a. Entering from bootrom
+          You have to choose this mode, if there is only BBU shipped.
+          Hold on BootROM-DEBUG + ON-KEY.
+     b. Entering from OBM
+          Press on 'VOLUME-UP' during reset.
+
+  2) There are 2 blf files, respectively for socket board and soldered board
   EDEN_Nontrusted_eMMC_socket.blf
   EDEN_Nontrusted_eMMC.blf
 
-  2) There are 3 u-boot.bin, respectively for
+  3) There are 3 u-boot.bin, respectively for
        LG 5" 720p,
        OTM 4.5" 720p
        Sharp 4.5" 1080p
