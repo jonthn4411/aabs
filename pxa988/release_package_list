@@ -68,6 +68,9 @@ pxa988t7_def/HL_TD_CP_DIAG.mdb pxa988t7_def/prebuilt_bin/HL_TD_CP_DIAG.mdb
 pxa988t7_def/modules.tgz pxa988t7_def/prebuilt_bin/modules.tgz
 pxa988t7_def/vmlinux pxa988t7_def/prebuilt_bin/vmlinux
 pxa988t7_def/System.map pxa988t7_def/prebuilt_bin/System.map
+pxa988t7_def/logo.bin pxa988t7_def/prebuilt_bin/logo.bin
+pxa988t7_def/prdcfg.bin pxa988t7_def/prebuilt_bin/prdcfg.bin
+pxa988t7_def/factory.bin pxa988t7_def/prebuilt_bin/factory.bin
 
 pxa1088dkb_def/build.prop pxa1088dkb_def/prebuilt_bin/build.prop
 pxa1088dkb_def/primary_gpt pxa1088dkb_def/prebuilt_bin/primary_gpt
