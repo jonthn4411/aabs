@@ -139,6 +139,10 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-td.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-td.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wb.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wb.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wt.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wt.img $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -e $(SRC_DIR)/flashing/logo.bin ]; then cp -p -r $(SRC_DIR)/flashing/logo.bin  $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -e $(SRC_DIR)/flashing/prdcfg.bin ]; then cp -p -r $(SRC_DIR)/flashing/prdcfg.bin  $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -e $(SRC_DIR)/flashing/factory/$$(private_product).img ]; then \
+	cp -p -r $(SRC_DIR)/flashing/factory/$$(private_product).img $(OUTPUT_DIR)/$$(private_product)/factory.bin; fi
 	$(log) "  done"
 
 	$(hide)if [ "$(PLATFORM_ANDROID_VARIANT)" = "user" ]; then \
@@ -209,6 +213,11 @@ PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:o:md5
 PUBLISHING_FILES+=$$(product)/ReliableData.bin:o:md5
+ifeq ($(product),pxa988t7_def)
+PUBLISHING_FILES+=$$(product)/logo.bin:o:md5
+PUBLISHING_FILES+=$$(product)/prdcfg.bin:o:md5
+PUBLISHING_FILES+=$$(product)/factory.bin:o:md5
+endif
 ifeq ($(product),pxa988dkb_def)
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3.bin:o:md5
