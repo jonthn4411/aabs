@@ -157,6 +157,10 @@ PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/radio.img:o:md5
 PUBLISHING_FILES+=$$(product)/radio-emei.img:o:md5
 PUBLISHING_FILES+=$$(product)/radio-kunlun.img:o:md5
+PUBLISHING_FILES+=$$(product)/nvm-emei.img:o:md5
+PUBLISHING_FILES+=$$(product)/nvm-kunlun.img:o:md5
+PUBLISHING_FILES+=$$(product)/nvm-helan-td.img:o:md5
+PUBLISHING_FILES+=$$(product)/nvm-helan-wb.img:o:md5
 
 PUBLISHING_FILES+=$$(product)/HL_CP.bin:o:md5
 PUBLISHING_FILES+=$$(product)/EM_CP.bin:o:md5
@@ -170,6 +174,10 @@ PUBLISHING_FILES+=$$(product)/KL_CP_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/KUNLUN_Z0_M14_AI_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/KUNLUN_A0_M15_AI_Flash.bin:o:md5
 
+PUBLISHING_FILES+=$$(product)/HELAN_A0_M16_AI_Flash.bin
+PUBLISHING_FILES+=$$(product)/HL_WB_CP.bin
+PUBLISHING_FILES+=$$(product)/HL_WB_CP_DIAG.mdb
+PUBLISHING_FILES+=$$(product)/HL_WB_CP_NVM.mdb
 PUBLISHING_FILES+=$$(product)/KUNLUN_Arbel.bin:o:md5
 PUBLISHING_FILES+=$$(product)/KUNLUN_Arbel_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/KUNLUN_Arbel_NVM.mdb:o:md5
