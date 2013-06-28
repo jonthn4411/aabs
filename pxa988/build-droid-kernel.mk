@@ -135,6 +135,7 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img $(OUTPUT_DIR)/$$(private_product)/; fi
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/security/* $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(log) "  done"
 
 	$(hide)if [ "$(PLATFORM_ANDROID_VARIANT)" = "user" ]; then \
@@ -220,6 +221,10 @@ PUBLISHING_FILES+=$$(product)/TTD_M06_AI_Y0_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW.bin:o:md5
 PUBLISHING_FILES+=$$(product)/WK_M08_AI_Y1_removelo_Y0_Flash.bin:o:md5
 endif
+ifeq ($(product),pxa1088dkb_tz_def)
+PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
+PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
+endif
 endef
 
 ifneq ($(ABS_DROID_BRANCH),other)
@@ -287,7 +292,7 @@ PUBLISHING_FILES+=$$(product)/tools.tgz:o:md5
 
 endef
 
-#ifneq ($(ABS_DROID_BRANCH),jb4.2)
+ifneq ($(ABS_DROID_BRANCH),jb4.2)
 define define-build-droid-security
 tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
