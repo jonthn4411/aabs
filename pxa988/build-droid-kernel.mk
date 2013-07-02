@@ -137,6 +137,7 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-td.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-td.img $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helanlte-ltg.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helanlte-ltg.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wb.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wb.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wt.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wt.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(log) "  done"
@@ -207,6 +208,14 @@ PUBLISHING_FILES+=$$(product)/radio-helan-wt.img:o:md5
 
 PUBLISHING_FILES+=$$(product)/TABLET_CP.bin:o:md5
 PUBLISHING_FILES+=$$(product)/TABLET_MSA.bin:o:md5
+
+PUBLISHING_FILES+=$$(product)/radio-helanlte-ltg.img:o:md5
+PUBLISHING_FILES+=$$(product)/HL_DL_M09_Y0_AI_SKL_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LTG.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LTG_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LTG_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/nvm-helanlte-ltg.img:o:md5
+
 
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:o:md5
