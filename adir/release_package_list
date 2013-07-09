@@ -1,0 +1,17 @@
+pxa1986sdk_def/build.prop pxa1986sdk_def/prebuilt_bin/build.prop
+pxa1986sdk_def/primary_gpt pxa1986sdk_def/prebuilt_bin/primary_gpt
+pxa1986sdk_def/secondary_gpt  pxa1986sdk_def/prebuilt_bin/secondary_gpt
+pxa1986sdk_def/ramdisk.img pxa1986sdk_def/prebuilt_bin/ramdisk.img
+pxa1986sdk_def/ramdisk-recovery.img pxa1986sdk_def/prebuilt_bin/ramdisk-recovery.img
+pxa1986sdk_def/system.img pxa1986sdk_def/prebuilt_bin/system.img
+pxa1986sdk_def/uboot.bin pxa1986sdk_def/prebuilt_bin/uboot.bin
+pxa1986sdk_def/userdata.img pxa1986sdk_def/prebuilt_bin/userdata.img
+pxa1986sdk_def/uImage pxa1986sdk_def/prebuilt_bin/uImage
+pxa1986sdk_def/ReliableData.bin pxa1986sdk_def/prebuilt_bin/ReliableData.bin
+pxa1986sdk_def/modules.tgz pxa1986sdk_def/prebuilt_bin/modules.tgz
+pxa1986sdk_def/vmlinux pxa1986sdk_def/prebuilt_bin/vmlinux
+pxa1986sdk_def/System.map pxa1986sdk_def/prebuilt_bin/System.map
+
+manifest.xml manifest.xml
+changelog.month changelog.month
+pxa1986sdk_def/Software_Downloader.zip Software_Downloader.zip
