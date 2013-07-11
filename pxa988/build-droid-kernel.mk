@@ -205,6 +205,9 @@ PUBLISHING_FILES+=$$(product)/nvm-helan-wt.img:o:md5
 PUBLISHING_FILES+=$$(product)/radio-helan-wb.img:o:md5
 PUBLISHING_FILES+=$$(product)/radio-helan-wt.img:o:md5
 
+PUBLISHING_FILES+=$$(product)/TABLET_CP.bin:o:md5
+PUBLISHING_FILES+=$$(product)/TABLET_MSA.bin:o:md5
+
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:o:md5
