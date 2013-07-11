@@ -212,6 +212,13 @@ PUBLISHING_FILES+=$$(product)/HL_TD_CP_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/HL_TD_M08_AI_A0_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/radio-helan-td.img:o:md5
 
+PUBLISHING_FILES+=$$(product)/nvm-helan-mynah.img:o:md5
+PUBLISHING_FILES+=$$(product)/HELAN_A0_M16_AI_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_WB_CP_MYNAH.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_WB_CP_MYNAH_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HL_WB_CP_MYNAH_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HLWT_TD_M09_AI_A0_Flash.bin:o:md5
+
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:o:md5
