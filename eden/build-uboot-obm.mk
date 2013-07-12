@@ -43,20 +43,23 @@ tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
 
+tw:=$$(subst :,  , $(2))
+os:=$$(word 1, $$(tw))
+kernel_cfg:=$$(word 2, $$(tw))
+
+tw:=$$(subst :,  , $(3))
+boot_cfg:=$$(word 1, $$(tw))
+
 .PHONY:build_obm_$$(product)
 build_obm_$$(product): private_product:=$$(product)
 build_obm_$$(product): private_device:=$$(device)
-build_obm_$$(product): ooutput:=$$(SRC_DIR)/out/target/product/$$(device)/obuild
+build_obm_$$(product): private_kcfg:=$$(kernel_cfg)
+build_obm_$$(product): private_bcfg:=$$(boot_cfg)
 build_obm_$$(product): output_dir
-	$$(log) "starting($$(private_product) to build obm"
+	$$(log) "starting($$(private_product) kc($$(private_kcfg)) bc($$(private_bcfg)) to build obm"
 	$$(hide)cd $$(SRC_DIR) && \
 	. build/envsetup.sh && \
 	lunch $$(private_product)-$$(DROID_VARIANT) && \
-	cd $$(BOOT_SRC_DIR) && make obm
-	$$(hide)mkdir -p $$(OUTPUT_DIR)/$$(private_product)/
-	$$(log) "start to copy obm files"
-	$$(hide)if [ -f $$(ooutput)/Bootloader_3.3.7_Linux/EDEN_DKB/EDEN_NonTLoader_eMMC_DDR.bin ]; then cp $$(ooutput)/Bootloader_3.3.7_Linux/EDEN_DKB/EDEN_NonTLoader_eMMC_DDR.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
-	$$(hide)if [ -f $$(ooutput)/Bootloader_3.3.7_Linux/EDEN_DKB/EDEN_TLoader_eMMC_DDR.bin ]; then cp $$(ooutput)/Bootloader_3.3.7_Linux/EDEN_DKB/EDEN_TLoader_eMMC_DDR.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
+	cd $$(BOOT_SRC_DIR) && KERNEL_CONFIG=$$(private_kcfg) UBOOT_CONFIG=$$(private_bcfg) make obm
 	$$(log) "  done."
-
 endef

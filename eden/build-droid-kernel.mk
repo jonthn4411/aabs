@@ -186,7 +186,9 @@ $(foreach bd,$(ABS_BUILD_DEVICES),\
 	$(eval $(call define-build-droid-root,$(bd))) \
 	$(foreach bc,$(boot_configs), \
 		$(eval $(call define-uboot-target,$(bd),$(bc)))) \
-	$(eval $(call define-build-obm,$(bd))) \
+	$(foreach kc,$(kernel_configs), \
+		$(foreach bc,$(boot_configs), \
+			$(eval $(call define-build-obm,$(bd),$(kc),$(bc))))) \
 	$(eval $(call define-build-swd,$(bd))) \
 	$(eval $(call define-build-droid-config,$(bd),internal)) \
 	$(eval $(call package-droid-nfs-config,$(bd),internal)) \
