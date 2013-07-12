@@ -83,7 +83,7 @@ build_kernel_$$(product): output_dir
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
-	make kernel && make telephony
+	make kernel
 	$(log) "[$$(private_product)]starting to build modules ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -93,7 +93,7 @@ build_kernel_$$(product): output_dir
 	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage $(OUTPUT_DIR)/$$(private_product)/
 	$$(hide)if [ -e $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage.init ]; then cp $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage.init $$(OUTPUT_DIR)/$$(private_product); fi
-	$$(hide)if [ -e $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage-signed ]; then cp $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage.init $$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -e $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage-signed ]; then cp $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage-signed $$(OUTPUT_DIR)/$$(private_product); fi
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/modules; fi &&\
 	mkdir -p $(OUTPUT_DIR)/$$(private_product)/modules
 	$(hide)cp -af $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/modules  $(OUTPUT_DIR)/$$(private_product)/
@@ -115,6 +115,8 @@ build_droid_$$(product): build_kernel_$$(product)
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	make -j8 && \
+	cd $(SRC_DIR)/kernel && \
+	make telephony &&\
 	tar zcf $(OUTPUT_DIR)/$$(private_product)/modules.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel modules && \
 	tar zcf $(OUTPUT_DIR)/$$(private_product)/symbols_system.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ symbols
 
