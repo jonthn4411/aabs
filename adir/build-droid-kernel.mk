@@ -70,9 +70,9 @@ device:=$$(word 2, $$(tw) )
 .PHONY: build_kernel_$$(product)
 
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
-PUBLISHING_FILES+=$$(product)/zImage.init:o:md5
-PUBLISHING_FILES+=$$(product)/zImage-signed:o:md5
-PUBLISHING_FILES+=$$(product)/zImage:o:md5
+PUBLISHING_FILES+=$$(product)/uImage.init:o:md5
+PUBLISHING_FILES+=$$(product)/uImage-signed:o:md5
+PUBLISHING_FILES+=$$(product)/uImage:o:md5
 PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
 PUBLISHING_FILES+=$$(product)/System.map:o:md5
 build_kernel_$$(product): private_product:=$$(product)
@@ -83,7 +83,7 @@ build_kernel_$$(product): output_dir
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
-	make kernel
+	make kernel && make telephony
 	$(log) "[$$(private_product)]starting to build modules ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -91,9 +91,9 @@ build_kernel_$$(product): output_dir
 	cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
 	make modules
 	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
-	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/zImage $(OUTPUT_DIR)/$$(private_product)/
-	$$(hide)if [ -e $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/zImage.init ]; then cp $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/zImage.init $$(OUTPUT_DIR)/$$(private_product); fi
-	$$(hide)if [ -e $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/zImage-signed ]; then cp $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/zImage.init $$(OUTPUT_DIR)/$$(private_product); fi
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage $(OUTPUT_DIR)/$$(private_product)/
+	$$(hide)if [ -e $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage.init ]; then cp $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage.init $$(OUTPUT_DIR)/$$(private_product); fi
+	$$(hide)if [ -e $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage-signed ]; then cp $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage.init $$(OUTPUT_DIR)/$$(private_product); fi
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/modules; fi &&\
 	mkdir -p $(OUTPUT_DIR)/$$(private_product)/modules
 	$(hide)cp -af $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/modules  $(OUTPUT_DIR)/$$(private_product)/
