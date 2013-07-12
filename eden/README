@@ -146,7 +146,7 @@ Flash images with software downloader
   3) There are 3 u-boot.bin, respectively for
        LG 5" 720p,
        OTM 4.5" 720p
-       Sharp 4.5" 1080p
+       Sharp 5" 1080p
      LCD
      please rename the corresponding binary to u-boot.bin before flashing.
        u-boot.bin.eden_concord_lg_720p
