@@ -1,4 +1,4 @@
-ABS_BUILD_DEVICES ?= pxa1986qt_def:pxa1986qt pxa1986fpga_def:pxa1986fpga
+ABS_BUILD_DEVICES ?= pxa1986qt_def:pxa1986qt pxa1986fpga_def:pxa1986fpga pxa1986sdk_def:pxa1986sdk
 BOARD:=adir
 ANDROID_VERSION:=$(ABS_DROID_BRANCH)
 PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
