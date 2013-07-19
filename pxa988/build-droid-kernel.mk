@@ -211,7 +211,7 @@ PUBLISHING_FILES+=$$(product)/TABLET_MSA.bin:o:md5
 
 PUBLISHING_FILES+=$$(product)/radio-helanlte-ltg.img:o:md5
 PUBLISHING_FILES+=$$(product)/HL_DL_M09_Y0_AI_SKL_Flash.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LTG.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LTG_DL.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/nvm-helanlte-ltg.img:o:md5
