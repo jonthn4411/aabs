@@ -141,7 +141,7 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wt.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wt.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/flashing/logo.bin ]; then cp -p -r $(SRC_DIR)/flashing/logo.bin  $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/flashing/prdcfg.bin ]; then cp -p -r $(SRC_DIR)/flashing/prdcfg.bin  $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -e $(SRC_DIR)/flashing/factory/$$(private_device).img ]; then cp -p -r -L $(SRC_DIR)/flashing/factory/$$(private_device).img $(OUTPUT_DIR)/$$(private_product)/factory.bin; fi
+	$(hide)if [ -e $(SRC_DIR)/flashing/factory/pxa988t7.img ]; then cp -p -r -L $(SRC_DIR)/flashing/factory/pxa988t7.img $(OUTPUT_DIR)/$$(private_product)/factory.bin; fi
 	$(log) "  done"
 
 	$(hide)if [ "$(PLATFORM_ANDROID_VARIANT)" = "user" ]; then \
