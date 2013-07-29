@@ -8,4 +8,4 @@ export ABS_BUILDHOST_DEF
 
 export ABS_UNIQUE_MANIFEST_BRANCH=1
 
-export ABS_BUILD_DEVICES ?= pxa1088dkb_def:pxa1088dkb
+export ABS_BUILD_DEVICES = pxa1088dkb_def:pxa1088dkb
