@@ -303,48 +303,9 @@ PUBLISHING_FILES+=$$(product)/tools.tgz:o:md5
 
 endef
 
-ifneq ($(ABS_DROID_BRANCH),jb4.2)
-define define-build-droid-security
-tw:=$$(subst :,  , $(1) )
-product:=$$(word 1, $$(tw) )
-device:=$$(word 2, $$(tw) )
-.PHONY: build_droid_security_$$(product)
-build_droid_security_$$(product): private_product:=$$(product)
-build_droid_security_$$(product): private_device:=$$(device)
-build_droid_security_$$(product): build_droid_$$(product)
-	$(log) "[$$(private_product)] building security ..."
-	$(hide)cd $(SRC_DIR) && \
-	source ./build/envsetup.sh && \
-	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	cd vendor/marvell/generic/security && \
-	git reset --hard HEAD && git checkout shgit/security-1_0 && mm -B && \
-	cd $(SRC_DIR)/vendor/marvell/generic/security/wtpsp/drv/src && \
-	make KDIR=$(SRC_DIR)/kernel/kernel ARCH=arm CROSS_COMPILE=arm-eabi- M=$(PWD) && cp -a geu.ko $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/lib/modules && \
-	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
-	tar zcvf $(OUTPUT_DIR)/$$(private_product)/security.tgz system/lib/libparseTim.so system/lib/libwtpsp.so system/lib/libwtpsp_ss.so system/lib/modules/geu.ko && \
-	cd $(SRC_DIR)
-
-PUBLISHING_FILES+=$$(product)/security.tgz:o:md5
-
-endef
-else
-define define-build-droid-security
-tw:=$$(subst :,  , $(1) )
-product:=$$(word 1, $$(tw) )
-device:=$$(word 2, $$(tw) )
-.PHONY: build_droid_security_$$(product)
-build_droid_security_$$(product): private_product:=$$(product)
-build_droid_security_$$(product): private_device:=$$(device)
-build_droid_security_$$(product): build_droid_$$(product)
-	$(log) "[$$(private_product)] no security build ..."
-
-endef
-endif
-
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-target,$(bv)) ) \
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
-				$(eval $(call define-build-droid-security,$(bv)) ) \
 )
