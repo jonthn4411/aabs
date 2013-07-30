@@ -219,11 +219,11 @@ pxa1L88dkb_def/modules.tgz pxa1L88dkb_def/prebuilt_bin/modules.tgz
 pxa1L88dkb_def/vmlinux pxa1L88dkb_def/prebuilt_bin/vmlinux
 pxa1L88dkb_def/System.map pxa1L88dkb_def/prebuilt_bin/System.map
 pxa1L88dkb_def/radio-helanlte-ltg.img pxa1L88dkb_def/prebuilt_bin/radio-helanlte-ltg.img
-pxa1L88dkb_def/telephony/HL_DL_M09_Y0_AI_SKL_Flash.bin pxa1L88dkb_def/prebuilt_bin/HL_DL_M09_Y0_AI_SKL_Flash.bin
-pxa1L88dkb_def/telephony/HL_LTG_DL.bin pxa1L88dkb_def/prebuilt_bin/HL_LTG_DL.bin
-pxa1L88dkb_def/telephony/HL_LTG_DIAG.mdb pxa1L88dkb_def/prebuilt_bin/HL_LTG_DIAG.mdb
-pxa1L88dkb_def/telephony/HL_LTG_NVM.mdb pxa1L88dkb_def/prebuilt_bin/HL_LTG_NVM.mdb
-pxa1L88dkb_def/telephony/nvm-helanlte-ltg.img pxa1L88dkb_def/prebuilt_bin/nvm-helanlte-ltg.img
+pxa1L88dkb_def/HL_DL_M09_Y0_AI_SKL_Flash.bin pxa1L88dkb_def/prebuilt_bin/HL_DL_M09_Y0_AI_SKL_Flash.bin
+pxa1L88dkb_def/HL_LTG_DL.bin pxa1L88dkb_def/prebuilt_bin/HL_LTG_DL.bin
+pxa1L88dkb_def/HL_LTG_DIAG.mdb pxa1L88dkb_def/prebuilt_bin/HL_LTG_DIAG.mdb
+pxa1L88dkb_def/HL_LTG_NVM.mdb pxa1L88dkb_def/prebuilt_bin/HL_LTG_NVM.mdb
+pxa1L88dkb_def/nvm-helanlte-ltg.img pxa1L88dkb_def/prebuilt_bin/nvm-helanlte-ltg.img
 
 
 manifest.xml manifest.xml
