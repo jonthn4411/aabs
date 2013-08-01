@@ -135,6 +135,8 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/security/ ]; then \
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/security/* $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(log) "  done"
 
 	$(hide)if [ "$(PLATFORM_ANDROID_VARIANT)" = "user" ]; then \
@@ -191,7 +193,6 @@ PUBLISHING_FILES+=$$(product)/KUNLUN_Z0_M14_AI_DSDS_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HL_TD_DSDS_CP.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HL_TD_DSDS_CP_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/HL_TD_DSDS_CP_NVM.mdb:o:md5
-
 PUBLISHING_FILES+=$$(product)/HL_TD_M08_AI_A0_DSDS_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HELAN_A0_M16_AI_DSDS_Flash.bin
 PUBLISHING_FILES+=$$(product)/HELAN_A0_M16_AI_Flash.bin
@@ -241,6 +242,10 @@ PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A1_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/TTD_M06_AI_Y0_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW.bin:o:md5
 PUBLISHING_FILES+=$$(product)/WK_M08_AI_Y1_removelo_Y0_Flash.bin:o:md5
+endif
+ifeq ($(product),pxa1088dkb_tz_def)
+PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
+PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
 endif
 endef
 
@@ -318,6 +323,9 @@ device:=$$(word 2, $$(tw) )
 build_droid_security_$$(product): private_product:=$$(product)
 build_droid_security_$$(product): private_device:=$$(device)
 build_droid_security_$$(product): build_droid_$$(product)
+	$(log) "[$$(private_product)] copy tee files ..."
+	cp -p $(SRC_DIR)/vendor/marvell/generic/security/tee/tw/bin/tee_tw.bin $(OUTPUT_DIR)/$$(private_product)
+	cp -p $(SRC_DIR)/vendor/marvell/generic/security/sstd/img/teesst.img $(OUTPUT_DIR)/$$(private_product)
 	$(log) "[$$(private_product)] building security ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -325,12 +333,14 @@ build_droid_security_$$(product): build_droid_$$(product)
 	cd vendor/marvell/generic/security && \
 	git reset --hard HEAD && git checkout shgit/security-1_0 && mm -B && \
 	cd $(SRC_DIR)/vendor/marvell/generic/security/wtpsp/drv/src && \
-	make KDIR=$(SRC_DIR)/kernel/kernel ARCH=arm CROSS_COMPILE=arm-eabi- M=$(PWD) && cp -a geu.ko $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/lib/modules && \
+	make KDIR=$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/kbuild-pxa1088tz_defconfig ARCH=arm CROSS_COMPILE=$(SRC_DIR)/prebuilts/gcc/linux-x86/arm/arm-eabi-4.6/bin/arm-eabi- M=$(PWD) && cp -a geu.ko $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/lib/modules && \
 	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
 	tar zcvf $(OUTPUT_DIR)/$$(private_product)/security.tgz system/lib/libparseTim.so system/lib/libwtpsp.so system/lib/libwtpsp_ss.so system/lib/modules/geu.ko && \
 	cd $(SRC_DIR)
 
 PUBLISHING_FILES+=$$(product)/security.tgz:o:md5
+PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
+PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
 
 endef
 else
@@ -347,11 +357,11 @@ build_droid_security_$$(product): build_droid_$$(product)
 endef
 endif
 
-
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
-				$(eval $(call define-build-kernel-target,$(bv)) ) \
-				$(eval $(call define-build-droid-target,$(bv)) ) \
-				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
-				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
-				$(eval $(call define-build-droid-security,$(bv)) ) \
+                                $(eval $(call define-build-kernel-target,$(bv)) ) \
+                                $(eval $(call define-build-droid-target,$(bv)) ) \
+                                $(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
+                                $(eval $(call define-build-droid-otapackage,$(bv)) ) \
+                                $(eval $(call define-build-droid-security,$(bv)) ) \
 )
+
