@@ -39,12 +39,7 @@ build_uboot_obm_$$(product):
 	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
 
 	$(log) "start to copy uboot and obm files"
-	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uboot-obm/u-boot.bin $(OUTPUT_DIR)/$$(private_product)
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uboot-obm/u-boot.init ]; then cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uboot-obm/u-boot.init $(OUTPUT_DIR)/$$(private_product); fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uboot-obm/adir_squ_sram0.init ]; then cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uboot-obm/adir_squ_sram0.init $(OUTPUT_DIR)/$$(private_product); fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uboot-obm/adir_squ_sram0_lpddr2.init ]; then cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uboot-obm/adir_squ_sram0_lpddr2.init $(OUTPUT_DIR)/$$(private_product); fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uboot-obm/obm.bin.fpga ]; then cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uboot-obm/obm.bin.fpga $(OUTPUT_DIR)/$$(private_product); fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uboot-obm/obm.bin.fpga.icu ]; then cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uboot-obm/obm.bin.fpga.icu $(OUTPUT_DIR)/$$(private_product); fi
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uboot-obm/* $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uboot-obm/Software_Downloader.zip ]; then cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uboot-obm/Software_Downloader.zip $(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(PRIMARY_GPT_BIN) $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/$$(SECONDARY_GPT_BIN) $$(OUTPUT_DIR)/$$(private_product); fi
@@ -62,6 +57,13 @@ PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN):o:md5
 PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN):o:md5
 PUBLISHING_FILES+=$$(product)/$(PRIMARY_GPT_BIN_2):o:md5
 PUBLISHING_FILES+=$$(product)/$(SECONDARY_GPT_BIN_2):o:md5
+PUBLISHING_FILES+=$$(product)/NTpxa1986_adir_sdk_tbb_EMMC.bin:o:md5
+PUBLISHING_FILES+=$$(product)/obm.bin.sdk.nt:o:md5
+PUBLISHING_FILES+=$$(product)/u-boot.bin:o:md5
+PUBLISHING_FILES+=$$(product)/wtm_dummy.bin:o:md5
+PUBLISHING_FILES+=$$(product)/obm.bin.sdk:o:md5
+PUBLISHING_FILES+=$$(product)/pxa1986_adir_sdk_tbb_EMMC.bin:o:md5
+PUBLISHING_FILES+=$$(product)/wtm_dummy_NT.bin:o:md5
 #PUBLISHING_FILES+=$$(product)/$(OBM_NTIM_1):m:md5
 
 endef
