@@ -34,6 +34,9 @@ pxa988t7_def/System.map pxa988t7_def/prebuilt_bin/System.map
 pxa988t7_def/logo.bin pxa988t7_def/prebuilt_bin/logo.bin
 pxa988t7_def/prdcfg.bin pxa988t7_def/prebuilt_bin/prdcfg.bin
 pxa988t7_def/factory.bin pxa988t7_def/prebuilt_bin/factory.bin
+pxa988t7_def/primary_gpt_8g pxa988t7_def/prebuilt_bin/primary_gpt_8g
+pxa988t7_def/userdata_8g.img pxa988t7_def/prebuilt_bin/userdata_8g.img
+pxa988t7_def/second_gpt_8g pxa988t7_def/prebuilt_bin/second_gpt_8g
 
 pxa988t7_wifi_def/build.prop pxa988t7_wifi_def/prebuilt_bin/build.prop
 pxa988t7_wifi_def/primary_gpt pxa988t7_wifi_def/prebuilt_bin/primary_gpt
@@ -162,6 +165,9 @@ pxa1088t7_def/System.map pxa1088t7_def/prebuilt_bin/System.map
 pxa1088t7_def/logo.bin pxa1088t7_def/prebuilt_bin/logo.bin
 pxa1088t7_def/prdcfg.bin pxa1088t7_def/prebuilt_bin/prdcfg.bin
 pxa1088t7_def/factory.bin pxa1088t7_def/prebuilt_bin/factory.bin
+pxa1088t7_def/primary_gpt_8g pxa1088t7_def/prebuilt_bin/primary_gpt_8g
+pxa1088t7_def/userdata_8g.img pxa1088t7_def/prebuilt_bin/userdata_8g.img
+pxa1088t7_def/second_gpt_8g pxa1088t7_def/prebuilt_bin/second_gpt_8g
 
 pxa1088t7_wifi_def/build.prop pxa1088t7_wifi_def/prebuilt_bin/build.prop
 pxa1088t7_wifi_def/primary_gpt pxa1088t7_wifi_def/prebuilt_bin/primary_gpt
@@ -310,6 +316,9 @@ pxa988t7_dsds/System.map pxa988t7_dsds/prebuilt_bin/System.map
 pxa988t7_dsds/logo.bin pxa988t7_dsds/prebuilt_bin/logo.bin
 pxa988t7_dsds/prdcfg.bin pxa988t7_dsds/prebuilt_bin/prdcfg.bin
 pxa988t7_dsds/factory.bin pxa988t7_dsds/prebuilt_bin/factory.bin
+pxa988t7_dsds/primary_gpt_8g pxa988t7_dsds/prebuilt_bin/primary_gpt_8g
+pxa988t7_dsds/userdata_8g.img pxa988t7_dsds/prebuilt_bin/userdata_8g.img
+pxa988t7_dsds/second_gpt_8g pxa988t7_dsds/prebuilt_bin/second_gpt_8g
 
 manifest.xml manifest.xml
 changelog.month changelog.month

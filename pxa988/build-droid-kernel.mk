@@ -217,6 +217,10 @@ PUBLISHING_FILES+=$$(product)/KL_DSDS_CP_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/KUNLUN_A0_M15_AI_DSDS_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/KUNLUN_Z0_M14_AI_DSDS_Flash.bin:o:md5
 
+PUBLISHING_FILES+=$$(product)/primary_gpt_8g:o:md5
+PUBLISHING_FILES+=$$(product)/userdata_8g.img:o:md5
+PUBLISHING_FILES+=$$(product)/second_gpt_8g:o:md5
+
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:o:md5
