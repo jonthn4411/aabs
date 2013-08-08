@@ -129,6 +129,7 @@ build_droid_$$(product): build_kernel_$$(product)
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk.img $(OUTPUT_DIR)/$$(private_product)/ramdisk-recovery.img; fi
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata_4g.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata_4g.img $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata_8g.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata_8g.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/build.prop $(OUTPUT_DIR)/$$(private_product)
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/ ]; then \
@@ -156,6 +157,7 @@ build_droid_$$(product): build_kernel_$$(product)
 ##!!## first time publish: all for two
 PUBLISHING_FILES+=$$(product)/userdata.img:m:md5
 PUBLISHING_FILES+=$$(product)/userdata_4g.img:o:md5
+PUBLISHING_FILES+=$$(product)/userdata_8g.img:o:md5
 PUBLISHING_FILES+=$$(product)/system.img:m:md5
 PUBLISHING_FILES+=$$(product)/ramdisk.img:m:md5
 PUBLISHING_FILES+=$$(product)/ramdisk-rooted.img:o:md5
@@ -216,10 +218,6 @@ PUBLISHING_FILES+=$$(product)/KL_DSDS_CP_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/KL_DSDS_CP_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/KUNLUN_A0_M15_AI_DSDS_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/KUNLUN_Z0_M14_AI_DSDS_Flash.bin:o:md5
-
-PUBLISHING_FILES+=$$(product)/primary_gpt_8g:o:md5
-PUBLISHING_FILES+=$$(product)/userdata_8g.img:o:md5
-PUBLISHING_FILES+=$$(product)/second_gpt_8g:o:md5
 
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:o:md5
