@@ -163,6 +163,7 @@ PUBLISHING_FILES+=$$(product)/radio.img:o:md5
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG_MTIL.mdb.txt:o:md5
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG_predefined_MTIL.mdb.txt:o:md5
 PUBLISHING_FILES+=$$(product)/adir_fpga.blf:o:md5
+PUBLISHING_FILES+=$$(product)/adir_sdk.blf:o:md5
 PUBLISHING_FILES+=$$(product)/nvm_ext4.img:o:md5
 PUBLISHING_FILES+=$$(product)/pxafs_ext4.img:o:md5
 PUBLISHING_FILES+=$$(product)/pxafs_symbols.tgz:o:md5
