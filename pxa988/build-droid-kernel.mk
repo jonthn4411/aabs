@@ -56,7 +56,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product) build_droid_otapackage_$$(product) 
+build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product) build_droid_otapackage_$$(product) build_droid_security_$$(product)
 endef
 
 MAKE_JOBS := 8
@@ -129,6 +129,7 @@ build_droid_$$(product): build_kernel_$$(product)
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk.img $(OUTPUT_DIR)/$$(private_product)/ramdisk-recovery.img; fi
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata_4g.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata_4g.img $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata_8g.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata_8g.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/build.prop $(OUTPUT_DIR)/$$(private_product)
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/ ]; then \
@@ -137,9 +138,11 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-td.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-td.img $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helanlte-ltg.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helanlte-ltg.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wb.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wb.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wt.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wt.img $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -e $(SRC_DIR)/flashing/logo.bin ]; then cp -p -r $(SRC_DIR)/flashing/logo.bin  $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -e $(SRC_DIR)/flashing/prdcfg.bin ]; then cp -p -r $(SRC_DIR)/flashing/prdcfg.bin  $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -e $(SRC_DIR)/flashing/factory/pxa988t7.img ]; then cp -p -r -L $(SRC_DIR)/flashing/factory/pxa988t7.img $(OUTPUT_DIR)/$$(private_product)/factory.bin; fi
 	$(log) "  done"
 
 	$(hide)if [ "$(PLATFORM_ANDROID_VARIANT)" = "user" ]; then \
@@ -154,6 +157,7 @@ build_droid_$$(product): build_kernel_$$(product)
 ##!!## first time publish: all for two
 PUBLISHING_FILES+=$$(product)/userdata.img:m:md5
 PUBLISHING_FILES+=$$(product)/userdata_4g.img:o:md5
+PUBLISHING_FILES+=$$(product)/userdata_8g.img:o:md5
 PUBLISHING_FILES+=$$(product)/system.img:m:md5
 PUBLISHING_FILES+=$$(product)/ramdisk.img:m:md5
 PUBLISHING_FILES+=$$(product)/ramdisk-rooted.img:o:md5
@@ -221,6 +225,11 @@ PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:o:md5
 PUBLISHING_FILES+=$$(product)/ReliableData.bin:o:md5
+
+PUBLISHING_FILES+=$$(product)/logo.bin:o:md5
+PUBLISHING_FILES+=$$(product)/prdcfg.bin:o:md5
+PUBLISHING_FILES+=$$(product)/factory.bin:o:md5
+
 ifeq ($(product),pxa988dkb_def)
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3.bin:o:md5
@@ -236,9 +245,7 @@ PUBLISHING_FILES+=$$(product)/WK_M08_AI_Y1_removelo_Y0_Flash.bin:o:md5
 endif
 endef
 
-
-
-ifeq ($(ABS_DROID_BRANCH),jb4.2)
+ifneq ($(ABS_DROID_BRANCH),other)
 define define-build-droid-otapackage
 tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
@@ -303,9 +310,48 @@ PUBLISHING_FILES+=$$(product)/tools.tgz:o:md5
 
 endef
 
+ifneq ($(ABS_DROID_BRANCH),jb4.2)
+define define-build-droid-security
+tw:=$$(subst :,  , $(1) )
+product:=$$(word 1, $$(tw) )
+device:=$$(word 2, $$(tw) )
+.PHONY: build_droid_security_$$(product)
+build_droid_security_$$(product): private_product:=$$(product)
+build_droid_security_$$(product): private_device:=$$(device)
+build_droid_security_$$(product): build_droid_$$(product)
+	$(log) "[$$(private_product)] building security ..."
+	$(hide)cd $(SRC_DIR) && \
+	source ./build/envsetup.sh && \
+	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
+	cd vendor/marvell/generic/security && \
+	git reset --hard HEAD && git checkout shgit/security-1_0 && mm -B && \
+	cd $(SRC_DIR)/vendor/marvell/generic/security/wtpsp/drv/src && \
+	make KDIR=$(SRC_DIR)/kernel/kernel ARCH=arm CROSS_COMPILE=arm-eabi- M=$(PWD) && cp -a geu.ko $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/lib/modules && \
+	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
+	tar zcvf $(OUTPUT_DIR)/$$(private_product)/security.tgz system/lib/libparseTim.so system/lib/libwtpsp.so system/lib/libwtpsp_ss.so system/lib/modules/geu.ko && \
+	cd $(SRC_DIR)
+
+PUBLISHING_FILES+=$$(product)/security.tgz:o:md5
+
+endef
+else
+define define-build-droid-security
+tw:=$$(subst :,  , $(1) )
+product:=$$(word 1, $$(tw) )
+device:=$$(word 2, $$(tw) )
+.PHONY: build_droid_security_$$(product)
+build_droid_security_$$(product): private_product:=$$(product)
+build_droid_security_$$(product): private_device:=$$(device)
+build_droid_security_$$(product): build_droid_$$(product)
+	$(log) "[$$(private_product)] no security build ..."
+
+endef
+endif
+
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-target,$(bv)) ) \
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
+				$(eval $(call define-build-droid-security,$(bv)) ) \
 )
