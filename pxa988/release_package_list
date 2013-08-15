@@ -1,11 +1,14 @@
 pxa988t7_def/build.prop pxa988t7_def/prebuilt_bin/build.prop
 pxa988t7_def/primary_gpt pxa988t7_def/prebuilt_bin/primary_gpt
 pxa988t7_def/secondary_gpt  pxa988t7_def/prebuilt_bin/secondary_gpt
+pxa988t7_def/primary_gpt_8g pxa988t7_def/prebuilt_bin/primary_gpt_8g
+pxa988t7_def/second_gpt_8g  pxa988t7_def/prebuilt_bin/second_gpt_8g
 pxa988t7_def/ramdisk.img pxa988t7_def/prebuilt_bin/ramdisk.img
 pxa988t7_def/ramdisk-recovery.img pxa988t7_def/prebuilt_bin/ramdisk-recovery.img
 pxa988t7_def/system.img pxa988t7_def/prebuilt_bin/system.img
 pxa988t7_def/u-boot.bin pxa988t7_def/prebuilt_bin/u-boot.bin
 pxa988t7_def/userdata.img pxa988t7_def/prebuilt_bin/userdata.img
+pxa988t7_def/userdata_8g.img pxa988t7_def/prebuilt_bin/userdata_8g.img
 pxa988t7_def/uImage pxa988t7_def/prebuilt_bin/uImage
 pxa988t7_def/radio-emei.img pxa988t7_def/prebuilt_bin/radio-emei.img
 pxa988t7_def/radio-kunlun.img pxa988t7_def/prebuilt_bin/radio-kunlun.img
@@ -34,9 +37,6 @@ pxa988t7_def/System.map pxa988t7_def/prebuilt_bin/System.map
 pxa988t7_def/logo.bin pxa988t7_def/prebuilt_bin/logo.bin
 pxa988t7_def/prdcfg.bin pxa988t7_def/prebuilt_bin/prdcfg.bin
 pxa988t7_def/factory.bin pxa988t7_def/prebuilt_bin/factory.bin
-pxa988t7_def/primary_gpt_8g pxa988t7_def/prebuilt_bin/primary_gpt_8g
-pxa988t7_def/userdata_8g.img pxa988t7_def/prebuilt_bin/userdata_8g.img
-pxa988t7_def/second_gpt_8g pxa988t7_def/prebuilt_bin/second_gpt_8g
 
 manifest.xml manifest.xml
 changelog.month changelog.month
