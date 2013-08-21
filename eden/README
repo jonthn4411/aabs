@@ -144,9 +144,9 @@ Flash images with software downloader
   EDEN_Nontrusted_eMMC.blf
 
   3) There are 3 u-boot.bin, respectively for
-       LG 5" 720p,
-       OTM 4.5" 720p
-       Sharp 5" 1080p
+       LG 5" 720p, with goodix touch
+       OTM 4.5" 720p, with synaptics touch
+       Sharp 5" 1080p, with goodix/synaptics touch
      LCD
      please rename the corresponding binary to u-boot.bin before flashing.
        u-boot.bin.eden_concord_lg_720p
