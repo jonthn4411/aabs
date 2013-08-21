@@ -328,11 +328,10 @@ pxa988t7_dsds/KUNLUN_A0_M15_AI_Flash.bin pxa988t7_dsds/prebuilt_bin/KUNLUN_A0_M1
 pxa988t7_dsds/Boerne_DIAG.mdb.txt pxa988t7_dsds/prebuilt_bin/Boerne_DIAG.mdb.txt
 pxa988t7_dsds/KL_CP_NVM.mdb pxa988t7_dsds/prebuilt_bin/KL_CP_NVM.mdb
 pxa988t7_dsds/KL_CP_DIAG.mdb pxa988t7_dsds/prebuilt_bin/KL_CP_DIAG.mdb
-pxa988t7_dsds/KL_DSDS_CP.bin pxa988t7_dsds/prebuilt_bin/KL_DSDS_CP.bin
-pxa988t7_dsds/KL_DSDS_CP_DIAG.mdb pxa988t7_dsds/prebuilt_bin/KL_DSDS_CP_DIAG.mdb
-pxa988t7_dsds/KL_DSDS_CP_NVM.mdb pxa988t7_dsds/prebuilt_bin/KL_DSDS_CP_NVM.mdb
-pxa988t7_dsds/KUNLUN_A0_M15_AI_DSDS_Flash.bin pxa988t7_dsds/prebuilt_bin/KUNLUN_A0_M15_AI_DSDS_Flash.bin
-pxa988t7_dsds/KUNLUN_Z0_M14_AI_DSDS_Flash.bin pxa988t7_dsds/prebuilt_bin/KUNLUN_Z0_M14_AI_DSDS_Flash.bin
+pxa988t7_dsds/HL_WB_DSDS_CP.bin pxa988t7_dsds/prebuilt_bin/HL_WB_DSDS_CP.bin
+pxa988t7_dsds/HL_WB_DSDS_CP_DIAG.mdb pxa988t7_dsds/prebuilt_bin/HL_WB_DSDS_CP_DIAG.mdb
+pxa988t7_dsds/HL_WB_DSDS_CP_NVM.mdb pxa988t7_dsds/prebuilt_bin/HL_WB_DSDS_CP_NVM.mdb
+pxa988t7_dsds/HELAN_A0_M16_AI_DSDS_Flash.bin pxa988t7_dsds/prebuilt_bin/HELAN_A0_M16_AI_DSDS_Flash.bin
 pxa988t7_dsds/EM_CP_NVM.mdb pxa988t7_dsds/prebuilt_bin/EM_CP_NVM.mdb
 pxa988t7_dsds/EM_CP_DIAG.mdb pxa988t7_dsds/prebuilt_bin/EM_CP_DIAG.mdb
 pxa988t7_dsds/HL_TD_CP_NVM.mdb pxa988t7_dsds/prebuilt_bin/HL_TD_CP_NVM.mdb
