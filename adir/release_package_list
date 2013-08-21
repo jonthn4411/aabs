@@ -11,6 +11,7 @@ pxa1986sdk_def/ReliableData.bin pxa1986sdk_def/prebuilt_bin/ReliableData.bin
 pxa1986sdk_def/modules.tgz pxa1986sdk_def/prebuilt_bin/modules.tgz
 pxa1986sdk_def/vmlinux pxa1986sdk_def/prebuilt_bin/vmlinux
 pxa1986sdk_def/System.map pxa1986sdk_def/prebuilt_bin/System.map
+pxa1986sdk_def/flasher_pxa1986_adir_sdk_CIUSB2.zip pxa1986sdk_def/prebuilt_bin/flasher_pxa1986_adir_sdk_CIUSB2.zip
 
 manifest.xml manifest.xml
 changelog.month changelog.month

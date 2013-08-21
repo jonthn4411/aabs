@@ -48,6 +48,7 @@ build_uboot_obm_$$(product):
 	$$(log) "  done."
 PUBLISHING_FILES+=$$(product)/u-boot.bin:m:md5
 PUBLISHING_FILES+=$$(product)/u-boot.init:o:md5
+PUBLISHING_FILES+=$$(product)/flasher_pxa1986_adir_sdk_CIUSB2.zip:o:md5
 PUBLISHING_FILES+=$$(product)/adir_squ_sram0.init:o:md5
 PUBLISHING_FILES+=$$(product)/adir_squ_sram0_lpddr2.init:o:md5
 PUBLISHING_FILES+=$$(product)/obm.bin.fpga:o:md5
