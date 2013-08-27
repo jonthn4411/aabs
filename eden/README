@@ -130,6 +130,16 @@ Flash instructions in uboot
   tftp userdata.img
   unsparse mmc 0 0x107fc0 0x49f00000 0x400000000
 
+Notes for socket boards:
+  As the patch of raising DDR max_freq to 528Mhz is merged
+  it would make kernel failed to start up on socket boards.
+
+  We have to set extra parameters in u-boot for them:
+  > printenv bootargs
+  bootargs=<original boot args>
+  > setenv bootargs <original boot args> ddr_max=312000
+  > saveenv
+
 Flash images with software downloader
 =====================
   1) How to enter the software downloading mode
