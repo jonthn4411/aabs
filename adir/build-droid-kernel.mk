@@ -131,6 +131,9 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/userdata.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/build.prop $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/*.blf $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/*.mdb.txt $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/*symbols.tar.gz $(OUTPUT_DIR)/$$(private_product)
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/ ]; then \
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/* $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/cp_image/ ]; then \
