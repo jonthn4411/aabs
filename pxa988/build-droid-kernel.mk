@@ -238,7 +238,6 @@ endef
 
 
 
-ifeq ($(ABS_DROID_BRANCH),jb4.2)
 define define-build-droid-otapackage
 tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
@@ -263,18 +262,16 @@ PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl-recovery.zip:o:md5
 PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl-intermediates.zip:o:md5
 
 endef
-else
-define define-build-droid-otapackage
-tw:=$$(subst :,  , $(1) )
-product:=$$(word 1, $$(tw) )
-device:=$$(word 2, $$(tw) )
-.PHONY: build_droid_otapackage_$$(product)
-build_droid_otapackage_$$(product): private_product:=$$(product)
-build_droid_otapackage_$$(product): private_device:=$$(device)
-build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
-	$(log) "[$$(private_product)] no android OTA package build ..."
-endef
-endif
+#define define-build-droid-otapackage
+#tw:=$$(subst :,  , $(1) )
+#product:=$$(word 1, $$(tw) )
+#device:=$$(word 2, $$(tw) )
+#.PHONY: build_droid_otapackage_$$(product)
+#build_droid_otapackage_$$(product): private_product:=$$(product)
+#build_droid_otapackage_$$(product): private_device:=$$(device)
+#build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
+#	$(log) "[$$(private_product)] no android OTA package build ..."
+#endef
 
 define define-build-droid-tool
 tw:=$$(subst :,  , $(1) )
