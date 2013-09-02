@@ -133,6 +133,10 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/build.prop $(OUTPUT_DIR)/$$(private_product)
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/ ]; then \
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/* $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/cp_image/ ]; then \
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/cp_image/* $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/diag_db/ ]; then \
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/diag_db/* $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(log) "  done"
 
 	$(hide)if [ "$(PLATFORM_ANDROID_VARIANT)" = "user" ]; then \
@@ -166,6 +170,28 @@ PUBLISHING_FILES+=$$(product)/adir_sdk.blf:o:md5
 PUBLISHING_FILES+=$$(product)/nvm_ext4.img:o:md5
 PUBLISHING_FILES+=$$(product)/pxafs_ext4.img:o:md5
 PUBLISHING_FILES+=$$(product)/pxafs_symbols.tgz:o:md5
+PUBLISHING_FILES+=$$(product)/ADIR_Z1_MRAT_R8Tech_M16_AI_Flash_NO_TIM.bin:o:md5
+PUBLISHING_FILES+=$$(product)/LOAD_TABLE.bin:o:md5
+PUBLISHING_FILES+=$$(product)/Arbel_ADIR_ESHEL_PMD2NONE_ADIRPP3_NO_TIM.bin:o:md5
+PUBLISHING_FILES+=$$(product)/plw_ADIR_PMD2NONE_ADIRPP3_NO_TIM.bin:o:md5
+PUBLISHING_FILES+=$$(product)/Arbel_ADIR_ESHEL_PMD2NONE_NO_TIM.bin:o:md5
+PUBLISHING_FILES+=$$(product)/plw_ADIR_PMD2NONE_NO_TIM.bin:o:md5
+PUBLISHING_FILES+=$$(product)/DDR_GENERIC_RF_RW_AREA.bin:o:md5
+PUBLISHING_FILES+=$$(product)/adir_sdk.blf:o:md5
+PUBLISHING_FILES+=$$(product)/adir_fpga.blf:o:md5
+PUBLISHING_FILES+=$$(product)/adir_sdk_L1.blf:o:md5
+PUBLISHING_FILES+=$$(product)/Boerne_DIAG_predefined_MTIL.mdb.txt:o:md5
+PUBLISHING_FILES+=$$(product)/telephony_symbols.tar.gz:o:md5
+PUBLISHING_FILES+=$$(product)/ADIR_Z1_MRAT_R8Tech_M16_AI_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/Arbel_ADIR_ESHEL_PMD2NONE_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/plw_ADIR_PMD2NONE_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/ADIR_Z1_MRAT_R8Tech_M16_AI_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/Arbel_ADIR_ESHEL_PMD2NONE_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/plw_ADIR_PMD2NONE_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/Arbel_ADIR_ESHEL_PMD2NONE_ADIRPP3_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/plw_ADIR_PMD2NONE_ADIRPP3_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/Arbel_ADIR_ESHEL_PMD2NONE_ADIRPP3_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/plw_ADIR_PMD2NONE_ADIRPP3_NVM.mdb:o:md5
 
 endef
 
