@@ -122,7 +122,6 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/root ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/root; fi
 	$(hide)echo "  copy root directory ..." 
 	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/* $(OUTPUT_DIR)/$$(private_product)
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-recovery.img ]; then \
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-recovery.img $(OUTPUT_DIR)/$$(private_product); \
 	else \
