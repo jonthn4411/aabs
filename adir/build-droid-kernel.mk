@@ -122,6 +122,8 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/root ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/root; fi
 	$(hide)echo "  copy root directory ..." 
 	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-recovery.img ]; then \
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-recovery.img $(OUTPUT_DIR)/$$(private_product); \
 	else \
@@ -178,8 +180,6 @@ PUBLISHING_FILES+=$$(product)/plw_ADIR_PMD2NONE_ADIRPP3_NO_TIM.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Arbel_ADIR_ESHEL_PMD2NONE_NO_TIM.bin:o:md5
 PUBLISHING_FILES+=$$(product)/plw_ADIR_PMD2NONE_NO_TIM.bin:o:md5
 PUBLISHING_FILES+=$$(product)/DDR_GENERIC_RF_RW_AREA.bin:o:md5
-PUBLISHING_FILES+=$$(product)/adir_sdk.blf:o:md5
-PUBLISHING_FILES+=$$(product)/adir_fpga.blf:o:md5
 PUBLISHING_FILES+=$$(product)/adir_sdk_L1.blf:o:md5
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG_predefined_MTIL.mdb.txt:o:md5
 PUBLISHING_FILES+=$$(product)/telephony_symbols.tar.gz:o:md5
