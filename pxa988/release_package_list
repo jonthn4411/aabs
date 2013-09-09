@@ -350,6 +350,8 @@ pxa1088t7_tz_def/System.map pxa1088t7_tz_def/prebuilt_bin/System.map
 pxa1088t7_tz_def/logo.bin pxa1088t7_tz_def/prebuilt_bin/logo.bin
 pxa1088t7_tz_def/prdcfg.bin pxa1088t7_tz_def/prebuilt_bin/prdcfg.bin
 pxa1088t7_tz_def/factory.bin pxa1088t7_tz_def/prebuilt_bin/factory.bin
+pxa1088t7_tz_def/factory.bin pxa1088t7_tz_def/prebuilt_bin/teesst.img
+pxa1088t7_tz_def/factory.bin pxa1088t7_tz_def/prebuilt_bin/tee_tw.bin
 
 pxa988t7_dsds/build.prop pxa988t7_dsds/prebuilt_bin/build.prop
 pxa988t7_dsds/primary_gpt pxa988t7_dsds/prebuilt_bin/primary_gpt
