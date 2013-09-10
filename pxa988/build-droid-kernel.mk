@@ -243,10 +243,8 @@ PUBLISHING_FILES+=$$(product)/TTD_M06_AI_Y0_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW.bin:o:md5
 PUBLISHING_FILES+=$$(product)/WK_M08_AI_Y1_removelo_Y0_Flash.bin:o:md5
 endif
-ifeq ($(product),pxa1088dkb_tz_def)
 PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
 PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
-endif
 endef
 
 ifneq ($(ABS_DROID_BRANCH),other)
