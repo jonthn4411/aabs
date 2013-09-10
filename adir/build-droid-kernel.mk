@@ -132,6 +132,7 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/build.prop $(OUTPUT_DIR)/$$(private_product)
 	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname *.blf |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
+	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname *.ini |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
 	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname *.mdb.txt |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
 	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname *.tar.gz |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/ ]; then \
@@ -170,6 +171,7 @@ PUBLISHING_FILES+=$$(product)/Boerne_DIAG_MTIL.mdb.txt:o:md5
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG_predefined_MTIL.mdb.txt:o:md5
 PUBLISHING_FILES+=$$(product)/adir_fpga.blf:o:md5
 PUBLISHING_FILES+=$$(product)/adir_sdk.blf:o:md5
+PUBLISHING_FILES+=$$(product)/adir_sdk_emmc_16gb.ini:o:md5
 PUBLISHING_FILES+=$$(product)/nvm_ext4.img:o:md5
 PUBLISHING_FILES+=$$(product)/pxafs_ext4.img:o:md5
 PUBLISHING_FILES+=$$(product)/pxafs_symbols.tgz:o:md5
