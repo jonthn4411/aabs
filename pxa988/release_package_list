@@ -211,10 +211,7 @@ pxa1L88dkb_def/HLWT_TD_CP.bin pxa1L88dkb_def/prebuilt_bin/HLWT_TD_CP.bin
 pxa1L88dkb_def/HLWT_TD_CP_DIAG.mdb pxa1L88dkb_def/prebuilt_bin/HLWT_TD_CP_DIAG.mdb
 pxa1L88dkb_def/HLWT_TD_CP_NVM.mdb pxa1L88dkb_def/prebuilt_bin/HLWT_TD_CP_NVM.mdb
 pxa1L88dkb_def/HLWT_TD_M08_AI_A0_Flash.bin pxa1L88dkb_def/prebuilt_bin/HLWT_TD_M08_AI_A0_Flash.bin
-pxa1L88dkb_def/nvm-helan-wb.img pxa1L88dkb_def/prebuilt_bin/nvm-helan-wb.img
-pxa1L88dkb_def/nvm-helan-wt.img pxa1L88dkb_def/prebuilt_bin/nvm-helan-wt.img
-pxa1L88dkb_def/radio-helan-wb.img pxa1L88dkb_def/prebuilt_bin/radio-helan-wb.img
-pxa1L88dkb_def/radio-helan-wt.img pxa1L88dkb_def/prebuilt_bin/radio-helan-wt.img
+pxa1L88dkb_def/radio-helanlte.img pxa1L88dkb_def/prebuilt_bin/radio-helanlte.img
 pxa1L88dkb_def/modules.tgz pxa1L88dkb_def/prebuilt_bin/modules.tgz
 pxa1L88dkb_def/vmlinux pxa1L88dkb_def/prebuilt_bin/vmlinux
 pxa1L88dkb_def/System.map pxa1L88dkb_def/prebuilt_bin/System.map
@@ -224,6 +221,16 @@ pxa1L88dkb_def/HL_LTG_DL.bin pxa1L88dkb_def/prebuilt_bin/HL_LTG_DL.bin
 pxa1L88dkb_def/HL_LTG_DIAG.mdb pxa1L88dkb_def/prebuilt_bin/HL_LTG_DIAG.mdb
 pxa1L88dkb_def/HL_LTG_NVM.mdb pxa1L88dkb_def/prebuilt_bin/HL_LTG_NVM.mdb
 pxa1L88dkb_def/nvm-helanlte-ltg.img pxa1L88dkb_def/prebuilt_bin/nvm-helanlte-ltg.img
+pxa1L88dkb_def/nvm-helanlte.img pxa1L88dkb_def/prebuilt_bin/nvm-helanlte.img
+pxa1L88dkb_def/HL_LTG_DL_DIAG.mdb pxa1L88dkb_def/prebuilt_bin/HL_LTG_DL_DIAG.mdb
+pxa1L88dkb_def/HL_LTG_DL_DKB.bin pxa1L88dkb_def/prebuilt_bin/HL_LTG_DL_DKB.bin
+pxa1L88dkb_def/HL_LTG_DL_NVM.mdb pxa1L88dkb_def/prebuilt_bin/HL_LTG_DL_NVM.mdb
+pxa1L88dkb_def/HL_LWG_DIAG.mdb pxa1L88dkb_def/prebuilt_bin/HL_LWG_DIAG.mdb
+pxa1L88dkb_def/HL_LWG_DKB.bin pxa1L88dkb_def/prebuilt_bin/HL_LWG_DKB.bin
+pxa1L88dkb_def/HL_LWG_M09_B0_SKL_Flash.bin pxa1L88dkb_def/prebuilt_bin/HL_LWG_M09_B0_SKL_Flash.bin
+pxa1L88dkb_def/HL_LWG_NVM.mdb pxa1L88dkb_def/prebuilt_bin/HL_LWG_NVM.mdb
+pxa1L88dkb_def/Skylark_LTG.bin pxa1L88dkb_def/prebuilt_bin/Skylark_LTG.bin
+pxa1L88dkb_def/Skylark_LWG.bin pxa1L88dkb_def/prebuilt_bin/Skylark_LWG.bin
 
 
 manifest.xml manifest.xml

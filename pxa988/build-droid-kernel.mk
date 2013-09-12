@@ -132,14 +132,8 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/build.prop $(OUTPUT_DIR)/$$(private_product)
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/ ]; then \
-	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/* $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio.img $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-td.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-td.img $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helanlte-ltg.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helanlte-ltg.img $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wb.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wb.img $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wt.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wt.img $(OUTPUT_DIR)/$$(private_product)/; fi
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony $(OUTPUT_DIR)/$$(private_product)/; fi
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio*img $(OUTPUT_DIR)/$$(private_product)/
 	$(log) "  done"
 
 	$(hide)if [ "$(PLATFORM_ANDROID_VARIANT)" = "user" ]; then \
@@ -168,6 +162,8 @@ PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/radio.img:o:md5
 PUBLISHING_FILES+=$$(product)/radio-emei.img:o:md5
 PUBLISHING_FILES+=$$(product)/radio-kunlun.img:o:md5
+PUBLISHING_FILES+=$$(product)/telephony/*:o
+
 PUBLISHING_FILES+=$$(product)/nvm-emei.img:o:md5
 PUBLISHING_FILES+=$$(product)/nvm-kunlun.img:o:md5
 PUBLISHING_FILES+=$$(product)/nvm-helan-td.img:o:md5
