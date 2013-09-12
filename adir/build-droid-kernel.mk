@@ -137,10 +137,10 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname *.tar.gz |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/ ]; then \
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/* $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/cp_image/ ]; then \
-	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/cp_image/* $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/diag_db/ ]; then \
-	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/diag_db/* $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/cp_image ]; then \
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/cp_image $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/diag_db ]; then \
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/diag_db $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(log) "  done"
 
 	$(hide)if [ "$(PLATFORM_ANDROID_VARIANT)" = "user" ]; then \
@@ -164,6 +164,8 @@ PUBLISHING_FILES+=$$(product)/build.prop:o:md5
 PUBLISHING_FILES+=$$(product)/modules.tgz:o:md5
 PUBLISHING_FILES+=product_mode_build.txt:o
 
+PUBLISHING_FILES+=$$(product)/cp_image:o:md5
+PUBLISHING_FILES+=$$(product)/diag_db:o:md5
 PUBLISHING_FILES+=$$(product)/pxafs.img:o:md5
 PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/radio.img:o:md5
