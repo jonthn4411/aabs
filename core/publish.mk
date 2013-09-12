@@ -14,7 +14,7 @@ define cp-with-md5
 endef
 
 define cpif-with-md5
-	@if [ -f $(1) ]; then echo "publishing optional file:$(1) to $(2)"; mkdir -p $(dir $(2)) && cp -fr $(1) $(2) && chmod -R a+r $(2); fi
+	@if [ -f $(1) -o -d $(1) ]; then echo "publishing optional file:$(1) to $(2)"; mkdir -p $(dir $(2)) && cp -fr $(1) $(2) && chmod -R a+r $(2); fi
 	$(if $(findstring $(strip $(3)),md5), \
 		@if [ -f $1 ]; then echo "generating md5 for $(2)"; \
 		cd $(dir $(1)) && \
