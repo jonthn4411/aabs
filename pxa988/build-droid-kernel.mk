@@ -132,7 +132,7 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/build.prop $(OUTPUT_DIR)/$$(private_product)
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/ ]; then \
-	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony $(OUTPUT_DIR)/$$(private_product)/; fi
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/* $(OUTPUT_DIR)/$$(private_product)/; fi
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio*img $(OUTPUT_DIR)/$$(private_product)/
 	$(log) "  done"
 
@@ -162,7 +162,6 @@ PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/radio.img:o:md5
 PUBLISHING_FILES+=$$(product)/radio-emei.img:o:md5
 PUBLISHING_FILES+=$$(product)/radio-kunlun.img:o:md5
-PUBLISHING_FILES+=$$(product)/telephony/*:o
 
 PUBLISHING_FILES+=$$(product)/nvm-emei.img:o:md5
 PUBLISHING_FILES+=$$(product)/nvm-kunlun.img:o:md5
@@ -211,6 +210,18 @@ PUBLISHING_FILES+=$$(product)/HL_LTG_DL.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/nvm-helanlte-ltg.img:o:md5
+PUBLISHING_FILES+=$$(product)/HL_DL_M09_Y0_AI_SKL_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LTG_DL_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LTG_DL_DKB.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LTG_DL_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LWG_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LWG_DKB.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LWG_M09_B0_SKL_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LWG_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/nvm-helanlte.img:o:md5
+PUBLISHING_FILES+=$$(product)/Skylark_LTG.bin:o:md5
+PUBLISHING_FILES+=$$(product)/Skylark_LWG.bin:o:md5
+PUBLISHING_FILES+=$$(product)/radio-helanlte.img:o:md5
 
 
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
