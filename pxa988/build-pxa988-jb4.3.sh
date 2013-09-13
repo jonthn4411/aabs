@@ -7,7 +7,3 @@ fi
 export ABS_BUILDHOST_DEF
 
 export ABS_UNIQUE_MANIFEST_BRANCH=1
-
-if [ -z ${ABS_BUILD_DEVICES} ]; then
-	export ABS_BUILD_DEVICES="pxa1088dkb_def:pxa1088dkb pxa1L88dkb_def:pxa1L88dkb pxa988dkb_def:pxa988dkb"
-fi
