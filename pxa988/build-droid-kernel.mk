@@ -145,6 +145,8 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)if [ -e $(SRC_DIR)/flashing/logo.bin ]; then cp -p -r $(SRC_DIR)/flashing/logo.bin  $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/flashing/prdcfg.bin ]; then cp -p -r $(SRC_DIR)/flashing/prdcfg.bin  $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/flashing/factory/pxa988t7.img ]; then cp -p -r -L $(SRC_DIR)/flashing/factory/pxa988t7.img $(OUTPUT_DIR)/$$(private_product)/factory.bin; fi
+	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/security/ ]; then \
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/security/* $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(log) "  done"
 
 	$(hide)if [ "$(PLATFORM_ANDROID_VARIANT)" = "user" ]; then \
@@ -236,9 +238,6 @@ PUBLISHING_FILES+=$$(product)/logo.bin:o:md5
 PUBLISHING_FILES+=$$(product)/prdcfg.bin:o:md5
 PUBLISHING_FILES+=$$(product)/factory.bin:o:md5
 
-PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
-PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
-
 ifeq ($(product),pxa988dkb_def)
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3.bin:o:md5
@@ -251,6 +250,10 @@ PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A1_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/TTD_M06_AI_Y0_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW.bin:o:md5
 PUBLISHING_FILES+=$$(product)/WK_M08_AI_Y1_removelo_Y0_Flash.bin:o:md5
+endif
+ifeq ($(product),pxa1088t7_tz_def)
+PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
+PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
 endif
 endef
 
@@ -328,6 +331,9 @@ device:=$$(word 2, $$(tw) )
 build_droid_security_$$(product): private_product:=$$(product)
 build_droid_security_$$(product): private_device:=$$(device)
 build_droid_security_$$(product): build_droid_$$(product)
+	$(log) "[$$(private_product)] copy tee files ..."
+	cp -p $(SRC_DIR)/vendor/marvell/generic/security/tee/tw/bin/tee_tw.bin $(OUTPUT_DIR)/$$(private_product)
+	cp -p $(SRC_DIR)/vendor/marvell/generic/security/sstd/img/teesst.img $(OUTPUT_DIR)/$$(private_product)
 	$(log) "[$$(private_product)] building security ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -341,6 +347,8 @@ build_droid_security_$$(product): build_droid_$$(product)
 	cd $(SRC_DIR)
 
 PUBLISHING_FILES+=$$(product)/security.tgz:o:md5
+PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
+PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
 
 endef
 else
