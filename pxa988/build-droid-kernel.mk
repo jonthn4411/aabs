@@ -229,6 +229,7 @@ PUBLISHING_FILES+=$$(product)/HL_WB_CP_MYNAH_WP_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:o:md5
+PUBLISHING_FILES+=$$(product)/Mynah_TD.bin:o:md5
 PUBLISHING_FILES+=$$(product)/ReliableData.bin:o:md5
 ifeq ($(product),pxa988dkb_def)
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:o:md5
