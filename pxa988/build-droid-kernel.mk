@@ -236,8 +236,8 @@ PUBLISHING_FILES+=$$(product)/logo.bin:o:md5
 PUBLISHING_FILES+=$$(product)/prdcfg.bin:o:md5
 PUBLISHING_FILES+=$$(product)/factory.bin:o:md5
 
-PUBLISHING_FILES+=$$(product)/teesst.img
-PUBLISHING_FILES+=$$(product)/tee_tw.bin
+PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
+PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
 
 ifeq ($(product),pxa988dkb_def)
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:o:md5
