@@ -111,6 +111,7 @@ build_droid_$$(product): private_product:=$$(product)
 build_droid_$$(product): private_device:=$$(device)
 build_droid_$$(product): 
 	$(log) "[$$(private_product)] building android source code ..."
+	mkdir -p $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
