@@ -10,7 +10,7 @@ include $(ABS_SOC)/build-droid-kernel.mk
 #include $(ABS_SOC)/build-droid-kernel-test.mk
 
 # Include goal for build UBoot and OBM
-include $(ABS_SOC)/build-uboot-obm.mk
+#include $(ABS_SOC)/build-uboot-obm.mk
 
 # Include goal for build software downloader
 #include $(ABS_SOC)/build-swd.mk
@@ -30,7 +30,7 @@ device:=$$(word 2, $$(tw) )
 
 build_device_$$(product): private_product:=$$(product)
 build_device_$$(product): private_device:=$$(device)
-build_device_$$(product): build_droid_kernel_$$(product) build_uboot_obm_$$(product)
+build_device_$$(product): build_droid_kernel_$$(product)
 build_device: build_device_$$(product)
 endef
 
