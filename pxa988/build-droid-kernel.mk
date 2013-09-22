@@ -72,7 +72,8 @@ device:=$$(word 2, $$(tw) )
 .PHONY: build_kernel_$$(product)
 
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
-PUBLISHING_FILES+=$$(product)/uImage:m:md5
+PUBLISHING_FILES+=$$(product)/uImage:o:md5
+PUBLISHING_FILES+=$$(product)/zImage_dtb:o:md5
 PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
 PUBLISHING_FILES+=$$(product)/System.map:o:md5
 build_kernel_$$(product): private_product:=$$(product)
@@ -91,7 +92,7 @@ build_kernel_$$(product): output_dir
 	cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
 	make modules
 	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
-	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/zImage_dtb $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/vmlinux $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/System.map $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/modules; fi &&\
