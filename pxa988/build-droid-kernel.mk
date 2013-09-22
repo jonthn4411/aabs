@@ -56,7 +56,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product) build_droid_otapackage_$$(product) 
+build_droid_kernel_$$(product): build_droid_$$(product) 
 endef
 
 MAKE_JOBS := 8
@@ -109,7 +109,7 @@ device:=$$(word 2, $$(tw) )
 .PHONY: build_droid_$$(product)
 build_droid_$$(product): private_product:=$$(product)
 build_droid_$$(product): private_device:=$$(device)
-build_droid_$$(product): build_kernel_$$(product)
+build_droid_$$(product): 
 	$(log) "[$$(private_product)] building android source code ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -146,8 +146,29 @@ build_droid_$$(product): build_kernel_$$(product)
 	cat ramdisk-rooted.img < /dev/zero | head -c 1048576 > ramdisk-rooted.img.pad && \
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-rooted.img.pad $(OUTPUT_DIR)/$$(private_product)/ramdisk-rooted.img && \
 	touch $(OUTPUT_DIR)/product_mode_build.txt; fi
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obm*bin $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/zImage $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot.img $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/recovery.img $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/u-boot.bin $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/vmlinux $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/System.map $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/modules; fi &&\
+	mkdir -p $(OUTPUT_DIR)/$$(private_product)/modules
+	$(hide)cp -af $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib/modules  $(OUTPUT_DIR)/$$(private_product)/
 
 ##!!## first time publish: all for two
+PUBLISHING_FILES+=$$(product)/obm.bin:o:md5
+PUBLISHING_FILES+=$$(product)/obm_trusted_tz.bin:o:md5
+PUBLISHING_FILES+=$$(product)/obm_trusted_ntz.bin:o:md5
+PUBLISHING_FILES+=$$(product)/u-boot.bin:o:md5
+PUBLISHING_FILES+=$$(product)/boot.img:o:md5
+PUBLISHING_FILES+=$$(product)/recovery.img:o:md5
+PUBLISHING_FILES+=$$(product)/uImage:o:md5
+PUBLISHING_FILES+=$$(product)/zImage:o:md5
+PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
+PUBLISHING_FILES+=$$(product)/System.map:o:md5
 PUBLISHING_FILES+=$$(product)/userdata.img:m:md5
 PUBLISHING_FILES+=$$(product)/userdata_4g.img:o:md5
 PUBLISHING_FILES+=$$(product)/system.img:m:md5
