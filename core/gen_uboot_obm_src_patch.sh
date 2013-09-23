@@ -6,7 +6,11 @@
 #
 #After packaging the source and patches, the obm and uboot folder is deleted
 output_dir=$(pwd)
+if [ -d $output_dir/source/bootable/bootloader/uboot ]; then
+boot_dir=$output_dir/source/bootable/bootloader
+else
 boot_dir=$output_dir/source/boot
+fi
 UBOOT_HASH=$1
 
 EXCLUDE_VCS="--exclude-vcs --exclude=.repo"
