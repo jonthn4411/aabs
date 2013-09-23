@@ -30,7 +30,7 @@ device:=$$(word 2, $$(tw) )
 
 build_device_$$(product): private_product:=$$(product)
 build_device_$$(product): private_device:=$$(device)
-build_device_$$(product): build_droid_kernel_$$(product) build_uboot_obm_$$(product)
+build_device_$$(product): build_droid_kernel_$$(product)
 build_device: build_device_$$(product)
 endef
 
