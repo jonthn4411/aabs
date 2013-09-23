@@ -136,7 +136,9 @@ build_droid_$$(product):
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/* $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/security/ ]; then \
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/security/* $(OUTPUT_DIR)/$$(private_product)/; fi
-	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio*img $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/blf/ ]; then \
+	cp -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/blf $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname radio*img |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
 	$(log) "  done"
 
 	$(hide)if [ "$(PLATFORM_ANDROID_VARIANT)" = "user" ]; then \
@@ -182,6 +184,9 @@ PUBLISHING_FILES+=$$(product)/ramdisk-recovery.img:o:md5
 PUBLISHING_FILES+=$$(product)/build.prop:o:md5
 PUBLISHING_FILES+=$$(product)/modules.tgz:o:md5
 PUBLISHING_FILES+=product_mode_build.txt:o
+
+##!!## blf files
+PUBLISHING_FILES+=$$(product)/blf:o:md5
 
 ##!!## security image
 PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
