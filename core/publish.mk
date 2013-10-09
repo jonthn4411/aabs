@@ -21,7 +21,7 @@ define cpif-with-md5
 		cd $(dir $(1)) && \
 		md5sum $(notdir $(1)) >>$(OUTPUT_DIR)/$(MD5_FILE); \
 		elif [ -d $1 ]; then echo "generating md5 for $(2)"; \
-		cd $(dir $(1)) && \
+		cd $(1) && \
 		ls|xargs md5sum >>$(OUTPUT_DIR)/$(MD5_FILE); fi\
 	 )
 endef
