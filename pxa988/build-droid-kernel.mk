@@ -139,6 +139,7 @@ build_droid_$$(product):
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/blf/ ]; then \
 	cp -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/blf $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname radio*img |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
+	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname *gpt* |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
 	$(log) "  done"
 
 	$(hide)if [ "$(PLATFORM_ANDROID_VARIANT)" = "user" ]; then \
@@ -174,6 +175,10 @@ PUBLISHING_FILES+=$$(product)/uImage:o:md5
 PUBLISHING_FILES+=$$(product)/zImage:o:md5
 PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
 PUBLISHING_FILES+=$$(product)/System.map:o:md5
+PUBLISHING_FILES+=$$(product)/primary_gpt_4g:o:md5
+PUBLISHING_FILES+=$$(product)/secondary_gpt_4g:o:md5
+PUBLISHING_FILES+=$$(product)/primary_gpt:o:md5
+PUBLISHING_FILES+=$$(product)/secondary_gpt:o:md5
 PUBLISHING_FILES+=$$(product)/userdata.img:m:md5
 PUBLISHING_FILES+=$$(product)/userdata_4g.img:o:md5
 PUBLISHING_FILES+=$$(product)/system.img:m:md5
