@@ -92,6 +92,8 @@ build_kernel_$$(product): output_dir
 	make modules
 	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/vmlinux $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/System.map $(OUTPUT_DIR)/$$(private_product)/
 	$$(hide)if [ -e $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage.init ]; then cp $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage.init $$(OUTPUT_DIR)/$$(private_product); fi
 	$$(hide)if [ -e $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage-signed ]; then cp $$(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage-signed $$(OUTPUT_DIR)/$$(private_product); fi
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/modules; fi &&\
