@@ -32,7 +32,6 @@ define define-build-droid-kernel
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
-
 build_droid_kernel_$$(product): build_kernel_$$(product)
 build_droid_kernel_$$(product): build_droid_root_$$(product)
 build_droid_kernel_$$(product): build_uboot_$$(product)
@@ -56,6 +55,11 @@ PUBLISHING_FILES+=$$(product)/cache.img:o:md5
 
 PUBLISHING_FILES+=$$(product)/primary_gpt:o:md5
 PUBLISHING_FILES+=$$(product)/secondary_gpt:o:md5
+PUBLISHING_FILES+=$$(product)/security/teesst.img:o:md5
+PUBLISHING_FILES+=$$(product)/security/tee_tw.bin:o:md5
+PUBLISHING_FILES+=$$(product)/security/wtm_rel_eden_RealOTP.bin:o:md5
+PUBLISHING_FILES+=$$(product)/security/wtm_rel_eden_VirtualOTP.bin:o:md5
+
 
 .PHONY: build_droid_root_$$(product)
 build_droid_root_$$(product): private_product:=$$(product)

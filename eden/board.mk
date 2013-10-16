@@ -1,4 +1,4 @@
-ABS_BUILD_DEVICES?=concord_def:concord
+ABS_BUILD_DEVICES?=concord_def:concord concord_tz:concord
 
 ANDROID_VERSION:=$(ABS_DROID_BRANCH)
 DROID_VARIANT:=$(PLATFORM_ANDROID_VARIANT)
@@ -21,7 +21,6 @@ define define-build-device
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
-
 build_device: build_device_$$(product)
 build_device_$$(product): private_product:=$$(product)
 build_device_$$(product): private_device:=$$(device)
@@ -39,7 +38,6 @@ define define-clean-device
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
-
 clean_device: clean_device_$$(product)
 clean_device_$$(product): private_product:=$$(product)
 clean_device_$$(product): private_device:=$$(device)
