@@ -53,14 +53,14 @@ PUBLISHING_FILES+=$$(product)/userdata.img:o:md5
 PUBLISHING_FILES+=$$(product)/ramdisk.img:o:md5
 PUBLISHING_FILES+=$$(product)/ramdisk-recovery.img:o:md5
 PUBLISHING_FILES+=$$(product)/cache.img:o:md5
-
 PUBLISHING_FILES+=$$(product)/primary_gpt:o:md5
 PUBLISHING_FILES+=$$(product)/secondary_gpt:o:md5
-PUBLISHING_FILES+=$$(product)/security/teesst.img:o:md5
-PUBLISHING_FILES+=$$(product)/security/tee_tw.bin:o:md5
-PUBLISHING_FILES+=$$(product)/security/wtm_rel_eden_RealOTP.bin:o:md5
-PUBLISHING_FILES+=$$(product)/security/wtm_rel_eden_VirtualOTP.bin:o:md5
-
+ifeq ($(product),concord_tz)
+PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
+PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
+PUBLISHING_FILES+=$$(product)/wtm_rel_eden_RealOTP.bin:o:md5
+PUBLISHING_FILES+=$$(product)/wtm_rel_eden_VirtualOTP.bin:o:md5
+endif
 
 .PHONY: build_droid_root_$$(product)
 build_droid_root_$$(product): private_product:=$$(product)
@@ -72,6 +72,10 @@ build_droid_root_$$(product): output_dir
 	. build/envsetup.sh && \
 	lunch $$(private_product)-$$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS)
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/teesst.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/teesst.img $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/tee_tw.bin ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/tee_tw.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/wtm_rel_eden_RealOTP.bin ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/wtm_rel_eden_RealOTP.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/wtm_rel_eden_VirtualOTP.bin ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/wtm_rel_eden_VirtualOTP.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/boot.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/boot.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/system.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/system.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/userdata.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/userdata.img $$(OUTPUT_DIR)/$$(private_product)/; fi
