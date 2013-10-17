@@ -7,9 +7,10 @@ define define-uboot-target
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
-
+$(warning define-uboot-target arg1=$(1) tw=$(tw) product=$(product) device=$(device))
 tw:=$$(subst :,  , $(2))
 boot_cfg:=$$(word 1, $$(tw))
+$(warning define-uboot-target arg2=$(2) tw=$(tw) boot_cfg=$(boot_cfg))
 
 #format: <file name>:[m|o]:[md5]
 #m:means mandatory
@@ -42,13 +43,16 @@ define define-build-obm
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
+$(warning define-build-obm arg1=$(1) tw=$(tw) product=$(product) device=$(device))
 
 tw:=$$(subst :,  , $(2))
 os:=$$(word 1, $$(tw))
 kernel_cfg:=$$(word 2, $$(tw))
+$(warning define-build-obm arg2=$(2) tw=$(tw) os=$(os) kernel_cfg=$(kernel_cfg))
 
 tw:=$$(subst :,  , $(3))
 boot_cfg:=$$(word 1, $$(tw))
+$(warning define-build-obm arg3=$(3) tw=$(tw) boot_cfg=$(boot_cfg))
 
 .PHONY:build_obm_$$(product)
 build_obm_$$(product): build_obm_$$(product)_$$(kernel_cfg)_$$(boot_cfg)

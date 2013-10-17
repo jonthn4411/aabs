@@ -16,7 +16,7 @@ define define-clean-droid-kernel
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
-
+#$$(warning define-clean-droid-kernel arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
 .PHONY:clean_droid_kernel_$$(product)
 clean_droid_kernel_$$(product): private_product:=$$(product)
 clean_droid_kernel_$$(product): private_device:=$$(device)
@@ -32,6 +32,7 @@ define define-build-droid-kernel
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
+#$$(warning define-build-droid-kernel arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
 build_droid_kernel_$$(product): build_kernel_$$(product)
 build_droid_kernel_$$(product): build_droid_root_$$(product)
 build_droid_kernel_$$(product): build_uboot_$$(product)
@@ -45,7 +46,7 @@ define define-build-droid-root
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
-
+#$$(warning define-build-droid-root arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
 PUBLISHING_FILES+=$$(product)/boot.img:o:md5
 PUBLISHING_FILES+=$$(product)/system.img:m:md5
 PUBLISHING_FILES+=$$(product)/userdata.img:o:md5
@@ -94,7 +95,7 @@ define define-build-droid-config
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
-
+#$$(warning define-build-droid-config arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
 build_droid_pkgs_$$(product): build_droid_$$(product)_$(2)
 
 .PHONY: build_droid_$$(product)_$(2)
@@ -113,7 +114,7 @@ define package-droid-nfs-config
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
-
+#$$(warning packet-droid-nfs-config arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
 PUBLISHING_FILES+=$$(product)/root_nfs_$(2).tgz:m:md5
 
 .PHONY: package_droid_nfs_$$(product)_$(2)
@@ -139,10 +140,12 @@ define define-kernel-target
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
+#$$(warning define-kernel-target arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
 
 tw:=$$(subst :,  , $(2))
 os:=$$(word 1, $$(tw))
 kernel_cfg:=$$(word 2, $$(tw))
+#$$(warning define-kernel-target arg2=$(2) tw=$$(tw) os=$$(os) kernel_cfg=$$(kernel_cfg))
 
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
 PUBLISHING_FILES+=$$(product)/zImage.$$(os):o:md5
@@ -152,14 +155,14 @@ PUBLISHING_FILES+=$$(product)/uImage_recovery.$$(os):o:md5
 PUBLISHING_FILES+=$$(product)/vmlinux.$$(os):o:md5
 PUBLISHING_FILES+=$$(product)/System.map.$$(os):o:md5
 
-build_kernel_$$(product): build_kernel_$$(os)_$$(kernel_cfg)
+build_kernel_$$(product): build_kernel_$$(product)_$$(os)_$$(kernel_cfg)
 
-.PHONY: build_kernel_$$(os)_$$(kernel_cfg)
-build_kernel_$$(os)_$$(kernel_cfg): private_os:=$$(os)
-build_kernel_$$(os)_$$(kernel_cfg): private_product:=$$(product)
-build_kernel_$$(os)_$$(kernel_cfg): private_cfg:=$$(kernel_cfg)
-build_kernel_$$(os)_$$(kernel_cfg): koutput:=$$(SRC_DIR)/out/target/product/$$(device)/kbuild-$$(kernel_cfg)
-build_kernel_$$(os)_$$(kernel_cfg): output_dir
+.PHONY: build_kernel_$$(product)_$$(os)_$$(kernel_cfg)
+build_kernel_$$(product)_$$(os)_$$(kernel_cfg): private_os:=$$(os)
+build_kernel_$$(product)_$$(os)_$$(kernel_cfg): private_product:=$$(product)
+build_kernel_$$(product)_$$(os)_$$(kernel_cfg): private_cfg:=$$(kernel_cfg)
+build_kernel_$$(product)_$$(os)_$$(kernel_cfg): koutput:=$$(SRC_DIR)/out/target/product/$$(device)/kbuild-$$(kernel_cfg)
+build_kernel_$$(product)_$$(os)_$$(kernel_cfg): output_dir
 	$$(log) "build kernel for booting $$(private_os) on $$(private_product)..."
 	$$(log) "    kernel_config: $$(private_cfg): ..."
 	$$(hide)cd $$(SRC_DIR)/ && \
@@ -185,17 +188,17 @@ kernel_configs:=android:eden_and_defconfig:
 boot_configs:=eden_concord_sharp_1080p eden_concord_otm_720p eden_concord_lg_720p
 
 $(foreach bd,$(ABS_BUILD_DEVICES),\
-	$(eval $(call define-clean-droid-kernel,$(bd))) \
-	$(eval $(call define-build-droid-kernel,$(bd))) \
-	$(foreach kc,$(kernel_configs), \
-		$(eval $(call define-kernel-target,$(bd),$(kc)))) \
-	$(eval $(call define-build-droid-root,$(bd))) \
-	$(foreach bc,$(boot_configs), \
-		$(eval $(call define-uboot-target,$(bd),$(bc)))) \
-	$(foreach kc,$(kernel_configs), \
-		$(foreach bc,$(boot_configs), \
-			$(eval $(call define-build-obm,$(bd),$(kc),$(bc))))) \
-	$(eval $(call define-build-swd,$(bd))) \
-	$(eval $(call define-build-droid-config,$(bd),internal)) \
-	$(eval $(call package-droid-nfs-config,$(bd),internal)) \
+	$(eval $(call define-clean-droid-kernel,$(bd)))\
+	$(eval $(call define-build-droid-kernel,$(bd)))\
+	$(foreach kc,$(kernel_configs),\
+		$(eval $(call define-kernel-target,$(bd),$(kc))))\
+	$(eval $(call define-build-droid-root,$(bd)))\
+	$(foreach bc,$(boot_configs),\
+		$(eval $(call define-uboot-target,$(bd),$(bc))))\
+	$(foreach kc,$(kernel_configs),\
+		$(foreach bc,$(boot_configs),\
+			$(eval $(call define-build-obm,$(bd),$(kc),$(bc)))))\
+	$(eval $(call define-build-swd,$(bd)))\
+	$(eval $(call define-build-droid-config,$(bd),internal))\
+	$(eval $(call package-droid-nfs-config,$(bd),internal))\
 )

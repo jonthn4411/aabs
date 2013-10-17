@@ -8,7 +8,7 @@ define define-build-swd
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
-
+$(warning define-build-swd arg1=$(1) tw=$(tw) product=$(product) device=$(device))
 #format: <file name>:<dst folder>:[m|o]:[md5]
 #m:means mandatory
 #o:means optional
