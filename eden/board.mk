@@ -1,4 +1,4 @@
-ABS_BUILD_DEVICES?=concord_tz:concord concord_def:concord
+ABS_BUILD_DEVICES?=concord_def:concord
 
 ANDROID_VERSION:=$(ABS_DROID_BRANCH)
 DROID_VARIANT:=$(PLATFORM_ANDROID_VARIANT)
