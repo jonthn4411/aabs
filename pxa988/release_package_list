@@ -295,6 +295,8 @@ pxa1L88dkb_tz/HL_LWG_M09_B0_SKL_Flash.bin pxa1L88dkb_tz/prebuilt_bin/HL_LWG_M09_
 pxa1L88dkb_tz/HL_LWG_NVM.mdb pxa1L88dkb_tz/prebuilt_bin/HL_LWG_NVM.mdb
 pxa1L88dkb_tz/Skylark_LTG.bin pxa1L88dkb_tz/prebuilt_bin/Skylark_LTG.bin
 pxa1L88dkb_tz/Skylark_LWG.bin pxa1L88dkb_tz/prebuilt_bin/Skylark_LWG.bin
+pxa1L88dkb_tz/tee_tw.bin pxa1L88dkb_tz/prebuilt_bin/tee_tw.bin
+pxa1L88dkb_tz/teesst.img pxa1L88dkb_tz/prebuilt_bin/teesst.img
 
 pxa1088dkb_tz/build.prop pxa1088dkb_tz/prebuilt_bin/build.prop
 pxa1088dkb_tz/primary_gpt pxa1088dkb_tz/prebuilt_bin/primary_gpt
