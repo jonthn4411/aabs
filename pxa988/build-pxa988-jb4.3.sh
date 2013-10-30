@@ -7,3 +7,5 @@ fi
 export ABS_BUILDHOST_DEF
 
 export ABS_UNIQUE_MANIFEST_BRANCH=1
+
+export ABS_BUILD_DEVICES="pxa988t7_def:pxa988t7 pxa1088t7_def:pxa1088t7"
