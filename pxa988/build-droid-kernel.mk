@@ -56,7 +56,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_kernel_$$(product) build_droid_$$(product) build_droid_otapackage_$$(product) 
+build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product) 
 endef
 
 MAKE_JOBS := 8
@@ -109,13 +109,14 @@ device:=$$(word 2, $$(tw) )
 .PHONY: build_droid_$$(product)
 build_droid_$$(product): private_product:=$$(product)
 build_droid_$$(product): private_device:=$$(device)
-build_droid_$$(product): build_kernel_$$(product)
+build_droid_$$(product): 
 	$(log) "[$$(private_product)] building android source code ..."
+	mkdir -p $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	make -j8 && \
-	tar zcf $(OUTPUT_DIR)/$$(private_product)/modules.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel modules && \
+	tar zcf $(OUTPUT_DIR)/$$(private_product)/modules.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib modules && \
 	tar zcf $(OUTPUT_DIR)/$$(private_product)/symbols_system.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ symbols
 
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/root ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/root; fi
@@ -133,13 +134,12 @@ build_droid_$$(product): build_kernel_$$(product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/build.prop $(OUTPUT_DIR)/$$(private_product)
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/ ]; then \
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/* $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio.img $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-emei.img $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-kunlun.img $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-td.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-td.img $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helanlte-ltg.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helanlte-ltg.img $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wb.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wb.img $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wt.img ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/radio-helan-wt.img $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/security/ ]; then \
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/security/* $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/blf/ ]; then \
+	cp -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/blf $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname radio*img |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
+	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname *gpt* |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
 	$(log) "  done"
 
 	$(hide)if [ "$(PLATFORM_ANDROID_VARIANT)" = "user" ]; then \
@@ -150,8 +150,35 @@ build_droid_$$(product): build_kernel_$$(product)
 	cat ramdisk-rooted.img < /dev/zero | head -c 1048576 > ramdisk-rooted.img.pad && \
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-rooted.img.pad $(OUTPUT_DIR)/$$(private_product)/ramdisk-rooted.img && \
 	touch $(OUTPUT_DIR)/product_mode_build.txt; fi
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obm*bin $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/zImage $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot.img $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/recovery.img $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/u-boot.bin $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/vmlinux $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/System.map $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader.zip $(OUTPUT_DIR)/
+	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/modules; fi &&\
+	mkdir -p $(OUTPUT_DIR)/$$(private_product)/modules
+	$(hide)cp -af $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib/modules  $(OUTPUT_DIR)/$$(private_product)/
 
 ##!!## first time publish: all for two
+PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
+PUBLISHING_FILES+=$$(product)/obm.bin:o:md5
+PUBLISHING_FILES+=$$(product)/obm_trusted_tz.bin:o:md5
+PUBLISHING_FILES+=$$(product)/obm_trusted_ntz.bin:o:md5
+PUBLISHING_FILES+=$$(product)/u-boot.bin:o:md5
+PUBLISHING_FILES+=$$(product)/boot.img:o:md5
+PUBLISHING_FILES+=$$(product)/recovery.img:o:md5
+PUBLISHING_FILES+=$$(product)/uImage:o:md5
+PUBLISHING_FILES+=$$(product)/zImage:o:md5
+PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
+PUBLISHING_FILES+=$$(product)/System.map:o:md5
+PUBLISHING_FILES+=$$(product)/primary_gpt_4g:o:md5
+PUBLISHING_FILES+=$$(product)/secondary_gpt_4g:o:md5
+PUBLISHING_FILES+=$$(product)/primary_gpt:o:md5
+PUBLISHING_FILES+=$$(product)/secondary_gpt:o:md5
 PUBLISHING_FILES+=$$(product)/userdata.img:m:md5
 PUBLISHING_FILES+=$$(product)/userdata_4g.img:o:md5
 PUBLISHING_FILES+=$$(product)/system.img:m:md5
@@ -163,14 +190,22 @@ PUBLISHING_FILES+=$$(product)/build.prop:o:md5
 PUBLISHING_FILES+=$$(product)/modules.tgz:o:md5
 PUBLISHING_FILES+=product_mode_build.txt:o
 
+##!!## blf files
+PUBLISHING_FILES+=$$(product)/blf:o:md5
+
+##!!## security image
+PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
+PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
+
 PUBLISHING_FILES+=$$(product)/pxafs.img:o:md5
 PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/radio.img:o:md5
 PUBLISHING_FILES+=$$(product)/radio-emei.img:o:md5
 PUBLISHING_FILES+=$$(product)/radio-kunlun.img:o:md5
-PUBLISHING_FILES+=$$(product)/nvm-emei.img:o:md5
-PUBLISHING_FILES+=$$(product)/nvm-kunlun.img:o:md5
-PUBLISHING_FILES+=$$(product)/nvm-helan-td.img:o:md5
+
+PUBLISHING_FILES+=$$(product)/nvm-wb.img:o:md5
+PUBLISHING_FILES+=$$(product)/nvm-td.img:o:md5
+PUBLISHING_FILES+=$$(product)/nvm.img:o:md5
 
 PUBLISHING_FILES+=$$(product)/HL_CP.bin:o:md5
 PUBLISHING_FILES+=$$(product)/EM_CP.bin:o:md5
@@ -215,6 +250,18 @@ PUBLISHING_FILES+=$$(product)/HL_LTG_DL.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/nvm-helanlte-ltg.img:o:md5
+PUBLISHING_FILES+=$$(product)/HL_DL_M09_Y0_AI_SKL_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LTG_DL_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LTG_DL_DKB.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LTG_DL_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LWG_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LWG_DKB.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LWG_M09_B0_SKL_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LWG_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/nvm-helanlte.img:o:md5
+PUBLISHING_FILES+=$$(product)/Skylark_LTG.bin:o:md5
+PUBLISHING_FILES+=$$(product)/Skylark_LWG.bin:o:md5
+PUBLISHING_FILES+=$$(product)/radio-helanlte.img:o:md5
 
 
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
@@ -238,7 +285,6 @@ endef
 
 
 
-ifeq ($(ABS_DROID_BRANCH),jb4.2)
 define define-build-droid-otapackage
 tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
@@ -246,7 +292,7 @@ device:=$$(word 2, $$(tw) )
 .PHONY: build_droid_otapackage_$$(product)
 build_droid_otapackage_$$(product): private_product:=$$(product)
 build_droid_otapackage_$$(product): private_device:=$$(device)
-build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
+build_droid_otapackage_$$(product): 
 	$(log) "[$$(private_product)] building android OTA package ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -255,7 +301,7 @@ build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
 	$(hide)echo "  copy OTA package ..."
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl.zip $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl-recovery.zip $(OUTPUT_DIR)/$$(private_product)
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/PACKAGING/target_files_intermediates/$$(private_product)-target_files-eng.$$(USER).zip $(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-intermediates.zip
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/PACKAGING/target_files_intermediates/$$(private_product)-target_files*.zip $(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-intermediates.zip
 	$(log) "  done for OTA package build."
 
 PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl.zip:o:md5
@@ -263,18 +309,16 @@ PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl-recovery.zip:o:md5
 PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl-intermediates.zip:o:md5
 
 endef
-else
-define define-build-droid-otapackage
-tw:=$$(subst :,  , $(1) )
-product:=$$(word 1, $$(tw) )
-device:=$$(word 2, $$(tw) )
-.PHONY: build_droid_otapackage_$$(product)
-build_droid_otapackage_$$(product): private_product:=$$(product)
-build_droid_otapackage_$$(product): private_device:=$$(device)
-build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
-	$(log) "[$$(private_product)] no android OTA package build ..."
-endef
-endif
+#define define-build-droid-otapackage
+#tw:=$$(subst :,  , $(1) )
+#product:=$$(word 1, $$(tw) )
+#device:=$$(word 2, $$(tw) )
+#.PHONY: build_droid_otapackage_$$(product)
+#build_droid_otapackage_$$(product): private_product:=$$(product)
+#build_droid_otapackage_$$(product): private_device:=$$(device)
+#build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
+#	$(log) "[$$(private_product)] no android OTA package build ..."
+#endef
 
 define define-build-droid-tool
 tw:=$$(subst :,  , $(1) )
