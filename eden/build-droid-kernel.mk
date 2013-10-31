@@ -62,7 +62,6 @@ endif
 .PHONY: build_droid_root_$$(product)
 build_droid_root_$$(product): private_product:=$$(product)
 build_droid_root_$$(product): private_device:=$$(device)
-build_droid_root_$$(product): build_kernel_$$(product)
 build_droid_root_$$(product): output_dir
 	$$(log) "[$$(private_product)]building android source code ..."
 	$$(hide)cd $$(SRC_DIR) && \
