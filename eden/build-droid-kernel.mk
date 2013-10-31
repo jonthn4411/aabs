@@ -4,7 +4,7 @@
 #
 # Include goal for build UBoot and obm
 #
-include $(ABS_SOC)/build-uboot-obm.mk
+#include $(ABS_SOC)/build-uboot-obm.mk
 
 # Include goal for build software downloader
 include $(ABS_SOC)/build-swd.mk
@@ -33,11 +33,8 @@ tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
 #$$(warning define-build-droid-kernel arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
-build_droid_kernel_$$(product): build_kernel_$$(product)
 build_droid_kernel_$$(product): build_droid_root_$$(product)
-build_droid_kernel_$$(product): build_uboot_$$(product)
 build_droid_kernel_$$(product): build_droid_pkgs_$$(product)
-build_droid_kernel_$$(product): build_obm_$$(product)
 build_droid_kernel_$$(product): build_swd_$$(product)
 endef
 
@@ -138,50 +135,6 @@ endef
 
 export MAKE_JOBS
 
-#$1:build device
-#$2:kernel_config
-define define-kernel-target
-tw:=$$(subst :,  , $(1))
-product:=$$(word 1, $$(tw))
-device:=$$(word 2, $$(tw))
-#$$(warning define-kernel-target arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
-
-tw:=$$(subst :,  , $(2))
-os:=$$(word 1, $$(tw))
-kernel_cfg:=$$(word 2, $$(tw))
-#$$(warning define-kernel-target arg2=$(2) tw=$$(tw) os=$$(os) kernel_cfg=$$(kernel_cfg))
-
-#make sure that PUBLISHING_FILES_XXX is a simply expanded variable
-PUBLISHING_FILES+=$$(product)/zImage.$$(os):o:md5
-PUBLISHING_FILES+=$$(product)/zImage_recovery.$$(os):o:md5
-PUBLISHING_FILES+=$$(product)/uImage.$$(os):o:md5
-PUBLISHING_FILES+=$$(product)/uImage_recovery.$$(os):o:md5
-PUBLISHING_FILES+=$$(product)/vmlinux.$$(os):o:md5
-PUBLISHING_FILES+=$$(product)/System.map.$$(os):o:md5
-
-build_kernel_$$(product): build_kernel_$$(product)_$$(os)_$$(kernel_cfg)
-
-.PHONY: build_kernel_$$(product)_$$(os)_$$(kernel_cfg)
-build_kernel_$$(product)_$$(os)_$$(kernel_cfg): private_os:=$$(os)
-build_kernel_$$(product)_$$(os)_$$(kernel_cfg): private_product:=$$(product)
-build_kernel_$$(product)_$$(os)_$$(kernel_cfg): private_cfg:=$$(kernel_cfg)
-build_kernel_$$(product)_$$(os)_$$(kernel_cfg): koutput:=$$(SRC_DIR)/out/target/product/$$(device)/kbuild-$$(kernel_cfg)
-build_kernel_$$(product)_$$(os)_$$(kernel_cfg): output_dir
-	$$(log) "build kernel for booting $$(private_os) on $$(private_product)..."
-	$$(log) "    kernel_config: $$(private_cfg): ..."
-	$$(hide)cd $$(SRC_DIR)/ && \
-	. build/envsetup.sh && \
-	lunch $$(private_product)-$$(DROID_VARIANT) && \
-	cd $$(KERNELSRC_TOPDIR) && \
-	KERNEL_CONFIG=$$(private_cfg) make clean all
-	$$(hide)mkdir -p $$(OUTPUT_DIR)/$$(private_product)
-	$$(log) "    copy kernel files ..."
-	$$(hide)if [ -f $$(koutput)/arch/arm/boot/zImage ]; then cp $$(koutput)/arch/arm/boot/zImage $$(OUTPUT_DIR)/$$(private_product)/zImage.$$(private_os); fi
-	$$(hide)if [ -f $$(koutput)/arch/arm/boot/uImage ]; then cp $$(koutput)/arch/arm/boot/uImage $$(OUTPUT_DIR)/$$(private_product)/uImage.$$(private_os); fi
-	$$(hide)cp $$(koutput)/vmlinux $$(OUTPUT_DIR)/$$(private_product)/vmlinux.$$(private_os)
-	$$(hide)cp $$(koutput)/System.map $$(OUTPUT_DIR)/$$(private_product)/System.map.$$(private_os)
-	$$(log) "  done."
-endef
 
 # <os>:<kernel_cfg>:
 # os: the operating system
@@ -194,14 +147,7 @@ boot_configs:=eden_concord_sharp_1080p eden_concord_otm_720p eden_concord_lg_720
 $(foreach bd,$(ABS_BUILD_DEVICES),\
 	$(eval $(call define-clean-droid-kernel,$(bd)))\
 	$(eval $(call define-build-droid-kernel,$(bd)))\
-	$(foreach kc,$(kernel_configs),\
-		$(eval $(call define-kernel-target,$(bd),$(kc))))\
 	$(eval $(call define-build-droid-root,$(bd)))\
-	$(foreach bc,$(boot_configs),\
-		$(eval $(call define-uboot-target,$(bd),$(bc))))\
-	$(foreach kc,$(kernel_configs),\
-		$(foreach bc,$(boot_configs),\
-			$(eval $(call define-build-obm,$(bd),$(kc),$(bc)))))\
 	$(eval $(call define-build-swd,$(bd)))\
 	$(eval $(call define-build-droid-config,$(bd),internal))\
 	$(eval $(call package-droid-nfs-config,$(bd),internal))\
