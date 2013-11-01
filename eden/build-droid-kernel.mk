@@ -64,6 +64,7 @@ build_droid_root_$$(product): private_product:=$$(product)
 build_droid_root_$$(product): private_device:=$$(device)
 build_droid_root_$$(product): output_dir
 	$$(log) "[$$(private_product)]building android source code ..."
+	$$(hide)mkdir -p $$(OUTPUT_DIR)/$$(private_product)
 	$$(hide)cd $$(SRC_DIR) && \
 	. build/envsetup.sh && \
 	lunch $$(private_product)-$$(DROID_VARIANT) && \
