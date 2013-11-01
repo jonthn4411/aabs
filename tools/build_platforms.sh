@@ -156,9 +156,9 @@ if [ -x ${ABS_TOP_DIR}/${soc}/build-${platform}.sh ]; then
 		echo "[aabs]will-run:./core/autobuild.sh clobber source pkgsrc publish autotest email $rlsname" | tee -a $LOG
 	else
 		if [ "$FLAG_TEMP_BUILD" = "true" ]; then
-			soc=$soc platform=$platform ./core/autobuild.sh $TARGET_PKGSRC publish temp $TARGET_EMAIL $FORCE_BUILD $rlsname
+			soc=$soc platform=$platform ./core/autobuild.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish temp $TARGET_EMAIL $FORCE_BUILD $rlsname
 		else
-			soc=$soc platform=$platform ./core/autobuild.sh $FORCE_BUILD $rlsname
+			soc=$soc platform=$platform ./core/autobuild.sh clobber $TARGET_SOURCE $TARGET_PKGSRC publish autotest $TARGET_EMAIL $FORCE_BUILD $rlsname
 		fi
 	fi
 else

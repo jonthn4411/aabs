@@ -43,10 +43,10 @@ BACKUP_FILES:=
 
 SRC_DIR:=src.$(ABS_PRODUCT_CODE)
 OUTPUT_DIR:=out.$(ABS_PRODUCT_CODE)
-#ifneq ($(strip $(ABS_RELEASE_NAME)),)
-#SRC_DIR:=$(SRC_DIR).$(ABS_RELEASE_NAME)
-#OUTPUT_DIR:=$(OUTPUT_DIR).$(ABS_RELEASE_NAME)
-#endif
+ifneq ($(strip $(ABS_RELEASE_NAME)),)
+SRC_DIR:=$(SRC_DIR).$(ABS_RELEASE_NAME)
+OUTPUT_DIR:=$(OUTPUT_DIR).$(ABS_RELEASE_NAME)
+endif
 
 #number of concurrent jobs for make
 JOBS_FACTOR:=1.5
