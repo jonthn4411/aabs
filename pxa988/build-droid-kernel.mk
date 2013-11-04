@@ -318,7 +318,7 @@ build_droid_otapackage_$$(product): private_product:=$$(product)
 build_droid_otapackage_$$(product): private_device:=$$(device)
 	$(log) "[$$(private_product)] no android OTA package build ..."
 endef
-endef
+endif
 
 define define-build-droid-tool
 tw:=$$(subst :,  , $(1) )
