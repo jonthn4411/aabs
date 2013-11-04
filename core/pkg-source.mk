@@ -76,6 +76,12 @@ ifeq ($(ABS_DROID_BRANCH),$(filter $(ABS_DROID_BRANCH), jb4.3 jb43))
 	UBOOT_BASE_COMMIT:=$(UBOOT_201109_BASE_COMMIT)
 	DROID_BASE:=android-4.3_r2.1
 endif
+else
+ifeq ($(ABS_DROID_BRANCH),$(filter $(ABS_DROID_BRANCH), kk4.4))
+	KERNEL_BASE_COMMIT:=$(KERNEL_3_4_BASE_COMMIT)
+	UBOOT_BASE_COMMIT:=$(UBOOT_201109_BASE_COMMIT)
+	DROID_BASE:=android-4.4_r1
+endif
 endif
 endif
 endif
