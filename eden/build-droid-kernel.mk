@@ -7,7 +7,7 @@
 #include $(ABS_SOC)/build-uboot-obm.mk
 
 # Include goal for build software downloader
-include $(ABS_SOC)/build-swd.mk
+#include $(ABS_SOC)/build-swd.mk
 
 DROID_TYPE:=release
 KERNELSRC_TOPDIR:=kernel
@@ -35,7 +35,6 @@ device:=$$(word 2, $$(tw))
 #$$(warning define-build-droid-kernel arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
 build_droid_kernel_$$(product): build_droid_root_$$(product)
 build_droid_kernel_$$(product): build_droid_pkgs_$$(product)
-build_droid_kernel_$$(product): build_swd_$$(product)
 endef
 
 #$1:build device
@@ -148,7 +147,6 @@ $(foreach bd,$(ABS_BUILD_DEVICES),\
 	$(eval $(call define-clean-droid-kernel,$(bd)))\
 	$(eval $(call define-build-droid-kernel,$(bd)))\
 	$(eval $(call define-build-droid-root,$(bd)))\
-	$(eval $(call define-build-swd,$(bd)))\
 	$(eval $(call define-build-droid-config,$(bd),internal))\
 	$(eval $(call package-droid-nfs-config,$(bd),internal))\
 )
