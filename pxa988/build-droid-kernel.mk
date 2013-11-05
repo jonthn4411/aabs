@@ -284,7 +284,7 @@ endif
 endef
 
 
-ifneq ($(ABS_DROID_BRANCH), kk4.4)
+ifneq ($(strip $(ABS_DROID_BRANCH)),kk4.4)
 define define-build-droid-otapackage
 tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
@@ -307,6 +307,7 @@ build_droid_otapackage_$$(product):
 PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl.zip:o:md5
 PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl-recovery.zip:o:md5
 PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl-intermediates.zip:o:md5
+endef
 
 else
 define define-build-droid-otapackage
@@ -316,6 +317,7 @@ device:=$$(word 2, $$(tw) )
 .PHONY: build_droid_otapackage_$$(product)
 build_droid_otapackage_$$(product): private_product:=$$(product)
 build_droid_otapackage_$$(product): private_device:=$$(device)
+build_droid_otapackage_$$(product):
 	$(log) "[$$(private_product)] no android OTA package build ..."
 endef
 endif
