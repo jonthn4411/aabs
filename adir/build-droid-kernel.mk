@@ -150,7 +150,9 @@ build_droid_$$(product):
 	cat ramdisk-rooted.img < /dev/zero | head -c 1048576 > ramdisk-rooted.img.pad && \
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-rooted.img.pad $(OUTPUT_DIR)/$$(private_product)/ramdisk-rooted.img && \
 	touch $(OUTPUT_DIR)/product_mode_build.txt; fi
-	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obm*bin $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obm* $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/*.bin $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/flasher_pxa1986_adir_sdk_CIUSB2.zip $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/zImage $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot.img $(OUTPUT_DIR)/$$(private_product)/
@@ -167,6 +169,13 @@ PUBLISHING_FILES2+=Software_Downloader.zip:./:o:md5
 PUBLISHING_FILES+=$$(product)/obm.bin:o:md5
 PUBLISHING_FILES+=$$(product)/obm_trusted_tz.bin:o:md5
 PUBLISHING_FILES+=$$(product)/obm_trusted_ntz.bin:o:md5
+PUBLISHING_FILES+=$$(product)/NTpxa1986_adir_sdk_LTE_tbb_EMMC.bin:o:md5
+PUBLISHING_FILES+=$$(product)/NTpxa1986_adir_sdk_tbb_EMMC.bin:o:md5
+PUBLISHING_FILES+=$$(product)/flasher_pxa1986_adir_sdk_CIUSB2.zip:o:md5
+PUBLISHING_FILES+=$$(product)/obm.bin.nt:o:md5
+PUBLISHING_FILES+=$$(product)/obm_lte.bin.nt:o:md5
+PUBLISHING_FILES+=$$(product)/wtm_dummy_NT.bin:o:md5
+
 PUBLISHING_FILES+=$$(product)/u-boot.bin:o:md5
 PUBLISHING_FILES+=$$(product)/boot.img:o:md5
 PUBLISHING_FILES+=$$(product)/recovery.img:o:md5
