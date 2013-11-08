@@ -134,12 +134,17 @@ build_droid_$$(product):
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/build.prop $(OUTPUT_DIR)/$$(private_product)
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/ ]; then \
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/telephony/* $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/cp_image ]; then \
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/cp_image $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/diag_db ]; then \
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/diag_db $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/security/ ]; then \
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/security/* $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/blf/ ]; then \
 	cp -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/blf $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname radio*img |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
 	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname *gpt* |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
+	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname nvm*img |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
 	$(log) "  done"
 
 	$(hide)if [ "$(PLATFORM_ANDROID_VARIANT)" = "user" ]; then \
@@ -214,6 +219,10 @@ PUBLISHING_FILES+=$$(product)/radio-kunlun.img:o:md5
 PUBLISHING_FILES+=$$(product)/nvm-wb.img:o:md5
 PUBLISHING_FILES+=$$(product)/nvm-td.img:o:md5
 PUBLISHING_FILES+=$$(product)/nvm.img:o:md5
+
+PUBLISHING_FILES+=$$(product)/cp_image:o:md5
+PUBLISHING_FILES+=$$(product)/diag_db:o:md5
+PUBLISHING_FILES+=$$(product)/nvm_ext4:o:md5
 
 PUBLISHING_FILES+=$$(product)/HL_CP.bin:o:md5
 PUBLISHING_FILES+=$$(product)/EM_CP.bin:o:md5
