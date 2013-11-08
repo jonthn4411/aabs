@@ -199,7 +199,7 @@ PUBLISHING_FILES+=$$(product)/modules.tgz:o:md5
 PUBLISHING_FILES+=product_mode_build.txt:o
 
 ##!!## blf files
-PUBLISHING_FILES+=$$(product)/blf:o:md5
+PUBLISHING_FILES+=$$(product):o:md5
 
 ##!!## security image
 PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
