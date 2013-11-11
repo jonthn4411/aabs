@@ -51,6 +51,12 @@ PUBLISHING_FILES+=$$(product)/ramdisk-recovery.img:o:md5
 PUBLISHING_FILES+=$$(product)/cache.img:o:md5
 PUBLISHING_FILES+=$$(product)/primary_gpt:o:md5
 PUBLISHING_FILES+=$$(product)/secondary_gpt:o:md5
+PUBLISHING_FILES+=$$(product)/System.map:o:md5
+PUBLISHING_FILES+=$$(product)/u-boot.bin:o:md5
+PUBLISHING_FILES+=$$(product)/uImage:o:md5
+PUBLISHING_FILES+=$$(product)/zImage:o:md5
+PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
+
 ##!!## blf files
 PUBLISHING_FILES+=$$(product)/blf:o:md5
 PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
@@ -92,6 +98,48 @@ build_droid_root_$$(product): output_dir
 
 PUBLISHING_FILES+=$$(product)/symbols_lib.tgz:o:md5
 endef
+
+define define-build-droid-otapackage
+tw:=$$(subst :,  , $(1))
+product:=$$(word 1, $$(tw))
+device:=$$(word 2, $$(tw))
+#$$(warning define-build-droid-otapackage arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
+
+tw:=$$(subst :,  , $(2))
+os:=$$(word 1, $$(tw))
+kernel_cfg:=$$(word 2, $$(tw))
+#$$(warning define-build-droid-otapackage arg2=$(2) tw=$$(tw) os=$$(os) kernel_cfg=$$(kernel_cfg))
+
+tw:=$$(subst :,  , $(3))
+boot_cfg:=$$(word 1, $$(tw))
+#$$(warning define-build-droid-otapackage arg3=$(3) tw=$$(tw) boot_cfg=$$(boot_cfg))
+
+.PHONY:build-droid-otapackage_$$(product)
+build-droid-otapackage_$$(product): build-droid-otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg)
+
+build-droid-otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_product:=$$(product)
+build-droid-otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_device:=$$(device)
+build-droid-otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_kcfg:=$$(kernel_cfg)
+build-droid-otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_bcfg:=$$(boot_cfg)
+build-droid-otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): output_dir
+	$$(log) "starting($$(private_product) kc($$(private_kcfg)) bc($$(private_bcfg)) to build obm"
+	$$(hide)cd $$(SRC_DIR) && \
+	. build/envsetup.sh && \
+	lunch $$(private_product)-$$(DROID_VARIANT) && \
+	cd $$(SRC_DIR) && KERNEL_CONFIG=$$(private_kcfg) UBOOT_CONFIG=$$(private_bcfg) make mrvlotapackage
+	$$(hide)echo "  copy OTA package ..."
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl.zip $$(OUTPUT_DIR)/$$(private_product)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl-recovery.zip $$(OUTPUT_DIR)/$$(private_product)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/obj/PACKAGING/target_files_intermediates/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-target_files.zip $$(OUTPUT_DIR)/  $$(private_product)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl-intermediates.zip
+	$(log) "  done for OTA package build."
+	$$(log) "  done."
+
+PUBLISHING_FILES+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl.zip:o:md5
+PUBLISHING_FILES+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl-recovery.zip:o:md5
+PUBLISHING_FILES+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl-intermediates.zip:o:md5
+
+endef
+
 
 #$1: build device
 #$2: internal or external
@@ -152,6 +200,9 @@ $(foreach bd,$(ABS_BUILD_DEVICES),\
 	$(eval $(call define-clean-droid-kernel,$(bd)))\
 	$(eval $(call define-build-droid-kernel,$(bd)))\
 	$(eval $(call define-build-droid-root,$(bd)))\
+	$(foreach kc,$(kernel_configs),\
+		$(foreach bc,$(boot_configs),\
+			$(eval $(call define-build-droid-otapackage,$(bd),$(kc),$(bc)))))\
 	$(eval $(call define-build-droid-config,$(bd),internal))\
 	$(eval $(call package-droid-nfs-config,$(bd),internal))\
 )
