@@ -222,7 +222,7 @@ PUBLISHING_FILES+=$$(product)/nvm.img:o:md5
 
 PUBLISHING_FILES+=$$(product)/cp_image:o:md5
 PUBLISHING_FILES+=$$(product)/diag_db:o:md5
-PUBLISHING_FILES+=$$(product)/nvm_ext4:o:md5
+PUBLISHING_FILES+=$$(product)/nvm_ext4.img:o:md5
 
 PUBLISHING_FILES+=$$(product)/HL_CP.bin:o:md5
 PUBLISHING_FILES+=$$(product)/EM_CP.bin:o:md5
