@@ -35,6 +35,7 @@ device:=$$(word 2, $$(tw))
 #$$(warning define-build-droid-kernel arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
 build_droid_kernel_$$(product): build_droid_root_$$(product)
 build_droid_kernel_$$(product): build_droid_pkgs_$$(product)
+build_droid_kernel_$$(product): build_droid_otapackage_$$(product)
 endef
 
 #$1:build device
@@ -114,14 +115,14 @@ tw:=$$(subst :,  , $(3))
 boot_cfg:=$$(word 1, $$(tw))
 #$$(warning define-build-droid-otapackage arg3=$(3) tw=$$(tw) boot_cfg=$$(boot_cfg))
 
-.PHONY:build-droid-otapackage_$$(product)
-build-droid-otapackage_$$(product): build-droid-otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg)
+.PHONY:build_droid_otapackage_$$(product)
+build_droid_otapackage_$$(product): build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg)
 
-build-droid-otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_product:=$$(product)
-build-droid-otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_device:=$$(device)
-build-droid-otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_kcfg:=$$(kernel_cfg)
-build-droid-otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_bcfg:=$$(boot_cfg)
-build-droid-otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): output_dir
+build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_product:=$$(product)
+build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_device:=$$(device)
+build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_kcfg:=$$(kernel_cfg)
+build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_bcfg:=$$(boot_cfg)
+build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): output_dir
 	$$(log) "starting($$(private_product) kc($$(private_kcfg)) bc($$(private_bcfg)) to build obm"
 	$$(hide)cd $$(SRC_DIR) && \
 	. build/envsetup.sh && \
