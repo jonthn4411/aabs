@@ -1,4 +1,4 @@
-ABS_BUILD_DEVICES?=concord_def:concord
+ABS_BUILD_DEVICES?=concord_tz:concord concord_def:concord
 
 ANDROID_VERSION:=$(ABS_DROID_BRANCH)
 DROID_VARIANT:=$(PLATFORM_ANDROID_VARIANT)
@@ -13,39 +13,37 @@ endif
 include $(ABS_SOC)/build-droid-kernel.mk
 
 #define the combined goal to include all build goals
-.PHONY:build
 
 build: build_device
 
+.PHONY:build_device
 define define-build-device
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
-
-build_device: build_device_$$(product)
+#$$(warning define-build-device arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
 build_device_$$(product): private_product:=$$(product)
 build_device_$$(product): private_device:=$$(device)
 build_device_$$(product): build_droid_kernel_$$(product)
+build_device: build_device_$$(product)
 endef
 
-$(foreach bd,$(ABS_BUILD_DEVICES),\
-	$(eval $(call define-build-device,$(bd))))
+$(foreach bd1, $(ABS_BUILD_DEVICES), $(eval $(call define-build-device,$(bd1))))
 
 .PHONY:clean
 
 clean: clean_device
 
 define define-clean-device
-tw:=$$(subst :,  , $(1))
-product:=$$(word 1, $$(tw))
-device:=$$(word 2, $$(tw))
-
-clean_device: clean_device_$$(product)
+tw:=$$(subst :,  , $(1) )
+product:=$$(word 1, $$(tw) )
+device:=$$(word 2, $$(tw) )
+#$$(warning define-clean-device arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
 clean_device_$$(product): private_product:=$$(product)
 clean_device_$$(product): private_device:=$$(device)
-clean_device_$$(product): clean_droid_kernel_$$(device)
+clean_device_$$(product): clean_droid_kernel_$$(product)
+clean_device: clean_device_$$(device)
 endef
 
-$(foreach bd,$(ABS_BUILD_DEVICES),\
-	$(eval $(call define-clean-device,$(bd))))
+$(foreach bd, $(ABS_BUILD_DEVICES), $(eval $(call define-clean-device,$(bd))))
 
