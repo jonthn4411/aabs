@@ -118,8 +118,6 @@ tw:=$$(subst :,  , $(3))
 boot_cfg:=$$(word 1, $$(tw))
 #$$(warning define-build-droid-otapackage arg3=$(3) tw=$$(tw) boot_cfg=$$(boot_cfg))
 
-PUBLISHING_FILES+=$$(product)/u-boot.bin.$$(boot_cfg):m:md5
-
 .PHONY:build_droid_otapackage_$$(product)
 build_droid_otapackage_$$(product): build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg)
 
@@ -140,6 +138,7 @@ build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): output_dir
 	$(log) "  done for OTA package build."
 	$$(log) "  done."
 
+PUBLISHING_FILES+=$$(product)/u-boot.bin.$$(boot_cfg):m:md5
 PUBLISHING_FILES+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl.zip:o:md5
 PUBLISHING_FILES+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl-recovery.zip:o:md5
 PUBLISHING_FILES+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl-intermediates.zip:o:md5
