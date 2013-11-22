@@ -53,7 +53,7 @@ PUBLISHING_FILES+=$$(product)/cache.img:o:md5
 PUBLISHING_FILES+=$$(product)/primary_gpt:o:md5
 PUBLISHING_FILES+=$$(product)/secondary_gpt:o:md5
 PUBLISHING_FILES+=$$(product)/System.map:o:md5
-PUBLISHING_FILES+=$$(product)/uImage:o:md5
+PUBLISHING_FILES+=$$(product)/uImage.android:o:md5
 PUBLISHING_FILES+=$$(product)/zImage:o:md5
 PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
 
@@ -92,7 +92,7 @@ build_droid_root_$$(product): output_dir
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/secondary_gpt ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/secondary_gpt $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/System.map ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/System.map $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $(wildcard $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin*) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin* $$(OUTPUT_DIR)/$$(private_product)/; fi
-	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/uImage ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/uImage $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/uImage ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/uImage $$(OUTPUT_DIR)/$$(private_product)/uImage.android; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/zImage ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/zImage $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/vmlinux ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/vmlinux $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip $$(OUTPUT_DIR)/; fi
