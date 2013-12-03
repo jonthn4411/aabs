@@ -4,10 +4,10 @@
 #
 # Include goal for build UBoot and obm
 #
-include $(ABS_SOC)/build-uboot-obm.mk
+#include $(ABS_SOC)/build-uboot-obm.mk
 
 # Include goal for build software downloader
-include $(ABS_SOC)/build-swd.mk
+#include $(ABS_SOC)/build-swd.mk
 
 DROID_TYPE:=release
 KERNELSRC_TOPDIR:=kernel
@@ -33,12 +33,9 @@ tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
 #$$(warning define-build-droid-kernel arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
-build_droid_kernel_$$(product): build_kernel_$$(product)
 build_droid_kernel_$$(product): build_droid_root_$$(product)
-build_droid_kernel_$$(product): build_uboot_$$(product)
 build_droid_kernel_$$(product): build_droid_pkgs_$$(product)
-build_droid_kernel_$$(product): build_obm_$$(product)
-build_droid_kernel_$$(product): build_swd_$$(product)
+build_droid_kernel_$$(product): build_droid_otapackage_$$(product)
 endef
 
 #$1:build device
@@ -55,6 +52,14 @@ PUBLISHING_FILES+=$$(product)/ramdisk-recovery.img:o:md5
 PUBLISHING_FILES+=$$(product)/cache.img:o:md5
 PUBLISHING_FILES+=$$(product)/primary_gpt:o:md5
 PUBLISHING_FILES+=$$(product)/secondary_gpt:o:md5
+PUBLISHING_FILES+=$$(product)/System.map:o:md5
+PUBLISHING_FILES+=$$(product)/uImage.android:o:md5
+PUBLISHING_FILES+=$$(product)/zImage:o:md5
+PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
+
+##!!## blf files
+PUBLISHING_FILES+=$$(product)/blf:o:md5
+PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
 ifeq ($(product),concord_tz)
 PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
 PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
@@ -65,9 +70,9 @@ endif
 .PHONY: build_droid_root_$$(product)
 build_droid_root_$$(product): private_product:=$$(product)
 build_droid_root_$$(product): private_device:=$$(device)
-build_droid_root_$$(product): build_kernel_$$(product)
 build_droid_root_$$(product): output_dir
 	$$(log) "[$$(private_product)]building android source code ..."
+	$$(hide)mkdir -p $$(OUTPUT_DIR)/$$(private_product)
 	$$(hide)cd $$(SRC_DIR) && \
 	. build/envsetup.sh && \
 	lunch $$(private_product)-$$(DROID_VARIANT) && \
@@ -82,15 +87,67 @@ build_droid_root_$$(product): output_dir
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/ramdisk-recovery.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/ramdisk-recovery.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/ramdisk.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/ramdisk.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/cache.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/cache.img $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -d $$(SRC_DIR)/out/target/product/$$(private_device)/blf/ ]; then cp -r $$(SRC_DIR)/out/target/product/$$(private_device)/blf $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/primary_gpt ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/primary_gpt $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/secondary_gpt ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/secondary_gpt $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/System.map ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/System.map $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $(wildcard $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin*) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin* $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/uImage ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/uImage $$(OUTPUT_DIR)/$$(private_product)/uImage.android; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/zImage ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/zImage $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/vmlinux ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/vmlinux $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip $$(OUTPUT_DIR)/; fi
 	echo "    generating symbols_lib.tgz..." && \
 		cp -a $$(SRC_DIR)/out/target/product/$$(private_device)/symbols/system/lib $$(OUTPUT_DIR)/$$(private_product) && \
 		cd $$(OUTPUT_DIR)/$$(private_product) && tar czf symbols_lib.tgz lib && rm lib -rf
 	$(log) "  done"
 
+$(foreach bconfig,$(boot_configs), \
+$(eval PUBLISHING_FILES+=$$(product)/u-boot.bin.$$(bconfig):m:md5)\
+)
 PUBLISHING_FILES+=$$(product)/symbols_lib.tgz:o:md5
 endef
+
+define define-build-droid-otapackage
+tw:=$$(subst :,  , $(1))
+product:=$$(word 1, $$(tw))
+device:=$$(word 2, $$(tw))
+#$$(warning define-build-droid-otapackage arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
+
+tw:=$$(subst :,  , $(2))
+os:=$$(word 1, $$(tw))
+kernel_cfg:=$$(word 2, $$(tw))
+#$$(warning define-build-droid-otapackage arg2=$(2) tw=$$(tw) os=$$(os) kernel_cfg=$$(kernel_cfg))
+
+tw:=$$(subst :,  , $(3))
+boot_cfg:=$$(word 1, $$(tw))
+#$$(warning define-build-droid-otapackage arg3=$(3) tw=$$(tw) boot_cfg=$$(boot_cfg))
+
+.PHONY:build_droid_otapackage_$$(product)
+build_droid_otapackage_$$(product): build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg)
+
+build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_product:=$$(product)
+build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_device:=$$(device)
+build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_kcfg:=$$(kernel_cfg)
+build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_bcfg:=$$(boot_cfg)
+build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): output_dir
+	$$(log) "starting($$(private_product) kc($$(private_kcfg)) bc($$(private_bcfg)) to build obm"
+	$$(hide)cd $$(SRC_DIR) && \
+	. build/envsetup.sh && \
+	lunch $$(private_product)-$$(DROID_VARIANT) && \
+	cd $$(SRC_DIR) && KERNEL_CONFIG=$$(private_kcfg) UBOOT_CONFIG=$$(private_bcfg) make mrvlotapackage
+	$$(hide)echo "  copy OTA package ..."
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl.zip $$(OUTPUT_DIR)/$$(private_product)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl-recovery.zip $$(OUTPUT_DIR)/$$(private_product)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/obj/PACKAGING/target_files_intermediates/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-target_files.zip $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl-intermediates.zip
+	$(log) "  done for OTA package build."
+	$$(log) "  done."
+
+PUBLISHING_FILES+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl.zip:o:md5
+PUBLISHING_FILES+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl-recovery.zip:o:md5
+PUBLISHING_FILES+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl-intermediates.zip:o:md5
+
+endef
+
 
 #$1: build device
 #$2: internal or external
@@ -138,50 +195,6 @@ endef
 
 export MAKE_JOBS
 
-#$1:build device
-#$2:kernel_config
-define define-kernel-target
-tw:=$$(subst :,  , $(1))
-product:=$$(word 1, $$(tw))
-device:=$$(word 2, $$(tw))
-#$$(warning define-kernel-target arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
-
-tw:=$$(subst :,  , $(2))
-os:=$$(word 1, $$(tw))
-kernel_cfg:=$$(word 2, $$(tw))
-#$$(warning define-kernel-target arg2=$(2) tw=$$(tw) os=$$(os) kernel_cfg=$$(kernel_cfg))
-
-#make sure that PUBLISHING_FILES_XXX is a simply expanded variable
-PUBLISHING_FILES+=$$(product)/zImage.$$(os):o:md5
-PUBLISHING_FILES+=$$(product)/zImage_recovery.$$(os):o:md5
-PUBLISHING_FILES+=$$(product)/uImage.$$(os):o:md5
-PUBLISHING_FILES+=$$(product)/uImage_recovery.$$(os):o:md5
-PUBLISHING_FILES+=$$(product)/vmlinux.$$(os):o:md5
-PUBLISHING_FILES+=$$(product)/System.map.$$(os):o:md5
-
-build_kernel_$$(product): build_kernel_$$(product)_$$(os)_$$(kernel_cfg)
-
-.PHONY: build_kernel_$$(product)_$$(os)_$$(kernel_cfg)
-build_kernel_$$(product)_$$(os)_$$(kernel_cfg): private_os:=$$(os)
-build_kernel_$$(product)_$$(os)_$$(kernel_cfg): private_product:=$$(product)
-build_kernel_$$(product)_$$(os)_$$(kernel_cfg): private_cfg:=$$(kernel_cfg)
-build_kernel_$$(product)_$$(os)_$$(kernel_cfg): koutput:=$$(SRC_DIR)/out/target/product/$$(device)/kbuild-$$(kernel_cfg)
-build_kernel_$$(product)_$$(os)_$$(kernel_cfg): output_dir
-	$$(log) "build kernel for booting $$(private_os) on $$(private_product)..."
-	$$(log) "    kernel_config: $$(private_cfg): ..."
-	$$(hide)cd $$(SRC_DIR)/ && \
-	. build/envsetup.sh && \
-	lunch $$(private_product)-$$(DROID_VARIANT) && \
-	cd $$(KERNELSRC_TOPDIR) && \
-	KERNEL_CONFIG=$$(private_cfg) make clean all
-	$$(hide)mkdir -p $$(OUTPUT_DIR)/$$(private_product)
-	$$(log) "    copy kernel files ..."
-	$$(hide)if [ -f $$(koutput)/arch/arm/boot/zImage ]; then cp $$(koutput)/arch/arm/boot/zImage $$(OUTPUT_DIR)/$$(private_product)/zImage.$$(private_os); fi
-	$$(hide)if [ -f $$(koutput)/arch/arm/boot/uImage ]; then cp $$(koutput)/arch/arm/boot/uImage $$(OUTPUT_DIR)/$$(private_product)/uImage.$$(private_os); fi
-	$$(hide)cp $$(koutput)/vmlinux $$(OUTPUT_DIR)/$$(private_product)/vmlinux.$$(private_os)
-	$$(hide)cp $$(koutput)/System.map $$(OUTPUT_DIR)/$$(private_product)/System.map.$$(private_os)
-	$$(log) "  done."
-endef
 
 # <os>:<kernel_cfg>:
 # os: the operating system
@@ -194,15 +207,10 @@ boot_configs:=eden_concord_sharp_1080p eden_concord_otm_720p eden_concord_lg_720
 $(foreach bd,$(ABS_BUILD_DEVICES),\
 	$(eval $(call define-clean-droid-kernel,$(bd)))\
 	$(eval $(call define-build-droid-kernel,$(bd)))\
-	$(foreach kc,$(kernel_configs),\
-		$(eval $(call define-kernel-target,$(bd),$(kc))))\
 	$(eval $(call define-build-droid-root,$(bd)))\
-	$(foreach bc,$(boot_configs),\
-		$(eval $(call define-uboot-target,$(bd),$(bc))))\
 	$(foreach kc,$(kernel_configs),\
 		$(foreach bc,$(boot_configs),\
-			$(eval $(call define-build-obm,$(bd),$(kc),$(bc)))))\
-	$(eval $(call define-build-swd,$(bd)))\
+			$(eval $(call define-build-droid-otapackage,$(bd),$(kc),$(bc)))))\
 	$(eval $(call define-build-droid-config,$(bd),internal))\
 	$(eval $(call package-droid-nfs-config,$(bd),internal))\
 )
