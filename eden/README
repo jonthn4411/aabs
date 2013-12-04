@@ -79,7 +79,7 @@ setup env -> kernel/modules -> android -> uboot/obm -> update packages)
   1. setup build environment
      $ cd <android_working_dir>
      $ . build/envsetup.sh
-     $ lunch concord_def-<build variant>
+     $ lunch edenconcord_def-<build variant>
      //Select "user" if you are a normal user.
      //otherwise, choose "userdebug" or "eng" to specify what you want to do.
 
