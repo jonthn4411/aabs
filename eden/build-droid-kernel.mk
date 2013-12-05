@@ -101,9 +101,11 @@ build_droid_root_$$(product): output_dir
 		cd $$(OUTPUT_DIR)/$$(private_product) && tar czf symbols_lib.tgz lib && rm lib -rf
 	$(log) "  done"
 
-$(foreach bconfig,$(boot_configs), \
-$(eval PUBLISHING_FILES+=$$(product)/u-boot.bin.$$(bconfig):m:md5)\
-)
+#$(foreach bconfig,$(boot_configs), \
+#$(eval PUBLISHING_FILES+=$$(product)/u-boot.bin.$$(bconfig):m:md5)\
+#)
+
+PUBLISHING_FILES+=$$(product)/u-boot.bin:m:md5
 PUBLISHING_FILES+=$$(product)/symbols_lib.tgz:o:md5
 endef
 
@@ -208,9 +210,6 @@ $(foreach bd,$(ABS_BUILD_DEVICES),\
 	$(eval $(call define-clean-droid-kernel,$(bd)))\
 	$(eval $(call define-build-droid-kernel,$(bd)))\
 	$(eval $(call define-build-droid-root,$(bd)))\
-	$(foreach kc,$(kernel_configs),\
-		$(foreach bc,$(boot_configs),\
-			$(eval $(call define-build-droid-otapackage,$(bd),$(kc),$(bc)))))\
 	$(eval $(call define-build-droid-config,$(bd),internal))\
 	$(eval $(call package-droid-nfs-config,$(bd),internal))\
 )
