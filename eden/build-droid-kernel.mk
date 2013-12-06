@@ -75,7 +75,12 @@ build_droid_root_$$(product): output_dir
 	$$(hide)cd $$(SRC_DIR) && \
 	. build/envsetup.sh && \
 	lunch $$(private_product)-$$(DROID_VARIANT) && \
-	make -j$$(MAKE_JOBS)
+	make -j$$(MAKE_JOBS) && \
+	mv $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin.eden_concord_sharp_1080p && \
+	cd $$(SRC_DIR) && make clean-uboot && UBOOT_DEFCONFIG=eden_concord_lg_720p make u-boot.bin && \
+	mv $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin.eden_concord_lg_720p && \
+	cd $$(SRC_DIR) && make clean-uboot && UBOOT_DEFCONFIG=eden_concord_otm_720p make u-boot.bin && \
+	mv $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin.eden_concord_otm_720p
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/teesst.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/teesst.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/tee_tw.bin ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/tee_tw.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/wtm_rel_eden_RealOTP.bin ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/wtm_rel_eden_RealOTP.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
@@ -100,7 +105,9 @@ build_droid_root_$$(product): output_dir
 		cd $$(OUTPUT_DIR)/$$(private_product) && tar czf symbols_lib.tgz lib && rm lib -rf
 	$(log) "  done"
 
-PUBLISHING_FILES+=$$(product)/u-boot.bin:m:md5
+$(foreach bconfig,$(boot_configs), \
+	$(eval PUBLISHING_FILES+=$$(product)/u-boot.bin.$$(bconfig):m:md5)\
+)
 PUBLISHING_FILES+=$$(product)/symbols_lib.tgz:o:md5
 endef
 
