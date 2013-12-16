@@ -55,6 +55,8 @@ PUBLISHING_FILES+=$$(product)/System.map:o:md5
 PUBLISHING_FILES+=$$(product)/uImage.android:o:md5
 PUBLISHING_FILES+=$$(product)/zImage:o:md5
 PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
+PUBLISHING_FILES+=$$(product)/edenconcord.dtb:o:md5
+
 
 ##!!## blf files
 PUBLISHING_FILES+=$$(product)/blf:o:md5
@@ -99,6 +101,7 @@ build_droid_root_$$(product): output_dir
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/uImage ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/uImage $$(OUTPUT_DIR)/$$(private_product)/uImage.android; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/zImage ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/zImage $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/vmlinux ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/vmlinux $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/edenconcord.dtb ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/edenconcord.dtb $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip $$(OUTPUT_DIR)/; fi
 	echo "    generating symbols_lib.tgz..." && \
 		cp -a $$(SRC_DIR)/out/target/product/$$(private_device)/symbols/system/lib $$(OUTPUT_DIR)/$$(private_product) && \
