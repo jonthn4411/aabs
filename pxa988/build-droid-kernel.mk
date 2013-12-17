@@ -152,9 +152,7 @@ build_droid_$$(product):
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obm*bin $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/zImage $(OUTPUT_DIR)/$$(private_product)/
-	$(hide)cp -f $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/pxa1L88dkb.dtb $(OUTPUT_DIR)/$$(private_product)/
-	$(hide)cp -f $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/pxa1088dkb.dtb $(OUTPUT_DIR)/$$(private_product)/
-	$(hide)cp -f $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/pxa988dkb.dtb $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/*.dtb $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot.img $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/recovery.img $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/u-boot.bin $(OUTPUT_DIR)/$$(private_product)/
