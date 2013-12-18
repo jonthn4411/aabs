@@ -1,4 +1,4 @@
-export ABS_BOARD=concord
+export ABS_BOARD=fpga
 export ABS_DROID_BRANCH=kk4.4
 export ABS_SOC=eden
 export PLATFORM_ANDROID_VARIANT=userdebug

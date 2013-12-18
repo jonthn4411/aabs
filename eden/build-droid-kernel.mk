@@ -55,7 +55,7 @@ PUBLISHING_FILES+=$$(product)/System.map:o:md5
 PUBLISHING_FILES+=$$(product)/uImage.android:o:md5
 PUBLISHING_FILES+=$$(product)/zImage:o:md5
 PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
-PUBLISHING_FILES+=$$(product)/edenconcord.dtb:o:md5
+PUBLISHING_FILES+=$$(product)/edenfpga.dtb:o:md5
 
 
 ##!!## blf files
@@ -78,11 +78,7 @@ build_droid_root_$$(product): output_dir
 	. build/envsetup.sh && \
 	lunch $$(private_product)-$$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS) && \
-	mv $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin.eden_concord_sharp_1080p && \
-	cd $$(SRC_DIR) && make clean-uboot && UBOOT_DEFCONFIG=eden_concord_lg_720p make u-boot.bin && \
-	mv $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin.eden_concord_lg_720p && \
-	cd $$(SRC_DIR) && make clean-uboot && UBOOT_DEFCONFIG=eden_concord_otm_720p make u-boot.bin && \
-	mv $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin.eden_concord_otm_720p
+	mv $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin $$(SRC_DIR)/out/target/product/$$(private_device)/
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/teesst.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/teesst.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/tee_tw.bin ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/tee_tw.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/wtm_rel_eden_RealOTP.bin ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/wtm_rel_eden_RealOTP.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
@@ -101,16 +97,14 @@ build_droid_root_$$(product): output_dir
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/uImage ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/uImage $$(OUTPUT_DIR)/$$(private_product)/uImage.android; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/zImage ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/zImage $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/vmlinux ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/vmlinux $$(OUTPUT_DIR)/$$(private_product)/; fi
-	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/edenconcord.dtb ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/edenconcord.dtb $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/edenfpga.dtb ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/edenfpga.dtb $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip $$(OUTPUT_DIR)/; fi
 	echo "    generating symbols_lib.tgz..." && \
 		cp -a $$(SRC_DIR)/out/target/product/$$(private_device)/symbols/system/lib $$(OUTPUT_DIR)/$$(private_product) && \
 		cd $$(OUTPUT_DIR)/$$(private_product) && tar czf symbols_lib.tgz lib && rm lib -rf
 	$(log) "  done"
 
-$(foreach bconfig,$(boot_configs), \
-	$(eval PUBLISHING_FILES+=$$(product)/u-boot.bin.$$(bconfig):m:md5)\
-)
+PUBLISHING_FILES+=$$(product)/u-boot.bin:m:md5
 PUBLISHING_FILES+=$$(product)/symbols_lib.tgz:o:md5
 endef
 
@@ -209,7 +203,7 @@ export MAKE_JOBS
 # example: android:pxa610_android_defconfig:
 #
 kernel_configs:=android:eden_and_defconfig:
-boot_configs:=eden_concord_sharp_1080p eden_concord_otm_720p eden_concord_lg_720p
+boot_configs:=edena0_fpga
 
 $(foreach bd,$(ABS_BUILD_DEVICES),\
 	$(eval $(call define-clean-droid-kernel,$(bd)))\
