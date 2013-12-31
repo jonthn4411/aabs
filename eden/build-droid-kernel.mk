@@ -79,9 +79,9 @@ build_droid_root_$$(product): output_dir
 	lunch $$(private_product)-$$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS) && \
 	mv $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin.eden_concord_sharp_1080p && \
-	cd $$(SRC_DIR) && make clean-uboot && UBOOT_DEFCONFIG=eden_concord_lg_720p make u-boot.bin && \
+	cd $$(SRC_DIR) && make clean-uboot && UBOOT_DEFCONFIG=eden_concord_lg_720p make pad_uboot && \
 	mv $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin.eden_concord_lg_720p && \
-	cd $$(SRC_DIR) && make clean-uboot && UBOOT_DEFCONFIG=eden_concord_otm_720p make u-boot.bin && \
+	cd $$(SRC_DIR) && make clean-uboot && UBOOT_DEFCONFIG=eden_concord_otm_720p make pad_uboot && \
 	mv $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin.eden_concord_otm_720p
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/teesst.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/teesst.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/tee_tw.bin ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/tee_tw.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
