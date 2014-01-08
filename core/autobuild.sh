@@ -406,7 +406,7 @@ if [ "$FLAG_BUILD" = "true" ]; then
 fi &&
 
 if [ "$FLAG_PKGSRC" = "true" ]; then
-	make -f ${MAKEFILE} pkgsrc 2>&1 | tee -a $STD_LOG
+#	make -f ${MAKEFILE} pkgsrc 2>&1 | tee -a $STD_LOG
 fi &&
 
 if [ "$FLAG_PUBLISH" = "true" ]; then
