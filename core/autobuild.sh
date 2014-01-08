@@ -407,6 +407,7 @@ fi &&
 
 if [ "$FLAG_PKGSRC" = "true" ]; then
 #	make -f ${MAKEFILE} pkgsrc 2>&1 | tee -a $STD_LOG
+	echo "skip pkgsrc...."
 fi &&
 
 if [ "$FLAG_PUBLISH" = "true" ]; then
