@@ -66,6 +66,7 @@ PUBLISHING_FILES+=$$(product)/HL_LTG_DL_DKB.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LTG.bin:o:md5
 PUBLISHING_FILES+=$$(product)/nvm.img:o:md5
 PUBLISHING_FILES+=$$(product)/ReliableData.bin:o:md5
+PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:o:md5
 
 
 .PHONY: build_droid_root_$$(product)
