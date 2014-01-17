@@ -67,6 +67,8 @@ pxa988t7_wifi_def/HL_TD_M08_AI_A0_Flash.bin pxa988t7_wifi_def/prebuilt_bin/HL_TD
 pxa988t7_wifi_def/KL_CP.bin pxa988t7_wifi_def/prebuilt_bin/KL_CP.bin
 pxa988t7_wifi_def/KUNLUN_Z0_M14_AI_Flash.bin pxa988t7_wifi_def/prebuilt_bin/KUNLUN_Z0_M14_AI_Flash.bin
 pxa988t7_wifi_def/KUNLUN_A0_M15_AI_Flash.bin pxa988t7_wifi_def/prebuilt_bin/KUNLUN_A0_M15_AI_Flash.bin
+pxa988t7_wifi_def/TABLET_CP.bin pxa988t7_wifi_def/TABLET_CP.bin
+pxa988t7_wifi_def/TABLET_MSA.bin pxa988t7_wifi_def/TABLET_MSA.bin
 pxa988t7_wifi_def/Boerne_DIAG.mdb.txt pxa988t7_wifi_def/prebuilt_bin/Boerne_DIAG.mdb.txt
 pxa988t7_wifi_def/KL_CP_NVM.mdb pxa988t7_wifi_def/prebuilt_bin/KL_CP_NVM.mdb
 pxa988t7_wifi_def/KL_CP_DIAG.mdb pxa988t7_wifi_def/prebuilt_bin/KL_CP_DIAG.mdb
