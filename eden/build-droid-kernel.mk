@@ -61,7 +61,7 @@ PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
 ##!!## blf files
 PUBLISHING_FILES+=$$(product)/blf:o:md5
 PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
-ifeq ($(product),concord_tz)
+ifeq ($(product),edenconcord_tz)
 PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
 PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
 PUBLISHING_FILES+=$$(product)/wtm_rel_eden_RealOTP.bin:o:md5
