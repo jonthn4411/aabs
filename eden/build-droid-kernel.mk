@@ -78,11 +78,11 @@ build_droid_root_$$(product): output_dir
 	. build/envsetup.sh && \
 	lunch $$(private_product)-$$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS) && \
-	mv $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin.eden_concord_sharp_1080p && \
-	cd $$(SRC_DIR) && make clean-uboot && UBOOT_DEFCONFIG=eden_concord_lg_720p make pad_uboot && \
-	mv $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin.eden_concord_lg_720p && \
-	cd $$(SRC_DIR) && make clean-uboot && UBOOT_DEFCONFIG=eden_concord_otm_720p make pad_uboot && \
-	mv $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin.eden_concord_otm_720p
+	for bc in $$(boot_configs) ; do \
+		echo Now build uboot with cfg=$$$$bc && \
+		cd $$(SRC_DIR) && make clean-uboot && UBOOT_DEFCONFIG=$$$$bc make pad_uboot && \
+		cp $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin.$$$$bc; \
+	done
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/teesst.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/teesst.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/tee_tw.bin ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/tee_tw.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/wtm_rel_eden_RealOTP.bin ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/wtm_rel_eden_RealOTP.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
@@ -137,6 +137,12 @@ build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_device:=
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_kcfg:=$$(kernel_cfg)
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_bcfg:=$$(boot_cfg)
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): output_dir
+ifeq ($$(private_device),edena0)
+	$$(log) "disalbe otapakcage build by generating fake ota files for edena0 temporally"
+	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl.zip
+	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl-recovery.zip
+	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl-intermediates.zip
+else
 	$$(log) "starting($$(private_product) kc($$(private_kcfg)) bc($$(private_bcfg)) to build obm"
 	$$(hide)cd $$(SRC_DIR) && \
 	. build/envsetup.sh && \
@@ -146,6 +152,7 @@ build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): output_dir
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl.zip $$(OUTPUT_DIR)/$$(private_product)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl-recovery.zip $$(OUTPUT_DIR)/$$(private_product)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/obj/PACKAGING/target_files_intermediates/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-target_files.zip $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl-intermediates.zip
+endif
 	$(log) "  done for OTA package build."
 	$$(log) "  done."
 
@@ -208,10 +215,24 @@ export MAKE_JOBS
 # kernel_cfg:kernel config file used to build the kernel
 # example: android:pxa610_android_defconfig:
 #
+define define-build-init
+tw:=$$(subst :,  , $(1))
+product:=$$(word 1, $$(tw))
+device:=$$(word 2, $$(tw))
+$$(warning define-build-init ************************** arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
+ifeq ($$(device),edena0)
+kernel_configs:=android:defconfig:
+boot_configs:=edena0_fpga
+else
 kernel_configs:=android:eden_and_defconfig:
 boot_configs:=eden_concord_sharp_1080p eden_concord_otm_720p eden_concord_lg_720p
+endif
+
+$$(warning define-build-init ************************** kernel_configs=$$(kernel_configs), boot_configs=$$(boot_configs))
+endef
 
 $(foreach bd,$(ABS_BUILD_DEVICES),\
+	$(eval $(call define-build-init,$(bd)))\
 	$(eval $(call define-clean-droid-kernel,$(bd)))\
 	$(eval $(call define-build-droid-kernel,$(bd)))\
 	$(eval $(call define-build-droid-root,$(bd)))\
