@@ -73,6 +73,11 @@ endif
 build_droid_root_$$(product): private_product:=$$(product)
 build_droid_root_$$(product): private_device:=$$(device)
 build_droid_root_$$(product): output_dir
+	echo !!!!!!!!!!!Copy Android.mk from edencommon to kernel/uboot/bootwrapper!!!!!!!!!!!
+	cp $$(SRC_DIR)/device/marvell/edencommon/makefiles/kernel.mk $$(SRC_DIR)/kernel/Android.mk
+	cp $$(SRC_DIR)/device/marvell/edencommon/makefiles/bootwrapper.mk $$(SRC_DIR)/bootable/bootloader/uboot/Android.mk
+	cp $$(SRC_DIR)/device/marvell/edencommon/makefiles/uboot.mk $$(SRC_DIR)/bootable/bootloader/bootwrapper/Android.mk
+
 	$$(log) "[$$(private_product)]building android source code ..."
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$$(private_product)
 	$$(hide)cd $$(SRC_DIR) && \
