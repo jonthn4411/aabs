@@ -109,7 +109,7 @@ build_droid_root_$$(product): output_dir
 		cd $$(OUTPUT_DIR)/$$(private_product) && tar czf symbols_lib.tgz lib && rm lib -rf
 	$(log) "  done"
 
-$(foreach bconfig,$(private_boot_configs), \
+$(foreach bconfig,$(boot_configs), \
 	$(eval PUBLISHING_FILES+=$$(product)/u-boot.bin.$$(bconfig):m:md5)\
 )
 PUBLISHING_FILES+=$$(product)/symbols_lib.tgz:o:md5
