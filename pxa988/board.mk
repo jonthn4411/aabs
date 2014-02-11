@@ -1,4 +1,4 @@
-ABS_BUILD_DEVICES ?= pxa1088t7_def:pxa1088t7 pxa988t7_def:pxa988t7 pxa988t7_wifi_def:pxa988t7_wifi pxa988t7_wifi_3g_def:pxa988t7_wifi_3g
+ABS_BUILD_DEVICES ?= pxa1088t7_def:pxa1088t7 pxa1088t7_dsds:pxa1088t7 pxa988t7_def:pxa988t7 pxa988t7_wifi_def:pxa988t7_wifi pxa988t7_wifi_3g_def:pxa988t7_wifi_3g
 BOARD:=pxa988
 ANDROID_VERSION:=$(ABS_DROID_BRANCH)
 PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
