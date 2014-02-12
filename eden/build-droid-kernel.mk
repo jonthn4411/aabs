@@ -67,6 +67,15 @@ PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
 PUBLISHING_FILES+=$$(product)/wtm_rel_eden_RealOTP.bin:o:md5
 PUBLISHING_FILES+=$$(product)/wtm_rel_eden_VirtualOTP.bin:o:md5
 endif
+PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:o:md5
+PUBLISHING_FILES+=$$(product)/HL_DL_M09_Y0_AI_SKL_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LTG_DL_DKB.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LTG_DL_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LTG_DL_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/Skylark_LTG.bin:o:md5
+PUBLISHING_FILES+=$$(product)/nvm.img:o:md5
+PUBLISHING_FILES+=$$(product)/ReliableData.bin:o:md5
+
 
 .PHONY: build_droid_root_$$(product)
 build_droid_root_$$(product): private_product:=$$(product)
@@ -98,6 +107,7 @@ build_droid_root_$$(product): output_dir
 	$$(hide)if [ -d $$(SRC_DIR)/out/target/product/$$(private_device)/blf/ ]; then cp -r $$(SRC_DIR)/out/target/product/$$(private_device)/blf $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/primary_gpt ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/primary_gpt $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/secondary_gpt ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/secondary_gpt $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -d $$(SRC_DIR)/out/target/product/$$(private_device)/telephony/ ]; then cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/telephony/* $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/System.map ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/System.map $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $(wildcard $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin*) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin* $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/uImage ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/uImage $$(OUTPUT_DIR)/$$(private_product)/uImage.android; fi
