@@ -163,9 +163,9 @@ gen_log_csv() {
 function parse_lastbuild_file()
 {
   local line
-  line=$(grep "[:blank:]*Package:" $1)
+  line=$(grep "[[:blank:]]*Package:" $1)
   LAST_BUILD_PACKAGE=${line##Package:}
-  line=$(grep "[:blank:]*Build-Num:" $1)
+  line=$(grep "[[:blank:]]*Build-Num:" $1)
   LAST_BUILD_BUILDNUM=${line##Build-Num:}
 
   if [ -z "$LAST_BUILD_PACKAGE" ] || [ -z "$LAST_BUILD_BUILDNUM" ]; then
@@ -187,8 +187,8 @@ function parse_lastrel_file()
   local SAVE_LAST_VER
 
   DIR=$(dirname $1)
-  LAST_REL_PACKAGE=$(awk -F: '/[:blank:]*Package/ { print $2 }' $1)
-  LAST_REL_BUILDNUM=$(awk -F: '/[:blank:]*Build-Num/ { print $2 }' $1)
+  LAST_REL_PACKAGE=$(awk -F: '/[/[:blank:]]*Package/ { print $2 }' $1)
+  LAST_REL_BUILDNUM=$(awk -F: '/[/[:blank:]]*Build-Num/ { print $2 }' $1)
   LAST_REL_VERSION=$(basename $1 | awk -F. '{ print $2 }' $1)
 
   while [ -z "$LAST_REL_PACKAGE" -o -z "$LAST_REL_BUILDNUM" ]
@@ -268,13 +268,13 @@ function parse_lastrel_file()
 function parse_last_ms1_file()
 {
   local line
-  line=$(grep "[:blank:]*Package:" $1)
+  line=$(grep "[[:blank:]]*Package:" $1)
   LAST_MS1_PACKAGE=${line##*Package:}
 
-  line=$(grep "[:blank:]*Version:" $1)
+  line=$(grep "[[:blank:]]*Version:" $1)
   LAST_MS1_VERSION=${line##*Version:}
 
-  line=$(grep "[:blank:]*Build-Num:" $1)
+  line=$(grep "[[:blank:]]*Build-Num:" $1)
   LAST_MS1_BUILDNUM=${line##*Build-Num:}
 
   if [ -z "$LAST_MS1_PACKAGE" ] || [ -z "$LAST_MS1_VERSION" ] || [ -z "$LAST_MS1_BUILDNUM" ]; then
@@ -290,13 +290,13 @@ function parse_last_ms1_file()
 function parse_last_ms2_file()
 {
   local line
-  line=$(grep "[:blank:]*Package:" $1)
+  line=$(grep "[[:blank:]]*Package:" $1)
   LAST_MS2_PACKAGE=${line##*Package:}
 
-  line=$(grep "[:blank:]*Version:" $1)
+  line=$(grep "[[:blank:]]*Version:" $1)
   LAST_MS2_VERSION=${line##*Version:}
 
-  line=$(grep "[:blank:]*Build-Num:" $1)
+  line=$(grep "[[:blank:]]*Build-Num:" $1)
   LAST_MS2_BUILDNUM=${line##*Build-Num:}
 
   if [ -z "$LAST_MS2_PACKAGE" ] || [ -z "$LAST_MS2_VERSION" ] || [ -z "$LAST_MS2_BUILDNUM" ]; then
