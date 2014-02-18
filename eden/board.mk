@@ -1,4 +1,4 @@
-ABS_BUILD_DEVICES?=edena0_tz:edena0 edenconcord_def:edenconcord edenconcord_tz:edenconcord
+ABS_BUILD_DEVICES?=edena0_tz:edena0
 
 ANDROID_VERSION:=$(ABS_DROID_BRANCH)
 DROID_VARIANT:=$(PLATFORM_ANDROID_VARIANT)
