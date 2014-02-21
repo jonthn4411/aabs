@@ -223,10 +223,10 @@ product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
 ifeq ($$(device),edena0)
 kernel_configs:=android:defconfig:
-boot_configs:=eden_concord
+boot_configs:=eden_ca53_concord
 else
 kernel_configs:=android:eden_and_defconfig:
-boot_configs:=eden_ca53_concord
+boot_configs:=eden_concord
 endif
 endef
 
