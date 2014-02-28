@@ -244,6 +244,11 @@ PUBLISHING_FILES+=$$(product)/radio-helan-wt.img:o:md5
 PUBLISHING_FILES+=$$(product)/TABLET_CP.bin:o:md5
 PUBLISHING_FILES+=$$(product)/TABLET_MSA.bin:o:md5
 
+PUBLISHING_FILES+=$$(product)/HL_WB_DSDS_CP.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_WB_DSDS_CP_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HL_WB_DSDS_CP_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HELAN_A0_M16_AI_DSDS_Flash.bin:o:md5
+
 PUBLISHING_FILES+=$$(product)/radio-helanlte-ltg.img:o:md5
 PUBLISHING_FILES+=$$(product)/HL_DL_M09_Y0_AI_SKL_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_DL.bin:o:md5
