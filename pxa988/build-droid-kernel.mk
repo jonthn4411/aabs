@@ -173,8 +173,8 @@ PUBLISHING_FILES+=$$(product)/boot.img:o:md5
 PUBLISHING_FILES+=$$(product)/recovery.img:o:md5
 PUBLISHING_FILES+=$$(product)/uImage:o:md5
 PUBLISHING_FILES+=$$(product)/zImage:o:md5
-PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
-PUBLISHING_FILES+=$$(product)/System.map:o:md5
+PUBLISHING_FILES+=$$(product)/symbols/vmlinux:o:md5
+PUBLISHING_FILES+=$$(product)/symbols/System.map:o:md5
 PUBLISHING_FILES+=$$(product)/primary_gpt_4g:o:md5
 PUBLISHING_FILES+=$$(product)/secondary_gpt_4g:o:md5
 PUBLISHING_FILES+=$$(product)/primary_gpt:o:md5
@@ -184,10 +184,10 @@ PUBLISHING_FILES+=$$(product)/userdata_4g.img:o:md5
 PUBLISHING_FILES+=$$(product)/system.img:m:md5
 PUBLISHING_FILES+=$$(product)/ramdisk.img:m:md5
 PUBLISHING_FILES+=$$(product)/ramdisk-rooted.img:o:md5
-PUBLISHING_FILES+=$$(product)/symbols_system.tgz:o:md5
+PUBLISHING_FILES+=$$(product)/symbols/symbols_system.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/ramdisk-recovery.img:o:md5
-PUBLISHING_FILES+=$$(product)/build.prop:o:md5
-PUBLISHING_FILES+=$$(product)/modules.tgz:o:md5
+PUBLISHING_FILES+=$$(product)/symbols/build.prop:o:md5
+PUBLISHING_FILES+=$$(product)/symbols/modules.tgz:o:md5
 PUBLISHING_FILES+=product_mode_build.txt:o
 
 ##!!## blf files
@@ -197,11 +197,7 @@ PUBLISHING_FILES+=$$(product)/blf:o:md5
 PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
 PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
 
-PUBLISHING_FILES+=$$(product)/pxafs.img:o:md5
-PUBLISHING_FILES+=$$(product)/pxa_symbols.tgz:o:md5
 PUBLISHING_FILES+=$$(product)/radio.img:o:md5
-PUBLISHING_FILES+=$$(product)/radio-emei.img:o:md5
-PUBLISHING_FILES+=$$(product)/radio-kunlun.img:o:md5
 
 PUBLISHING_FILES+=$$(product)/nvm-wb.img:o:md5
 PUBLISHING_FILES+=$$(product)/nvm-td.img:o:md5
@@ -304,9 +300,9 @@ build_droid_otapackage_$$(product):
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/PACKAGING/target_files_intermediates/$$(private_product)-target_files*.zip $(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-intermediates.zip
 	$(log) "  done for OTA package build."
 
-PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl.zip:o:md5
-PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl-recovery.zip:o:md5
-PUBLISHING_FILES+=$$(product)/$$(product)-ota-mrvl-intermediates.zip:o:md5
+PUBLISHING_FILES+=$$(product)/ota/$$(product)-ota-mrvl.zip:o:md5
+PUBLISHING_FILES+=$$(product)/ota/$$(product)-ota-mrvl-recovery.zip:o:md5
+PUBLISHING_FILES+=$$(product)/ota/$$(product)-ota-mrvl-intermediates.zip:o:md5
 
 endef
 #define define-build-droid-otapackage
