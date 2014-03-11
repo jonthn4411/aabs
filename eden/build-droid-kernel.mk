@@ -57,16 +57,13 @@ PUBLISHING_FILES+=$$(product)/System.map:o:md5
 PUBLISHING_FILES+=$$(product)/uImage.android:o:md5
 PUBLISHING_FILES+=$$(product)/zImage:o:md5
 PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
-
-##!!## blf files
+PUBLISHING_FILES+=$$(product)/edenconcord.dtb:o:md5
+PUBLISHING_FILES+=$$(product)/mv_arm64_fw.bin:o:md5
 PUBLISHING_FILES+=$$(product)/blf:o:md5
-PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
-ifeq ($(product),edenconcord_tz)
 PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
 PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
 PUBLISHING_FILES+=$$(product)/wtm_rel_eden_RealOTP.bin:o:md5
 PUBLISHING_FILES+=$$(product)/wtm_rel_eden_VirtualOTP.bin:o:md5
-endif
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:o:md5
 PUBLISHING_FILES+=$$(product)/HL_DL_M09_Y0_AI_SKL_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_DL_DKB.bin:o:md5
@@ -76,6 +73,7 @@ PUBLISHING_FILES+=$$(product)/Skylark_LTG.bin:o:md5
 PUBLISHING_FILES+=$$(product)/nvm.img:o:md5
 PUBLISHING_FILES+=$$(product)/ReliableData.bin:o:md5
 PUBLISHING_FILES+=$$(product)/u-boot.bin:o:md5
+PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
 
 
 .PHONY: build_droid_root_$$(product)
@@ -108,6 +106,8 @@ build_droid_root_$$(product): output_dir
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/uImage ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/uImage $$(OUTPUT_DIR)/$$(private_product)/uImage.android; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/zImage ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/zImage $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/vmlinux ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/vmlinux $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/edenconcord.dtb ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/edenconcord.dtb $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/mv_arm64_fw.bin ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/mv_arm64_fw.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip $$(OUTPUT_DIR)/; fi
 	echo "    generating symbols_lib.tgz..." && \
 		cp -a $$(SRC_DIR)/out/target/product/$$(private_device)/symbols/system/lib $$(OUTPUT_DIR)/$$(private_product) && \
@@ -140,7 +140,7 @@ build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_device:=
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_kcfg:=$$(kernel_cfg)
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_bcfg:=$$(boot_cfg)
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): output_dir
-ifeq ($$(private_device),edena0)
+ifeq ($$(private_device),pxa1928dkb)
 	$$(log) "disalbe otapakcage build by generating fake ota files for edena0 temporally"
 	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl.zip
 	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl-recovery.zip
@@ -221,7 +221,7 @@ define define-build-init
 tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
-ifeq ($$(device),edena0)
+ifeq ($$(device),pxa1928dkb)
 kernel_configs:=android:defconfig:
 boot_configs:=eden_ca53_concord
 else
