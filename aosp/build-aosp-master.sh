@@ -1,0 +1,7 @@
+export ABS_BOARD=aosp
+export ABS_DROID_BRANCH=master
+export ABS_SOC=aosp
+export PLATFORM_ANDROID_VARIANT=userdebug
+export ABS_MANIFEST_BRANCH=$ABS_DROID_BRANCH
+export ABS_UNIQUE_MANIFEST_BRANCH=1
+

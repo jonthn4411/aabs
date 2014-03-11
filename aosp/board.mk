@@ -1,0 +1,13 @@
+ABS_BUILD_DEVICES?=aosp_arm64
+
+ANDROID_VERSION:=$(ABS_DROID_BRANCH)
+DROID_VARIANT:=$(PLATFORM_ANDROID_VARIANT)
+
+ifeq ($(strip $(DROID_VARIANT)),)
+	DROID_VARIANT:=user
+endif
+
+build: build_aosp
+
+.PHONY:build_aosp
+	ls

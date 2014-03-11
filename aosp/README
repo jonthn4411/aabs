@@ -1,0 +1,326 @@
+Files in this folder
+====================
+-Change logs and checksum file
+  changelog.build       GIT change log of each project since last build.
+  changelog.day	GIT change log of each project since yesterday.
+  changelog.week	GIT change log of each project since last week.
+  changelog.biweek 	GIT change log of each project since 2 weeks ago.
+  changelog.month	GIT change log of each project since a month ago.
+
+  checksums.md5	This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
+
+-Source codes
+ -Internal Use
+  manifest.xml	Saving the GIT commit number of each project used in this build. This is for internal use only.
+  droid_all_src.tgz     Completing source code tar ball, including everything, such as kernel, uboot, obm, android. This is for internal use only.
+
+ -External Uses: the below files will be in the release package. To restore the complete source code that is used to build this package, please follow the intructions in Release Notes.
+
+  setup_android.sh  The script that is used to setup the code base of this build from the below tarball. For details about this, please refer to release notes.
+
+  kernel_src.tgz	Kernel base source code tar ball.
+  kernel_patches.tgz    Kernel patches that are applied on kernel base source.
+
+  marvell_manifest.xml  The manifest file used to download base android source code from google.
+  android_src.tgz       The source code of projects that are introduced by Marvell. Not including the projects introduced by Google.
+  android_patches.tgz   The patches that applied to android projects introduced by Google.
+
+  uboot_src.tgz         Uboot base source code tar ball.
+  uboot_patches.tgz     The patches that applied to uboot base source.
+
+  obm_src.tgz           OBM source code tar ball. Will be released.
+
+-droid-gcc folder
+ Files under droid-gcc folder are built with android-toolchain.
+ If this folder is missing, it means that this package wasn't built with google gcc toolchain.
+
+-mrvl-gcc folder
+ Files under mrvl-gcc folder are built with marvell gcc toolchain.
+ If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
+
+-GPT and UBoot
+ primary_gpt                            primary GUID partition table (for 16G eMMC)
+ secondary_gpt                          secondary GUID partition table (for 16G eMMC)
+ u-boot.bin.eden_concord_lg_720p        the uboot for LG 720P panel
+ u-boot.bin.eden_concord_otm_720p       the uboot for OTM 720P panel
+ u-boot.bin.eden_concord_sharp_1080p    the uboot for Sharp 1080P panel
+
+
+-Kernel and Modules for Android
+  uImage.android           The kernel image
+  uImage_recovery.android  The recovery kernel image
+
+-Android File Systems
+  root_nfs_xxx.tgz         Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
+
+  ramdisk.img              Android ramdisk image.
+  ramdisk_recovery.img     Android ramdisk image in recovery mode.
+  system.img               Android system image.
+
+  if xxx is "internal" means everything is built in the package, and should be used internally.
+
+  if xxx is "external" means the package can be delivered outside, components with license issue has been removed.
+
+-Extra Libraries
+  None.
+
+How to get source code from git server
+=====================================
+  1. repo init -u ssh://shgit.marvell.com/git/android/platform/manifest --repo-url ssh://shgit.marvell.com/git/android/tools/repo.git -b <branch-name>
+  2. repo sync
+
+  <branch-name> : for example eden-kk4.4/rls_eden_jb42_alpha5/...
+
+How to build kernel and android images:
+setup env -> build packages
+=====================================
+  1. setup build environment
+     $ cd <android_working_dir>
+     $ . build/envsetup.sh
+     $ lunch edenconcord_def-<build variant>
+     //Select "user" if you are a normal user.
+     //otherwise, choose "userdebug" or "eng" to specify what you want to do.
+
+  2. build packages, you may choose to build all package or sole components:
+
+  2.1) build all, including kernel/uboot/obm/android/...:
+     $ cd <android_working_dir>
+     $ make -j16
+
+  After step two, all pacakges are built out. You may find them in out/target/product/edenconcord or its subfolder.
+
+  2.2) build kernel
+     $ cd <android_working_dir>
+     $ make build-kernel
+
+  2.3) build uboot
+     $ cd <android_working_dir>
+     $ make build-uboot
+
+  2.4) build obm
+     $ cd <android_working_dir>
+     $ make build-obm
+
+  2.5) build boot.img(kernel+ramdisk)
+     $ cd <android_working_dir>
+     $ make bootimage
+
+  2.6) build system.img
+     $ cd <android_working_dir>
+     $ make systemimage
+
+
+Flash instructions in uboot
+=====================
+  tftp primary_gpt
+  mmc write 0x107fc0 0 0x22
+
+  tftp secondary_gpt
+  mmc write 0x107fc0 0x1d59fdf 0x21
+
+  tftp uImage.android
+  mmc write 0x107fc0 0x8000 0x2000
+
+  tftp ramdisk.img
+  mmc write 0x107fc0 0xa000 0x800
+
+  tftp 0x10000000 system.img
+  unsparse mmc 0 0x10000000 0x1500000 0x20000000
+
+  /* we don't need to flash both cache.img & userdata.img */
+  /* but we can forcedly mkfs two partitions by flashing corresponding images */
+  tftp cache.img
+  unsparse mmc 0 0x107fc0 0x29f00000 0x20000000
+  tftp userdata.img
+  unsparse mmc 0 0x107fc0 0x49f00000 0x400000000
+
+Notes for socket boards:
+  As the patch of raising DDR max_freq to 528Mhz is merged
+  it would make kernel failed to start up on socket boards.
+
+  We have to set extra parameters in u-boot for them:
+  > printenv bootargs
+  bootargs=<original boot args>
+  > setenv bootargs <original boot args> ddr_max=312000
+  > saveenv
+
+Flash images with software downloader
+=====================
+  1) How to enter the software downloading mode
+     a. Entering from bootrom
+          You have to choose this mode, if there is only BBU shipped.
+          Hold on BootROM-DEBUG + ON-KEY.
+     b. Entering from OBM
+          Press on 'VOLUME-UP' during reset.
+
+  2) There are 2 blf files, respectively for socket board and soldered board
+  EDEN_Nontrusted_eMMC_socket.blf
+  EDEN_Nontrusted_eMMC.blf
+
+  3) There are 3 u-boot.bin, respectively for
+       LG 5" 720p, with goodix touch
+       OTM 4.5" 720p, with synaptics touch
+       Sharp 5" 1080p, with goodix/synaptics touch
+     LCD
+     please rename the corresponding binary to u-boot.bin before flashing.
+       u-boot.bin.eden_concord_lg_720p
+       u-boot.bin.eden_concord_otm_720p
+       u-boot.bin.eden_concord_sharp_1080p
+
+Daughter cards
+=====================
+  8787 combo wib card is not applicable as EDEN hasn't supported
+  26M clock from RF card.
+
+How to Disable GC
+=====================
+remove or rename:
+  /system/lib/modules/galcore.ko
+  /system/lib/egl/egl.cfg
+  /system/lib/hw/gralloc.mrvl.so
+  /system/lib/hw/hwcomposer.mrvl.so
+
+
+Setup Android on eMMC
+=========================
+
+Boot the device with console, and then flash the images via uboot
+....
+After done, power-off and power-on again to boot eden from emmc.
+
+Setup Android on eMMC using fastboot
+=========================
+To enter the mode of fastboot, please hold down the key "VOLUME_UP" for a while.
+...
+
+Setup Android on SD Card
+========================
+Follow the below process to make a SD card with Android root file system installed.
+...
+
+Setup Android on NFS
+====================
+1) Install the NFS server on PC host.
+2) mkdir /nfs and /nfs/android
+3) add the below line to /etc/exports
+  /nfs/android            *(rw,sync,no_root_squash,no_subtree_check)
+  Notes: be sure you specify all the optional paramters above.
+4) tar xvf root_nfs.tgz /tmp/
+5) mv /tmp/root_nfs/* /nfs/android
+6) sudo exportfs -r
+
+Last, you should use uImage to boot the kernel and then set the bootargs variable in UBoot.
+(Notes:if adb is enabled in the kernel, this way doesn't work as the usb net won't work as the usb is used for adb)
+MMP2>> t uImage.android
+MMP2>> bootm
+
+Note : erase ramdisk first if you want to boot from sdcard
+
+Notes:we used one kernel binary solution, the boot sequence is nand --> mmc --> nfs, now nand is not supported, so remove sdcard first if you want to boot from nfs. And the nfs server is fixed as 192.168.1.100:/nfs/android. if you want to change it, modify device/marvell/<TARGET_DEVICE>/roodir/rdinit and build the kernel again
+
+Notes:You only need use setenv and savenv command one time. Next time UBoot will load the environment variable from eMMC automaticllay. But later if you want use uImage.android.mmc to boot Android from SD card, you should clear the "bootargs" environment variable. You can do this by:
+
+
+
+Known Issues about running Android on NFS
+=========================================
+
++Media on SD Card can't be seen by Video/Music/Photo App
+------------------------------------------------------------
+  Symptom: Plug the SD card to device, with media files on SD card, but Video/Music/Photo App can't see anything.
+  Reason: Mounting SD card is disabled in root_nfs.tgz on purpose. As if Android is running on SD card, enable mounting of SD card may cause confliction. So by default we disable it in root_nfs.tgz.
+  Workaround:You can enable it manually by edit /system/etc/vold.conf, uncomment the section of volume_sdcard.
+
+FAQ
+=====
++How to avoid entering the suspend state
+#svc power stayon true
+
++How to modify the files after the system_xxx.img has been burned to the flash?
+-------------------------------------------------------------------------------
+Please remount the system partition with rw mode by
+$adb remount
+
++How to enable the fake ac and battery status?
+----------------------------------------------
+If the battery service reports wrong battery status, Android power off the system automatically. You can use the below way to request battery service to report fake status to cheat android system.
+
+Open /init.rc, add the below line before class_start default:
+setprop battery.fake_ac true
+
++How to control cpufreqd?
+----------------------------------------------
+1) List all available Profiles
+$ cpufreqd-get
+
+2) List the current applied Profiles for all cpus
+$ cpufreqd-get -l
+
+3) Make cpufreqd run in manual mode
+$ cpufreqd-set manual
+
+4) Specify a profile to cpufreqd
+$ cpufreqd-set number
+
+note: number is an integer and means the sequence number of profile.
+
+5) Make cpufreqd run in dynamic mode
+$ cpufreqd-set dynamic
+
++How to dump the current memory status (including both pmem and normal memory)?
+----------------------------------------------
+# echo m > /proc/sysrq-trigger
+# dmesg
+
+Product Distribution
+================================================================
+To distribute final product, we should use customer specific keys to sign APK files and update package instead of test keys.
+
+1) generate keys and collect password
+$ cd <android_working_dir>
+$ development/tools/make_key releasekey '/C=US/ST=California/L=Santa Clara/O=Android/OU=Android/CN=Android/emailAddress=android@marvell.com'
+$ development/tools/make_key platform '/C=US/ST=California/L=Santa Clara/O=Android/OU=Android/CN=Android/emailAddress=android@marvell.com'
+$ development/tools/make_key shared '/C=US/ST=California/L=Santa Clara/O=Android/OU=Android/CN=Android/emailAddress=android@marvell.com'
+$ development/tools/make_key media '/C=US/ST=California/L=Santa Clara/O=Android/OU=Android/CN=Android/emailAddress=android@marvell.com'
+Collect password to a single file "pw" and move all keys and password file to "device/marvell/<TARGET_DEVICE>/security
+
+"pw" file example:
+# Enter key passwords between the [[[ ]]] brackets.
+[[[  media-marvell  ]]] device/marvell/<TARGET_DEVICE>/security/media
+[[[  platform-marvell  ]]] device/marvell/<TARGET_DEVICE>/security/platform
+[[[  releasekey-marvell  ]]] device/marvell/<TARGET_DEVICE>/security/releasekey
+[[[  shared-marvell  ]]] device/marvell/<TARGET_DEVICE>/security/shared
+
+2) sign all APK files in the target zipfile with customer's keys and produce a new target zipfile
+$ export ANDROID_PW_FILE=device/marvell/<TARGET_DEVICE>/security/pw
+$ target_files=`find out/target/product/brownstone/obj/PACKAGING/target_files_intermediates/ -type f -name "*-target_files-*.*.zip"`
+$ signed_files=out/target/product/brownstone/signed_target_files.zip
+$ signed_folder=out/target/product/brownstone/signed_target_folder
+$ build/tools/releasetools/sign_target_files_apks -o -d device/marvell/<TARGET_DEVICE>/security $target_files $signed_files
+
+3) generate system image containing new signed APK files
+$ mkdir $signed_folder
+$ unzip -o -q $signed_files -d $signed_folder
+$ system/extras/ext4_utils/mkuserimg.sh -s $signed_folder/SYSTEM $signed_folder/system.img ext4 system 268435456
+
+4) generate recovery ramdisk containing new public key
+$ out/host/linux-x86/bin/mkbootfs $signed_folder/RECOVERY/RAMDISK | out/host/linux-x86/bin/minigzip > $signed_folder/ramdisk_recovery.img
+
+5) generate update package signed with new key
+$ build/tools/releasetools/ota_from_target_files -v -p out/host/linux-x86 -k device/marvell/<TARGET_DEVICE>/security/releasekey $signed_files $signed_folder/update_droid_signed.zip
+
+We should distribute the new system.img, ramdisk_recovery.img and update_droid_signed.zip instead of the original ones.
+
+CPA (Code Performance Analyzer) simple guide
+================================================================
+1) Launch mpdc on device (require root permission)
+
+adb shell (with root permission)
+# load_mpdc.sh
+# mpdc_svr &
+
+2) Run CPA on Host (CPA/analyzer/cpa)
+3) Create a project (normally we use the option of "Hotspot Sampling")
+4) Start the profiling by pressing "Start"
+5) choose ADB connection in dialog
+
