@@ -41,14 +41,11 @@ Files in this folder
 -GPT and UBoot
  primary_gpt                            primary GUID partition table (for 16G eMMC)
  secondary_gpt                          secondary GUID partition table (for 16G eMMC)
- u-boot.bin.eden_concord_lg_720p        the uboot for LG 720P panel
- u-boot.bin.eden_concord_otm_720p       the uboot for OTM 720P panel
- u-boot.bin.eden_concord_sharp_1080p    the uboot for Sharp 1080P panel
+ u-boot.bin        the uboot
 
 
 -Kernel and Modules for Android
   uImage.android           The kernel image
-  uImage_recovery.android  The recovery kernel image
 
 -Android File Systems
   root_nfs_xxx.tgz         Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
@@ -77,7 +74,7 @@ setup env -> build packages
   1. setup build environment
      $ cd <android_working_dir>
      $ . build/envsetup.sh
-     $ lunch edenconcord_def-<build variant>
+     $ lunch pxa1928dkb_tz-<build variant>
      //Select "user" if you are a normal user.
      //otherwise, choose "userdebug" or "eng" to specify what you want to do.
 
@@ -87,7 +84,7 @@ setup env -> build packages
      $ cd <android_working_dir>
      $ make -j16
 
-  After step two, all pacakges are built out. You may find them in out/target/product/edenconcord or its subfolder.
+  After step two, all pacakges are built out. You may find them in out/target/product/pxa1928dkb or its subfolder.
 
   2.2) build kernel
      $ cd <android_working_dir>
@@ -157,16 +154,6 @@ Flash images with software downloader
   EDEN_Nontrusted_eMMC_socket.blf
   EDEN_Nontrusted_eMMC.blf
 
-  3) There are 3 u-boot.bin, respectively for
-       LG 5" 720p, with goodix touch
-       OTM 4.5" 720p, with synaptics touch
-       Sharp 5" 1080p, with goodix/synaptics touch
-     LCD
-     please rename the corresponding binary to u-boot.bin before flashing.
-       u-boot.bin.eden_concord_lg_720p
-       u-boot.bin.eden_concord_otm_720p
-       u-boot.bin.eden_concord_sharp_1080p
-
 Daughter cards
 =====================
   8787 combo wib card is not applicable as EDEN hasn't supported
@@ -180,6 +167,13 @@ remove or rename:
   /system/lib/hw/gralloc.mrvl.so
   /system/lib/hw/hwcomposer.mrvl.so
 
+How to Pad uboot for Software downloader
+=====================
+  mv edenconcord.dtb edenconcord.dtb.orig && \
+  cat edenconcord.dtb.orig /dev/zero |head -c 65536 > edenconcord.dtb ; \
+  mv u-boot.bin u-boot.bin.orig
+  cat u-boot.bin.orig /dev/zero|head -c 786432 > u-boot.bin.padded
+  cat u-boot.bin.padded edenconcord.dtb > u-boot.bin
 
 Setup Android on eMMC
 =========================
