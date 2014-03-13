@@ -73,8 +73,6 @@ device:=$$(word 2, $$(tw) )
 
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
 PUBLISHING_FILES+=$$(product)/uImage:m:md5
-PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
-PUBLISHING_FILES+=$$(product)/System.map:o:md5
 build_kernel_$$(product): private_product:=$$(product)
 build_kernel_$$(product): private_device:=$$(device)
 build_kernel_$$(product): output_dir
