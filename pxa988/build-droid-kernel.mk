@@ -159,7 +159,7 @@ build_droid_$$(product):
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader.zip $(OUTPUT_DIR)/
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/LoopSelf.bin ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/LoopSelf.bin $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/HLN2_NonTLoader_eMMC_DDR.bin ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/HLN2_NonTLoader_eMMC_DDR.bin $(OUTPUT_DIR)/$$(private_product)/; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader_Helan2.zip ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader_Helan2.zip $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader_Helan2.zip ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader_Helan2.zip $(OUTPUT_DIR)/; fi
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/modules; fi &&\
 	mkdir -p $(OUTPUT_DIR)/$$(private_product)/modules
 	$(hide)cp -af $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib/modules  $(OUTPUT_DIR)/$$(private_product)/
