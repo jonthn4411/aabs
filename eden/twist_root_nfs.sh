@@ -40,8 +40,8 @@ a\
 
 }' init.rc &&
 
-echo " modifying init.eden.rc..." &&
-sed -i "/^[ tab]*mount_all/ s/mount_all/#(for nfs)mount_all/" init.eden.rc &&
+echo " modifying init.pxa1928.rc..." &&
+sed -i "/^[ tab]*mount_all/ s/mount_all/#(for nfs)mount_all/" init.pxa1928.rc &&
 
 #add service to init nfs
 if grep "service init-nfs /init.nfs.sh" init.rc >/dev/null; then
