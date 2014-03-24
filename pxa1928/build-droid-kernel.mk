@@ -58,8 +58,12 @@ PUBLISHING_FILES+=$$(product)/uImage.android:o:md5
 PUBLISHING_FILES+=$$(product)/zImage:o:md5
 PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
 PUBLISHING_FILES+=$$(product)/pxa1928concord.dtb:o:md5
-PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
 PUBLISHING_FILES+=$$(product)/blf:o:md5
+PUBLISHING_FILES+=$$(product)/u-boot.bin:o:md5
+PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
+
+ifneq ($$(ABS_DROID_BRANCH),master)
+PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
 PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
 PUBLISHING_FILES+=$$(product)/wtm_rel_eden_RealOTP.bin:o:md5
 PUBLISHING_FILES+=$$(product)/wtm_rel_eden_VirtualOTP.bin:o:md5
@@ -71,9 +75,7 @@ PUBLISHING_FILES+=$$(product)/HL_LTG_SL_DKB_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LTG.bin:o:md5
 PUBLISHING_FILES+=$$(product)/nvm.img:o:md5
 PUBLISHING_FILES+=$$(product)/ReliableData.bin:o:md5
-PUBLISHING_FILES+=$$(product)/u-boot.bin:o:md5
-PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
-
+endif
 
 .PHONY: build_droid_root_$$(product)
 build_droid_root_$$(product): private_product:=$$(product)
