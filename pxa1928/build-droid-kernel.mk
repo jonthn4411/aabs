@@ -140,13 +140,13 @@ build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_device:=
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_kcfg:=$$(kernel_cfg)
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_bcfg:=$$(boot_cfg)
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): output_dir
-ifeq ($$(private_device),pxa1928dkb)
-	$$(log) "disalbe otapakcage build by generating fake ota files for edena0 temporally"
+ifeq ($$(ABS_DROID_BRANCH),master)
+	$$(log) "disalbe otapackage build by generating fake ota files temporally"
 	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl.zip
 	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl-recovery.zip
 	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl-intermediates.zip
 else
-	$$(log) "starting($$(private_product) kc($$(private_kcfg)) bc($$(private_bcfg)) to build obm"
+	$$(log) "starting($$(private_product) kc($$(private_kcfg)) bc($$(private_bcfg)) to build mrvlotapackage"
 	$$(hide)cd $$(SRC_DIR) && \
 	. build/envsetup.sh && \
 	lunch $$(private_product)-$$(DROID_VARIANT) && \
