@@ -259,11 +259,31 @@ PUBLISHING_FILES+=$$(product)/Skylark_LTG.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LWG.bin:o:md5
 PUBLISHING_FILES+=$$(product)/radio-helanlte.img:o:md5
 
-
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:o:md5
 PUBLISHING_FILES+=$$(product)/ReliableData.bin:o:md5
+PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:o:md5
+PUBLISHING_FILES+=$$(product)/DKBI.bin:o:md5
+PUBLISHING_FILES+=$$(product)/DKBIWB.bin:o:md5
+PUBLISHING_FILES+=$$(product)/nvm.img:o:md5
+PUBLISHING_FILES+=$$(product)/NZ_LWG_CP.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/NZ_LWG_CP_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/NZ_CP.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/NZ_CP_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/NZ_DL_M09_Y0_AI_SKL_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/NZ_LTG_DL_DKB.bin:o:md5
+PUBLISHING_FILES+=$$(product)/NZ_LWG_DKB.bin:o:md5
+PUBLISHING_FILES+=$$(product)/NZ_LWG_M09_B0_SKL_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/NZ_M08_AI_B0_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/OBMI.bin:o:md5
+PUBLISHING_FILES+=$$(product)/OBMIWB.bin:o:md5
+PUBLISHING_FILES+=$$(product)/ReliableData.bin:o:md5
+PUBLISHING_FILES+=$$(product)/Skylark_LTG.bin:o:md5
+PUBLISHING_FILES+=$$(product)/Skylark_LWG.bin:o:md5
+PUBLISHING_FILES+=$$(product)/TABLET_CP.bin:o:md5
+PUBLISHING_FILES+=$$(product)/TABLET_MSA.bin:o:md5
+
 ifeq ($(product),pxa988dkb_def)
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3.bin:o:md5
