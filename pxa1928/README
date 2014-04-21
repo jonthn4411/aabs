@@ -66,7 +66,7 @@ How to get source code from git server
   1. repo init -u ssh://shgit.marvell.com/git/android/platform/manifest --repo-url ssh://shgit.marvell.com/git/android/tools/repo.git -b <branch-name>
   2. repo sync
 
-  <branch-name> : for example eden-kk4.4/rls_eden_jb42_alpha5/...
+  <branch-name> : for example pxa1928-kk4.4/rls_pxa1928_kk4.4_alpha1/...
 
 How to build kernel and android images:
 setup env -> build packages
@@ -148,16 +148,18 @@ Flash images with software downloader
           You have to choose this mode, if there is only BBU shipped.
           Hold on BootROM-DEBUG + ON-KEY.
      b. Entering from OBM
-          Press on 'VOLUME-UP' during reset.
+          Press on 'VOLUME-UP + VOLUME-DOWN' during reset.
 
-  2) There are 2 blf files, respectively for socket board and soldered board
-  EDEN_Nontrusted_eMMC_socket.blf
-  EDEN_Nontrusted_eMMC.blf
+  2) There are 3 blf files, pleaes choose correct one:
+  PXA1928_Trusted_eMMC_Hynix.blf                #PORed board with Hynix memory
+  PXA1928_Trusted_eMMC_Elpida.blf               #PORed board with Elpida memory
+  PXA1928_Trusted_eMMC_Hynix_Discrete.blf       #Discrete board with Hynix memory
+
+  Note: The main board for PORed board is green, while Discrete board is blue. Memory type, "Hynix" or "Elpida" is marked on the chip, which is right at the center of board if you turn your board up and down;
 
 Daughter cards
 =====================
-  8787 combo wib card is not applicable as EDEN hasn't supported
-  26M clock from RF card.
+  8777/8887 combo wib card is supported
 
 How to Disable GC
 =====================
@@ -169,18 +171,18 @@ remove or rename:
 
 How to Pad uboot for Software downloader
 =====================
-  mv edenconcord.dtb edenconcord.dtb.orig && \
-  cat edenconcord.dtb.orig /dev/zero |head -c 65536 > edenconcord.dtb ; \
+  mv pxa1928concord.dtb pxa1928concord.dtb.orig && \
+  cat pxa1928concord.dtb.orig /dev/zero |head -c 65536 > pxa1928concord.dtb ; \
   mv u-boot.bin u-boot.bin.orig
   cat u-boot.bin.orig /dev/zero|head -c 786432 > u-boot.bin.padded
-  cat u-boot.bin.padded edenconcord.dtb > u-boot.bin
+  cat u-boot.bin.padded pxa1928concord.dtb > u-boot.bin
 
 Setup Android on eMMC
 =========================
 
 Boot the device with console, and then flash the images via uboot
 ....
-After done, power-off and power-on again to boot eden from emmc.
+After done, power-off and power-on again to boot pxa1928 from emmc.
 
 Setup Android on eMMC using fastboot
 =========================
