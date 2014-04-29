@@ -402,7 +402,14 @@ if [ -z "$change_since_last_build" -a "$ABS_VIRTUAL_BUILD" != "true" ]; then
 fi &&
 
 if [ "$FLAG_BUILD" = "true" ]; then
-	make -f ${MAKEFILE} build 2>&1 | tee -a $STD_LOG 
+	get_new_publish_dir
+	export PUBLISH_DIR
+	ABS_HAVE_ANDROID_BUILD_VERSION=true
+	export ABS_HAVE_ANDROID_BUILD_VERSION
+	ABS_ANDROID_BUILD_VERSION=${BUILD_NUM}_${ABS_PRODUCT_CODE}${RLS_SUFFIX}
+	export ABS_ANDROID_BUILD_VERSION
+	echo "ABS_ANDROID_BUILD_VERSION: $ABS_ANDROID_BUILD_VERSION"  | tee -a $STD_LOG
+	make -f ${MAKEFILE} build 2>&1 | tee -a $STD_LOG
 fi &&
 
 if [ "$FLAG_PKGSRC" = "true" ]; then
@@ -410,8 +417,6 @@ if [ "$FLAG_PKGSRC" = "true" ]; then
 fi &&
 
 if [ "$FLAG_PUBLISH" = "true" ]; then
-	get_new_publish_dir
-	export PUBLISH_DIR
 	mkdir -p $PUBLISH_DIR
     if [ "$ABS_VIRTUAL_BUILD" = "true" ]; then
         BACKUP_DIR_BASE=/git/android/manifest_bkup/virtual_build/${ABS_SOC}
