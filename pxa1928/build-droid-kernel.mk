@@ -53,10 +53,10 @@ PUBLISHING_FILES+=$$(product)/recovery.img:o:md5
 PUBLISHING_FILES+=$$(product)/cache.img:o:md5
 PUBLISHING_FILES+=$$(product)/primary_gpt:o:md5
 PUBLISHING_FILES+=$$(product)/secondary_gpt:o:md5
-PUBLISHING_FILES+=$$(product)/System.map:o:md5
+PUBLISHING_FILES2+=$$(product)/System.map:./$$(product)/symbols/:o:md5
 PUBLISHING_FILES+=$$(product)/uImage.android:o:md5
 PUBLISHING_FILES+=$$(product)/zImage:o:md5
-PUBLISHING_FILES+=$$(product)/vmlinux:o:md5
+PUBLISHING_FILES2+=$$(product)/vmlinux:./$$(product)/symbols/:o:md5
 PUBLISHING_FILES+=$$(product)/pxa1928concord.dtb:o:md5
 PUBLISHING_FILES+=$$(product)/pxa1928concord-discrete.dtb:o:md5
 PUBLISHING_FILES+=$$(product)/blf:o:md5
@@ -116,7 +116,7 @@ build_droid_root_$$(product): output_dir
 		cd $$(OUTPUT_DIR)/$$(private_product) && tar czf symbols_lib.tgz lib && rm lib -rf
 	$(log) "  done"
 
-PUBLISHING_FILES+=$$(product)/symbols_lib.tgz:o:md5
+PUBLISHING_FILES2+=$$(product)/symbols_lib.tgz:./$$(product)/symbols/:o:md5
 endef
 
 define define-build-droid-otapackage
@@ -161,9 +161,9 @@ endif
 	$(log) "  done for OTA package build."
 	$$(log) "  done."
 
-PUBLISHING_FILES+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl.zip:o:md5
-PUBLISHING_FILES+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl-recovery.zip:o:md5
-PUBLISHING_FILES+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl-intermediates.zip:o:md5
+PUBLISHING_FILES2+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl.zip:./$$(product)/ota/:o:md5
+PUBLISHING_FILES2+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl-recovery.zip:./$$(product)/ota/:o:md5
+PUBLISHING_FILES2+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl-intermediates.zip:./$$(product)/ota/:o:md5
 
 endef
 
