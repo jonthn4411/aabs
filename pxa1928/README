@@ -141,21 +141,25 @@ Notes for socket boards:
   > setenv bootargs <original boot args> ddr_max=312000
   > saveenv
 
-Flash images with software downloader
+Flash images with Software Downloader
 =====================
-  1) How to enter the software downloading mode
+  1) Copy blf/*.blf files and all prebuilt files under pxa1928dkb_tz to <Software_Downloader>/EDEN_DKB folders.
+
+  2) How to enter Software Downloading mode
      a. Entering from bootrom
           You have to choose this mode, if there is only BBU shipped.
           Hold on BootROM-DEBUG + ON-KEY.
      b. Entering from OBM
           Press on 'VOLUME-UP + VOLUME-DOWN' during reset.
 
-  2) There are 3 blf files, pleaes choose correct one:
+  3) There are 3 blf files, pleaes choose correct one:
   PXA1928_Trusted_eMMC_Hynix.blf                #PORed board with Hynix memory
   PXA1928_Trusted_eMMC_Elpida.blf               #PORed board with Elpida memory
   PXA1928_Trusted_eMMC_Hynix_Discrete.blf       #Discrete board with Hynix memory
 
   Note: The main board for PORed board is green, while Discrete board is blue. Memory type, "Hynix" or "Elpida" is marked on the chip, which is right at the center of board if you turn your board up and down;
+
+  4) For more help on how to use Software Downloader, please refer to <Software_Downloader>/SWDownloader_UserGuide.pdf
 
 Daughter cards
 =====================
@@ -169,7 +173,7 @@ remove or rename:
   /system/lib/hw/gralloc.mrvl.so
   /system/lib/hw/hwcomposer.mrvl.so
 
-How to Pad uboot for Software downloader
+How to Pad uboot for Software Downloader
 =====================
   mv pxa1928concord.dtb pxa1928concord.dtb.orig && \
   cat pxa1928concord.dtb.orig /dev/zero |head -c 65536 > pxa1928concord.dtb ; \
