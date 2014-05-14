@@ -173,6 +173,7 @@ PUBLISHING_FILES2+=Software_Downloader_Helan2.zip:./:o:md5
 PUBLISHING_FILES+=$$(product)/WTM.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HLN2_NonTLoader_eMMC_DDR.bin:o:md5
 PUBLISHING_FILES+=$$(product)/obm.bin:o:md5
+PUBLISHING_FILES+=$$(product)/obm_auto.bin:o:md5
 PUBLISHING_FILES+=$$(product)/obm_trusted_tz.bin:o:md5
 PUBLISHING_FILES+=$$(product)/obm_trusted_ntz.bin:o:md5
 PUBLISHING_FILES+=$$(product)/u-boot.bin:o:md5
