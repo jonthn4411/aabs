@@ -61,6 +61,7 @@ PUBLISHING_FILES+=$$(product)/pxa1928concord.dtb:o:md5
 PUBLISHING_FILES+=$$(product)/pxa1928concord-discrete.dtb:o:md5
 PUBLISHING_FILES+=$$(product)/blf:o:md5
 PUBLISHING_FILES+=$$(product)/u-boot.bin:o:md5
+PUBLISHING_FILES+=$$(product)/obm_trusted_tz.bin:o:md5
 PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
 
 ifneq ($$(ABS_DROID_BRANCH),aosp)
@@ -110,6 +111,7 @@ build_droid_root_$$(product): output_dir
 	$$(hide)if [ -d $$(SRC_DIR)/out/target/product/$$(private_device)/telephony/ ]; then cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/telephony/* $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/System.map ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/System.map $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $(wildcard $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin*) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin* $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $(wildcard $$(SRC_DIR)/out/target/product/$$(private_device)/obm_trusted_tz.bin) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/obm_trusted_tz.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/uImage ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/uImage $$(OUTPUT_DIR)/$$(private_product)/uImage.android; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/zImage ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/zImage $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/vmlinux ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/vmlinux $$(OUTPUT_DIR)/$$(private_product)/; fi
