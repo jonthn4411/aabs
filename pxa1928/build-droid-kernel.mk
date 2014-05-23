@@ -44,44 +44,44 @@ tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
 #$$(warning define-build-droid-root arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
-PUBLISHING_FILES+=$$(product)/boot.img:o:md5
-PUBLISHING_FILES+=$$(product)/system.img:m:md5
-PUBLISHING_FILES+=$$(product)/userdata.img:o:md5
-PUBLISHING_FILES+=$$(product)/ramdisk.img:o:md5
-PUBLISHING_FILES+=$$(product)/ramdisk-recovery.img:o:md5
-PUBLISHING_FILES+=$$(product)/recovery.img:o:md5
-PUBLISHING_FILES+=$$(product)/cache.img:o:md5
-PUBLISHING_FILES+=$$(product)/primary_gpt:o:md5
-PUBLISHING_FILES+=$$(product)/secondary_gpt:o:md5
-PUBLISHING_FILES2+=$$(product)/System.map:./$$(product)/symbols/:o:md5
-PUBLISHING_FILES+=$$(product)/uImage.android:o:md5
-PUBLISHING_FILES+=$$(product)/zImage:o:md5
-PUBLISHING_FILES2+=$$(product)/vmlinux:./$$(product)/symbols/:o:md5
-PUBLISHING_FILES+=$$(product)/pxa1928concord.dtb:o:md5
-PUBLISHING_FILES+=$$(product)/pxa1928concord-discrete.dtb:o:md5
-PUBLISHING_FILES+=$$(product)/blf:o:md5
-PUBLISHING_FILES+=$$(product)/u-boot.bin:o:md5
-PUBLISHING_FILES+=$$(product)/obm_trusted_tz.bin:o:md5
+PUBLISHING_FILES2+=$$(product)/boot.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/system.img:./$$(product)/flash/:m:md5
+PUBLISHING_FILES2+=$$(product)/userdata.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/ramdisk.img:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/ramdisk-recovery.img:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/recovery.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/cache.img:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/primary_gpt:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/secondary_gpt:./$$(product)/flash/:o:md5
+PUBLISHING_FILES22+=$$(product)/System.map:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/uImage.android:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/zImage:./$$(product)/debug/:o:md5
+PUBLISHING_FILES22+=$$(product)/vmlinux:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/pxa1928concord.dtb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/pxa1928concord-discrete.dtb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/blf:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/u-boot.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/obm_trusted_tz.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
 
 ifneq ($$(ABS_DROID_BRANCH),aosp)
-PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
-PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
-PUBLISHING_FILES+=$$(product)/wtm_rel_eden_RealOTP.bin:o:md5
-PUBLISHING_FILES+=$$(product)/wtm_rel_eden_VirtualOTP.bin:o:md5
-PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:o:md5
-PUBLISHING_FILES+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LTG_SL_DKB.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LTG_SL_DKB_NVM.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LTG_SL_DKB_DIAG.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LWG_DKB.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LWG_DKB_DIAG.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LWG_DKB_NVM.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LWG_M09_B0_SKL_Flash.bin:o:md5
-PUBLISHING_FILES+=$$(product)/Skylark_LTG.bin:o:md5
-PUBLISHING_FILES+=$$(product)/Skylark_LWG.bin:o:md5
-PUBLISHING_FILES+=$$(product)/nvm.img:o:md5
-PUBLISHING_FILES+=$$(product)/ReliableData.bin:o:md5
+PUBLISHING_FILES2+=$$(product)/tee_tw.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/teesst.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/wtm_rel_eden_RealOTP.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/wtm_rel_eden_VirtualOTP.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Boerne_DIAG.mdb.txt:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_M09_B0_SKL_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LTG.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LWG.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/nvm.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/ReliableData.bin:./$$(product)/flash/:o:md5
 endif
 
 .PHONY: build_droid_root_$$(product)
@@ -123,7 +123,7 @@ build_droid_root_$$(product): output_dir
 		cd $$(OUTPUT_DIR)/$$(private_product) && tar czf symbols_lib.tgz lib && rm lib -rf
 	$(log) "  done"
 
-PUBLISHING_FILES2+=$$(product)/symbols_lib.tgz:./$$(product)/symbols/:o:md5
+PUBLISHING_FILES2+=$$(product)/symbols_lib.tgz:./$$(product)/debug/:o:md5
 endef
 
 define define-build-droid-otapackage
@@ -201,7 +201,7 @@ tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
 #$$(warning packet-droid-nfs-config arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
-PUBLISHING_FILES+=$$(product)/root_nfs_$(2).tgz:m:md5
+PUBLISHING_FILES+=$$(product)/root_nfs_$(2).tgz:./$$(product)/debug/:m:md5
 
 .PHONY: package_droid_nfs_$$(product)_$(2)
 package_droid_nfs_$$(product)_$(2): private_product:=$$(product)
