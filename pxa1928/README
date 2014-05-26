@@ -2,23 +2,23 @@ Files in this folder
 ====================
 -Change logs and checksum file
   changelog.build       GIT change log of each project since last build.
-  changelog.day	GIT change log of each project since yesterday.
-  changelog.week	GIT change log of each project since last week.
-  changelog.biweek 	GIT change log of each project since 2 weeks ago.
-  changelog.month	GIT change log of each project since a month ago.
+  changelog.day         GIT change log of each project since yesterday.
+  changelog.week        GIT change log of each project since last week.
+  changelog.biweek      GIT change log of each project since 2 weeks ago.
+  changelog.month       GIT change log of each project since a month ago.
 
-  checksums.md5	This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
+  checksums.md5         This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
 
 -Source codes
  -Internal Use
-  manifest.xml	Saving the GIT commit number of each project used in this build. This is for internal use only.
+  manifest.xml          Saving the GIT commit number of each project used in this build. This is for internal use only.
   droid_all_src.tgz     Completing source code tar ball, including everything, such as kernel, uboot, obm, android. This is for internal use only.
 
  -External Uses: the below files will be in the release package. To restore the complete source code that is used to build this package, please follow the intructions in Release Notes.
 
-  setup_android.sh  The script that is used to setup the code base of this build from the below tarball. For details about this, please refer to release notes.
+  setup_android.sh      The script that is used to setup the code base of this build from the below tarball. For details about this, please refer to release notes.
 
-  kernel_src.tgz	Kernel base source code tar ball.
+  kernel_src.tgz        Kernel base source code tar ball.
   kernel_patches.tgz    Kernel patches that are applied on kernel base source.
 
   marvell_manifest.xml  The manifest file used to download base android source code from google.
@@ -30,29 +30,21 @@ Files in this folder
 
   obm_src.tgz           OBM source code tar ball. Will be released.
 
--droid-gcc folder
- Files under droid-gcc folder are built with android-toolchain.
- If this folder is missing, it means that this package wasn't built with google gcc toolchain.
-
--mrvl-gcc folder
- Files under mrvl-gcc folder are built with marvell gcc toolchain.
- If this folder is missed, it means that this package wasn't built with marvell gcc toolchain.
-
 -GPT and UBoot
- primary_gpt                            primary GUID partition table (for 16G eMMC)
- secondary_gpt                          secondary GUID partition table (for 16G eMMC)
- u-boot.bin        the uboot
+  primary_gpt           primary GUID partition table (for 16G eMMC)
+  secondary_gpt         secondary GUID partition table (for 16G eMMC)
+  u-boot.bin            the uboot
 
 
 -Kernel and Modules for Android
-  uImage.android           The kernel image
+  uImage.android        The kernel image
 
 -Android File Systems
-  root_nfs_xxx.tgz         Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
+  root_nfs_xxx.tgz      Android root file system that can be run on SD card or NFS. Be notes, modules in modules_android_mmc.tgz are used in this package.
 
-  ramdisk.img              Android ramdisk image.
-  ramdisk_recovery.img     Android ramdisk image in recovery mode.
-  system.img               Android system image.
+  ramdisk.img           Android ramdisk image.
+  ramdisk_recovery.img  Android ramdisk image in recovery mode.
+  system.img            Android system image.
 
   if xxx is "internal" means everything is built in the package, and should be used internally.
 
@@ -61,12 +53,20 @@ Files in this folder
 -Extra Libraries
   None.
 
-How to get source code from git server
+How to get latest source code from git server
 =====================================
   1. repo init -u ssh://shgit.marvell.com/git/android/platform/manifest --repo-url ssh://shgit.marvell.com/git/android/tools/repo.git -b <branch-name>
   2. repo sync
 
   <branch-name> : for example pxa1928-kk4.4/rls_pxa1928_kk4.4_alpha1/...
+
+How to get source code according to manifest file
+=====================================
+  1. repo init -u ssh://shgit.marvell.com/git/android/platform/manifest --repo-url ssh://shgit.marvell.com/git/android/tools/repo.git -b <branch-name>
+  2. cp manifest.xml to .repo/manifests/
+  3. repo init -m manifest.xml
+  4. repo sync
+
 
 How to build kernel and android images:
 setup env -> build packages
@@ -143,21 +143,22 @@ Notes for socket boards:
 
 Flash images with Software Downloader
 =====================
-  1) Copy blf/*.blf files and all prebuilt files under pxa1928dkb_tz to <Software_Downloader>/EDEN_DKB folders.
+  1) Copy flash folder under pxa1928dkb_tz to <Software_Downloader>/ folders.
 
-  2) How to enter Software Downloading mode
+  2) Open flash/blf/*.blf file in Software Downloader. There are 3 blf files, pleaes choose correct one:
+  PXA1928_Trusted_eMMC_Hynix.blf                #PORed board with Hynix memory
+  PXA1928_Trusted_eMMC_Elpida.blf               #PORed board with Elpida memory
+  PXA1928_Trusted_eMMC_Hynix_Discrete.blf       #Discrete board with Hynix memory
+
+  Note: The main board for PORed board is green, while Discrete board is blue. Memory type, "Hynix" or "Elpida" is marked on the chip, which is right at the center of board if you turn your board up and down;
+
+  3) How to enter Software Downloading mode
      a. Entering from bootrom
           You have to choose this mode, if there is only BBU shipped.
           Hold on BootROM-DEBUG + ON-KEY.
      b. Entering from OBM
           Press on 'VOLUME-UP + VOLUME-DOWN' during reset.
 
-  3) There are 3 blf files, pleaes choose correct one:
-  PXA1928_Trusted_eMMC_Hynix.blf                #PORed board with Hynix memory
-  PXA1928_Trusted_eMMC_Elpida.blf               #PORed board with Elpida memory
-  PXA1928_Trusted_eMMC_Hynix_Discrete.blf       #Discrete board with Hynix memory
-
-  Note: The main board for PORed board is green, while Discrete board is blue. Memory type, "Hynix" or "Elpida" is marked on the chip, which is right at the center of board if you turn your board up and down;
 
   4) For more help on how to use Software Downloader, please refer to <Software_Downloader>/SWDownloader_UserGuide.pdf
 
