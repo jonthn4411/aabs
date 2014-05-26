@@ -70,7 +70,7 @@ PUBLISHING_FILES2+=$$(product)/teesst.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/wtm_rel_eden_RealOTP.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/wtm_rel_eden_VirtualOTP.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Boerne_DIAG.mdb.txt:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_NVM.mdb:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DIAG.mdb:./$$(product)/debug/:o:md5
@@ -201,7 +201,7 @@ tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
 #$$(warning packet-droid-nfs-config arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
-PUBLISHING_FILES+=$$(product)/root_nfs_$(2).tgz:./$$(product)/debug/:m:md5
+PUBLISHING_FILES2+=$$(product)/root_nfs_$(2).tgz:./$$(product)/debug/:m:md5
 
 .PHONY: package_droid_nfs_$$(product)_$(2)
 package_droid_nfs_$$(product)_$(2): private_product:=$$(product)
