@@ -151,9 +151,9 @@ build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_bcfg:=$$
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): output_dir
 ifeq ($$(ABS_DROID_BRANCH),aosp)
 	$$(log) "disalbe otapackage build by generating fake ota files temporally"
-	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl.zip
-	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl-recovery.zip
-	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl-intermediates.zip
+	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl.zip
+	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-recovery.zip
+	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-intermediates.zip
 else
 	$$(log) "starting($$(private_product) kc($$(private_kcfg)) bc($$(private_bcfg)) to build mrvlotapackage"
 	$$(hide)cd $$(SRC_DIR) && \
@@ -161,16 +161,16 @@ else
 	lunch $$(private_product)-$$(DROID_VARIANT) && \
 	cd $$(SRC_DIR) && KERNEL_CONFIG=$$(private_kcfg) UBOOT_CONFIG=$$(private_bcfg) make mrvlotapackage
 	$$(hide)echo "  copy OTA package ..."
-	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl.zip $$(OUTPUT_DIR)/$$(private_product)
-	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl-recovery.zip $$(OUTPUT_DIR)/$$(private_product)
-	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/obj/PACKAGING/target_files_intermediates/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-target_files.zip $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)_$$(private_kcfg)_$$(private_bcfg)-ota-mrvl-intermediates.zip
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/$$(private_product)-ota-mrvl.zip $$(OUTPUT_DIR)/$$(private_product)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/$$(private_product)-ota-mrvl-recovery.zip $$(OUTPUT_DIR)/$$(private_product)
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/obj/PACKAGING/target_files_intermediates/$$(private_product)-target_files.zip $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-intermediates.zip
 endif
 	$(log) "  done for OTA package build."
 	$$(log) "  done."
 
-PUBLISHING_FILES2+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl.zip:./$$(product)/ota/:o:md5
-PUBLISHING_FILES2+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl-recovery.zip:./$$(product)/ota/:o:md5
-PUBLISHING_FILES2+=$$(product)/$$(product)_$$(kernel_cfg)_$$(boot_cfg)-ota-mrvl-intermediates.zip:./$$(product)/ota/:o:md5
+PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl.zip:./$$(product)/ota/:o:md5
+PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl-recovery.zip:./$$(product)/ota/:o:md5
+PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl-intermediates.zip:./$$(product)/ota/:o:md5
 
 endef
 
