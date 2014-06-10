@@ -64,7 +64,7 @@ PUBLISHING_FILES2+=$$(product)/u-boot.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/obm_trusted_tz.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
 
-ifneq ($$(ABS_DROID_BRANCH),aosp)
+ifeq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0),)
 PUBLISHING_FILES2+=$$(product)/tee_tw.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/teesst.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/wtm_rel_eden_RealOTP.bin:./$$(product)/flash/:o:md5
@@ -149,7 +149,7 @@ build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_device:=
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_kcfg:=$$(kernel_cfg)
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_bcfg:=$$(boot_cfg)
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): output_dir
-ifeq ($$(ABS_DROID_BRANCH),aosp)
+ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0),)
 	$$(log) "disalbe otapackage build by generating fake ota files temporally"
 	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl.zip
 	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-recovery.zip
