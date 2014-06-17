@@ -93,7 +93,7 @@ publish_dir:
 	$(hide)if [ ! -d "$(PUBLISH_DIR)" ]; then \
 	    mkdir -p $(PUBLISH_DIR) && chmod g+w $(PUBLISH_DIR); \
 	fi
-	@ln -s $(ABS_PUBLISH_DIR_FF_BASE) $(PUBLISH_DIR)
+	@ln -s $(PUBLISH_DIR) $(ABS_PUBLISH_DIR_FF_BASE) 
 
 clean_md5_file:
 	@echo -n > $(OUTPUT_DIR)/$(MD5_FILE)
