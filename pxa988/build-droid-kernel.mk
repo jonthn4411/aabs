@@ -268,11 +268,23 @@ PUBLISHING_FILES+=$$(product)/TABLET_CP.bin:o:md5
 PUBLISHING_FILES+=$$(product)/TABLET_MSA.bin:o:md5
 
 PUBLISHING_FILES+=$$(product)/radio-helanlte-ltg.img:o:md5
-PUBLISHING_FILES+=$$(product)/HL_DL_M09_Y0_AI_SKL_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_DL.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/nvm-helanlte-ltg.img:o:md5
+PUBLISHING_FILES+=$$(product)/nvm-helanlte.img:o:md5
+PUBLISHING_FILES+=$$(product)/Skylark_LTG.bin:o:md5
+PUBLISHING_FILES+=$$(product)/Skylark_LWG.bin:o:md5
+PUBLISHING_FILES+=$$(product)/radio-helanlte.img:o:md5
+
+#Helan2 GF Parts update cp image name update aabs begin
+ifeq ($(product),pxa1U88dkb_def)
+PUBLISHING_FILES+=$$(product)/HL2_SS_M09_Y0_AI_SKL_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL2_LTG_SL_DKB_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HL2_LTG_SL_DKB_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HL2_LTG_SL_DKB.bin:o:md5
+PUBLISHING_FILES+=$$(product)/Skylark_LTG_SS_V13.bin:o:md5
+else
 PUBLISHING_FILES+=$$(product)/HL_DL_M09_Y0_AI_SKL_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_DL_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_DL_DKB.bin:o:md5
@@ -281,10 +293,6 @@ PUBLISHING_FILES+=$$(product)/HL_LWG_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LWG_DKB.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LWG_M09_B0_SKL_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LWG_NVM.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/nvm-helanlte.img:o:md5
-PUBLISHING_FILES+=$$(product)/Skylark_LTG.bin:o:md5
-PUBLISHING_FILES+=$$(product)/Skylark_LWG.bin:o:md5
-PUBLISHING_FILES+=$$(product)/radio-helanlte.img:o:md5
 PUBLISHING_FILES+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_SL_DKB_DIAG.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_SL_DKB.bin:o:md5
@@ -293,6 +301,8 @@ PUBLISHING_FILES+=$$(product)/Skylark_LTG_V11.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LTG_V13.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LWG_V11.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LWG_V13.bin:o:md5
+endif
+#Helan2 GF Parts update cp image name update aabs end
 
 
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
