@@ -93,7 +93,6 @@ publish_dir:
 	$(hide)if [ ! -d "$(PUBLISH_DIR)" ]; then \
 	    mkdir -p $(PUBLISH_DIR) && chmod g+w $(PUBLISH_DIR); \
 	fi
-	@ln -s $(PUBLISH_DIR) $(ABS_PUBLISH_DIR_FF_BASE) 
 
 clean_md5_file:
 	@echo -n > $(OUTPUT_DIR)/$(MD5_FILE)
@@ -105,3 +104,4 @@ publish: publish_dir clean_md5_file
 $(foreach pf, $(PUBLISHING_FILES), $(eval $(call define-publishing-file-target, $(pf) ) ) )
 $(foreach pf, $(PUBLISHING_FILES2), $(eval $(call define-publishing-file-target2, $(pf) ) ) )
 $(foreach pf, $(BACKUP_FILES), $(eval $(call define-backup-file-target, $(pf) ) ) )
+	@cp -rf $(PUBLISH_DIR) $(ABS_PUBLISH_DIR_FF_BASE)
