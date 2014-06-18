@@ -7,7 +7,7 @@
 #After packaging the source and patches, the kernel folder is deleted
 
 OUTPUT_DIR=$(pwd)
-KERNEL_DIR=$OUTPUT_DIR/source/kernel/kernel
+KERNEL_DIR=$OUTPUT_DIR/source/kernel
 EXCLUDE_VCS="--exclude-vcs --exclude=.repo"
 HASH=$1
 
