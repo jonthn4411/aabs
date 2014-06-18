@@ -100,8 +100,8 @@ clean_md5_file:
 publish: publish_dir clean_md5_file
 	@echo "Publish $(MD5_FILE)"
 	@cp $(OUTPUT_DIR)/$(MD5_FILE) $(PUBLISH_DIR)
+	@cp -rf $(PUBLISH_DIR) $(ABS_PUBLISH_DIR_FF_BASE)
 
 $(foreach pf, $(PUBLISHING_FILES), $(eval $(call define-publishing-file-target, $(pf) ) ) )
 $(foreach pf, $(PUBLISHING_FILES2), $(eval $(call define-publishing-file-target2, $(pf) ) ) )
 $(foreach pf, $(BACKUP_FILES), $(eval $(call define-backup-file-target, $(pf) ) ) )
-	@cp -rf $(PUBLISH_DIR) $(ABS_PUBLISH_DIR_FF_BASE)
