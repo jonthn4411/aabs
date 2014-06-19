@@ -49,7 +49,6 @@ PUBLISHING_FILES2+=$$(product)/system.img:./$$(product)/flash/:m:md5
 PUBLISHING_FILES2+=$$(product)/userdata.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/ramdisk.img:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/ramdisk-recovery.img:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/recovery.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/cache.img:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/primary_gpt:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/secondary_gpt:./$$(product)/flash/:o:md5
@@ -65,6 +64,7 @@ PUBLISHING_FILES2+=$$(product)/obm_trusted_tz.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
 
 ifeq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0),)
+PUBLISHING_FILES2+=$$(product)/recovery.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/tee_tw.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/teesst.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/wtm_rel_eden_RealOTP.bin:./$$(product)/flash/:o:md5
