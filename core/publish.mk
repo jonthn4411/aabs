@@ -2,7 +2,7 @@
 $(call check-variables, PUBLISH_DIR)
 
 MD5_FILE:=checksums.md5
-ADUPS_FOTA_PACKAGE:=target_files_package.zip
+ADUPS_FOTA_PACKAGE:=target_files-package.zip
 define cp-with-md5
 	@echo "publishing mandatory file:$(1) to $(2)"
 	@mkdir -p $(dir $(2))
