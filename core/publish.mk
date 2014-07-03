@@ -2,7 +2,6 @@
 $(call check-variables, PUBLISH_DIR)
 
 MD5_FILE:=checksums.md5
-ABS_PUBLISH_DIR_FF_BASE:=/autobuild/android/pxa1L88FF
 define cp-with-md5
 	@echo "publishing mandatory file:$(1) to $(2)"
 	@mkdir -p $(dir $(2))
@@ -93,7 +92,6 @@ publish_dir:
 	$(hide)if [ ! -d "$(PUBLISH_DIR)" ]; then \
 	    mkdir -p $(PUBLISH_DIR) && chmod g+w $(PUBLISH_DIR); \
 	fi
-	@ln -s $(ABS_PUBLISH_DIR_FF_BASE) $(PUBLISH_DIR)
 
 clean_md5_file:
 	@echo -n > $(OUTPUT_DIR)/$(MD5_FILE)
