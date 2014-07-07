@@ -328,6 +328,7 @@ build_droid_otapackage_$$(product):
 PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl.zip:./$$(product)/ota/:o:md5
 PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl-recovery.zip:./$$(product)/ota/:o:md5
 PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl-intermediates.zip:./$$(product)/ota/:o:md5
+PUBLISHING_FILES2+=$$(product)/target_files-package.zip:./$$(product)/ota/:o:md5
 
 endef
 #define define-build-droid-otapackage
