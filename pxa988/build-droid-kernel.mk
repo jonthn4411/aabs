@@ -106,7 +106,6 @@ build_debug_kernel_$$(product): private_product:=$$(product)
 build_debug_kernel_$$(product): private_device:=$$(device)
 build_debug_kernel_$$(product): output_dir
 	$(log) "[$$(private_product)]starting to build debug kernel ..."
-	echo "start define-build-debug_kernel-target"
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
@@ -135,13 +134,7 @@ build_debug_kernel_$$(product): output_dir
 	./scripts/config --file .config -e CONFIG_DEBUG_OBJECTS_RCU_HEAD &&\
 	./scripts/config --file .config -e CONFIG_DEBUG_OBJECTS_PERCPU_COUNTER &&\
 	./scripts/config --file .config --set-val CONFIG_DEBUG_OBJECTS_ENABLE_DEFAULT 1 &&\
-	make kernel
-	$(log) "[$$(private_product)]starting to build kernel modules ..."
-	$(hide)cd $(SRC_DIR) && \
-	source ./build/envsetup.sh && \
-	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
-	make modules
+	mm
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage $(OUTPUT_DIR)/$$(private_product)/uImage_debug
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/vmlinux $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/System.map $(OUTPUT_DIR)/$$(private_product)/
