@@ -96,11 +96,16 @@ endef
 
 
 define define-build-debug_kernel-target
+tw:=$$(subst :,  , $(1) )
+product:=$$(word 1, $$(tw) )
+device:=$$(word 2, $$(tw) )
+.PHONY: build_debug_kernel_$$(product)
+
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
 PUBLISHING_FILES+=$$(product)/uImage_debug:m:md5
-build_kernel_$$(product): private_product:=$$(product)
-build_kernel_$$(product): private_device:=$$(device)
-build_kernel_$$(product): output_dir
+build_debug_kernel_$$(product): private_product:=$$(product)
+build_debug_kernel_$$(product): private_device:=$$(device)
+build_debug_kernel_$$(product): output_dir
 	$(log) "[$$(private_product)]starting to build debug kernel ..."
 	$(hide)cd $(SRC_DIR) && \
 
