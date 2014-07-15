@@ -446,7 +446,4 @@ $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-targe
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
 				$(eval $(call define-build-debug_kernel-target,$(bv)) ) \
-
-
-
 )
