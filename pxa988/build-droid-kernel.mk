@@ -19,7 +19,6 @@ DROID_OUT:=out/target/product
 MAKE_EXT4FS := out/host/linux-x86/bin/make_ext4fs
 MKBOOTFS := out/host/linux-x86/bin/mkbootfs
 MINIGZIP := out/host/linux-x86/bin/minigzip
-MKBOOTIMG := out/host/linux-x86/bin/mkbootimg
 
 define define-clean-droid-kernel-target
 tw:=$$(subst :,  , $(1) )
@@ -107,8 +106,8 @@ build_debug_kernel_$$(product): private_product:=$$(product)
 build_debug_kernel_$$(product): private_device:=$$(device)
 build_debug_kernel_$$(product): output_dir
 	$(log) "[$$(private_product)]starting to build debug kernel ..."
+	echo "start define-build-debug_kernel-target"
 	$(hide)cd $(SRC_DIR) && \
-
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
@@ -143,28 +142,16 @@ build_debug_kernel_$$(product): output_dir
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
 	make modules
-	
-	$(SRC_DIR)/$(MKBOOTIMG) --kernel $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage --ramdisk $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/ramdisk.img -o $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/boot.img
-
-	$(hide)cd $(SRC_DIR) && \
-	source ./build/envsetup.sh && \
-	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	make mrvlbootimage
-	
-	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage $(OUTPUT_DIR)/$$(private_product)/uImage_debug
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/vmlinux $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/System.map $(OUTPUT_DIR)/$$(private_product)/
-	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot.img $(OUTPUT_DIR)/$$(private_product)/boot_debug.img
-
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/modules; fi &&\
 	mkdir -p $(OUTPUT_DIR)/$$(private_product)/modules
 	$(hide)cp -af $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/modules  $(OUTPUT_DIR)/$$(private_product)/
-	
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/dtb ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/dtb; fi &&\
 	mkdir -p $(OUTPUT_DIR)/$$(private_product)/dtb
 	$(hide)cp -af $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/*.dtb  $(OUTPUT_DIR)/$$(private_product)/dtb/
-
+	echo "end define-build-debug_kernel-target uImage_debug"
 	$(log) "  uImage done."
 endef
 
@@ -257,7 +244,6 @@ PUBLISHING_FILES+=$$(product)/obm_trusted_tz.bin:o:md5
 PUBLISHING_FILES+=$$(product)/obm_trusted_ntz.bin:o:md5
 PUBLISHING_FILES+=$$(product)/u-boot.bin:o:md5
 PUBLISHING_FILES+=$$(product)/boot.img:o:md5
-PUBLISHING_FILES+=$$(product)/boot_debug.img:o:md5
 PUBLISHING_FILES+=$$(product)/recovery.img:o:md5
 PUBLISHING_FILES+=$$(product)/uImage:o:md5
 PUBLISHING_FILES+=$$(product)/zImage:o:md5
@@ -448,7 +434,7 @@ endef
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-target,$(bv)) ) \
+				$(eval $(call define-build-debug_kernel-target,$(bv)) ) \
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
-				$(eval $(call define-build-debug_kernel-target,$(bv)) ) \
 )
