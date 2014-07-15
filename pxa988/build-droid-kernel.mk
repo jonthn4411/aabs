@@ -56,7 +56,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product) build_debug_kernel_$$(product)
+build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product) 
 endef
 
 MAKE_JOBS := 8
@@ -90,64 +90,18 @@ build_kernel_$$(product): output_dir
 	make modules
 	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage $(OUTPUT_DIR)/$$(private_product)/
-	$(log) "  done."
-endef
-
-
-define define-build-debug_kernel-target
-tw:=$$(subst :,  , $(1) )
-product:=$$(word 1, $$(tw) )
-device:=$$(word 2, $$(tw) )
-.PHONY: build_debug_kernel_$$(product)
-
-#make sure that PUBLISHING_FILES_XXX is a simply expanded variable
-PUBLISHING_FILES+=$$(product)/uImage_debug:m:md5
-build_debug_kernel_$$(product): private_product:=$$(product)
-build_debug_kernel_$$(product): private_device:=$$(device)
-build_debug_kernel_$$(product): output_dir
-	$(log) "[$$(private_product)]starting to build debug kernel ..."
-	$(hide)cd $(SRC_DIR) && \
-	source ./build/envsetup.sh && \
-	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
-	./scripts/config --file .config -e CONFIG_PROVE_LOCKING &&\
-	./scripts/config --file .config -e CONFIG_TRACE_IRQFLAGS &&\
-	./scripts/config --file .config -e CONFIG_DEBUG_LOCK_ALLOC &&\
-	./scripts/config --file .config -e CONFIG_LOCKDEP &&\
-	./scripts/config --file .config -d CONFIG_DEBUG_LOCKDEP &&\
-	./scripts/config --file .config -d CONFIG_PROVE_RCU &&\
-	./scripts/config --file .config -e CONFIG_DEBUG_MUTEXES &&\
-	./scripts/config --file .config -e CONFIG_DEBUG_SPINLOCK &&\
-	./scripts/config --file .config --set-val CONFIG_SPLIT_PTLOCK_CPUS 999999 &&\
-	./scripts/config --file .config -e CONFIG_SLUB_DEBUG_ON &&\
-	./scripts/config --file .config -e CONFIG_DEBUG_PAGEALLOC &&\
-	./scripts/config --file .config -e CONFIG_WANT_PAGE_DEBUG_FLAGS &&\
-	./scripts/config --file .config -e CONFIG_PAGE_POISONING &&\
-	./scripts/config --file .config -e CONFIG_PM_DEBUG &&\
-	./scripts/config --file .config -e CONFIG_PM_ADVANCED_DEBUG &&\
-	./scripts/config --file .config -e CONFIG_PM_SLEEP_DEBUG &&\
-	./scripts/config --file .config -e CONFIG_DEBUG_OBJECTS &&\
-	./scripts/config --file .config -e CONFIG_DEBUG_OBJECTS_SELFTEST &&\
-	./scripts/config --file .config -e CONFIG_DEBUG_OBJECTS_FREE &&\
-	./scripts/config --file .config -e CONFIG_DEBUG_OBJECTS_TIMERS &&\
-	./scripts/config --file .config -e CONFIG_DEBUG_OBJECTS_WORK &&\
-	./scripts/config --file .config -e CONFIG_DEBUG_OBJECTS_RCU_HEAD &&\
-	./scripts/config --file .config -e CONFIG_DEBUG_OBJECTS_PERCPU_COUNTER &&\
-	./scripts/config --file .config --set-val CONFIG_DEBUG_OBJECTS_ENABLE_DEFAULT 1 &&\
-	mm
-	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/uImage $(OUTPUT_DIR)/$$(private_product)/uImage_debug
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/vmlinux $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/System.map $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/modules; fi &&\
 	mkdir -p $(OUTPUT_DIR)/$$(private_product)/modules
 	$(hide)cp -af $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/kernel/modules  $(OUTPUT_DIR)/$$(private_product)/
+
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/dtb ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/dtb; fi &&\
 	mkdir -p $(OUTPUT_DIR)/$$(private_product)/dtb
 	$(hide)cp -af $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/*.dtb  $(OUTPUT_DIR)/$$(private_product)/dtb/
-	echo "end define-build-debug_kernel-target uImage_debug"
-	$(log) "  uImage done."
-endef
 
+	$(log) "  done."
+endef
 
 ##!!## build rootfs for android, make -j4 android, copy root, copy ramdisk/userdata/system.img to outdir XXX
 #$1:build variant
@@ -427,7 +381,6 @@ endef
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-target,$(bv)) ) \
-				$(eval $(call define-build-debug_kernel-target,$(bv)) ) \
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
 )
