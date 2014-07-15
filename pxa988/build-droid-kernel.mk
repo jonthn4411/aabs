@@ -110,6 +110,7 @@ build_debug_kernel_$$(product): output_dir
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	cd $(SRC_DIR)/$(KERNELSRC_TOPDIR) && \
+	make mrproper
 	./scripts/config --file .config -e CONFIG_PROVE_LOCKING &&\
 	./scripts/config --file .config -e CONFIG_TRACE_IRQFLAGS &&\
 	./scripts/config --file .config -e CONFIG_DEBUG_LOCK_ALLOC &&\
