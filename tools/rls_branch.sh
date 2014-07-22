@@ -24,7 +24,7 @@ print_usage() {
 }
 
 get_account_to_use() {
-	echo "releaseadm"
+	echo "zacwang"
 }
 
 branch_to_remote() {
