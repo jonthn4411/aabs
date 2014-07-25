@@ -56,7 +56,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product) build_debug_kernel_$$(product) 
+build_droid_kernel_$$(product): build_droid_$$(product) build_debug_kernel_$$(product) 
 endef
 
 MAKE_JOBS := 8
@@ -328,48 +328,12 @@ build_debug_kernel_$$(product):
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	make build-debug-kernel
-	$(hide)echo "  copy root directory ..." 
+	make build-debug-kernel 
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage_debug $(OUTPUT_DIR)/$$(private_product)/
 	$(log) "  done for debug uImage build."
 
 
 endef
-
-define define-build-droid-otapackage
-tw:=$$(subst :,  , $(1) )
-product:=$$(word 1, $$(tw) )
-device:=$$(word 2, $$(tw) )
-.PHONY: build_droid_otapackage_$$(product)
-build_droid_otapackage_$$(product): private_product:=$$(product)
-build_droid_otapackage_$$(product): private_device:=$$(device)
-build_droid_otapackage_$$(product): 
-	$(log) "[$$(private_product)] building android OTA package ..."
-	$(hide)cd $(SRC_DIR) && \
-	source ./build/envsetup.sh && \
-	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	make mrvlotapackage
-	$(hide)echo "  copy OTA package ..."
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl.zip $(OUTPUT_DIR)/$$(private_product)
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl-recovery.zip $(OUTPUT_DIR)/$$(private_product)
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/PACKAGING/target_files_intermediates/$$(private_product)-target_files*.zip $(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-intermediates.zip
-	$(log) "  done for OTA package build."
-
-PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl.zip:./$$(product)/ota/:o:md5
-PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl-recovery.zip:./$$(product)/ota/:o:md5
-PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl-intermediates.zip:./$$(product)/ota/:o:md5
-
-endef
-#define define-build-droid-otapackage
-#tw:=$$(subst :,  , $(1) )
-#product:=$$(word 1, $$(tw) )
-#device:=$$(word 2, $$(tw) )
-#.PHONY: build_droid_otapackage_$$(product)
-#build_droid_otapackage_$$(product): private_product:=$$(product)
-#build_droid_otapackage_$$(product): private_device:=$$(device)
-#build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
-#	$(log) "[$$(private_product)] no android OTA package build ..."
-#endef
 
 define define-build-droid-tool
 tw:=$$(subst :,  , $(1) )
@@ -399,9 +363,5 @@ PUBLISHING_FILES+=$$(product)/tools.tgz:o:md5
 endef
 
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
-				$(eval $(call define-build-kernel-target,$(bv)) ) \
-				$(eval $(call define-build-droid-target,$(bv)) ) \
 				$(eval $(call define-build-debug-kernel-target,$(bv)) ) \
-				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
-				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
 )
