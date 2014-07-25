@@ -119,6 +119,13 @@ build_droid_$$(product):
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	make -j8 && \
+	tar zcf $(OUTPUT_DIR)/$$(private_product)/modules.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib modules && \
+	tar zcf $(OUTPUT_DIR)/$$(private_product)/symbols_system.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ symbols
+
+	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/root ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/root; fi
+	$(hide)echo "  copy root directory ..." 
+	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-recovery.img ]; then \
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-recovery.img $(OUTPUT_DIR)/$$(private_product); \
@@ -137,9 +144,15 @@ build_droid_$$(product):
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/security/* $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/blf/ ]; then \
 	cp -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/blf $(OUTPUT_DIR)/$$(private_product)/; fi
+
+	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/dtb ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/dtb; fi &&\
+	mkdir -p $(OUTPUT_DIR)/$$(private_product)/dtb
+	$(hide)cp -af $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/*.dtb  $(OUTPUT_DIR)/$$(private_product)/dtb/
+
 	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname radio*img |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
 	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname *gpt* |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
 	$(log) "  done"
+
 	$(hide)if [ "$(PLATFORM_ANDROID_VARIANT)" = "user" ]; then \
 	sed -i "s/ro.secure=1/ro.secure=0/" $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/default.prop  && \
 	sed -i "s/ro.debuggable=0/ro.debuggable=1/" $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/default.prop  && \
@@ -154,11 +167,17 @@ build_droid_$$(product):
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot.img $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/recovery.img $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/u-boot.bin $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/vmlinux $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/System.map $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader.zip $(OUTPUT_DIR)/
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/WTM.bin ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/WTM.bin $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/HLN2_NonTLoader_eMMC_DDR.bin ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/HLN2_NonTLoader_eMMC_DDR.bin $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader_Helan2.zip ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader_Helan2.zip $(OUTPUT_DIR)/; fi
-
+	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/modules; fi &&\
+	mkdir -p $(OUTPUT_DIR)/$$(private_product)/modules
+	$(hide)cp -af $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib/modules  $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/SHARED_LIBRARIES/libcameraengine_intermediates ]; then rm -fr $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/SHARED_LIBRARIES/libcameraengine_intermediates; fi
+	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/lib/libcameraengine.so ]; then rm -fr $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/lib/libcameraengine.so; fi
 
 
 ##!!## first time publish: all for two
@@ -299,6 +318,8 @@ define define-build-debug-kernel-target
 tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
+PUBLISHING_FILES+=$$(product)/uImage_debug:o:md5
+PUBLISHING_FILES+=$$(product)/uImage_debug:m:md5
 .PHONY: build_debug_kernel_$$(product) 
 build_debug_kernel_$$(product): private_product:=$$(product)
 build_debug_kernel_$$(product): private_device:=$$(device)
@@ -308,27 +329,10 @@ build_debug_kernel_$$(product):
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	make build-debug-kernel
-	tar zcf $(OUTPUT_DIR)/$$(private_product)/modules.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib modules && \
-	tar zcf $(OUTPUT_DIR)/$$(private_product)/symbols_system.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ symbols
-	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/root ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/root; fi
 	$(hide)echo "  copy root directory ..." 
-	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root $(OUTPUT_DIR)/$$(private_product)
-	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/dtb ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/dtb; fi &&\
-	mkdir -p $(OUTPUT_DIR)/$$(private_product)/dtb
-	$(hide)cp -af $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/*.dtb  $(OUTPUT_DIR)/$$(private_product)/dtb/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage_debug $(OUTPUT_DIR)/$$(private_product)/
-	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/vmlinux $(OUTPUT_DIR)/$$(private_product)/
-	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/System.map $(OUTPUT_DIR)/$$(private_product)/
-	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/modules; fi &&\
-	mkdir -p $(OUTPUT_DIR)/$$(private_product)/modules
-	$(hide)cp -af $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib/modules  $(OUTPUT_DIR)/$$(private_product)/
-	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/SHARED_LIBRARIES/libcameraengine_intermediates ]; then rm -fr $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/SHARED_LIBRARIES/libcameraengine_intermediates; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/lib/libcameraengine.so ]; then rm -fr $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/lib/libcameraengine.so; fi
 	$(log) "  done for debug uImage build."
 
-PUBLISHING_FILES+=$$(product)/uImage_debug:o:md5
-PUBLISHING_FILES+=$$(product)/uImage_debug:m:md5
 
 endef
 
