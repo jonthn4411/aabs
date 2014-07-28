@@ -316,13 +316,11 @@ define define-build-debug-kernel-target
 tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
-PUBLISHING_FILES+=$$(product)/uImage_debug:o:md5
-PUBLISHING_FILES+=$$(product)/uImage_debug:m:md5
 .PHONY: build_debug_kernel_$$(product) 
 build_debug_kernel_$$(product): private_product:=$$(product)
 build_debug_kernel_$$(product): private_device:=$$(device)
 build_debug_kernel_$$(product): 
-	$(log) "[$$(private_product)] building debug uImage ..."
+	$(log) "[$$(private_product)] building debug uImage ...private_product is"+$$(private_product)+"private_device is "+$$(private_device)
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
@@ -330,6 +328,8 @@ build_debug_kernel_$$(product):
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage_debug $(OUTPUT_DIR)/$$(private_product)/
 	$(log) "  done for debug uImage build."
 
+PUBLISHING_FILES+=$$(product)/uImage_debug:o:md5
+PUBLISHING_FILES+=$$(product)/uImage_debug:m:md5
 
 endef
 
