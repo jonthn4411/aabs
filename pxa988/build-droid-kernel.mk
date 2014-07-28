@@ -293,7 +293,7 @@ PUBLISHING_FILES+=$$(product)/Skylark_LTG_V11.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LTG_V13.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LWG_V11.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LWG_V13.bin:o:md5
-
+PUBLISHING_FILES+=$$(product)/Skylark_LTG_X49.bin:o:md5
 
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:o:md5

@@ -63,6 +63,7 @@ pxa1L88dkb_def/Skylark_LTG_V11.bin pxa1L88dkb_def/prebuilt_bin/Skylark_LTG_V11.b
 pxa1L88dkb_def/Skylark_LWG_V11.bin pxa1L88dkb_def/prebuilt_bin/Skylark_LWG_V11.bin
 pxa1L88dkb_def/Skylark_LTG_V13.bin pxa1L88dkb_def/prebuilt_bin/Skylark_LTG_V13.bin
 pxa1L88dkb_def/Skylark_LWG_V13.bin pxa1L88dkb_def/prebuilt_bin/Skylark_LWG_V13.bin
+pxa1L88dkb_def/Skylark_LTG_X49.bin pxa1L88dkb_def/prebuilt_bin/Skylark_LTG_X49.bin
 pxa1L88dkb_def/blf/* pxa1L88dkb_def/prebuilt_bin/
 pxa1L88dkb_def/boot.img pxa1L88dkb_def/prebuilt_bin/boot.img
 pxa1L88dkb_def/recovery.img pxa1L88dkb_def/prebuilt_bin/recovery.img
