@@ -388,7 +388,8 @@ fi &&
 if [ "$ABS_VIRTUAL_BUILD" = "true" ]; then
     echo "Virtual Build: we'll skip checking changes"
 else
-    echo "Only for aabs test do not check change"
+    make -f ${MAKEFILE} changelog 2>&1 | tee -a $STD_LOG
+    change_since_last_build=$(make -f ${MAKEFILE} get_change_summary_since_last_build)
 fi
 
 if [ -z "$change_since_last_build" -a "$ABS_VIRTUAL_BUILD" != "true" ]; then
