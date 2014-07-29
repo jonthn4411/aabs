@@ -96,16 +96,17 @@ endif
 #m:means mandatory
 #o:means optional
 #md5: need to generate md5 sum
-PUBLISHING_FILES2+=droid_all_src.tgz:src:o:md5
-PUBLISHING_FILES2+=android_src.tgz:src:m:md5
-PUBLISHING_FILES2+=android_patches.tgz:src:m:md5
-PUBLISHING_FILES2+=kernel_src.tgz:src:m:md5
-PUBLISHING_FILES2+=kernel_patches.tgz:src:m:md5
-PUBLISHING_FILES2+=uboot_src.tgz:src:m:md5
-PUBLISHING_FILES2+=uboot_patches.tgz:src:m:md5
-PUBLISHING_FILES2+=obm_src.tgz:src:m:md5
-PUBLISHING_FILES2+=marvell_manifest.xml:src:m
-PUBLISHING_FILES2+=setup_android.sh:src:m
+#Disable src publishing 2014-07-29
+#PUBLISHING_FILES2+=droid_all_src.tgz:src:o:md5
+#PUBLISHING_FILES2+=android_src.tgz:src:m:md5
+#PUBLISHING_FILES2+=android_patches.tgz:src:m:md5
+#PUBLISHING_FILES2+=kernel_src.tgz:src:m:md5
+#PUBLISHING_FILES2+=kernel_patches.tgz:src:m:md5
+#PUBLISHING_FILES2+=uboot_src.tgz:src:m:md5
+#PUBLISHING_FILES2+=uboot_patches.tgz:src:m:md5
+#PUBLISHING_FILES2+=obm_src.tgz:src:m:md5
+#PUBLISHING_FILES2+=marvell_manifest.xml:src:m
+#PUBLISHING_FILES2+=setup_android.sh:src:m
 
 .PHONY:pkgsrc
 save_prjlist: get_source_for_pkg
@@ -134,8 +135,8 @@ delta_patches: output_dir pkg_droid_src
 	$(hide)echo "  extract delta patches since ms1..."
 	$(hide)cd $(OUTPUT_DIR) && $(ABS_TOP_DIR)/core/gen_delta_patch.sh $(SRC_DIR) $(ABS_TOP_DIR)/tools $(LAST_MS1_FILE) $(OUTPUT_DIR)/changelog.ms1
 
-PUBLISHING_FILES2+=delta_patches.tgz:src:o
-PUBLISHING_FILES2+=delta_patches.base:src:o
+#PUBLISHING_FILES2+=delta_patches.tgz:src:o
+#PUBLISHING_FILES2+=delta_patches.base:src:o
 
 publish_setup_sh: output_dir
 	$(hide)cp $(ABS_TOP_DIR)/core/setup_android.sh $(OUTPUT_DIR)
@@ -146,6 +147,6 @@ publish_RN:
 PUBLISHING_FILES+=$(ANDROID_VERSION)_RN.pdf:o
 
 # Platform hook
--include $(ABS_SOC)/pkg-source.mk
+#-include $(ABS_SOC)/pkg-source.mk
 endif
 
