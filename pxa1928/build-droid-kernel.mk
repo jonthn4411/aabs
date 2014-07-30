@@ -63,7 +63,11 @@ PUBLISHING_FILES2+=$$(product)/u-boot.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/obm_trusted_tz.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
 
-ifeq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0),)
+ifeq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 pdk5.0_32),)
+ifeq ($(filter $$(device),pxa1928ff),)
+PUBLISHING_FILES2+=$$(product)/primary_gpt_8g:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/secondary_gpt_8g:./$$(product)/flash/:o:md5
+endif
 PUBLISHING_FILES2+=$$(product)/recovery.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/tee_tw.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/teesst.img:./$$(product)/flash/:o:md5
@@ -108,8 +112,8 @@ build_droid_root_$$(product): output_dir
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/ramdisk.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/ramdisk.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/cache.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/cache.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -d $$(SRC_DIR)/out/target/product/$$(private_device)/blf/ ]; then cp -r $$(SRC_DIR)/out/target/product/$$(private_device)/blf $$(OUTPUT_DIR)/$$(private_product)/; fi
-	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/primary_gpt ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/primary_gpt $$(OUTPUT_DIR)/$$(private_product)/; fi
-	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/secondary_gpt ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/secondary_gpt $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $(wildcard $$(SRC_DIR)/out/target/product/$$(private_device)/primary_gpt*) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/primary_gpt* $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $(wildcard $$(SRC_DIR)/out/target/product/$$(private_device)/secondary_gpt*) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/secondary_gpt* $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -d $$(SRC_DIR)/out/target/product/$$(private_device)/telephony/ ]; then cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/telephony/* $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/System.map ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/System.map $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $(wildcard $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin*) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/u-boot.bin* $$(OUTPUT_DIR)/$$(private_product)/; fi
