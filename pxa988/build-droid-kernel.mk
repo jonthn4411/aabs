@@ -114,6 +114,8 @@ build_droid_$$(product): private_product:=$$(product)
 build_droid_$$(product): private_device:=$$(device)
 build_droid_$$(product): 
 	$(log) "[$$(private_product)] building android source code ..."
+	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/kernel ]; then rm -fr $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/kernel; fi
+	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage ]; then rm -fr $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage; fi
 	mkdir -p $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -178,8 +180,6 @@ build_droid_$$(product):
 	$(hide)cp -af $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib/modules  $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/SHARED_LIBRARIES/libcameraengine_intermediates ]; then rm -fr $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/SHARED_LIBRARIES/libcameraengine_intermediates; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/lib/libcameraengine.so ]; then rm -fr $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system/lib/libcameraengine.so; fi
-	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/kernel ]; then rm -fr $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/kernel; fi
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage ]; then rm -fr $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage; fi
 
 
 ##!!## first time publish: all for two
