@@ -80,7 +80,7 @@ else
 ifeq ($(ABS_DROID_BRANCH),$(filter $(ABS_DROID_BRANCH), kk4.4 aosp pdk5.0 pdk5.0_32))
 	KERNEL_BASE_COMMIT:=$(KERNEL_3_10_BASE_COMMIT)
 	UBOOT_BASE_COMMIT:=$(UBOOT_201109_BASE_COMMIT)
-	DROID_BASE:=android-4.4.3_r1.1
+	DROID_BASE:=android-4.4.4_r1
 endif
 endif
 endif
