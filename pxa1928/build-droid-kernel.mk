@@ -168,6 +168,8 @@ else
 	lunch $$(private_product)-$$(DROID_VARIANT) && \
 	cd $$(SRC_DIR) && KERNEL_CONFIG=$$(private_kcfg) UBOOT_CONFIG=$$(private_bcfg) make mrvlotapackage
 	$$(hide)echo "  copy OTA package ..."
+
+	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/target_files-package.zip $$(OUTPUT_DIR)/$$(private_product)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/$$(private_product)-ota-mrvl.zip $$(OUTPUT_DIR)/$$(private_product)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/$$(private_product)-ota-mrvl-recovery.zip $$(OUTPUT_DIR)/$$(private_product)
 	$$(hide)cp -p -r $$(SRC_DIR)/out/target/product/$$(private_device)/obj/PACKAGING/target_files_intermediates/$$(private_product)-target_files.zip $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-intermediates.zip
@@ -178,6 +180,7 @@ endif
 PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl.zip:./$$(product)/ota/:o:md5
 PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl-recovery.zip:./$$(product)/ota/:o:md5
 PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl-intermediates.zip:./$$(product)/ota/:o:md5
+PUBLISHING_FILES2+=$$(product)/target_files-package.zip:./$$(product)/ota/:o:md5
 
 endef
 
