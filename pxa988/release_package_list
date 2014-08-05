@@ -158,8 +158,11 @@ pxa1L88dkb_def/HL_LWG_DIAG.mdb pxa1L88dkb_def/prebuilt_bin/HL_LWG_DIAG.mdb
 pxa1L88dkb_def/HL_LWG_DKB.bin pxa1L88dkb_def/prebuilt_bin/HL_LWG_DKB.bin
 pxa1L88dkb_def/HL_LWG_M09_B0_SKL_Flash.bin pxa1L88dkb_def/prebuilt_bin/HL_LWG_M09_B0_SKL_Flash.bin
 pxa1L88dkb_def/HL_LWG_NVM.mdb pxa1L88dkb_def/prebuilt_bin/HL_LWG_NVM.mdb
-pxa1L88dkb_def/Skylark_LTG.bin pxa1L88dkb_def/prebuilt_bin/Skylark_LTG.bin
-pxa1L88dkb_def/Skylark_LWG.bin pxa1L88dkb_def/prebuilt_bin/Skylark_LWG.bin
+pxa1L88dkb_def/Skylark_LTG_V11.bin pxa1L88dkb_def/prebuilt_bin/Skylark_LTG_V11.bin
+pxa1L88dkb_def/Skylark_LTG_V13.bin pxa1L88dkb_def/prebuilt_bin/Skylark_LTG_V13.bin
+pxa1L88dkb_def/Skylark_LWG_V11.bin pxa1L88dkb_def/prebuilt_bin/Skylark_LWG_V11.bin
+pxa1L88dkb_def/Skylark_LWG_V13.bin pxa1L88dkb_def/prebuilt_bin/Skylark_LWG_V13.bin
+
 pxa1L88dkb_def/blf/* pxa1L88dkb_def/prebuilt_bin/
 pxa1L88dkb_def/boot.img pxa1L88dkb_def/prebuilt_bin/boot.img
 pxa1L88dkb_def/recovery.img pxa1L88dkb_def/prebuilt_bin/recovery.img
@@ -228,8 +231,10 @@ pxa1L88dkb_tz/HL_LWG_DIAG.mdb pxa1L88dkb_tz/prebuilt_bin/HL_LWG_DIAG.mdb
 pxa1L88dkb_tz/HL_LWG_DKB.bin pxa1L88dkb_tz/prebuilt_bin/HL_LWG_DKB.bin
 pxa1L88dkb_tz/HL_LWG_M09_B0_SKL_Flash.bin pxa1L88dkb_tz/prebuilt_bin/HL_LWG_M09_B0_SKL_Flash.bin
 pxa1L88dkb_tz/HL_LWG_NVM.mdb pxa1L88dkb_tz/prebuilt_bin/HL_LWG_NVM.mdb
-pxa1L88dkb_tz/Skylark_LTG.bin pxa1L88dkb_tz/prebuilt_bin/Skylark_LTG.bin
-pxa1L88dkb_tz/Skylark_LWG.bin pxa1L88dkb_tz/prebuilt_bin/Skylark_LWG.bin
+pxa1L88dkb_tz/Skylark_LTG_V11.bin pxa1L88dkb_tz/prebuilt_bin/Skylark_LTG_V11.bin
+pxa1L88dkb_tz/Skylark_LTG_V13.bin pxa1L88dkb_tz/prebuilt_bin/Skylark_LTG_V13.bin
+pxa1L88dkb_tz/Skylark_LWG_V11.bin pxa1L88dkb_tz/prebuilt_bin/Skylark_LWG_V11.bin
+pxa1L88dkb_tz/Skylark_LWG_V13.bin pxa1L88dkb_tz/prebuilt_bin/Skylark_LWG_V13.bin
 pxa1L88dkb_tz/tee_tw.bin pxa1L88dkb_tz/prebuilt_bin/tee_tw.bin
 pxa1L88dkb_tz/teesst.img pxa1L88dkb_tz/prebuilt_bin/teesst.img
 pxa1L88dkb_tz/blf/* pxa1L88dkb_tz/prebuilt_bin/
