@@ -1,7 +1,7 @@
 ifeq ($(filter $(ABS_DROID_BRANCH),aosp),)
 ABS_BUILD_DEVICES?=pxa1928dkb_tz:pxa1928dkb pxa1928ff_tz:pxa1928ff
 else
-ABS_BUILD_DEVICES?=pxa1928dkb_tz:pxa1928dkb
+ABS_BUILD_DEVICES?=pxa1928dkb_tz:pxa1928dkb:pxa1928dkb_dsds
 endif
 
 ANDROID_VERSION:=$(ABS_DROID_BRANCH)
