@@ -6,6 +6,7 @@
 # $2: source code directory
 # $3: the manifest branch name: such as avlite-donut or rls_avlite_donut_beta1
 # $4: the directory where LAST_BUILD.<manifest-branch-name> LAST_REL.<manifest-branch-name> locates
+# $5: new git log format: add tag for different category, which is greped from the git log body. Sample: [power][performace][stability]
 
 #$1: since
 #$2: logfile
@@ -15,10 +16,14 @@ function gen_log()
 	local len=0
 	while read line; do
 		if [ ! -z "$line" ]; then
-			COMMITS[$len]=$line
 			len=$(( $len + 1 ))
 		fi
 	done < <(git --no-pager log --since="$1" --pretty="format:%s [%an][%h][%ci]%n")
+
+	for i in `seq 0 $len`; do
+		tag=`git --no-pager log -1 --skip=$i --pretty="format:%b" | grep "\[.*\]" -o | head -n 1`
+		COMMITS[$i]=`git --no-pager log -1 --skip=$i --pretty="format:%s $tag[%an][%h][%ci]%n"`
+	done
 
 	if [ $len -gt 0 ]; then
 		echo "----------------" >> $2
@@ -49,18 +54,21 @@ function gen_log_lastbuild()
 	if [ -z "$ms" ]; then
 		while read line; do
 			if [ ! -z "$line" ]; then
-				COMMITS[$len]=$line
 				len=$(( $len + 1 ))
 			fi
 		done < <(git --no-pager log ${commit}..HEAD --pretty="format:%s [%an][%h][%ci]%n")
 	else
 		while read line; do
 			if [ ! -z "$line" ]; then
-				COMMITS[$len]=$line
 				len=$(( $len + 1 ))
 			fi
 		done < <(git --no-pager log ${commit}...HEAD --left-right --boundary --cherry-pick --topo-order --pretty="format:%m%s [%an][%h][%ci]%n")
 	fi
+
+	for i in `seq 0 $len`; do
+		tag=`git --no-pager log -1 --skip=$i --pretty="format:%b" | grep "\[.*\]" -o | head -n 1`
+		COMMITS[$i]=`git --no-pager log -1 --skip=$i --pretty="format:%s $tag[%an][%h][%ci]%n"`
+	done
 
 	if [ $len -gt 0 ]; then
 		echo "----------------" >> $output_file
