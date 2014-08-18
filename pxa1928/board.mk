@@ -1,7 +1,11 @@
-ifeq ($(filter $(ABS_DROID_BRANCH),aosp),)
-ABS_BUILD_DEVICES?=pxa1928dkb_tz:pxa1928dkb pxa1928ff_tz:pxa1928ff pxa1928dkb_dsds:pxa1928dkb
-else
+ifneq ($(filter $(ABS_DROID_BRANCH),aosp),)
 ABS_BUILD_DEVICES?=pxa1928dkb_tz:pxa1928dkb
+else
+ifneq ($(filter $(ABS_DROID_BRANCH),pdk5.0 pdk5.0_32),)
+ABS_BUILD_DEVICES?=pxa1928dkb_tz:pxa1928dkb pxa1928ff_tz:pxa1928ff
+else
+ABS_BUILD_DEVICES?=pxa1928dkb_tz:pxa1928dkb pxa1928ff_tz:pxa1928ff pxa1928dkb_dsds:pxa1928dkb
+endif
 endif
 
 ANDROID_VERSION:=$(ABS_DROID_BRANCH)
