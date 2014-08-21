@@ -68,6 +68,7 @@ ifeq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 pdk5.0_32),)
 ifeq ($(filter $$(device),pxa1928ff),)
 PUBLISHING_FILES2+=$$(product)/primary_gpt_8g:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/secondary_gpt_8g:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/userdata_8g.img:./$$(product)/flash/:o:md5
 endif
 PUBLISHING_FILES2+=$$(product)/recovery.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/tee_tw.bin:./$$(product)/flash/:o:md5
@@ -113,7 +114,7 @@ build_droid_root_$$(product): output_dir
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/wtm_rel_eden_VirtualOTP.bin ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/wtm_rel_eden_VirtualOTP.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/boot.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/boot.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/system.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/system.img $$(OUTPUT_DIR)/$$(private_product)/; fi
-	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/userdata.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/userdata.img $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $(wildcard $$(SRC_DIR)/out/target/product/$$(private_device)/userdata*.img) ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/userdata*.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/ramdisk-recovery.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/ramdisk-recovery.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/recovery.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/recovery.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/ramdisk.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/ramdisk.img $$(OUTPUT_DIR)/$$(private_product)/; fi
