@@ -105,12 +105,17 @@ build_droid_root_$$(product): output_dir
 	$$(log) "[$$(private_product)]building android source code ..."
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$$(private_product)
 ifneq ($(filter $(ABS_DROID_BRANCH),pdk5.0_generic),)
-	export PDK_FUSION_PLATFORM_ZIP=vendor/pdk/mini_arm64/mini_arm64-userdebug/platform/platform.zip
-endif
+	export PDK_FUSION_PLATFORM_ZIP=vendor/pdk/mini_arm64/mini_arm64-userdebug/platform/platform.zip && \
 	$$(hide)cd $$(SRC_DIR) && \
 	. build/envsetup.sh && \
 	lunch $$(private_product)-$$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS)
+else
+	$$(hide)cd $$(SRC_DIR) && \
+	. build/envsetup.sh && \
+	lunch $$(private_product)-$$(DROID_VARIANT) && \
+	make -j$$(MAKE_JOBS)
+endif
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/teesst.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/teesst.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/tee_tw.bin ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/tee_tw.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/wtm_rel_eden_RealOTP.bin ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/wtm_rel_eden_RealOTP.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
