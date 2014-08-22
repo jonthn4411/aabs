@@ -44,25 +44,10 @@ tw:=$$(subst :,  , $(1))
 product:=$$(word 1, $$(tw))
 device:=$$(word 2, $$(tw))
 #$$(warning define-build-droid-root arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
-PUBLISHING_FILES2+=$$(product)/boot.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/system.img:./$$(product)/flash/:m:md5
 PUBLISHING_FILES2+=$$(product)/userdata.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/ramdisk.img:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/ramdisk-recovery.img:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/cache.img:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/primary_gpt:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/secondary_gpt:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/System.map:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/uImage.android:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/zImage:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/vmlinux:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/pxa1928concord.dtb:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/pxa1928concord-discrete.dtb:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/blf:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/u-boot.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/obm_trusted_tz.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/obm_trusted_tz_auto.bin:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
 
 ifeq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 pdk5.0_generic),)
 ifeq ($(filter $$(device),pxa1928ff),)
@@ -140,12 +125,6 @@ endif
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928concord.dtb ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928concord.dtb $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928concord-discrete.dtb ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928concord-discrete.dtb $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip $$(OUTPUT_DIR)/; fi
-	echo "    generating symbols_lib.tgz..." && \
-		cp -a $$(SRC_DIR)/out/target/product/$$(private_device)/symbols/system/lib $$(OUTPUT_DIR)/$$(private_product) && \
-		cd $$(OUTPUT_DIR)/$$(private_product) && tar czf symbols_lib.tgz lib && rm lib -rf
-	$(log) "  done"
-
-PUBLISHING_FILES2+=$$(product)/symbols_lib.tgz:./$$(product)/debug/:o:md5
 endef
 
 define define-build-droid-otapackage
