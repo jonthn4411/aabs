@@ -4,11 +4,7 @@ else
 ifneq ($(filter $(ABS_DROID_BRANCH),pdk5.0),)
 ABS_BUILD_DEVICES?=pxa1928dkb_tz:pxa1928dkb pxa1928ff_tz:pxa1928ff
 else
-ifneq ($(filter $(ABS_DROID_BRANCH),pdk5.0_generic),)
-ABS_BUILD_DEVICES?=mini_arm64:arm64
-else
 ABS_BUILD_DEVICES?=pxa1928dkb_tz:pxa1928dkb pxa1928ff_tz:pxa1928ff pxa1928dkb_dsds:pxa1928dkb
-endif
 endif
 endif
 

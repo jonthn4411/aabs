@@ -64,7 +64,7 @@ PUBLISHING_FILES2+=$$(product)/obm_trusted_tz.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/obm_trusted_tz_auto.bin:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
 
-ifeq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 pdk5.0_generic),)
+ifeq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0),)
 ifeq ($(filter $$(device),pxa1928ff),)
 PUBLISHING_FILES2+=$$(product)/primary_gpt_8g:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/secondary_gpt_8g:./$$(product)/flash/:o:md5
@@ -104,18 +104,10 @@ build_droid_root_$$(product): private_device:=$$(device)
 build_droid_root_$$(product): output_dir
 	$$(log) "[$$(private_product)]building android source code ..."
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$$(private_product)
-ifneq ($(filter $(ABS_DROID_BRANCH),pdk5.0_generic),)
-	$$(hide)cd $$(SRC_DIR) && \
-	export PDK_FUSION_PLATFORM_ZIP=vendor/pdk/mini_arm64/mini_arm64-userdebug/platform/platform.zip && \
-	. build/envsetup.sh && \
-	lunch $$(private_product)-$$(DROID_VARIANT) && \
-	make -j$$(MAKE_JOBS)
-else
 	$$(hide)cd $$(SRC_DIR) && \
 	. build/envsetup.sh && \
 	lunch $$(private_product)-$$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS)
-endif
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/teesst.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/teesst.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/tee_tw.bin ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/tee_tw.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/security/wtm_rel_eden_RealOTP.bin ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/security/wtm_rel_eden_RealOTP.bin $$(OUTPUT_DIR)/$$(private_product)/; fi
@@ -171,7 +163,7 @@ build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_device:=
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_kcfg:=$$(kernel_cfg)
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_bcfg:=$$(boot_cfg)
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): output_dir
-ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 pdk5.0_generic),)
+ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0),)
 	$$(log) "disalbe otapackage build by generating fake ota files temporally"
 	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl.zip
 	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-recovery.zip
