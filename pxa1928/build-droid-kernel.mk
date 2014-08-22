@@ -104,6 +104,9 @@ build_droid_root_$$(product): private_device:=$$(device)
 build_droid_root_$$(product): output_dir
 	$$(log) "[$$(private_product)]building android source code ..."
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$$(private_product)
+ifneq ($(filter $(ABS_DROID_BRANCH),pdk5.0_generic),)
+	export PDK_FUSION_PLATFORM_ZIP=vendor/pdk/mini_arm64/mini_arm64-userdebug/platform/platform.zip && \
+endif
 	$$(hide)cd $$(SRC_DIR) && \
 	. build/envsetup.sh && \
 	lunch $$(private_product)-$$(DROID_VARIANT) && \
