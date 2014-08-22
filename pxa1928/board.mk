@@ -1,10 +1,10 @@
 ifneq ($(filter $(ABS_DROID_BRANCH),aosp),)
 ABS_BUILD_DEVICES?=pxa1928dkb_tz:pxa1928dkb
 else
-ifneq ($(filter $(abs_droid_branch),pdk5.0),)
+ifneq ($(filter $(ABS_DROID_BRANCH),pdk5.0),)
 ABS_BUILD_DEVICES?=pxa1928dkb_tz:pxa1928dkb pxa1928ff_tz:pxa1928ff
 else
-ifneq ($(filter $(abs_droid_branch),pdk5.0_generic),)
+ifneq ($(filter $(ABS_DROID_BRANCH),pdk5.0_generic),)
 ABS_BUILD_DEVICES?=mini_arm64:arm64
 else
 ABS_BUILD_DEVICES?=pxa1928dkb_tz:pxa1928dkb pxa1928ff_tz:pxa1928ff pxa1928dkb_dsds:pxa1928dkb
