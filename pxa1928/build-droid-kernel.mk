@@ -58,6 +58,7 @@ build_droid_root_$$(product): output_dir
 	$$(hide)mkdir -p $$(OUTPUT_DIR)/$$(private_product)
 	$$(hide)cd $$(SRC_DIR) && \
 	export PDK_FUSION_PLATFORM_ZIP=vendor/pdk/mini_arm64/mini_arm64-userdebug/platform/platform.zip && \
+	$$(log) "This is PDK build with $$PDK_FUSION_PLATFORM_ZIP" && \
 	. build/envsetup.sh && \
 	lunch $$(private_product)-$$(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS)
