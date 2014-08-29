@@ -150,6 +150,7 @@ pxa1L88FF_def/secondary_gpt_4g  pxa1L88FF_def/prebuilt_bin/secondary_gpt_4g
 pxa1L88FF_def/ramdisk.img pxa1L88FF_def/prebuilt_bin/ramdisk.img
 pxa1L88FF_def/ramdisk-recovery.img pxa1L88FF_def/prebuilt_bin/ramdisk-recovery.img
 pxa1L88FF_def/system.img pxa1L88FF_def/prebuilt_bin/system.img
+pxa1L88FF_def/cache.img pxa1L88FF_def/prebuilt_bin/cache.img
 pxa1L88FF_def/u-boot.bin pxa1L88FF_def/prebuilt_bin/u-boot.bin
 pxa1L88FF_def/userdata.img pxa1L88FF_def/prebuilt_bin/userdata.img
 pxa1L88FF_def/userdata_4g.img pxa1L88FF_def/prebuilt_bin/userdata_4g.img
@@ -222,6 +223,7 @@ pxa1L88FF_dsds/secondary_gpt_4g  pxa1L88FF_dsds/prebuilt_bin/secondary_gpt_4g
 pxa1L88FF_dsds/ramdisk.img pxa1L88FF_dsds/prebuilt_bin/ramdisk.img
 pxa1L88FF_dsds/ramdisk-recovery.img pxa1L88FF_dsds/prebuilt_bin/ramdisk-recovery.img
 pxa1L88FF_dsds/system.img pxa1L88FF_dsds/prebuilt_bin/system.img
+pxa1L88FF_dsds/cache.img pxa1L88FF_dsds/prebuilt_bin/cache.img
 pxa1L88FF_dsds/u-boot.bin pxa1L88FF_dsds/prebuilt_bin/u-boot.bin
 pxa1L88FF_dsds/userdata.img pxa1L88FF_dsds/prebuilt_bin/userdata.img
 pxa1L88FF_dsds/userdata_4g.img pxa1L88FF_dsds/prebuilt_bin/userdata_4g.img
