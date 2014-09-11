@@ -63,8 +63,11 @@ pxa1U88dkb_def/Skylark_LTG_V11.bin pxa1U88dkb_def/prebuilt_bin/Skylark_LTG_V11.b
 pxa1U88dkb_def/Skylark_LWG_V11.bin pxa1U88dkb_def/prebuilt_bin/Skylark_LWG_V11.bin
 pxa1U88dkb_def/Skylark_LTG_V13.bin pxa1U88dkb_def/prebuilt_bin/Skylark_LTG_V13.bin
 pxa1U88dkb_def/Skylark_LWG_V13.bin pxa1U88dkb_def/prebuilt_bin/Skylark_LWG_V13.bin
+pxa1U88dkb_def/HL_LTG_SL_DKB_MDB.bin pxa1U88dkb_def/prebuilt_bin/HL_LTG_SL_DKB_MDB.bin
+pxa1U88dkb_def/HL_LWG_MDB.bin pxa1U88dkb_def/prebuilt_bin/HL_LWG_MDB.bin
 pxa1U88dkb_def/blf/* pxa1U88dkb_def/prebuilt_bin/
 pxa1U88dkb_def/boot.img pxa1U88dkb_def/prebuilt_bin/boot.img
+pxa1U88dkb_def/cache.img pxa1U88dkb_def/prebuilt_bin/cache.img
 pxa1U88dkb_def/recovery.img pxa1U88dkb_def/prebuilt_bin/recovery.img
 pxa1U88dkb_def/obm.bin pxa1U88dkb_def/prebuilt_bin/obm.bin
 pxa1U88dkb_def/obm_trusted_tz.bin pxa1U88dkb_def/prebuilt_bin/obm_trusted_tz.bin
