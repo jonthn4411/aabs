@@ -178,7 +178,7 @@ build_droid_$$(product):
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/modules; fi &&\
 	mkdir -p $(OUTPUT_DIR)/$$(private_product)/modules
 	$(hide)cp -af $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib/modules  $(OUTPUT_DIR)/$$(private_product)/
-
+	$(hide)cp $(BOARD)/release_package_list $(OUTPUT_DIR)/release_package_list
 
 ##!!## first time publish: all for two
 PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
@@ -315,7 +315,7 @@ PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW.bin:o:md5
 PUBLISHING_FILES+=$$(product)/WK_M08_AI_Y1_removelo_Y0_Flash.bin:o:md5
 endif
 endef
-
+PUBLISHING_FILES+=release_package_list:o
 
 
 define define-build-droid-otapackage
