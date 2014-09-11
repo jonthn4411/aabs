@@ -166,6 +166,7 @@ build_droid_$$(product):
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/zImage $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot.img $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/cache.img $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/recovery.img $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/u-boot.bin $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/vmlinux $(OUTPUT_DIR)/$$(private_product)/
@@ -190,6 +191,7 @@ PUBLISHING_FILES+=$$(product)/obm_trusted_tz.bin:o:md5
 PUBLISHING_FILES+=$$(product)/obm_trusted_ntz.bin:o:md5
 PUBLISHING_FILES+=$$(product)/u-boot.bin:o:md5
 PUBLISHING_FILES+=$$(product)/boot.img:o:md5
+PUBLISHING_FILES+=$$(product)/cache.img:o:md5
 PUBLISHING_FILES+=$$(product)/recovery.img:o:md5
 PUBLISHING_FILES+=$$(product)/uImage:o:md5
 PUBLISHING_FILES+=$$(product)/zImage:o:md5
@@ -292,7 +294,8 @@ PUBLISHING_FILES+=$$(product)/Skylark_LTG_V11.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LTG_V13.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LWG_V11.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LWG_V13.bin:o:md5
-
+PUBLISHING_FILES+=$$(product)/HL_LTG_SL_DKB_MDB.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LWG_MDB.bin:o:md5
 
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:o:md5
