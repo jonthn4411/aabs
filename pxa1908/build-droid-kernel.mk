@@ -293,6 +293,11 @@ PUBLISHING_FILES+=$$(product)/Skylark_LTG_V13.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LWG_V11.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LWG_V13.bin:o:md5
 
+PUBLISHING_FILES+=$$(product)/HL2_LTG_SL_DKB.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL2_LTG_SL_DKB_DIAG.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HL2_LTG_SL_DKB_NVM.mdb:o:md5
+PUBLISHING_FILES+=$$(product)/HL2_SS_M09_Y0_AI_SKL_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/Skylark_LTG_SS_V13.bin:o:md5
 
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:o:md5
