@@ -296,6 +296,7 @@ PUBLISHING_FILES+=$$(product)/HL_LTG_SL_DKB.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_SL_DKB_DSDS.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_SL_DKB_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LTG_V11.bin:o:md5
+PUBLISHING_FILES+=$$(product)/Skylark_LTG_L910C.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LTG_V13.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LWG_V11.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LWG_V13.bin:o:md5
