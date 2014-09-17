@@ -63,13 +63,13 @@ PUBLISHING_FILES2+=$$(product)/u-boot.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/obm_trusted_tz.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/obm_trusted_tz_auto.bin:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
-
-ifeq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0),)
 ifeq ($(filter $$(device),pxa1928ff),)
 PUBLISHING_FILES2+=$$(product)/primary_gpt_8g:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/secondary_gpt_8g:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/userdata_8g.img:./$$(product)/flash/:o:md5
 endif
+
+ifeq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0),)
 PUBLISHING_FILES2+=$$(product)/recovery.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/tee_tw.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/teesst.img:./$$(product)/flash/:o:md5
