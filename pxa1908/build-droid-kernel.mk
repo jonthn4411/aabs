@@ -164,7 +164,6 @@ build_droid_$$(product):
 	touch $(OUTPUT_DIR)/product_mode_build.txt; fi
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obm*bin $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage $(OUTPUT_DIR)/$$(private_product)/
-	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/zImage $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot.img $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/cache.img $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/recovery.img $(OUTPUT_DIR)/$$(private_product)/
@@ -194,7 +193,6 @@ PUBLISHING_FILES+=$$(product)/boot.img:o:md5
 PUBLISHING_FILES+=$$(product)/cache.img:o:md5
 PUBLISHING_FILES+=$$(product)/recovery.img:o:md5
 PUBLISHING_FILES+=$$(product)/uImage:o:md5
-PUBLISHING_FILES+=$$(product)/zImage:o:md5
 PUBLISHING_FILES2+=$$(product)/vmlinux:./$$(product)/symbols/:o:md5
 PUBLISHING_FILES2+=$$(product)/System.map:./$$(product)/symbols/:o:md5
 PUBLISHING_FILES+=$$(product)/primary_gpt_4g:o:md5
