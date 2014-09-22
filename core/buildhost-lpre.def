@@ -1,0 +1,14 @@
+#For Lpre project
+export GIT_SERVER=shgit.marvell.com
+export GIT_ANDROID_ROOT=${GIT_SERVER}/git/lpre
+export GIT_MANIFEST=${GIT_ANDROID_ROOT}/platform/manifest.git
+export GIT_REPO=${GIT_SERVER}/git/android/tools/repo.git
+export GIT_LOCAL_MIRROR=/mnt/mirror/default/
+
+export OFFICIAL_PUBLISH_DIR_BASE=/pdkbuild/android
+export TEMP_PUBLISH_DIR_BASE=/pdkbuild/temp
+
+#file name that is to read the ip address of the publish server. If the file doesn't exists, ip address of the building host is used.
+export PUBLISH_SERVER_IP_FILE=/autobuild/publish_server_ip
+
+export BACKUP_SERVER=${GIT_SERVER}
