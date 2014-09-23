@@ -321,7 +321,7 @@ device:=$$(word 2, $$(tw) )
 .PHONY: build_droid_otapackage_$$(product)
 build_droid_otapackage_$$(product): private_product:=$$(product)
 build_droid_otapackage_$$(product): private_device:=$$(device)
-build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
+build_droid_otapackage_$$(product):
 	$(log) "[$$(private_product)] no android OTA package build ..."
 endef
 else
