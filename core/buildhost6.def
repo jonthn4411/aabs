@@ -1,7 +1,7 @@
-#For pxa1928-pdk5.0_32 project
+#For lpre project
 export GIT_SERVER=shgit.marvell.com
-export GIT_ANDROID_ROOT=${GIT_SERVER}/git/pdk
-export GIT_MANIFEST=${GIT_ANDROID_ROOT}/platform/vendor/pdk/mini_armv7a_neon/mini_armv7a_neon-userdebug/manifest.git
+export GIT_ANDROID_ROOT=${GIT_SERVER}/git/lpre
+export GIT_MANIFEST=${GIT_ANDROID_ROOT}/platform/manifest.git
 export GIT_REPO=${GIT_SERVER}/git/android/tools/repo.git
 export GIT_LOCAL_MIRROR=/mnt/mirror/default/
 
