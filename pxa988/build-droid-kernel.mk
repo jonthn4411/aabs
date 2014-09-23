@@ -313,8 +313,18 @@ PUBLISHING_FILES+=$$(product)/WK_M08_AI_Y1_removelo_Y0_Flash.bin:o:md5
 endif
 endef
 
-
-
+ifeq ($(ABS_DROID_BRANCH),lpre)
+define define-build-droid-otapackage
+tw:=$$(subst :,  , $(1) )
+product:=$$(word 1, $$(tw) )
+device:=$$(word 2, $$(tw) )
+.PHONY: build_droid_otapackage_$$(product)
+build_droid_otapackage_$$(product): private_product:=$$(product)
+build_droid_otapackage_$$(product): private_device:=$$(device)
+build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
+	$(log) "[$$(private_product)] no android OTA package build ..."
+endef
+else
 define define-build-droid-otapackage
 tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
@@ -342,16 +352,7 @@ PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl-intermediates.zip:./$$(produ
 PUBLISHING_FILES2+=$$(product)/target_files-package.zip:./$$(product)/ota/:o:md5
 
 endef
-#define define-build-droid-otapackage
-#tw:=$$(subst :,  , $(1) )
-#product:=$$(word 1, $$(tw) )
-#device:=$$(word 2, $$(tw) )
-#.PHONY: build_droid_otapackage_$$(product)
-#build_droid_otapackage_$$(product): private_product:=$$(product)
-#build_droid_otapackage_$$(product): private_device:=$$(device)
-#build_droid_otapackage_$$(product): build_uboot_obm_$$(product)
-#	$(log) "[$$(private_product)] no android OTA package build ..."
-#endef
+endif
 
 define define-build-droid-tool
 tw:=$$(subst :,  , $(1) )
