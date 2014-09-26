@@ -294,6 +294,14 @@ PUBLISHING_FILES+=$$(product)/Skylark_LWG_V11.bin:o:md5
 PUBLISHING_FILES+=$$(product)/Skylark_LWG_V13.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LTG_SL_DKB_MDB.bin:o:md5
 PUBLISHING_FILES+=$$(product)/HL_LWG_MDB.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LTG_SL_DKB_DSDS.bin:o:md5
+PUBLISHING_FILES+=$$(product)/ULC_SS_M09_Y0_AI_SKL_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/Skylark_LTG_V15.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LTG_SL_DKB_DSDS_MDB.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LWG_DKB.bin:o:md5
+PUBLISHING_FILES+=$$(product)/ULC_LWG_M09_B0_DSDS_SKL_Flash.bin:o:md5
+PUBLISHING_FILES+=$$(product)/Skylark_LWG_V15.bin:o:md5
+PUBLISHING_FILES+=$$(product)/HL_LWG_DKB_MDB.bin:o:md5
 
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
 PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:o:md5
