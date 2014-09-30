@@ -102,6 +102,13 @@ PUBLISHING_FILES2+=$$(product)/Skylark_LWG.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/nvm.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/ReliableData.bin:./$$(product)/flash/:o:md5
+ifneq ($(filter $$(device),pxa1928ff),)
+PUBLISHING_FILES2+=$$(product)/EDEN_LWG_M09_B0_CP6X_DSDS_SKL_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0_CP6X.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0_CP6X_DIAG.mdb:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0_CP6X_NVM.mdb:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_CP6X.bin:./$$(product)/flash/:o:md5
+endif
 endif
 
 .PHONY: build_droid_root_$$(product)
