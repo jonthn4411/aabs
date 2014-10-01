@@ -56,6 +56,7 @@ PUBLISHING_FILES2+=$$(product)/System.map:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/uImage.android:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/zImage:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/vmlinux:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/build.prop:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/pxa1928concord.dtb:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/pxa1928concord-discrete.dtb:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/blf:./$$(product)/flash/:o:md5
@@ -142,6 +143,7 @@ build_droid_root_$$(product): output_dir
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/uImage ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/uImage $$(OUTPUT_DIR)/$$(private_product)/uImage.android; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/zImage ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/zImage $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/vmlinux ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/vmlinux $$(OUTPUT_DIR)/$$(private_product)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/system/build.prop ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/system/build.prop $$(OUTPUT_DIR)/$$(private_product)/debug; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928concord.dtb ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928concord.dtb $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928concord-discrete.dtb ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928concord-discrete.dtb $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip $$(OUTPUT_DIR)/; fi
