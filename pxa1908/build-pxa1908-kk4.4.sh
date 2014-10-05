@@ -7,3 +7,4 @@ fi
 export ABS_BUILDHOST_DEF
 
 export ABS_UNIQUE_MANIFEST_BRANCH=1
+export ABS_PUBLISH_DIR_BASE=/autobuild/android/pxa1U88
