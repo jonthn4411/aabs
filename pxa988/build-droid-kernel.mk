@@ -72,7 +72,7 @@ device:=$$(word 2, $$(tw) )
 .PHONY: build_kernel_$$(product)
 
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
-PUBLISHING_FILES2+=$$(product)/uImage:./$$(product)/flash/:m:md5
+PUBLISHING_FILES2+=$$(product)/uImage:./$$(product)/debug/:m:md5
 build_kernel_$$(product): private_product:=$$(product)
 build_kernel_$$(product): private_device:=$$(device)
 build_kernel_$$(product): output_dir
@@ -191,8 +191,8 @@ PUBLISHING_FILES2+=$$(product)/obm_trusted_ntz.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/u-boot.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/boot.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/recovery.img:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/uImage:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/zImage:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/uImage:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/zImage:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/vmlinux:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/System.map:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/primary_gpt_4g:./$$(product)/flash/:o:md5
@@ -217,7 +217,7 @@ PUBLISHING_FILES2+=product_mode_build.txt:./$$(product)/debug/:o
 PUBLISHING_FILES2+=$$(product)/blf:./$$(product)/flash/:o:md5
 
 ##!!## dtb files
-PUBLISHING_FILES2+=$$(product)/dtb:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/dtb:./$$(product)/debug/:o:md5
 
 ##!!## security image
 PUBLISHING_FILES2+=$$(product)/tee_tw.bin:./$$(product)/flash/:o:md5
