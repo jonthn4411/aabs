@@ -72,7 +72,7 @@ device:=$$(word 2, $$(tw) )
 .PHONY: build_kernel_$$(product)
 
 #make sure that PUBLISHING_FILES_XXX is a simply expanded variable
-PUBLISHING_FILES+=$$(product)/uImage:m:md5
+PUBLISHING_FILES2+=$$(product)/uImage:./$$(product)/debug/:m:md5
 build_kernel_$$(product): private_product:=$$(product)
 build_kernel_$$(product): private_device:=$$(device)
 build_kernel_$$(product): output_dir
@@ -180,131 +180,131 @@ build_droid_$$(product):
 ##!!## first time publish: all for two
 PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
 PUBLISHING_FILES2+=Software_Downloader_Helan2.zip:./:o:md5
-PUBLISHING_FILES+=$$(product)/WTM.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HLN2_NonTLoader_eMMC_DDR.bin:o:md5
-PUBLISHING_FILES+=$$(product)/obm.bin:o:md5
-PUBLISHING_FILES+=$$(product)/obm_auto.bin:o:md5
-PUBLISHING_FILES+=$$(product)/obm_trusted_tz.bin:o:md5
-PUBLISHING_FILES+=$$(product)/obm_trusted_ntz.bin:o:md5
-PUBLISHING_FILES+=$$(product)/u-boot.bin:o:md5
-PUBLISHING_FILES+=$$(product)/boot.img:o:md5
-PUBLISHING_FILES+=$$(product)/recovery.img:o:md5
-PUBLISHING_FILES+=$$(product)/uImage:o:md5
-PUBLISHING_FILES+=$$(product)/zImage:o:md5
-PUBLISHING_FILES2+=$$(product)/vmlinux:./$$(product)/symbols/:o:md5
-PUBLISHING_FILES2+=$$(product)/System.map:./$$(product)/symbols/:o:md5
-PUBLISHING_FILES+=$$(product)/primary_gpt_4g:o:md5
-PUBLISHING_FILES+=$$(product)/secondary_gpt_4g:o:md5
-PUBLISHING_FILES+=$$(product)/primary_gpt:o:md5
-PUBLISHING_FILES+=$$(product)/secondary_gpt:o:md5
-PUBLISHING_FILES+=$$(product)/userdata.img:m:md5
-PUBLISHING_FILES+=$$(product)/userdata_4g.img:o:md5
-PUBLISHING_FILES+=$$(product)/system.img:m:md5
-PUBLISHING_FILES+=$$(product)/ramdisk.img:m:md5
-PUBLISHING_FILES+=$$(product)/ramdisk-rooted.img:o:md5
-PUBLISHING_FILES2+=$$(product)/symbols_system.tgz:./$$(product)/symbols/:o:md5
-PUBLISHING_FILES+=$$(product)/ramdisk-recovery.img:o:md5
-PUBLISHING_FILES2+=$$(product)/build.prop:./$$(product)/symbols/:o:md5
-PUBLISHING_FILES2+=$$(product)/modules.tgz:./$$(product)/symbols/:o:md5
-PUBLISHING_FILES+=product_mode_build.txt:o
+PUBLISHING_FILES2+=$$(product)/WTM.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HLN2_NonTLoader_eMMC_DDR.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/obm.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/obm_auto.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/obm_trusted_tz.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/obm_trusted_ntz.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/u-boot.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/boot.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/recovery.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/uImage:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/zImage:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/vmlinux:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/System.map:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/primary_gpt_4g:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/secondary_gpt_4g:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/primary_gpt:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/secondary_gpt:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/userdata.img:./$$(product)/flash/:m:md5
+PUBLISHING_FILES2+=$$(product)/userdata_4g.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/system.img:./$$(product)/flash/:m:md5
+PUBLISHING_FILES2+=$$(product)/ramdisk.img:./$$(product)/debug/:m:md5
+PUBLISHING_FILES2+=$$(product)/ramdisk-rooted.img:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/symbols_system.tgz:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/ramdisk-recovery.img:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/build.prop:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/modules.tgz:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=product_mode_build.txt:./$$(product)/debug/:o
 
 ##!!## blf files
-PUBLISHING_FILES+=$$(product)/blf:o:md5
+PUBLISHING_FILES2+=$$(product)/blf:./$$(product)/flash/:o:md5
 
 ##!!## dtb files
-PUBLISHING_FILES+=$$(product)/dtb:o:md5
+PUBLISHING_FILES2+=$$(product)/dtb:./$$(product)/debug/:o:md5
 
 ##!!## security image
-PUBLISHING_FILES+=$$(product)/tee_tw.bin:o:md5
-PUBLISHING_FILES+=$$(product)/teesst.img:o:md5
+PUBLISHING_FILES2+=$$(product)/tee_tw.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/teesst.img:./$$(product)/flash/:o:md5
 
-PUBLISHING_FILES+=$$(product)/radio.img:o:md5
+PUBLISHING_FILES2+=$$(product)/radio.img:./$$(product)/flash/:o:md5
 
-PUBLISHING_FILES+=$$(product)/nvm-wb.img:o:md5
-PUBLISHING_FILES+=$$(product)/nvm-td.img:o:md5
-PUBLISHING_FILES+=$$(product)/nvm.img:o:md5
+PUBLISHING_FILES2+=$$(product)/nvm-wb.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/nvm-td.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/nvm.img:./$$(product)/flash/:o:md5
 
-PUBLISHING_FILES+=$$(product)/HL_CP.bin:o:md5
-PUBLISHING_FILES+=$$(product)/EM_CP.bin:o:md5
-PUBLISHING_FILES+=$$(product)/EM_CP_DIAG.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/EM_CP_NVM.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/EM_M08_AI_Z1_Flash.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HL_M08_AI_Z1_Flash.bin:o:md5
-PUBLISHING_FILES+=$$(product)/KL_CP.bin:o:md5
-PUBLISHING_FILES+=$$(product)/KL_CP_DIAG.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/KL_CP_NVM.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/KUNLUN_Z0_M14_AI_Flash.bin:o:md5
-PUBLISHING_FILES+=$$(product)/KUNLUN_A0_M15_AI_Flash.bin:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_CP.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/EM_CP.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/EM_CP_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/EM_CP_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/EM_M08_AI_Z1_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_M08_AI_Z1_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/KL_CP.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/KL_CP_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/KL_CP_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/KUNLUN_Z0_M14_AI_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/KUNLUN_A0_M15_AI_Flash.bin:./$$(product)/flash/:o:md5
 
-PUBLISHING_FILES+=$$(product)/KUNLUN_Arbel.bin:o:md5
-PUBLISHING_FILES+=$$(product)/KUNLUN_Arbel_DIAG.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/KUNLUN_Arbel_NVM.mdb:o:md5
+PUBLISHING_FILES2+=$$(product)/KUNLUN_Arbel.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/KUNLUN_Arbel_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/KUNLUN_Arbel_NVM.mdb:./$$(product)/debug/:o:md5
 
-PUBLISHING_FILES+=$$(product)/HL_TD_CP.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HL_TD_CP_DIAG.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/HL_TD_CP_NVM.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/HL_TD_M08_AI_A0_Flash.bin:o:md5
-PUBLISHING_FILES+=$$(product)/radio-helan-td.img:o:md5
-PUBLISHING_FILES+=$$(product)/HELAN_A0_M16_AI_Flash.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HL_WB_CP.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HL_WB_CP_DIAG.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/HL_WB_CP_NVM.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/HLWT_TD_CP.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HLWT_TD_CP_DIAG.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/HLWT_TD_CP_NVM.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/HLWT_TD_M08_AI_A0_Flash.bin:o:md5
-PUBLISHING_FILES+=$$(product)/nvm-helan-wb.img:o:md5
-PUBLISHING_FILES+=$$(product)/nvm-helan-wt.img:o:md5
-PUBLISHING_FILES+=$$(product)/radio-helan-wb.img:o:md5
-PUBLISHING_FILES+=$$(product)/radio-helan-wt.img:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_TD_CP.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_TD_CP_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_TD_CP_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_TD_M08_AI_A0_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/radio-helan-td.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HELAN_A0_M16_AI_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_WB_CP.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_WB_CP_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_WB_CP_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HLWT_TD_CP.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HLWT_TD_CP_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HLWT_TD_CP_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HLWT_TD_M08_AI_A0_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/nvm-helan-wb.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/nvm-helan-wt.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/radio-helan-wb.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/radio-helan-wt.img:./$$(product)/flash/:o:md5
 
-PUBLISHING_FILES+=$$(product)/TABLET_CP.bin:o:md5
-PUBLISHING_FILES+=$$(product)/TABLET_MSA.bin:o:md5
+PUBLISHING_FILES2+=$$(product)/TABLET_CP.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/TABLET_MSA.bin:./$$(product)/flash/:o:md5
 
-PUBLISHING_FILES+=$$(product)/radio-helanlte-ltg.img:o:md5
-PUBLISHING_FILES+=$$(product)/HL_DL_M09_Y0_AI_SKL_Flash.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LTG_DL.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LTG_DIAG.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LTG_NVM.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/nvm-helanlte-ltg.img:o:md5
-PUBLISHING_FILES+=$$(product)/HL_DL_M09_Y0_AI_SKL_Flash.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LTG_DL_DIAG.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LTG_DL_DKB.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LTG_DL_NVM.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LWG_DIAG.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LWG_DKB.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LWG_M09_B0_SKL_Flash.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LWG_NVM.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/nvm-helanlte.img:o:md5
-PUBLISHING_FILES+=$$(product)/Skylark_LTG.bin:o:md5
-PUBLISHING_FILES+=$$(product)/Skylark_LWG.bin:o:md5
-PUBLISHING_FILES+=$$(product)/radio-helanlte.img:o:md5
-PUBLISHING_FILES+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LTG_SL_DKB_DIAG.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LTG_SL_DKB.bin:o:md5
-PUBLISHING_FILES+=$$(product)/HL_LTG_SL_DKB_NVM.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/Skylark_LTG_V11.bin:o:md5
-PUBLISHING_FILES+=$$(product)/Skylark_LTG_V13.bin:o:md5
-PUBLISHING_FILES+=$$(product)/Skylark_LWG_V11.bin:o:md5
-PUBLISHING_FILES+=$$(product)/Skylark_LWG_V13.bin:o:md5
+PUBLISHING_FILES2+=$$(product)/radio-helanlte-ltg.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_DL_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_DL.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/nvm-helanlte-ltg.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_DL_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_DL_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_DL_DKB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_DL_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_M09_B0_SKL_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/nvm-helanlte.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LTG.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LWG.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/radio-helanlte.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LTG_V11.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LTG_V13.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LWG_V11.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LWG_V13.bin:./$$(product)/flash/:o:md5
 
 
-PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/Boerne_DIAG.mdb.txt:o:md5
-PUBLISHING_FILES+=$$(product)/ReliableData.bin:o:md5
+PUBLISHING_FILES2+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/Boerne_DIAG.mdb.txt:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/ReliableData.bin:./$$(product)/flash/:o:md5
 ifeq ($(product),pxa988dkb_def)
-PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_NVM.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3.bin:o:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DIGRF3_DIAG.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS.bin:o:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_NVM.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/Arbel_DKB_SKWS_DIAG.mdb:o:md5
-PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A0_Flash.bin:o:md5
-PUBLISHING_FILES+=$$(product)/TTD_M06_AI_A1_Flash.bin:o:md5
-PUBLISHING_FILES+=$$(product)/TTD_M06_AI_Y0_Flash.bin:o:md5
-PUBLISHING_FILES+=$$(product)/WK_CP_2CHIP_SPRW.bin:o:md5
-PUBLISHING_FILES+=$$(product)/WK_M08_AI_Y1_removelo_Y0_Flash.bin:o:md5
+PUBLISHING_FILES2+=$$(product)/Arbel_DIGRF3_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/Arbel_DIGRF3.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Arbel_DIGRF3_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/Arbel_DKB_SKWS.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Arbel_DKB_SKWS_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/Arbel_DKB_SKWS_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/TTD_M06_AI_A0_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/TTD_M06_AI_A1_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/TTD_M06_AI_Y0_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/WK_CP_2CHIP_SPRW.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/WK_M08_AI_Y1_removelo_Y0_Flash.bin:./$$(product)/flash/:o:md5
 endif
 endef
 
@@ -367,8 +367,8 @@ build_droid_tool_$$(product): build_droid_$$(product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/tools.img $(OUTPUT_DIR)/$$(private_product)/
 	tar zcvf $(OUTPUT_DIR)/$$(private_product)/tools.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device) tools
 
-PUBLISHING_FILES+=$$(product)/tools.img:o:md5
-PUBLISHING_FILES+=$$(product)/tools.tgz:o:md5
+PUBLISHING_FILES2+=$$(product)/tools.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/tools.tgz:./$$(product)/flash/:o:md5
 
 endef
 
