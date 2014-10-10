@@ -56,7 +56,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product) 
+build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product) build_droid_debug_img_$$(product) 
 endef
 
 MAKE_JOBS := 8
@@ -328,6 +328,42 @@ endif
 endef
 PUBLISHING_FILES+=release_package_list:o
 
+define define-build-droid-debug-img
+tw:=$$(subst :,  , $(1) )
+product:=$$(word 1, $$(tw) )
+device:=$$(word 2, $$(tw) )
+.PHONY: build_droid_debug_img_$$(product)
+build_droid_debug_img_$$(product): private_product:=$$(product)
+build_droid_debug_img_$$(product): private_device:=$$(device)
+build_droid_debug_img_$$(product): build_droid_$$(product)
+	$(log) "[$$(private_product)] make debug image to put .ko files to /system/lib/modules"
+	$(hide)cd $(SRC_DIR) && \
+	source ./build/envsetup.sh && \
+	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT)
+	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device)
+	find root/ -iname "*.rc"|xargs sed -i -r 's/\/lib\/modules/\/system\/lib\/modules/'
+	find root/ | cpio -o -H newc | gzip > ramdisk-debug.img
+	mkbootimg --ramdisk ramdisk-debug.img --kernel kernel -o boot-debug.img
+	mkdir -p system/lib/modules/
+	cp root/lib/modules/* system/lib/modules/
+	cd $(SRC_DIR)
+	mv $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img.bak
+	make snod
+	mv $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system-debug.img
+	mv $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img.bak $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img
+
+	$(hide)echo "copy debug images"
+
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-debug.img $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot-debug.img $(OUTPUT_DIR)/$$(private_product)
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system-debug.img $(OUTPUT_DIR)/$$(private_product)
+	$(log) "  done for make debug images build."
+
+PUBLISHING_FILES2+=$$(product)/ramdisk-debug.img:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/boot-debug.img:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/system-debug.img:./$$(product)/debug/:o:md5
+
+endef
 
 define define-build-droid-otapackage
 tw:=$$(subst :,  , $(1) )
@@ -399,4 +435,5 @@ $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-targe
 				$(eval $(call define-build-droid-target,$(bv)) ) \
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
+				$(eval $(call define-build-droid-debug-img,$(bv)) ) \
 )
