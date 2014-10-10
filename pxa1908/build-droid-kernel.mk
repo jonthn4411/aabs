@@ -347,7 +347,7 @@ build_droid_debug_img_$$(product): build_droid_$$(product)
 	mkdir -p system/lib/modules/ && \
 	cp root/lib/modules/* system/lib/modules/ && \
 	mv $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img.bak && \
-	cd $(SRC_DIR) && \ 
+	cd $(SRC_DIR) && \
 	make snod && \
 	mv $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system-debug.img && \
 	mv $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img.bak $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img
