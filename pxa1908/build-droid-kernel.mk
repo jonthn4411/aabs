@@ -422,5 +422,5 @@ $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-targe
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-target,$(bv)) ) \
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
-				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
+				$(eval $(call define-build-droid-otapackage,$(bv))) \
 				$(eval $(call define-build-debug-kernel-target,$(bv)) ) \)
