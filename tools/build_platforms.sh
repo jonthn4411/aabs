@@ -149,9 +149,7 @@ if [ -x ${ABS_TOP_DIR}/${soc}/build-${platform}.sh ]; then
         TARGET_PKGSRC="pkgsrc"
         TARGET_EMAIL="email"
     fi
-    if [ "$ABS_FORCE_BUILD" = "true" ]; then
         FORCE_BUILD="force"
-    fi
 	if [ "$dryrun_flag" == true ]; then
 		echo "[aabs]will-run:./core/autobuild.sh clobber source pkgsrc publish autotest email $rlsname" | tee -a $LOG
 	else
