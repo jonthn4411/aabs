@@ -393,10 +393,34 @@ PUBLISHING_FILES+=$$(product)/tools.img:o:md5
 PUBLISHING_FILES+=$$(product)/tools.tgz:o:md5
 
 endef
+define define-build-debug-kernel-target
+tw:=$$(subst :,  , $(1) )
+product:=$$(word 1, $$(tw) )
+device:=$$(word 2, $$(tw) )
+.PHONY: build_debug_kernel_$$(product) 
+build_debug_kernel_$$(product): private_product:=$$(product)
+build_debug_kernel_$$(product): private_device:=$$(device)
+build_debug_kernel_$$(product): 
+	$(log) "[$$(private_product)] building debug uImage ...private_product is"+$$(private_product)+"private_device is "+$$(private_device)
+	$(hide)cd $(SRC_DIR) && \
+	source ./build/envsetup.sh && \
+	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
+	make build-debug-kernel 
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage_debug $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/System.map $(OUTPUT_DIR)/$$(private_product)/System_debug.map
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/vmlinux $(OUTPUT_DIR)/$$(private_product)/vmlinux_debug
+	tar zcf $(OUTPUT_DIR)/$$(private_product)/symbols_system.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ symbols
+	tar zcf $(OUTPUT_DIR)/$$(private_product)/modules_debug.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib modules && \
+	i$(log) "  done for debug uImage build."
+
+PUBLISHING_FILES+=$$(product)/uImage_debug:o:md5
+PUBLISHING_FILES+=$$(product)/uImage_debug:m:md5
+
+endef
 
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-target,$(bv)) ) \
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
-)
+				$(eval $(call define-build-debug-kernel-target,$(bv)) ) \)
