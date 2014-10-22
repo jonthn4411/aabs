@@ -114,8 +114,8 @@ PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0_CP6X_MDB.bin:./$$(product)/flash/:o
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_CMCC_CP6X.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_EU_CP6X.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_NA_CP6X.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0_CP6X_DIAG.mdb:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0_CP6X_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0_CP6X_MDB.txt:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/CP6X_version.txt:./$$(product)/debug/:o:md5
 endif
 endif
 
