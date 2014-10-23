@@ -56,7 +56,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product) build_droid_debug_img_$$(product) 
+build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product)  build_debug_kernel_$$(product) build_droid_debug_img_$$(product) 
 endef
 
 MAKE_JOBS := 8
@@ -335,7 +335,7 @@ device:=$$(word 2, $$(tw) )
 .PHONY: build_droid_debug_img_$$(product)
 build_droid_debug_img_$$(product): private_product:=$$(product)
 build_droid_debug_img_$$(product): private_device:=$$(device)
-build_droid_debug_img_$$(product): build_droid_$$(product)
+build_droid_debug_img_$$(product): build_droid_$$(product) build_debug_kernel_$$(product)
 	$(log) "[$$(private_product)] make debug image to put .ko files to /system/lib/modules"
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -343,7 +343,7 @@ build_droid_debug_img_$$(product): build_droid_$$(product)
 	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
 	find root/ -iname "*.rc"|xargs sed -i -r 's/\/lib\/modules/\/system\/lib\/modules/' && \
 	cd root/ && find . | cpio -o -H newc | gzip > ../ramdisk-debug.img && cd ../ &&\
-	mkbootimg --ramdisk ramdisk-debug.img --kernel kernel -o boot-debug.img && \
+	mkbootimg --ramdisk ramdisk-debug.img --kernel uImage_debug -o boot-debug.img && \
 	mkdir -p system/lib/modules/ && \
 	cp root/lib/modules/* system/lib/modules/ && \
 	mv $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img.bak && \
@@ -357,6 +357,7 @@ build_droid_debug_img_$$(product): build_droid_$$(product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-debug.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot-debug.img $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system-debug.img $(OUTPUT_DIR)/$$(private_product)
+
 	$(log) "  done for make debug images build."
 
 PUBLISHING_FILES2+=$$(product)/ramdisk-debug.img:./$$(product)/debug/:o:md5
@@ -430,10 +431,40 @@ PUBLISHING_FILES2+=$$(product)/tools.tgz:./$$(product)/flash/:o:md5
 
 endef
 
+define define-build-debug-kernel-target
+tw:=$$(subst :,  , $(1) )
+product:=$$(word 1, $$(tw) )
+device:=$$(word 2, $$(tw) )
+.PHONY: build_debug_kernel_$$(product) 
+build_debug_kernel_$$(product): private_product:=$$(product)
+build_debug_kernel_$$(product): private_device:=$$(device)
+build_debug_kernel_$$(product): 
+	$(log) "[$$(private_product)] building debug uImage ...private_product is"+$$(private_product)+"private_device is "+$$(private_device)
+	$(hide)cd $(SRC_DIR) && \
+	source ./build/envsetup.sh && \
+	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
+	make build-debug-kernel 
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage_debug $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/System_debug.map $(OUTPUT_DIR)/$$(private_product)/System_debug.map
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/vmlinux_debug $(OUTPUT_DIR)/$$(private_product)/vmlinux_debug
+	tar zcf $(OUTPUT_DIR)/$$(private_product)/modules_debug.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib modules && \
+	tar zcf $(OUTPUT_DIR)/$$(private_product)/symbols_system_debug.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ symbols
+	$(log) "  done for make debug kernel target build."
+
+PUBLISHING_FILES2+=$$(product)/uImage_debug:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/System_debug.map:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/vmlinux_debug:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/symbols_system_debug.tgz:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/modules_debug.tgz:./$$(product)/debug/:o:md5
+
+endef
+
+
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-target,$(bv)) ) \
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
+				$(eval $(call define-build-debug-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-debug-img,$(bv)) ) \
 )
