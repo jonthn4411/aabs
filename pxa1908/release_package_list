@@ -32,6 +32,41 @@ pxa1908dkb_tz/flash/teesst.img pxa1908dkb_tz/prebuilt_bin/teesst.img
 pxa1908dkb_tz/flash/tee_tw.bin pxa1908dkb_tz/prebuilt_bin/tee_tw.bin
 pxa1908dkb_tz/flash/WTM.bin pxa1908dkb_tz/prebuilt_bin/WTM.bin
 
+pxa1908dkb_dsds/debug/build.prop pxa1908dkb_dsds/prebuilt_bin/build.prop
+pxa1908dkb_dsds/flash/primary_gpt pxa1908dkb_dsds/prebuilt_bin/primary_gpt
+pxa1908dkb_dsds/flash/secondary_gpt  pxa1908dkb_dsds/prebuilt_bin/secondary_gpt
+pxa1908dkb_dsds/debug//ramdisk.img pxa1908dkb_dsds/prebuilt_bin/ramdisk.img
+pxa1908dkb_dsds/debug/ramdisk-recovery.img pxa1908dkb_dsds/prebuilt_bin/ramdisk-recovery.img
+pxa1908dkb_dsds/flash/system.img pxa1908dkb_dsds/prebuilt_bin/system.img
+pxa1908dkb_dsds/flash/u-boot.bin pxa1908dkb_dsds/prebuilt_bin/u-boot.bin
+pxa1908dkb_dsds/flash/userdata.img pxa1908dkb_dsds/prebuilt_bin/userdata.img
+pxa1908dkb_dsds/debug/uImage pxa1908dkb_dsds/prebuilt_bin/uImage
+pxa1908dkb_dsds/flash/nvm.img pxa1908dkb_dsds/prebuilt_bin/nvm.img
+pxa1908dkb_dsds/flash/ReliableData.bin pxa1908dkb_dsds/prebuilt_bin/ReliableData.bin
+pxa1908dkb_dsds/debug/Boerne_DIAG.mdb.txt pxa1908dkb_dsds/prebuilt_bin/Boerne_DIAG.mdb.txt
+pxa1908dkb_dsds/flash/HL_LTG_SL_DKB_DSDS.bin pxa1908dkb_dsds/prebuilt_bin/HL_LTG_SL_DKB_DSDS.bin
+pxa1908dkb_dsds/debug/HL_LTG_SL_DKB_DSDS_DIAG.mdb pxa1908dkb_dsds/prebuilt_bin/HL_LTG_SL_DKB_DSDS_DIAG.mdb
+pxa1908dkb_dsds/flash/HL_LTG_SL_DKB_DSDS_MDB.bin pxa1908dkb_dsds/prebuilt_bin/HL_LTG_SL_DKB_DSDS_MDB.bin
+pxa1908dkb_dsds/debug/HL_LTG_SL_DKB_DSDS_NVM.mdb pxa1908dkb_dsds/prebuilt_bin/HL_LTG_SL_DKB_DSDS_NVM.mdb
+pxa1908dkb_dsds/flash/HL_LWG_DKB.bin pxa1908dkb_dsds/prebuilt_bin/HL_LWG_DKB.bin
+pxa1908dkb_dsds/debug/HL_LWG_DKB_DIAG.mdb pxa1908dkb_dsds/prebuilt_bin/HL_LWG_DKB_DIAG.mdb
+pxa1908dkb_dsds/flash/HL_LWG_DKB_MDB.bin pxa1908dkb_dsds/prebuilt_bin/HL_LWG_DKB_MDB.bin
+pxa1908dkb_dsds/debug/HL_LWG_DKB_NVM.mdb pxa1908dkb_dsds/prebuilt_bin/HL_LWG_DKB_NVM.mdb
+pxa1908dkb_dsds/flash/Skylark_LTG_V15.bin pxa1908dkb_dsds/prebuilt_bin/Skylark_LTG_V15.bin
+pxa1908dkb_dsds/flash/Skylark_LWG_V15.bin pxa1908dkb_dsds/prebuilt_bin/Skylark_LWG_V15.bin
+pxa1908dkb_dsds/flash/ULC_LWG_M09_B0_DSDS_SKL_Flash.bin pxa1908dkb_dsds/prebuilt_bin/ULC_LWG_M09_B0_DSDS_SKL_Flash.bin
+pxa1908dkb_dsds/flash/ULC_SS_M09_Y0_AI_SKL_Flash.bin pxa1908dkb_dsds/prebuilt_bin/ULC_SS_M09_Y0_AI_SKL_Flash.bin
+pxa1908dkb_dsds/flash/blf/* pxa1908dkb_dsds/prebuilt_bin/
+pxa1908dkb_dsds/flash/boot.img pxa1908dkb_dsds/prebuilt_bin/boot.img
+pxa1908dkb_dsds/flash/cache.img pxa1908dkb_dsds/prebuilt_bin/cache.img
+pxa1908dkb_dsds/flash/recovery.img pxa1908dkb_dsds/prebuilt_bin/recovery.img
+pxa1908dkb_dsds/flash/obm.bin pxa1908dkb_dsds/prebuilt_bin/obm.bin
+pxa1908dkb_dsds/flash/obm_auto.bin pxa1908dkb_dsds/prebuilt_bin/obm_auto.bin
+pxa1908dkb_dsds/flash/teesst.img pxa1908dkb_dsds/prebuilt_bin/teesst.img
+pxa1908dkb_dsds/flash/tee_tw.bin pxa1908dkb_dsds/prebuilt_bin/tee_tw.bin
+pxa1908dkb_dsds/flash/WTM.bin pxa1908dkb_dsds/prebuilt_bin/WTM.bin
+
+
 manifest.xml manifest.xml
 changelog.month changelog.month
 Software_Downloader.zip Software_Downloader.zip
