@@ -443,7 +443,7 @@ build_debug_kernel_$$(product):
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	make build-debug-kernel 
+	make build-debug-galcore
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage_debug $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/System_debug.map $(OUTPUT_DIR)/$$(private_product)/System_debug.map
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/vmlinux_debug $(OUTPUT_DIR)/$$(private_product)/vmlinux_debug
