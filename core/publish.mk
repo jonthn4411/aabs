@@ -16,7 +16,7 @@ endef
 
 define cpif-with-md5
     @echo "publishing files for $1"
-    @mkdir -p $(2)
+    @mkdir -p $(dir $(2))
     @cp -fr $(1) $(2) || echo "$(1) not exsit"
     @chmod -R a+r $(2)
     $(if $(findstring $(strip $(3)),md5), \
