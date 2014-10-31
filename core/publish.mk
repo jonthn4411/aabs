@@ -17,7 +17,7 @@ define cpif-with-md5
     @echo "publishing files for $1"
     @mkdir -p $(dir $(2))
     @cp -fr $(1) $(2) || echo "$(1) not exsit"
-    @chmod -R a+r $(2)
+    @chmod -R a+r $(2) || echo "$(2) not exist"
     $(if $(findstring $(strip $(3)),md5), \
         @if [ -f "$1" ]; then echo "generating md5 for $(2)"; \
         cd $(dir $(1)) && \
