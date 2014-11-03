@@ -201,7 +201,8 @@ PUBLISHING_FILES2+=$$(product)/modules.tgz:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=product_mode_build.txt:./$$(product)/debug/:o
 
 ##!!## blf files
-PUBLISHING_FILES2+=$$(product)/blf:./$$(product)/flash/:o:md5
+#PUBLISHING_FILES2+=$$(product)/blf:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/blf/*:./$$(product)/flash/:o:md5
 
 ##!!## dtb files
 PUBLISHING_FILES2+=$$(product)/dtb:./$$(product)/debug/:o:md5
