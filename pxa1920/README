@@ -1,0 +1,81 @@
+Project: pxa988-jb
+Owner: Weichuan Yan
+
+Files in this folder
+====================
+-Change logs and checksum file
+  changelog.build                                       GIT change log of each project since last build.
+  changelog.day                                         GIT change log of each project since yesterday.
+  changelog.week                                        GIT change log of each project since last week.
+  changelog.biweek                                      GIT change log of each project since 2 weeks ago.
+  changelog.month                                       GIT change log of each project since a month ago.
+  changelog.build                                       GIT change log of each project since last build
+  checksums.md5                                         This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
+
+-Source codes
+  manifest.xml	                                        Saving the GIT commit number of each project used in this build.
+
+-Android package mode tarball
+  - setup_android.sh                                    :Script help to setup Android code base
+  - android_patches.tgz                                 :Marvell patches to Android Projects
+  - android_src.tgz                                     :Source code for projects added by Marvell
+  - marvell_manifest.xml                                :Manifest xml file to download Android eclair as a base
+  - kernel_patches.tgz                                  :Marvell patches to kernel_src.tgz
+  - kernel_src.tgz                                      :Kernel base source code
+  - uboot_patches.tgz                                   :Marvell patches to uboot_src.tgz
+  - uboot_src.tgz                                       :Uboot base source code
+  - obm_src.tgz                                         :OBM source code
+
+-OBM and UBoot
+  u-boot.bin                                            :uboot for dkb
+  u-boot-mt.bin                                         :copy of uboot for maintenance
+
+- GPT
+  primary_gpt                                           :eMMC partition table
+  secondary_gpt                                         :eMMC partition table backup
+
+- CP images
+  WK_CP_2CHIP_SPRW.bin                                  :CP Arbel image, TD, Wukong
+  WK_M08_AI_Y1_removelo_Y0_Flash.bin                    :CP MSA image, TD, Wukong
+  radio.img                                             :Merged Arbel + MSA to radio.img for fastboot
+  ReliableData.bin                                      :IMEI
+
+-Kernel and Modules for Android
+  uImage                                                :Kernel image
+  uImage-mt                                             :copy of kernel for maintenance
+
+-Android File Systems
+  system.img                                            :Android system image for file system.
+  userdata.img                                          :Android userdata image for  file system.
+  ramdisk.img                                           :Android root image for file system.
+  ramdisk-recovery.img                                  :Recovery ramdisk
+
+-Software_Downloader.zip                                :Software downloader, blf and OBM included
+
+-Debug files
+  vmlinux                                               :ELF kernel
+  modules.tgz                                           :Kernel modules
+  System.map                                            :Kernel maps
+
+-Security
+  security.tgz                                          :Security internal build
+
+
+PXA988 eWiki for developer
+======================
+
+Source code build
+======================
+eWiki: https://ewiki.marvell.com/display/APSESH/PXA988+Builds
+
+Image burn
+======================
+eWiki: https://ewiki.marvell.com/display/APSESH/PXA988+Android+Images+Downloading
+
+FAQ
+======================
+eWiki: https://ewiki.marvell.com/display/APSESH/PXA988+Q+and+A
+
+Release history
+======================
+eWiki: https://ewiki.marvell.com/display/APSESH/PXA988+Release
