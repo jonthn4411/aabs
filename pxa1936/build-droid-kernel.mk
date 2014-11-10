@@ -98,7 +98,6 @@ build_kernel_$$(product): output_dir
 
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/dtb ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/dtb; fi &&\
 	mkdir -p $(OUTPUT_DIR)/$$(private_product)/dtb
-	$(hide)cp -af $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/*.dtb  $(OUTPUT_DIR)/$$(private_product)/dtb/
 
 	$(log) "  done."
 endef
