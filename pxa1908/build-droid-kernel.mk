@@ -335,17 +335,19 @@ device:=$$(word 2, $$(tw) )
 .PHONY: build_droid_debug_img_$$(product)
 build_droid_debug_img_$$(product): private_product:=$$(product)
 build_droid_debug_img_$$(product): private_device:=$$(device)
-build_droid_debug_img_$$(product): build_droid_$$(product) build_debug_kernel_$$(product)
+build_droid_debug_img_$$(product): build_droid_$$(product)
 	$(log) "[$$(private_product)] make debug image to put .ko files to /system/lib/modules"
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
+	cp -fr root/ root-bak && \
 	find root/ -iname "*.rc"|xargs sed -i -r 's/\/lib\/modules/\/system\/lib\/modules/' && \
 	cd root/ && find . | cpio -o -H newc | gzip > ../ramdisk-debug.img && cd ../ &&\
-	mkbootimg --ramdisk ramdisk-debug.img --kernel uImage_debug -o boot-debug.img && \
+	mkbootimg --ramdisk ramdisk-debug.img --kernel uImage -o boot-debug.img && \
 	mkdir -p system/lib/modules/ && \
 	cp root/lib/modules/* system/lib/modules/ && \
+	rm -fr root/ && mv root-bak root && \
 	mv $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img.bak && \
 	cd $(SRC_DIR) && \
 	make snod && \
@@ -354,15 +356,16 @@ build_droid_debug_img_$$(product): build_droid_$$(product) build_debug_kernel_$$
 
 	$(hide)echo "copy debug images"
 
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-debug.img $(OUTPUT_DIR)/$$(private_product)
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot-debug.img $(OUTPUT_DIR)/$$(private_product)
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system-debug.img $(OUTPUT_DIR)/$$(private_product)
+	mkdir -p $(OUTPUT_DIR)/$$(private_product)/debug_gc_img/
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-debug.img $(OUTPUT_DIR)/$$(private_product)/debug_gc_img/
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot-debug.img $(OUTPUT_DIR)/$$(private_product)/debug_gc_img/
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system-debug.img $(OUTPUT_DIR)/$$(private_product)/debug_gc_img/
 
 	$(log) "  done for make debug images build."
 
-PUBLISHING_FILES2+=$$(product)/ramdisk-debug.img:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/boot-debug.img:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/system-debug.img:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/debug_gc_img/ramdisk-debug.img:./$$(product)/debug/debug_gc_img/:o:md5
+PUBLISHING_FILES2+=$$(product)/debug_gc_img/boot-debug.img:./$$(product)/debug/debug_gc_img/:o:md5
+PUBLISHING_FILES2+=$$(product)/debug_gc_img/system-debug.img:./$$(product)/debug/debug_gc_img/:o:md5
 
 endef
 
@@ -431,6 +434,7 @@ PUBLISHING_FILES2+=$$(product)/tools.tgz:./$$(product)/flash/:o:md5
 
 endef
 
+#This target will remake kernel with more debug options
 define define-build-debug-kernel-target
 tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
@@ -440,22 +444,32 @@ build_debug_kernel_$$(product): private_product:=$$(product)
 build_debug_kernel_$$(product): private_device:=$$(device)
 build_debug_kernel_$$(product): 
 	$(log) "[$$(private_product)] building debug uImage ...private_product is"+$$(private_product)+"private_device is "+$$(private_device)
+	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
+    cp -fr root/ root-bak 
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	make build-debug-galcore
-	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage_debug $(OUTPUT_DIR)/$$(private_product)/
-	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/System_debug.map $(OUTPUT_DIR)/$$(private_product)/System_debug.map
-	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/vmlinux_debug $(OUTPUT_DIR)/$$(private_product)/vmlinux_debug
-	tar zcf $(OUTPUT_DIR)/$$(private_product)/modules_debug.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib modules && \
-	tar zcf $(OUTPUT_DIR)/$$(private_product)/symbols_system_debug.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ symbols
+	make build-debug-galcore && \
+	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
+    cd root/ && find . | cpio -o -H newc | gzip > ../ramdisk-debug.img && cd ../ &&\
+    mkbootimg --ramdisk ramdisk-debug.img --kernel uImage -o boot-debug.img && \
+    rm -fr root/ && mv root-bak root 
+
+	mkdir -p $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage_debug $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/System_debug.map $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img/System_debug.map
+	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/vmlinux_debug $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img/vmlinux_debug
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-debug.img $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img/
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot-debug.img $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img/
+	tar zcf $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img/modules_debug.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib modules && \
 	$(log) "  done for make debug kernel target build."
 
-PUBLISHING_FILES2+=$$(product)/uImage_debug:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/System_debug.map:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/vmlinux_debug:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/symbols_system_debug.tgz:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/modules_debug.tgz:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/debug_kernel_img/uImage_debug:./$$(product)/debug/debug_kernel_img/:o:md5
+PUBLISHING_FILES2+=$$(product)/debug_kernel_img/System_debug.map:./$$(product)/debug/debug_kernel_img/:o:md5
+PUBLISHING_FILES2+=$$(product)/debug_kernel_img/vmlinux_debug:./$$(product)/debug/debug_kernel_img/:o:md5
+PUBLISHING_FILES2+=$$(product)/debug_kernel_img/ramdisk-debug.img:./$$(product)/debug/debug_kernel_img/:o:md5
+PUBLISHING_FILES2+=$$(product)/debug_kernel_img/boot-debug.img:./$$(product)/debug/debug_kernel_img/:o:md5
+PUBLISHING_FILES2+=$$(product)/debug_kernel_img/modules_debug.tgz:./$$(product)/debug/debug_kernel_img/:o:md5
 
 endef
 
