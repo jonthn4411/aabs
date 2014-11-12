@@ -461,7 +461,7 @@ build_debug_kernel_$$(product):
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/vmlinux_debug $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img/vmlinux_debug
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-debug.img $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img/
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot-debug.img $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img/
-	tar zcf $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img/modules_debug.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib modules && \
+	tar zcf $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img/modules_debug.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib modules 
 	$(log) "  done for make debug kernel target build."
 
 PUBLISHING_FILES2+=$$(product)/debug_kernel_img/uImage_debug:./$$(product)/debug/debug_kernel_img/:o:md5
