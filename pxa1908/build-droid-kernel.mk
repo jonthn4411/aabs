@@ -449,7 +449,7 @@ build_debug_kernel_$$(product):
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	make build-debug-galcore && \
+	make build-debug-kernel && \
 	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
     cd root/ && find . | cpio -o -H newc | gzip > ../ramdisk-debug.img && cd ../ &&\
     mkbootimg --ramdisk ramdisk-debug.img --kernel uImage -o boot-debug.img && \
