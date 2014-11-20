@@ -71,12 +71,6 @@ PUBLISHING_FILES2+=$$(product)/secondary_gpt_8g:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/userdata_8g.img:./$$(product)/flash/:o:md5
 endif
 
-ifeq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lpre lp5.0),)
-PUBLISHING_FILES2+=$$(product)/recovery.img:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/tee_tw.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/teesst.img:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/wtm_rel_eden_RealOTP.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/wtm_rel_eden_VirtualOTP.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Boerne_DIAG.mdb.txt:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash_B0.bin:./$$(product)/flash/:o:md5
@@ -106,6 +100,13 @@ PUBLISHING_FILES2+=$$(product)/Skylark_LWG.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_V13.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_V15.bin:./$$(product)/flash/:o:md5
+
+ifeq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lpre lp5.0),)
+PUBLISHING_FILES2+=$$(product)/recovery.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/tee_tw.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/teesst.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/wtm_rel_eden_RealOTP.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/wtm_rel_eden_VirtualOTP.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/nvm.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/ReliableData.bin:./$$(product)/flash/:o:md5
 ifeq ($(filter $$(device),pxa1928ff),)
