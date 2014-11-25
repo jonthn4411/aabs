@@ -159,7 +159,7 @@ build_droid_root_$$(product): output_dir
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip $$(OUTPUT_DIR)/; fi
 	echo "    generating symbols_system.tgz..." && \
 		cp -a $$(SRC_DIR)/out/target/product/$$(private_device)/symbols/system $$(OUTPUT_DIR)/$$(private_product) && \
-		cd $$(OUTPUT_DIR)/$$(private_product) && tar czf symbols_lib.tgz system && rm system -rf
+		cd $$(OUTPUT_DIR)/$$(private_product) && tar czf symbols_system.tgz system && rm system -rf
 	$(log) "  done"
 
 PUBLISHING_FILES2+=$$(product)/symbols_system.tgz:./$$(product)/debug/:o:md5
