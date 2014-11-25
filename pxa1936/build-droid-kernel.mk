@@ -59,7 +59,6 @@ device:=$$(word 2, $$(tw) )
 build_droid_kernel_$$(product): build_droid_$$(product)
 endef
 
-MAKE_JOBS := 8
 export KERNEL_TOOLCHAIN_PREFIX
 export MAKE_JOBS
 
@@ -119,7 +118,7 @@ build_droid_$$(product):
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	make -j8 && \
+	make -j$$(MAKE_JOBS)\
 	tar zcf $(OUTPUT_DIR)/$$(private_product)/modules.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib modules && \
 	tar zcf $(OUTPUT_DIR)/$$(private_product)/symbols_system.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ symbols
 
