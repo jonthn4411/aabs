@@ -221,6 +221,8 @@ PUBLISHING_FILES2+=$$(product)/dtb:./$$(product)/debug/:o:md5
 ##!!## security image
 PUBLISHING_FILES2+=$$(product)/tee_tw.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/teesst.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/wtm_rel_helan3_VirtualOTP.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/wtm_rel_helan3_RealOTP.bin:./$$(product)/debug/:o:md5
 
 PUBLISHING_FILES2+=$$(product)/radio.img:./$$(product)/flash/:o:md5
 
