@@ -20,10 +20,10 @@ define cpif-with-md5
 	@cp -fr $(1) $(2) || echo "$(1) not exsit"
 	@chmod -R a+r $(2) || echo "$(2) not exist"
 	$(if $(findstring $(strip $(3)),md5), \
-		@if [ -f "$1" ]; then echo "generating md5 for $(2)"; \
+		@if [ -f $1 ]; then echo "generating md5 for $(2)"; \
 		cd $(dir $(1)) && \
 		md5sum $(notdir $(1)) >>$(OUTPUT_DIR)/$(MD5_FILE); \
-		elif [ -d "$1" ]; then echo "generating md5 for $(2)"; \
+		elif [ -d $1 ]; then echo "generating md5 for $(2)"; \
 		cd $(1) && \
 		ls|xargs md5sum >>$(OUTPUT_DIR)/$(MD5_FILE); fi\
      )
