@@ -56,7 +56,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product)  build_debug_kernel_$$(product) build_droid_debug_img_$$(product) 
+build_droid_kernel_$$(product): build_droid_$$(product) 
 endef
 
 export KERNEL_TOOLCHAIN_PREFIX
