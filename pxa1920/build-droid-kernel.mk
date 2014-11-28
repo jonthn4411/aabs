@@ -266,30 +266,32 @@ PUBLISHING_FILES2+=$$(product)/radio-helan-wt.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/TABLET_CP.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/TABLET_MSA.bin:./$$(product)/flash/:o:md5
 
-PUBLISHING_FILES2+=$$(product)/HL_WB_DSDS_CP.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_WB_DSDS_CP_DIAG.mdb:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_WB_DSDS_CP_NVM.mdb:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HELAN_A0_M16_AI_DSDS_Flash.bin:./$$(product)/flash/:o:md5
-
 PUBLISHING_FILES2+=$$(product)/radio-helanlte-ltg.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LTG_DL.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LTG_DIAG.mdb:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LTG_NVM.mdb:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_NVM.mdb:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/nvm-helanlte-ltg.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_DIAG.mdb:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_DIAG.mdb:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_NVM.mdb:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LWG_DS_CSFB_DKB_DIAG.mdb:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DS_CSFB_DKB_NVM.mdb:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LWG_DS_CSFB_DKB.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LWG_DS_CSFB_DKB_NVM.mdb:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LWG_M09_B0_SKL_Flash.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LWG_NVM.mdb:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DS_CSFB_DKB_DIAG.mdb:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/nvm-helanlte.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LTG.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/radio-helanlte.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LTG_V11.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LTG_V13.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LWG_V11.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LWG_V13.bin:./$$(product)/flash/:o:md5
 
 
 PUBLISHING_FILES2+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:./$$(product)/debug/:o:md5
