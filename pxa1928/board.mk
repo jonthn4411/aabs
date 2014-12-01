@@ -1,7 +1,7 @@
-ifneq ($(filter $(ABS_DROID_BRANCH),aosp lpre lp5.0),)
+ifneq ($(filter $(ABS_DROID_BRANCH),aosp lpre),)
 ABS_BUILD_DEVICES?=pxa1928dkb_tz:pxa1928dkb
 else
-ifneq ($(filter $(ABS_DROID_BRANCH),pdk5.0),)
+ifneq ($(filter $(ABS_DROID_BRANCH),pdk5.0 lp5.0),)
 ABS_BUILD_DEVICES?=pxa1928dkb_tz:pxa1928dkb pxa1928ff_tz:pxa1928ff
 else
 ABS_BUILD_DEVICES?=pxa1928dkb_tz:pxa1928dkb pxa1928ff_tz:pxa1928ff pxa1928dkb_dsds:pxa1928dkb pxa1928ff_dsds:pxa1928ff
