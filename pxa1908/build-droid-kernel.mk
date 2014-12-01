@@ -56,7 +56,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product)  build_debug_kernel_$$(product) build_droid_debug_img_$$(product) build_boot_cmtb_img_$$(product) 
+build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product)  build_debug_kernel_$$(product) build_droid_debug_img_$$(product) 
 endef
 
 MAKE_JOBS := 8
@@ -369,46 +369,6 @@ PUBLISHING_FILES2+=$$(product)/debug_gc_img/system-debug.img:./$$(product)/debug
 
 endef
 
-define define-build-boot-cmtb-img
-tw:=$$(subst :,  , $(1) )
-product:=$$(word 1, $$(tw) )
-device:=$$(word 2, $$(tw) )
-.PHONY: build_boot_cmtb_img_$$(product)
-build_boot_cmtb_img_$$(product): private_product:=$$(product)
-build_boot_cmtb_img_$$(product): private_device:=$$(device)
-build_boot_cmtb_img_$$(product): build_droid_$$(product)
-    $(log) "[$$(private_product)] make boot-cmtb.img"
-    $(hide)cd $(SRC_DIR) && \
-    source ./build/envsetup.sh && \
-    chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-    cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
-    cp -fr root/ root-bak && \
-    find root/ -iname "*.prop"|xargs sed -i -r 's/ro\.secure=1/ro\.secure=0/' && \
-    echo "service cmtb /system/bin/cmtb" >> root/init.pxa1908.rc &&\
-    echo "    class late_start" >> root/init.pxa1908.rc &&\
-    cd root/ && find . | cpio -o -H newc | gzip > ../ramdisk-cmtb.img && cd ../ &&\
-	cat uImage|head -c `expr \`ls -l uImage | awk -F' ' '{print $$5}'\` - 131072` > uImage_orig &&\
-	cat pxa1908-cmtb.dtb /dev/zero |head -c 131072 > pxa1908-cmtb.dtb.padded &&\
-	cat uImage_orig  pxa1908-cmtb.dtb.padded > uImage-cmtb &&\
-    mkbootimg --ramdisk ramdisk-cmtb.img --kernel uImage-cmtb -o boot-cmtb.img && \
-    rm -fr root/ && mv root-bak root && \
-
-    $(hide)echo "copy cmtb images"
-
-    mkdir -p $(OUTPUT_DIR)/$$(private_product)/cmtb/
-    $(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-cmtb.img $(OUTPUT_DIR)/$$(private_product)/cmtb/
-    $(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot-cmtb.img $(OUTPUT_DIR)/$$(private_product)/cmtb/
-    $(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage-cmtb $(OUTPUT_DIR)/$$(private_product)/cmtb/
-
-    $(log) "  done for make cmtb images build."
-
-PUBLISHING_FILES2+=$$(product)/cmtb/ramdisk-cmtb.img:./$$(product)/debug/cmtb/:o:md5
-PUBLISHING_FILES2+=$$(product)/cmtb/boot-cmtb.img:./$$(product)/debug/cmtb/:o:md5
-PUBLISHING_FILES2+=$$(product)/cmtb/uImage-cmtb:./$$(product)/debug/cmtb/:o:md5
-
-endef
-
-
 define define-build-droid-otapackage
 tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
@@ -520,6 +480,5 @@ $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-targe
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
 				$(eval $(call define-build-debug-kernel-target,$(bv)) ) \
-				$(eval $(call define-build-boot-cmtb-img,$(bv)) ) \
 				$(eval $(call define-build-droid-debug-img,$(bv)) ) \
 )
