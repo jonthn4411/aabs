@@ -385,7 +385,7 @@ build_boot_cmtb_img_$$(product): build_droid_$$(product)
 	cp -fr root/ root-bak && \
 	find root/ -iname "*.prop"|xargs sed -i -r 's/ro\.secure=1/ro\.secure=0/' && \
 	echo -ne "\nservice cmtb /system/bin/cmtb" >> root/init.pxa1908.rc &&\
-	echo "    class late_start" >> root/init.pxa1908.rc &&\
+	echo -ne "\n    class late_start" >> root/init.pxa1908.rc &&\
 	cd root/ && find . | cpio -o -H newc | gzip > ../ramdisk-cmtb.img && cd ../ &&\
 	cat uImage|head -c `expr \`ls -l uImage | awk -F' ' '{print $$$$5}'\` - 131072` > uImage_orig &&\
 	cp obj/kernel/arch/arm64/boot/dts/pxa1908-cmtb.dtb ./ &&\
