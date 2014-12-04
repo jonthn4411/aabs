@@ -112,9 +112,10 @@ ifeq ($(filter $$(device),pxa1928ff),)
 PUBLISHING_FILES2+=$$(product)/EDEN_LWG_M09_B0_CP6X_DSDS_SKL_Flash.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0_CP6X.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0_CP6X_MDB.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_CMCC_CP6X.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_CN_CP6X.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_EU_CP6X.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_NA_CP6X.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_CP6X_ZIP.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0_CP6X_MDB.txt:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/CP6X_version.txt:./$$(product)/debug/:o:md5
 endif
