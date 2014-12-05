@@ -343,7 +343,7 @@ build_droid_debug_img_$$(product): build_droid_$$(product)
 	cp -fr root/ root-bak && \
 	find root/ -iname "*.rc"|xargs sed -i -r 's/\/lib\/modules/\/system\/lib\/modules/' && \
 	cd root/ && find . | cpio -o -H newc | gzip > ../ramdisk-debug.img && cd ../ &&\
-	mkbootimg --ramdisk ramdisk-debug.img --kernel uImage_debug -o boot-debug.img && \
+	mkbootimg --ramdisk ramdisk-debug.img --kernel uImage -o boot-debug.img && \
 	mkdir -p system/lib/modules/ && \
 	cp root/lib/modules/* system/lib/modules/ && \
 	rm -fr root/ && mv root-bak root && \
