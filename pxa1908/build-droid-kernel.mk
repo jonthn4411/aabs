@@ -384,6 +384,7 @@ build_boot_cmtb_img_$$(product): build_droid_$$(product)
 	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
 	cp -fr root/ root-bak && \
 	find root/ -iname "*.prop"|xargs sed -i -r 's/ro\.secure=1/ro\.secure=0/' && \
+	find root/ -iname "init.pxa1908.rc" |xargs sed -i -r 's/setprop service.camera.af 1/setprop service.camera.af 1\n    setprop service.camera.cmtb 1 \n/' && \
 	echo -ne "\nservice cmtb /system/bin/cmtb" >> root/init.pxa1908.rc &&\
 	echo -ne "\n    class late_start" >> root/init.pxa1908.rc &&\
 	cd root/ && find . | cpio -o -H newc | gzip > ../ramdisk-cmtb.img && cd ../ &&\
