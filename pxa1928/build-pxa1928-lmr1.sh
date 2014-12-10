@@ -1,5 +1,5 @@
 export ABS_BOARD=concord
-export ABS_DROID_BRANCH=lpre
+export ABS_DROID_BRANCH=lmr1
 export ABS_SOC=pxa1928
 export PLATFORM_ANDROID_VARIANT=userdebug
 export ABS_BUILDHOST_DEF=buildhost6.def

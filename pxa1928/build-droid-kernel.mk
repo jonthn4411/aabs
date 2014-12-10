@@ -101,7 +101,7 @@ PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_V13.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_V15.bin:./$$(product)/flash/:o:md5
 
-ifeq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lpre),)
+ifeq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1),)
 PUBLISHING_FILES2+=$$(product)/recovery.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/tee_tw.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/teesst.img:./$$(product)/flash/:o:md5
@@ -188,7 +188,7 @@ build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_device:=
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_kcfg:=$$(kernel_cfg)
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): private_bcfg:=$$(boot_cfg)
 build_droid_otapackage_$$(product)_$$(kernel_cfg)_$$(boot_cfg): output_dir
-ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lpre lp5.0),)
+ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lp5.0),)
 	$$(log) "disalbe otapackage build by generating fake ota files temporally"
 	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl.zip
 	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-recovery.zip
