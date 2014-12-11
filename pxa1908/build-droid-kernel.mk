@@ -56,7 +56,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product)  build_debug_kernel_$$(product) build_droid_debug_img_$$(product) 
+build_droid_kernel_$$(product): build_droid_$$(product) build_3rd_party_app_system_img_$$(product) build_droid_otapackage_$$(product)  build_debug_kernel_$$(product) build_droid_debug_img_$$(product)
 endef
 
 MAKE_JOBS := 8
@@ -328,6 +328,34 @@ endif
 endef
 PUBLISHING_FILES+=release_package_list:o
 
+
+define define-build-3rd-party-app-system-img
+tw:=$$(subst :,  , $(1) )
+product:=$$(word 1, $$(tw) )
+device:=$$(word 2, $$(tw) )
+.PHONY: build_droid_$$(product)
+build_3rd_party_app_system_img_$$(product): private_product:=$$(product)
+build_3rd_party_app_system_img_$$(product): private_device:=$$(device)
+build_3rd_party_app_system_img_$$(product): build_droid_$$(product)
+	$(log) "[$$(private_product)] make 3rd party app system image"
+	$(hide) cd $(SRC_DIR) && \
+	rm -rf 3rd-party && mkdir -p 3rd-party && \
+	cp -pr $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system 3rd-party/system && \
+	cp -pr $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/PACKAGING/systemimage_intermediates/system_image_info.txt 3rd-party/ && \
+	cd 3rd-party/system && \
+	if [ -e $(SRC_DIR)/vendor/marvell/generic/apps/AppOverlay/overlay.conf ]; then rm -rf `cat $(SRC_DIR)/vendor/marvell/generic/apps/AppOverlay/overlay.conf`; fi && \
+	if [ -d $(SRC_DIR)/vendor/marvell/generic/apps/AppOverlay/system ]; then cp -pr $(SRC_DIR)/vendor/marvell/generic/apps/AppOverlay/system/* ./ ; fi && \
+	cd - && \
+	source ./build/envsetup.sh && chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
+	mkdir -p $(OUTPUT_DIR)/$$(private_product)/3rd-party-app-system-img/ && \
+	PATH=$(PATH):out/host/linux-x86/bin build/tools/releasetools/build_image.py 3rd-party/system 3rd-party/system_image_info.txt $(OUTPUT_DIR)/$$(private_product)/3rd-party-app-system-img/system.img
+
+	$(log) "  done for make 3rd party app system image."
+
+PUBLISHING_FILES2+=$$(product)/3rd-party-app-system-img/system.img:./$$(product)/flash/3rd-party-app-system-img/:o:md5
+endef
+
+
 define define-build-droid-debug-img
 tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
@@ -476,6 +504,7 @@ endef
 
 $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
+				$(eval $(call define-build-3rd-party-app-system-img,$(bv)) ) \
 				$(eval $(call define-build-droid-target,$(bv)) ) \
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
