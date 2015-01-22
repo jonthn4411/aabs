@@ -1,4 +1,4 @@
-export ABS_SOC=pxa1908
+export ABS_SOC=pxa1936
 export ABS_DROID_BRANCH=lp5.0
 if [ -z "ABS_BUILDHOST_DEF" ]; then
      ABS_BUILDHOST_DEF=buildhost.def
