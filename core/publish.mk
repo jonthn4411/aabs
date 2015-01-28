@@ -38,8 +38,8 @@ publish_$$(name): private_mandatory:=$$(mandatory)
 publish_$$(name): private_md5:=$$(md5)
 publish_$$(name): 
 	$$(if $$(findstring $$(strip $$(private_mandatory)),m), \
-	$$(call cp-with-md5, $$(OUTPUT_DIR)/$$(private_name), $$(PUBLISH_DIR)/$$(private_name), $$(private_md5) ), \
-	$$(call cpif-with-md5, $$(OUTPUT_DIR)/$$(private_name), $$(PUBLISH_DIR)/$$(private_name), $$(private_md5) ) )
+	$$(call cp-with-md5,$$(OUTPUT_DIR)/$$(private_name),$$(PUBLISH_DIR)/$$(private_name),$$(private_md5) ), \
+	$$(call cpif-with-md5,$$(OUTPUT_DIR)/$$(private_name),$$(PUBLISH_DIR)/$$(private_name),$$(private_md5) ) )
 
 publish: publish_$$(name)
 endef
@@ -59,8 +59,8 @@ publish2_$$(name): private_mandatory:=$$(mandatory)
 publish2_$$(name): private_md5:=$$(md5)
 publish2_$$(name): 
 	$$(if $$(findstring $$(strip $$(private_mandatory)),m), \
-	$$(call cp-with-md5, $$(OUTPUT_DIR)/$$(private_name), $$(PUBLISH_DIR)/$$(private_dst)/, $$(private_md5) ), \
-	$$(call cpif-with-md5, $$(OUTPUT_DIR)/$$(private_name), $$(PUBLISH_DIR)/$$(private_dst)/, $$(private_md5) ) )
+	$$(call cp-with-md5,$$(OUTPUT_DIR)/$$(private_name),$$(PUBLISH_DIR)/$$(private_dst)/,$$(private_md5) ), \
+	$$(call cpif-with-md5,$$(OUTPUT_DIR)/$$(private_name),$$(PUBLISH_DIR)/$$(private_dst)/,$$(private_md5) ) )
 
 publish: publish2_$$(name)
 
