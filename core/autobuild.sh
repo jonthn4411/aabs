@@ -425,9 +425,9 @@ fi &&
 if [ "$FLAG_PUBLISH" = "true" ]; then
 	mkdir -p $PUBLISH_DIR
     if [ "$ABS_VIRTUAL_BUILD" = "true" ]; then
-        BACKUP_DIR_BASE=/git/android/manifest_bkup/virtual_build/${ABS_SOC}
+        BACKUP_DIR_BASE=/git/git/android/manifest_bkup/virtual_build/${ABS_SOC}
     else
-        BACKUP_DIR_BASE=/git/android/manifest_bkup/${ABS_SOC}
+        BACKUP_DIR_BASE=/git/git/android/manifest_bkup/${ABS_SOC}
     fi
 	BACKUP_DIR=${BACKUP_DIR_BASE}${PUBLISH_DIR#*${PUBLISH_DIR_BASE}}
 	export BACKUP_DIR
