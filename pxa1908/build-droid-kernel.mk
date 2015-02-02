@@ -56,7 +56,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product)  build_debug_kernel_$$(product) build_droid_debug_img_$$(product) 
+build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product) build_debug_kernel_$$(product) build_droid_debug_img_$$(product)
 endef
 
 export KERNEL_TOOLCHAIN_PREFIX
@@ -119,9 +119,9 @@ build_droid_$$(product):
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	make -j$$(MAKE_JOBS) && \
-	tar zcf $(OUTPUT_DIR)/$$(private_product)/modules.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/debug_kmodules/lib modules && \
 	tar zcf $(OUTPUT_DIR)/$$(private_product)/symbols_system.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ symbols
-
+	$(hide)if [ -d $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/debug_kmodules ]; then \
+	tar zcf $(OUTPUT_DIR)/$$(private_product)/modules.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/debug_kmodules/lib modules; fi
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/root ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/root; fi
 	$(hide)echo "  copy root directory ..." 
 	$(hide)mkdir -p $(OUTPUT_DIR)/$$(private_product)
@@ -221,6 +221,8 @@ PUBLISHING_FILES2+=$$(product)/dtb:./$$(product)/debug/:o:md5
 ##!!## security image
 PUBLISHING_FILES2+=$$(product)/tee_tw.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/teesst.img:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/wtm_rel_helan3_VirtualOTP.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/wtm_rel_helan3_RealOTP.bin:./$$(product)/debug/:o:md5
 
 PUBLISHING_FILES2+=$$(product)/radio.img:./$$(product)/flash/:o:md5
 
@@ -293,23 +295,31 @@ PUBLISHING_FILES2+=$$(product)/Skylark_LWG_V11.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_V13.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_MDB.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LWG_MDB.bin:./$$(product)/flash/:o:md5
+#1936 specific begin
+PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LTG_V15.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_MDB.bin:./$$(product)/flash/:o:md5
+#1936 specific end
+
+PUBLISHING_FILES2+=$$(product)/LTG_ZIP_RF.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/LWG_ZIP_RF.bin:./$$(product)/flash/:o:md5
 
 PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_NVM.mdb:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_DIAG.mdb:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_NVM.mdb:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_DIAG.mdb:./$$(product)/debug/:o:md5
 
-
 PUBLISHING_FILES2+=$$(product)/ULC_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/ULC_LWG_M09_B0_DSDS_SKL_Flash.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_V15.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LTG_V15.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/LTG_ZIP_RF.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/LWG_ZIP_RF.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_MDB.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_MDB.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS.bin:./$$(product)/flash/:o:md5
-
+PUBLISHING_FILES2+=$$(product)/HL_LWG_M09_B0_DSDS_SKL_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/SAAR_H_ALL_configuration_77621_31.bin:./$$(product)/flash/:o:md5
 
 PUBLISHING_FILES2+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:./$$(product)/debug/:o:md5
@@ -387,7 +397,6 @@ build_droid_otapackage_$$(product):
 	make mrvlotapackage
 	$(hide)echo "  copy OTA package ..."
 
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/target_files-package.zip $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl.zip $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl-recovery.zip $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/PACKAGING/target_files_intermediates/$$(private_product)-target_files*.zip $(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-intermediates.zip
