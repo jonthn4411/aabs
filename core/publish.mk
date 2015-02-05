@@ -75,7 +75,7 @@ backup_$$(name): private_name:=$$(name)
 backup_$$(name):
 	@echo "Backup" $$(private_name)
 	@echo "[aabs] [$(date)] Backup $$(private_name) to $$(BACKUP_SERVER):$$(BACKUP_DIR) start"
-	@ssh -vv -P 2222 ${BACKUP_SERVER} "mkdir -p ${BACKUP_DIR}"
+	@ssh -vv -p 2222 ${BACKUP_SERVER} "mkdir -p ${BACKUP_DIR}"
 	@scp -P 2222 $$(OUTPUT_DIR)/$$(private_name) $$(BACKUP_SERVER):$$(BACKUP_DIR)
 	@echo "[aabs] [$(date)] Backup done"
 
