@@ -56,11 +56,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1),)
 build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product) build_debug_kernel_$$(product) build_droid_debug_img_$$(product)
-else
-build_droid_kernel_$$(product): build_droid_$$(product)
-endif
 endef
 
 export KERNEL_TOOLCHAIN_PREFIX
@@ -394,6 +390,12 @@ device:=$$(word 2, $$(tw) )
 build_droid_otapackage_$$(product): private_product:=$$(product)
 build_droid_otapackage_$$(product): private_device:=$$(device)
 build_droid_otapackage_$$(product): 
+ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lmr1_32),)
+	$$(log) "disalbe otapackage build by generating fake ota files temporally"
+	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl.zip
+	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-recovery.zip
+	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-intermediates.zip
+else
 	$(log) "[$$(private_product)] building android OTA package ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -404,6 +406,7 @@ build_droid_otapackage_$$(product):
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl.zip $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl-recovery.zip $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/PACKAGING/target_files_intermediates/$$(private_product)-target_files*.zip $(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-intermediates.zip
+endif
 	$(log) "  done for OTA package build."
 
 PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl.zip:./$$(product)/ota/:o:md5
