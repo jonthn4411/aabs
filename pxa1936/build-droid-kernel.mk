@@ -349,7 +349,7 @@ device:=$$(word 2, $$(tw) )
 build_droid_debug_img_$$(product): private_product:=$$(product)
 build_droid_debug_img_$$(product): private_device:=$$(device)
 build_droid_debug_img_$$(product): build_droid_$$(product)
-ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lmr1_32),)
+ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lmr1_32 lp5.1),)
 	$(log) "[$$(private_product)] disable make debug image to put .ko files to /system/lib/modules"
 else
 	$(log) "[$$(private_product)] make debug image to put .ko files to /system/lib/modules"
@@ -393,7 +393,7 @@ device:=$$(word 2, $$(tw) )
 build_droid_otapackage_$$(product): private_product:=$$(product)
 build_droid_otapackage_$$(product): private_device:=$$(device)
 build_droid_otapackage_$$(product): 
-ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lmr1_32),)
+ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lmr1_32 lp5.1),)
 	$$(log) "disalbe otapackage build by generating fake ota files temporally"
 	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl.zip
 	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-recovery.zip
@@ -465,7 +465,7 @@ device:=$$(word 2, $$(tw) )
 build_debug_kernel_$$(product): private_product:=$$(product)
 build_debug_kernel_$$(product): private_device:=$$(device)
 build_debug_kernel_$$(product): 
-ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lmr1_32),)
+ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lmr1_32 lp5.1),)
 	$(log) "[$$(private_product)] disbale debug uImage ...private_product is"+$$(private_product)+"private_device is "+$$(private_device)
 else
 	$(log) "[$$(private_product)] building debug uImage ...private_product is"+$$(private_product)+"private_device is "+$$(private_device)
