@@ -349,6 +349,9 @@ device:=$$(word 2, $$(tw) )
 build_droid_debug_img_$$(product): private_product:=$$(product)
 build_droid_debug_img_$$(product): private_device:=$$(device)
 build_droid_debug_img_$$(product): build_droid_$$(product)
+ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lmr1_32),)
+	$(log) "[$$(private_product)] disable make debug image to put .ko files to /system/lib/modules"
+else
 	$(log) "[$$(private_product)] make debug image to put .ko files to /system/lib/modules"
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -373,7 +376,7 @@ build_droid_debug_img_$$(product): build_droid_$$(product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-debug.img $(OUTPUT_DIR)/$$(private_product)/debug_gc_img/
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot-debug.img $(OUTPUT_DIR)/$$(private_product)/debug_gc_img/
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system-debug.img $(OUTPUT_DIR)/$$(private_product)/debug_gc_img/
-
+endif
 	$(log) "  done for make debug images build."
 
 PUBLISHING_FILES2+=$$(product)/debug_gc_img/ramdisk-debug.img:./$$(product)/debug/debug_gc_img/:o:md5
@@ -462,6 +465,9 @@ device:=$$(word 2, $$(tw) )
 build_debug_kernel_$$(product): private_product:=$$(product)
 build_debug_kernel_$$(product): private_device:=$$(device)
 build_debug_kernel_$$(product): 
+ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lmr1_32),)
+	$(log) "[$$(private_product)] disbale debug uImage ...private_product is"+$$(private_product)+"private_device is "+$$(private_device)
+else
 	$(log) "[$$(private_product)] building debug uImage ...private_product is"+$$(private_product)+"private_device is "+$$(private_device)
 	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
     cp -fr root/ root-bak 
@@ -481,6 +487,7 @@ build_debug_kernel_$$(product):
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-debug.img $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img/
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot-debug.img $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img/
 	tar zcf $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img/modules_debug.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib modules 
+endif
 	$(log) "  done for make debug kernel target build."
 
 PUBLISHING_FILES2+=$$(product)/debug_kernel_img/uImage_debug:./$$(product)/debug/debug_kernel_img/:o:md5
