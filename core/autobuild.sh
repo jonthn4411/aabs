@@ -1,9 +1,9 @@
 #! /bin/bash
 #
 # This script must be executed in the folder where this script locats.
-# It generates the final package from scratch. 
+# It generates the final package from scratch.
 #
-# paramters: 
+# paramters:
 #   clobber: force to have a completely clean build. All the source code, intermediate files are removed.
 #   email: generate email notification after the build.
 
@@ -44,15 +44,12 @@ get_new_publish_dir()
 	while [ 1 ]; do
 	  if [ ! -d $PUBLISH_DIR ]; then
 	    break
-	  else
-	    if [ -z "$(ls $PUBLISH_DIR)" ]; then
-	      break
-	    fi
 	  fi
 	  index=$(( index + 1 ))
 	  BUILD_NUM=${DATE}_${index}
 	  PUBLISH_DIR=$PUBLISH_DIR_BASE/${BUILD_NUM}_${ABS_PRODUCT_CODE}${RLS_SUFFIX}
 	done
+	mkdir -p $PUBLISH_DIR
 }
 #$1: changelog.build
 generate_error_notification_email()
@@ -66,21 +63,21 @@ generate_error_notification_email()
 
 	This is an automated email from the autobuild script. It was
 	generated because an error encountered while building the code.
-	The error can be resulted from newly checked in codes. 
-	Please check the change log (if it is generated successfully) 
+	The error can be resulted from newly checked in codes.
+	Please check the change log (if it is generated successfully)
     and build log below and fix the error as early as possible.
 
 	=========================== Change LOG ====================
 
 	$(cat ${1}  2>/dev/null)
-	
+
 	===========================================================
 
 	Last part of build log is followed:
 	=========================== Build LOG =====================
 
 	$(tail -200 $STD_LOG 2>/dev/null)
-	
+
 	===========================================================
 
 	Complete Time: $(date)
@@ -275,6 +272,7 @@ FLAG_BUILD=true
 FLAG_AUTOTEST=false
 ABS_RELEASE_NAME=
 RLS_SUFFIX=
+FLAG_DISTRIBUTED_BUILD=false
 
 for flag in $*; do
 	case $flag in
@@ -289,7 +287,7 @@ for flag in $*; do
 		nobuild)FLAG_BUILD=false;;
 		autotest)FLAG_AUTOTEST=true;;
 		help) print_usage; exit 2;;
-		*) 
+		*)
 		if [ ! "${flag%%:*}" == "${flag}" ] && [ "${flag%%:*}" == "rls" ]; then
 			ABS_RELEASE_NAME=${flag##*:}
 			RLS_SUFFIX=_${ABS_RELEASE_NAME}
@@ -298,8 +296,8 @@ for flag in $*; do
 				export ABS_DROID_MANIFEST="${ABS_RELEASE_NAME}.xml"
 			fi
 		else
-			echo "Unknown flag: $flag"; 
-			print_usage; 
+			echo "Unknown flag: $flag";
+			print_usage;
 			exit 2
 		fi;;
 	esac
@@ -307,6 +305,21 @@ done
 
 #enable pipefail so that if make fail the exit of whole command is non-zero value.
 set -o pipefail
+
+#support distributed building
+if [ ! -z "${ABS_BUILD_MANIFEST}" ];then
+	TEMP_MANIFEST_FILE=${ABS_BUILD_MANIFEST##*/}
+	ABS_MANIFEST_FILE=${TEMP_MANIFEST_FILE}
+fi
+
+if [ ! -z "${ABS_DEVICE_LIST}" ];then
+	FLAG_DISTRIBUTED_BUILD=true
+	FLAG_FORCE=true
+fi
+
+export FLAG_DISTRIBUTED_BUILD
+export ABS_MANIFEST_FILE
+export ABS_BUILD_MANIFEST
 
 if [ ! -z "$ABS_RELEASE_NAME" ]; then
     RELEASE_FULL_NAME=rls_$(echo $ABS_PRODUCT_CODE | sed 's/-/_/g')_${ABS_RELEASE_NAME}
@@ -330,6 +343,8 @@ export ABS_PARENT_BRANCH
 
 LAST_BUILD=LAST_BUILD.${ABS_MANIFEST_BRANCH}
 STD_LOG="build-${ABS_PRODUCT_CODE}${RLS_SUFFIX}.log"
+DISTRIBUTED_BUILD=DISTRIBUTED_BUILD.${ABS_MANIFEST_BRANCH}
+
 
 #TEMP_PUBLISH_DIR_BASE and OFFICIAL_PUBLISH_DIR_BASE should be defined buildhost.def
 if [ -z "${ABS_PUBLISH_DIR_BASE}" ]; then
@@ -349,9 +364,16 @@ else
 	PUBLISH_DIR_BASE=${ABS_PUBLISH_DIR_BASE}
 fi
 
-mkdir -p ${PUBLISH_DIR_BASE}
+if [ "$FLAG_DISTRIBUTED_BUILD" = "true" ]; then
+	FORMAL_PUBLISH_DIR_BASE=$PUBLISH_DIR_BASE
+	PUBLISH_DIR_BASE=$TEMP_PUBLISH_DIR_BASE
+	mkdir -p ${PUBLISH_DIR_BASE}
+else
+	mkdir -p ${PUBLISH_DIR_BASE}
+fi
 
 LAST_BUILD=$PUBLISH_DIR_BASE/$LAST_BUILD
+DISTRIBUTED_BUILD=$PUBLISH_DIR_BASE/$DISTRIBUTED_BUILD
 
 if [ "$FLAG_TEMP" = "true" ]; then
 	BUILD_TAG=[autobuild-temp]
@@ -371,7 +393,7 @@ if [ "$FLAG_CCACHE" = "true" ]; then
 	echo "ccache is enabled."
 fi &&
 
-if [ "$FLAG_CLOBBER" = "true" ]; then 
+if [ "$FLAG_CLOBBER" = "true" ]; then
 	make -f ${MAKEFILE} clobber 2>&1 | tee -a $STD_LOG
 fi &&
 
@@ -393,7 +415,7 @@ else
 fi
 
 if [ -z "$change_since_last_build" -a "$ABS_VIRTUAL_BUILD" != "true" ]; then
-	echo "No significant change is identified since last build." | tee -a $STD_LOG 
+	echo "No significant change is identified since last build." | tee -a $STD_LOG
 	if [ "$FLAG_FORCE" = "true" ]; then
 		echo "force flag is set, continue build."
 	else
@@ -423,7 +445,6 @@ if [ "$FLAG_PKGSRC" = "true" ]; then
 fi &&
 
 if [ "$FLAG_PUBLISH" = "true" ]; then
-	mkdir -p $PUBLISH_DIR
     if [ "$ABS_VIRTUAL_BUILD" = "true" ]; then
         BACKUP_DIR_BASE=/git/git/android/manifest_bkup/virtual_build/${ABS_SOC}
     else
@@ -443,12 +464,16 @@ if [ "$FLAG_PUBLISH" = "true" ]; then
     fi
 
 	update_changelogs $PUBLISH_DIR $BUILD_NUM &&
-		
-	#saving the build info to file:$LAST_BUILD
-	echo "Project:$ABS_SOC" > $LAST_BUILD &&
-	echo "Build-Num:$BUILD_NUM" >> $LAST_BUILD &&
-	echo "Package:$PUBLISH_DIR" >> $LAST_BUILD 
+
+	if [ "$FLAG_DISTRIBUTED_BUILD" = "false" ]; then
+		#saving the build info to file:$LAST_BUILD
+		echo "Project:$ABS_SOC" > $LAST_BUILD &&
+		echo "Build-Num:$BUILD_NUM" >> $LAST_BUILD &&
+		echo "Package:$PUBLISH_DIR" >> $LAST_BUILD
+	fi
+
 fi
+
 
 if [ $? -ne 0 ]; then #auto build fail, send an email
 	echo "error encountered!" 2>&1 | tee -a $STD_LOG
@@ -461,17 +486,125 @@ if [ $? -ne 0 ]; then #auto build fail, send an email
             send_error_notification "$(make -f ${MAKEFILE} get_changelog_build)"
         fi
     fi
+
+    #support distributed building
+    if [ "$FLAG_DISTRIBUTED_BUILD" = "true" ]; then
+    	touch $PUBLISH_DIR/FAILURE
+    fi
+
 else
+
 	echo "build successfully. Cheers!Package:$PUBLISH_DIR " 2>&1 | tee -a $STD_LOG
 	echo "~~<result>PASS</result>"
 	echo "~~<result-dir>http://$(get_publish_server_ip)${PUBLISH_DIR}</result-dir>"
-	if [ "$FLAG_EMAIL" = "true" ]; then
-		echo "    sending email notification..." 2>&1 | tee -a $STD_LOG
-		send_success_notification
+	if [ "$FLAG_DISTRIBUTED_BUILD" = "false" ]; then
+		if [ "$FLAG_EMAIL" = "true" ]; then
+			echo "    sending email notification..." 2>&1 | tee -a $STD_LOG
+			send_success_notification
+		fi
+		if [ "$FLAG_PUBLISH" = "true" ] && [ "$FLAG_TEMP" = "false" ] && [ "$FLAG_AUTOTEST" = "true" ]; then
+			echo "Sorry, autotest isn't supported temporarily."
+		fi
 	fi
-	if [ "$FLAG_PUBLISH" = "true" ] && [ "$FLAG_TEMP" = "false" ] && [ "$FLAG_AUTOTEST" = "true" ]; then
-		echo "Sorry, autotest isn't supported temporarily."
+
+	#support distributed building
+	if [ "$FLAG_DISTRIBUTED_BUILD" = "true" ]; then
+    	touch $PUBLISH_DIR/SUCCESS
+  fi
+fi
+
+#support distributed building
+if [ "$FLAG_DISTRIBUTED_BUILD" = "true" ]; then
+	echo "XXXXXX----> save $PUBLISH_DIR to $DISTRIBUTED_BUILD"
+	if [ ! -e "$DISTRIBUTED_BUILD" ]; then
+		echo "$PUBLISH_DIR" > $DISTRIBUTED_BUILD
+	else
+		echo "$PUBLISH_DIR" >> $DISTRIBUTED_BUILD
 	fi
+fi
+
+#support distributed building
+#merge distributed publish directories
+index=0
+device_list=$ABS_DEVICE_LIST
+if [ -n "$device_list" ]; then
+	index=1
+	while [ 1 ]; do
+  	if [ ! `echo $device_list | grep -e ','` ]; then
+	  	break
+		fi
+		index=$(( index + 1 ))
+		device_list=${device_list#*,}
+done
+fi
+
+publish_index=0
+publish_index=`cat $DISTRIBUTED_BUILD | wc -l`
+echo "XXXXXX----> index=${index}, publish_index=${publish_index}"
+
+build_failure=false
+if [ $index -eq $publish_index ]; then
+	echo "XXXXXX----> all builds completed now, do release stuff..."
+	for i in `cat $DISTRIBUTED_BUILD`;do
+		if [ -e "${i}/FAILURE" ]; then
+			build_failure=true
+			break
+		fi
+	done
+
+	if [ "$build_failure" = "true" ]; then
+		for i in `cat  $DISTRIBUTED_BUILD`;do
+			rm -rf $i
+		done
+	else
+		#FORMAL_PUBLISH_DIR_BASE=$PUBLISH_DIR_BASE
+		PUBLISH_DIR_BASE=$FORMAL_PUBLISH_DIR_BASE
+		get_new_publish_dir
+	  export PUBLISH_DIR
+		pub=$PUBLISH_DIR
+		for i in `cat  $DISTRIBUTED_BUILD`;do
+			if [ "$i" = "$pub" ];then
+				continue
+			else
+				#cp -rf ${i}/* $pub
+				#if [ $? -eq 0 ];then
+				#	rm -rf $i
+				#fi
+				mv -f ${i}/* $pub
+				rm -rf $i
+			fi
+		done
+
+		#send out final success notification mail
+		rm -f ${pub}/SUCCESS
+		echo "XXXXXX----> pub=${pub}"
+		echo "XXXXXX----> PUBLISH_DIR=${PUBLISH_DIR}"
+		PUBLISH_DIR=${pub}
+		export PUBLISH_DIR
+		echo "all builds successfully done. Cheers!Package:${PUBLISH_DIR} " 2>&1 | tee -a $STD_LOG
+		echo "~~<result>PASS</result>"
+		echo "~~<result-dir>http://$(get_publish_server_ip)${PUBLISH_DIR}</result-dir>"
+		if [ "$FLAG_EMAIL" = "true" ]; then
+			echo "    sending email notification..." 2>&1 | tee -a $STD_LOG
+			send_success_notification
+		fi
+		if [ "$FLAG_PUBLISH" = "true" ] && [ "$FLAG_TEMP" = "false" ] && [ "$FLAG_AUTOTEST" = "true" ]; then
+			echo "Sorry, autotest isn't supported temporarily."
+		fi
+
+		#saving the build info to file:$LAST_BUILD
+		TEMP_NUM=$PUBLISH_DIR
+		TEMP_NUM=${TEMP_NUM##*/}
+		TEMP_NUM=${TEMP_NUM%_pxa*}
+		BUILD_NUM=${TEMP_NUM}
+		LAST_BUILD=${PUBLISH_DIR_BASE}/LAST_BUILD.${ABS_MANIFEST_BRANCH}
+		echo "Project:$ABS_SOC" > $LAST_BUILD &&
+		echo "Build-Num:$BUILD_NUM" >> $LAST_BUILD &&
+		echo "Package:$PUBLISH_DIR" >> $LAST_BUILD
+
+	fi
+	cat $DISTRIBUTED_BUILD
+	rm -f $DISTRIBUTED_BUILD
 fi
 
 echo "[AABS]-------------------END-------------------"
