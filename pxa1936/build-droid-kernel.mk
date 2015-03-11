@@ -338,6 +338,10 @@ PUBLISHING_FILES2+=$$(product)/TTD_M06_AI_Y0_Flash.bin:./$$(product)/flash/:o:md
 PUBLISHING_FILES2+=$$(product)/WK_CP_2CHIP_SPRW.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/WK_M08_AI_Y1_removelo_Y0_Flash.bin:./$$(product)/flash/:o:md5
 endif
+PUBLISHING_FILES2+=$$(product)/cmtb/ramdisk-cmtb.img:./$$(product)/debug/cmtb/:o:md5
+PUBLISHING_FILES2+=$$(product)/cmtb/boot-cmtb.img:./$$(product)/debug/cmtb/:o:md5
+PUBLISHING_FILES2+=$$(product)/cmtb/uImage-cmtb:./$$(product)/debug/cmtb/:o:md5
+PUBLISHING_FILES2+=$$(product)/cmtb/pxa1936-cmtb.dtb:./$$(product)/debug/cmtb/:o:md5
 endef
 PUBLISHING_FILES+=release_package_list:o
 
@@ -409,20 +413,11 @@ ifeq ($(TARGET_PRODUCT),$(filter $(TARGET_PRODUCT),pxa1936dkb_tz pxa1936dkb_64bi
 	mkbootimg --ramdisk ramdisk-cmtb.img --kernel uImage-cmtb -o boot-cmtb.img && \
 	mkbootimg --ramdisk ramdisk-cmtb.img --kernel uImage -o boot-dkb-cmtb.img && \
 	rm -fr root/ && mv root-bak root && \
-	echo "copy cmtb images"
-
-	mkdir -p $(OUTPUT_DIR)/$$(private_product)/cmtb/
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-cmtb.img $(OUTPUT_DIR)/$$(private_product)/cmtb/
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot-cmtb.img $(OUTPUT_DIR)/$$(private_product)/cmtb/
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot-dkb-cmtb.img $(OUTPUT_DIR)/$$(private_product)/cmtb/
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage-cmtb $(OUTPUT_DIR)/$$(private_product)/cmtb/
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/pxa1936-cmtb.dtb $(OUTPUT_DIR)/$$(private_product)/cmtb/
-
-PUBLISHING_FILES2+=$$(product)/cmtb/ramdisk-cmtb.img:./$$(product)/debug/cmtb/:o:md5
-PUBLISHING_FILES2+=$$(product)/cmtb/boot-cmtb.img:./$$(product)/debug/cmtb/:o:md5
-PUBLISHING_FILES2+=$$(product)/cmtb/boot-dkb-cmtb.img:./$$(product)/debug/cmtb/:o:md5
-PUBLISHING_FILES2+=$$(product)/cmtb/uImage-cmtb:./$$(product)/debug/cmtb/:o:md5
-PUBLISHING_FILES2+=$$(product)/cmtb/pxa1936-cmtb.dtb:./$$(product)/debug/cmtb/:o:md5
+	mkdir -p $(OUTPUT_DIR)/$$(private_product)/cmtb/ &&\
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-cmtb.img $(OUTPUT_DIR)/$$(private_product)/cmtb/ &&\
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot-cmtb.img $(OUTPUT_DIR)/$$(private_product)/cmtb/ &&\
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage-cmtb $(OUTPUT_DIR)/$$(private_product)/cmtb/ &&\
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/pxa1936-cmtb.dtb $(OUTPUT_DIR)/$$(private_product)/cmtb/ &&\
 endif
 	$(log) "  done for make cmtb images build."
 endef
