@@ -338,10 +338,12 @@ PUBLISHING_FILES2+=$$(product)/TTD_M06_AI_Y0_Flash.bin:./$$(product)/flash/:o:md
 PUBLISHING_FILES2+=$$(product)/WK_CP_2CHIP_SPRW.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/WK_M08_AI_Y1_removelo_Y0_Flash.bin:./$$(product)/flash/:o:md5
 endif
+ifeq ($(private_product,$(filter $(private_product),pxa1936dkb_tz pxa1936dkb_64bit))
 PUBLISHING_FILES2+=$$(product)/cmtb/ramdisk-cmtb.img:./$$(product)/debug/cmtb/:o:md5
 PUBLISHING_FILES2+=$$(product)/cmtb/boot-cmtb.img:./$$(product)/debug/cmtb/:o:md5
 PUBLISHING_FILES2+=$$(product)/cmtb/uImage-cmtb:./$$(product)/debug/cmtb/:o:md5
 PUBLISHING_FILES2+=$$(product)/cmtb/pxa1936-cmtb.dtb:./$$(product)/debug/cmtb/:o:md5
+endif
 endef
 PUBLISHING_FILES+=release_package_list:o
 
@@ -394,11 +396,11 @@ build_boot_cmtb_img_$$(product): private_product:=$$(product)
 build_boot_cmtb_img_$$(product): private_device:=$$(device)
 build_boot_cmtb_img_$$(product): build_droid_$$(product)
 	$(log) "[$$(private_product)] make boot-cmtb.img"
+ifeq ($(private_product,$(filter $(private_product),pxa1936dkb_tz pxa1936dkb_64bit))
 	cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
 	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
-ifeq ($(TARGET_PRODUCT),$(filter $(TARGET_PRODUCT),pxa1936dkb_tz pxa1936dkb_64bit))
 	cp -fr root/ root-bak && \
 	find root/ -iname "*.prop"|xargs sed -i -r 's/ro\.secure=1/ro\.secure=0/' && \
 	find root/ -iname "init.pxa1936.rc" |xargs sed -i -r 's/setprop service.camera.af 1/setprop service.camera.af 1\n    setprop service.camera.cmtb 1 \n/' && \
@@ -418,6 +420,7 @@ ifeq ($(TARGET_PRODUCT),$(filter $(TARGET_PRODUCT),pxa1936dkb_tz pxa1936dkb_64bi
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot-cmtb.img $(OUTPUT_DIR)/$$(private_product)/cmtb/ &&\
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage-cmtb $(OUTPUT_DIR)/$$(private_product)/cmtb/ &&\
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/pxa1936-cmtb.dtb $(OUTPUT_DIR)/$$(private_product)/cmtb/ &&\
+
 endif
 	$(log) "  done for make cmtb images build."
 endef
