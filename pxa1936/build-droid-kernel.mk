@@ -419,8 +419,7 @@ ifeq ($(private_product),$(filter $(private_product),pxa1936dkb_tz pxa1936dkb_64
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-cmtb.img $(OUTPUT_DIR)/$$(private_product)/cmtb/ &&\
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot-cmtb.img $(OUTPUT_DIR)/$$(private_product)/cmtb/ &&\
 	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage-cmtb $(OUTPUT_DIR)/$$(private_product)/cmtb/ &&\
-	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/pxa1936-cmtb.dtb $(OUTPUT_DIR)/$$(private_product)/cmtb/ &&\
-
+	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/pxa1936-cmtb.dtb $(OUTPUT_DIR)/$$(private_product)/cmtb/
 endif
 	$(log) "  done for make cmtb images build."
 endef
