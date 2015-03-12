@@ -338,7 +338,7 @@ PUBLISHING_FILES2+=$$(product)/TTD_M06_AI_Y0_Flash.bin:./$$(product)/flash/:o:md
 PUBLISHING_FILES2+=$$(product)/WK_CP_2CHIP_SPRW.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/WK_M08_AI_Y1_removelo_Y0_Flash.bin:./$$(product)/flash/:o:md5
 endif
-ifeq ($(private_product,$(filter $(private_product),pxa1936dkb_tz pxa1936dkb_64bit))
+ifeq ($(product),$(filter $(product),pxa1936dkb_tz pxa1936dkb_64bit))
 PUBLISHING_FILES2+=$$(product)/cmtb/ramdisk-cmtb.img:./$$(product)/debug/cmtb/:o:md5
 PUBLISHING_FILES2+=$$(product)/cmtb/boot-cmtb.img:./$$(product)/debug/cmtb/:o:md5
 PUBLISHING_FILES2+=$$(product)/cmtb/uImage-cmtb:./$$(product)/debug/cmtb/:o:md5
@@ -396,7 +396,7 @@ build_boot_cmtb_img_$$(product): private_product:=$$(product)
 build_boot_cmtb_img_$$(product): private_device:=$$(device)
 build_boot_cmtb_img_$$(product): build_droid_$$(product)
 	$(log) "[$$(private_product)] make boot-cmtb.img"
-ifeq ($(private_product,$(filter $(private_product),pxa1936dkb_tz pxa1936dkb_64bit))
+ifeq ($(private_product),$(filter $(private_product),pxa1936dkb_tz pxa1936dkb_64bit))
 	cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
 	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
