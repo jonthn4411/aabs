@@ -56,7 +56,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product) build_debug_kernel_$$(product) build_droid_debug_img_$$(product) build_boot_cmtb_img_$$(product)
+build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product) build_debug_kernel_$$(product) build_droid_debug_img_$$(product)
 endef
 
 export KERNEL_TOOLCHAIN_PREFIX
@@ -338,12 +338,6 @@ PUBLISHING_FILES2+=$$(product)/TTD_M06_AI_Y0_Flash.bin:./$$(product)/flash/:o:md
 PUBLISHING_FILES2+=$$(product)/WK_CP_2CHIP_SPRW.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/WK_M08_AI_Y1_removelo_Y0_Flash.bin:./$$(product)/flash/:o:md5
 endif
-ifeq ($(product),$(filter $(product),pxa1936dkb_tz pxa1936dkb_64bit))
-PUBLISHING_FILES2+=$$(product)/cmtb/ramdisk-cmtb.img:./$$(product)/debug/cmtb/:o:md5
-PUBLISHING_FILES2+=$$(product)/cmtb/boot-cmtb.img:./$$(product)/debug/cmtb/:o:md5
-PUBLISHING_FILES2+=$$(product)/cmtb/uImage-cmtb:./$$(product)/debug/cmtb/:o:md5
-PUBLISHING_FILES2+=$$(product)/cmtb/pxa1936-cmtb.dtb:./$$(product)/debug/cmtb/:o:md5
-endif
 endef
 PUBLISHING_FILES+=release_package_list:o
 
@@ -387,42 +381,6 @@ PUBLISHING_FILES2+=$$(product)/debug_gc_img/boot-debug.img:./$$(product)/debug/d
 PUBLISHING_FILES2+=$$(product)/debug_gc_img/system-debug.img:./$$(product)/debug/debug_gc_img/:o:md5
 endef
 
-define define-build-boot-cmtb-img
-tw:=$$(subst :,  , $(1) )
-product:=$$(word 1, $$(tw) )
-device:=$$(word 2, $$(tw) )
-.PHONY: build_boot_cmtb_img_$$(product)
-build_boot_cmtb_img_$$(product): private_product:=$$(product)
-build_boot_cmtb_img_$$(product): private_device:=$$(device)
-build_boot_cmtb_img_$$(product): build_droid_$$(product)
-	$(log) "[$$(private_product)] make boot-cmtb.img"
-ifeq ($(private_product),$(filter $(private_product),pxa1936dkb_tz pxa1936dkb_64bit))
-	cd $(SRC_DIR) && \
-	source ./build/envsetup.sh && \
-	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
-	cp -fr root/ root-bak && \
-	find root/ -iname "*.prop"|xargs sed -i -r 's/ro\.secure=1/ro\.secure=0/' && \
-	find root/ -iname "init.pxa1936.rc" |xargs sed -i -r 's/setprop service.camera.af 1/setprop service.camera.af 1\n    setprop service.camera.cmtb 1 \n/' && \
-	find root/ -iname "init.pxa1936.usb.rc" |xargs sed -i -r 's/ro\.serialno/persist\.cmtb\.serialno/' && \
-	echo -ne "\nservice cmtb /system/bin/cmtb" >> root/init.pxa1936.rc &&\
-	echo -ne "\n    class late_start" >> root/init.pxa1936.rc &&\
-	cd root/ && find . | cpio -o -H newc | gzip > ../ramdisk-cmtb.img && cd ../ &&\
-	cat uImage|head -c `expr \`ls -l uImage | awk -F' ' '{print $$$$5}'\` - 262144` > uImage_orig &&\
-	cp obj/kernel/arch/arm64/boot/dts/pxa1936-cmtb.dtb ./ &&\
-	cat pxa1936-cmtb.dtb /dev/zero |head -c 131072 > pxa1936-cmtb.dtb.padded &&\
-	cat uImage_orig  pxa1936-cmtb.dtb.padded pxa1936-cmtb.dtb.padded > uImage-cmtb &&\
-	mkbootimg --ramdisk ramdisk-cmtb.img --kernel uImage-cmtb -o boot-cmtb.img && \
-	mkbootimg --ramdisk ramdisk-cmtb.img --kernel uImage -o boot-dkb-cmtb.img && \
-	rm -fr root/ && mv root-bak root && \
-	mkdir -p $(OUTPUT_DIR)/$$(private_product)/cmtb/ &&\
-	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-cmtb.img $(OUTPUT_DIR)/$$(private_product)/cmtb/ &&\
-	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot-cmtb.img $(OUTPUT_DIR)/$$(private_product)/cmtb/ &&\
-	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage-cmtb $(OUTPUT_DIR)/$$(private_product)/cmtb/ &&\
-	cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/pxa1936-cmtb.dtb $(OUTPUT_DIR)/$$(private_product)/cmtb/
-endif
-	$(log) "  done for make cmtb images build."
-endef
 
 define define-build-droid-otapackage
 tw:=$$(subst :,  , $(1) )
@@ -533,7 +491,6 @@ $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-targe
 				$(eval $(call define-build-droid-target,$(bv)) ) \
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
-				$(eval $(call define-build-boot-cmtb-img,$(bv)) ) \
 				$(eval $(call define-build-debug-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-debug-img,$(bv)) ) \
 )
