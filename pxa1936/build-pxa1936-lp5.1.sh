@@ -8,4 +8,4 @@ export ABS_BUILDHOST_DEF
 
 export ABS_UNIQUE_MANIFEST_BRANCH=1
 
-export ABS_BUILD_DEVICES=pxa1936dkb_tz:pxa1936dkb
+export ABS_BUILD_DEVICES=pxa1936dkb_tz:pxa1936dkb pxa1908dkb_tz:pxa1908dkb
