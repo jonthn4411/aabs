@@ -1,0 +1,25 @@
+Files in this folder
+====================
+-Change logs and checksum file
+  changelog.build                                       GIT change log of each project since last build.
+  changelog.day                                         GIT change log of each project since yesterday.
+  changelog.week                                        GIT change log of each project since last week.
+  changelog.biweek                                      GIT change log of each project since 2 weeks ago.
+  changelog.month                                       GIT change log of each project since a month ago.
+  changelog.build                                       GIT change log of each project since last build
+  checksums.md5                                         This file contains the MD5 checksum for above binary files. After downloading all the files, type "md5sum -c checksums.md5" can help you verify if the downloaded files are ok.
+
+-Source codes
+  manifest.xml	                                        Saving the GIT commit number of each project used in this build.
+
+-Images
+  - ${PRODUCT_NAME}/flash                               Images and BLF to burn the board
+  - ${PRODUCT_NAME}/ota                                 OTA packages
+  - ${PRODUCT_NAME}/debug                               debug symbols and images
+
+-Software_Downloader.zip                                :Software downloader
+
+Source code build
+======================
+eWiki: https://ewiki.marvell.com/display/APSESH/PXA1920+PXA1908+PXA1928+Build+Steps
+
