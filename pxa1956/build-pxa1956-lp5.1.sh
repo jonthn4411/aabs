@@ -8,5 +8,5 @@ export ABS_BUILDHOST_DEF
 
 export ABS_UNIQUE_MANIFEST_BRANCH=1
 
-export ABS_BUILD_DEVICES="pxa1956dkb_tz:pxa1956dkb pxa1956ff_tz:pxa1956ff"
+export ABS_BUILD_DEVICES="pxa1956dkb_tz:pxa1956dkb"
 
