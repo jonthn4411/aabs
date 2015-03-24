@@ -9,15 +9,15 @@ source: output_dir
 	$(hide)if [ ! -d "$(SRC_DIR)" ]; then \
 	    mkdir $(SRC_DIR); \
 	fi
-	$(log) "starting get source code from GIT server:$(GIT_SERVER), branch: rls_pxa1956_lp5.1_dev_bringup, manifest:$(MANIFEST_FILE) ..."
+	$(log) "starting get source code from GIT server:$(GIT_SERVER), branch:$(ABS_MANIFEST_BRANCH), manifest:$(MANIFEST_FILE) ..."
 	$(hide)cd $(SRC_DIR) && \
 	if [ -z "$(GIT_LOCAL_MIRROR)" ]; then \
-		repo init -u ssh://$(GIT_MANIFEST) -b rls_pxa1956_lp5.1_dev_bringup --repo-url ssh://$(GIT_REPO); \
+		repo init -u ssh://$(GIT_MANIFEST) -b $(ABS_MANIFEST_BRANCH) --repo-url ssh://$(GIT_REPO); \
 	else \
-		repo init -u ssh://$(GIT_MANIFEST) -b rls_pxa1956_lp5.1_dev_bringup --repo-url ssh://$(GIT_REPO) --reference $(GIT_LOCAL_MIRROR); \
+		repo init -u ssh://$(GIT_MANIFEST) -b $(ABS_MANIFEST_BRANCH) --repo-url ssh://$(GIT_REPO) --reference $(GIT_LOCAL_MIRROR); \
 	fi && \
 	if [ -n "$(ABS_MANIFEST_FILE)" ]; then \
-		repo init -m rls_pxa1956_lp5.1_dev_bringup; \
+		repo init -m $(ABS_MANIFEST_FILE); \
 	fi && \
 	repo sync
 	$(log) "saving manifest file..."
@@ -27,7 +27,7 @@ source: output_dir
 	$(hide)git rev-parse HEAD >$(OUTPUT_DIR)/abs.commit
 	$(hide)cd $(SRC_DIR)/.repo/manifests && git rev-parse HEAD >$(OUTPUT_DIR)/manifest.commit
 	$(hide)cd $(SRC_DIR)
-	$(hide)$(ABS_TOP_DIR)/core/automerge.sh $(OUTPUT_DIR) $(SRC_DIR) rls_pxa1956_lp5.1_dev_bringup $(LAST_BUILD_LOC)
+	$(hide)$(ABS_TOP_DIR)/core/automerge.sh $(OUTPUT_DIR) $(SRC_DIR) $(ABS_MANIFEST_BRANCH) $(LAST_BUILD_LOC)
 	$(log) "  done."
 
 
