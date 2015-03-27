@@ -56,7 +56,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product) build_debug_kernel_$$(product) build_droid_debug_img_$$(product)
+build_droid_kernel_$$(product): build_droid_$$(product) build_debug_kernel_$$(product) build_droid_debug_img_$$(product)
 endef
 
 export KERNEL_TOOLCHAIN_PREFIX
@@ -293,8 +293,33 @@ PUBLISHING_FILES2+=$$(product)/Skylark_LTG_V11.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LTG_V13.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_V11.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_V13.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_MDB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_MDB.bin:./$$(product)/flash/:o:md5
+#1936 specific begin
+PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LTG_V15.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_MDB.bin:./$$(product)/flash/:o:md5
+#1936 specific end
 
-PUBLISHING_FILES2+=$$(product)/SAAR_H_ALL_configuration.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/LTG_ZIP_RF.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/LWG_ZIP_RF.bin:./$$(product)/flash/:o:md5
+
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_DIAG.mdb:./$$(product)/debug/:o:md5
+
+PUBLISHING_FILES2+=$$(product)/ULC_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/ULC_LWG_M09_B0_DSDS_SKL_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LWG_V15.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LTG_V15.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_MDB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_MDB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_M09_B0_DSDS_SKL_Flash.bin:./$$(product)/flash/:o:md5
+
 
 PUBLISHING_FILES2+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:./$$(product)/debug/:o:md5
@@ -324,9 +349,6 @@ device:=$$(word 2, $$(tw) )
 build_droid_debug_img_$$(product): private_product:=$$(product)
 build_droid_debug_img_$$(product): private_device:=$$(device)
 build_droid_debug_img_$$(product): build_droid_$$(product)
-ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lmr1_32 lp5.1),)
-	$(log) "[$$(private_product)] disable make debug image to put .ko files to /system/lib/modules"
-else
 	$(log) "[$$(private_product)] make debug image to put .ko files to /system/lib/modules"
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -351,7 +373,7 @@ else
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-debug.img $(OUTPUT_DIR)/$$(private_product)/debug_gc_img/
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot-debug.img $(OUTPUT_DIR)/$$(private_product)/debug_gc_img/
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system-debug.img $(OUTPUT_DIR)/$$(private_product)/debug_gc_img/
-endif
+
 	$(log) "  done for make debug images build."
 
 PUBLISHING_FILES2+=$$(product)/debug_gc_img/ramdisk-debug.img:./$$(product)/debug/debug_gc_img/:o:md5
@@ -368,12 +390,6 @@ device:=$$(word 2, $$(tw) )
 build_droid_otapackage_$$(product): private_product:=$$(product)
 build_droid_otapackage_$$(product): private_device:=$$(device)
 build_droid_otapackage_$$(product): 
-ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lmr1_32 lp5.1),)
-	$$(log) "disalbe otapackage build by generating fake ota files temporally"
-	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl.zip
-	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-recovery.zip
-	$$(hide)touch $$(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-intermediates.zip
-else
 	$(log) "[$$(private_product)] building android OTA package ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
@@ -381,10 +397,10 @@ else
 	make mrvlotapackage
 	$(hide)echo "  copy OTA package ..."
 
+	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/target_files-package.zip $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl.zip $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl-recovery.zip $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/PACKAGING/target_files_intermediates/$$(private_product)-target_files*.zip $(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-intermediates.zip
-endif
 	$(log) "  done for OTA package build."
 
 PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl.zip:./$$(product)/ota/:o:md5
@@ -440,9 +456,6 @@ device:=$$(word 2, $$(tw) )
 build_debug_kernel_$$(product): private_product:=$$(product)
 build_debug_kernel_$$(product): private_device:=$$(device)
 build_debug_kernel_$$(product): 
-ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lmr1_32 lp5.1),)
-	$(log) "[$$(private_product)] disbale debug uImage ...private_product is"+$$(private_product)+"private_device is "+$$(private_device)
-else
 	$(log) "[$$(private_product)] building debug uImage ...private_product is"+$$(private_product)+"private_device is "+$$(private_device)
 	cd $(SRC_DIR)/$(DROID_OUT)/$$(private_device) && \
     cp -fr root/ root-bak 
@@ -462,7 +475,6 @@ else
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ramdisk-debug.img $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img/
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot-debug.img $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img/
 	tar zcf $(OUTPUT_DIR)/$$(private_product)/debug_kernel_img/modules_debug.tgz -C $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/lib modules 
-endif
 	$(log) "  done for make debug kernel target build."
 
 PUBLISHING_FILES2+=$$(product)/debug_kernel_img/uImage_debug:./$$(product)/debug/debug_kernel_img/:o:md5
