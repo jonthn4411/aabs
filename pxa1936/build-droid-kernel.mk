@@ -164,7 +164,6 @@ build_droid_$$(product):
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obm*bin $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/uImage $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot.img $(OUTPUT_DIR)/$$(private_product)/
-	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/cache.img $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/recovery.img $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/u-boot.bin $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/vmlinux $(OUTPUT_DIR)/$$(private_product)/
@@ -189,7 +188,6 @@ PUBLISHING_FILES2+=$$(product)/obm_trusted_tz.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/obm_trusted_ntz.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/u-boot.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/boot.img:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/cache.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/recovery.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/uImage:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/vmlinux:./$$(product)/debug/:o:md5
@@ -221,8 +219,6 @@ PUBLISHING_FILES2+=$$(product)/dtb:./$$(product)/debug/:o:md5
 ##!!## security image
 PUBLISHING_FILES2+=$$(product)/tee_tw.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/teesst.img:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/wtm_rel_helan3_VirtualOTP.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/wtm_rel_helan3_RealOTP.bin:./$$(product)/debug/:o:md5
 
 PUBLISHING_FILES2+=$$(product)/radio.img:./$$(product)/flash/:o:md5
 
@@ -293,33 +289,6 @@ PUBLISHING_FILES2+=$$(product)/Skylark_LTG_V11.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LTG_V13.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_V11.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_V13.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_MDB.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LWG_MDB.bin:./$$(product)/flash/:o:md5
-#1936 specific begin
-PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/Skylark_LTG_V15.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_MDB.bin:./$$(product)/flash/:o:md5
-#1936 specific end
-
-PUBLISHING_FILES2+=$$(product)/LTG_ZIP_RF.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/LWG_ZIP_RF.bin:./$$(product)/flash/:o:md5
-
-PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_NVM.mdb:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_DIAG.mdb:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_NVM.mdb:./$$(product)/debug/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_DIAG.mdb:./$$(product)/debug/:o:md5
-
-PUBLISHING_FILES2+=$$(product)/ULC_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/ULC_LWG_M09_B0_DSDS_SKL_Flash.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/Skylark_LWG_V15.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/Skylark_LTG_V15.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_MDB.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_MDB.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/HL_LWG_M09_B0_DSDS_SKL_Flash.bin:./$$(product)/flash/:o:md5
-PUBLISHING_FILES2+=$$(product)/SAAR_H_ALL_configuration.bin:./$$(product)/flash/:o:md5
 
 PUBLISHING_FILES2+=$$(product)/WK_CP_2CHIP_SPRW_NVM.mdb:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/WK_CP_2CHIP_SPRW_DIAG.mdb:./$$(product)/debug/:o:md5
