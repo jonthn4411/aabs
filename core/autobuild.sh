@@ -452,7 +452,7 @@ if [ "$FLAG_PUBLISH" = "true" ]; then
     fi
 	BACKUP_DIR=${BACKUP_DIR_BASE}${PUBLISH_DIR#*${PUBLISH_DIR_BASE}}
 	export BACKUP_DIR
-	cp ${ABS_SOC}/README $PUBLISH_DIR/README &&
+	cp ${ABS_SOC}/README $PUBLISH_DIR/README 
 	make -f ${MAKEFILE} publish -e 2>&1 | tee -a $STD_LOG &&
     # Don't forget patches of the virtual build
     if [ "$ABS_VIRTUAL_BUILD" = "true" ]; then
@@ -490,6 +490,12 @@ if [ $? -ne 0 ]; then #auto build fail, send an email
     #support distributed building
     if [ "$FLAG_DISTRIBUTED_BUILD" = "true" ]; then
     	touch $PUBLISH_DIR/FAILURE
+    else
+    	if [ -e "$PUBLISH_DIR" ]; then
+    		if [ ! `ls -A $PUBLISH_DIR` ]; then
+    			rm -rf $PUBLISH_DIR
+    		fi
+    	fi
     fi
 
 else
