@@ -368,8 +368,10 @@ if [ "$FLAG_DISTRIBUTED_BUILD" = "true" ]; then
 	FORMAL_PUBLISH_DIR_BASE=$PUBLISH_DIR_BASE
 	PUBLISH_DIR_BASE=$TEMP_PUBLISH_DIR_BASE
 	mkdir -p ${PUBLISH_DIR_BASE}
+        export LAST_BUILD_LOC=$FORMAL_PUBLISH_DIR_BASE
 else
 	mkdir -p ${PUBLISH_DIR_BASE}
+        export LAST_BUILD_LOC=$PUBLISH_DIR_BASE
 fi
 
 LAST_BUILD=$PUBLISH_DIR_BASE/$LAST_BUILD
@@ -386,7 +388,6 @@ fi
 echo "[$(date)]:starting build ${ABS_PRODUCT_CODE}${RLS_SUFFIX} ..." > $STD_LOG
 echo "AABS publishing dir base: ${PUBLISH_DIR_BASE}" > $STD_LOG
 
-export LAST_BUILD_LOC=$PUBLISH_DIR_BASE
 
 if [ "$FLAG_CCACHE" = "true" ]; then
 	export USE_CCACHE=true
