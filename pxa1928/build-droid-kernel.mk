@@ -100,6 +100,7 @@ PUBLISHING_FILES2+=$$(product)/Skylark_LWG.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_V13.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_V15.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/persistent.img:./$$(product)/flash/:o:md5
 
 ifeq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lmr1_32),)
 PUBLISHING_FILES2+=$$(product)/recovery.img:./$$(product)/flash/:o:md5
@@ -153,6 +154,7 @@ build_droid_root_$$(product): output_dir
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/zImage ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/zImage $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/vmlinux ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/vmlinux $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/system/build.prop ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/system/build.prop $$(OUTPUT_DIR)/$$(private_product)/debug; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/persistent.img ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/persistent.img $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928concord.dtb ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928concord.dtb $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928concord-discrete.dtb ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928concord-discrete.dtb $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928ff.dtb ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928ff.dtb $$(OUTPUT_DIR)/$$(private_product)/; fi
