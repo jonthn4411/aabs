@@ -153,6 +153,8 @@ build_droid_$$(product):
 	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname *gpt* |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
 	$(log) "  done"
 
+	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/fake_packages/MarvellLogging/MarvellLogging.apk ]; then cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/fake_packages/MarvellLogging/MarvellLogging.apk $(OUTPUT_DIR)/$$(private_product)/; fi
+
 	$(hide)if [ "$(PLATFORM_ANDROID_VARIANT)" = "user" ]; then \
 	sed -i "s/ro.secure=1/ro.secure=0/" $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/default.prop  && \
 	sed -i "s/ro.debuggable=0/ro.debuggable=1/" $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/root/default.prop  && \
@@ -217,6 +219,9 @@ PUBLISHING_FILES2+=$$(product)/blf/*:./$$(product)/flash/:o:md5
 
 ##!!## dtb files
 PUBLISHING_FILES2+=$$(product)/dtb:./$$(product)/debug/:o:md5
+
+##!!## HAWK files
+PUBLISHING_FILES2+=$$(product)/MarvellLogging.apk:./$$(product)/debug/:o:md5
 
 ##!!## security image
 PUBLISHING_FILES2+=$$(product)/tee_tw.bin:./$$(product)/flash/:o:md5
