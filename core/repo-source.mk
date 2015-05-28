@@ -10,6 +10,7 @@ source: output_dir
 	    mkdir $(SRC_DIR); \
 	fi
 	$(log) "starting get source code from GIT server:$(GIT_SERVER), branch:$(ABS_MANIFEST_BRANCH), manifest:$(MANIFEST_FILE) ..."
+	$(log) "ANDROID_SOURCE_DIR: $(SRC_DIR)"
 	$(hide)cd $(SRC_DIR) && \
 	if [ -z "$(GIT_LOCAL_MIRROR)" ]; then \
 		repo init -u ssh://$(GIT_MANIFEST) -b $(ABS_MANIFEST_BRANCH) --repo-url ssh://$(GIT_REPO); \
