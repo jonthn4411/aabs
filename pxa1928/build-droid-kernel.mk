@@ -60,10 +60,6 @@ PUBLISHING_FILES2+=$$(product)/build.prop:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/pxa1928concord.dtb:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/pxa1928concord-discrete.dtb:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/pxa1928ff.dtb:./$$(product)/debug/:o:md5
-
-##!!## HAWK files
-PUBLISHING_FILES2+=$$(product)/MarvellLogging.apk:./$$(product)/debug/:o:md5
-
 PUBLISHING_FILES2+=$$(product)/blf:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/u-boot.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/obm_trusted_tz.bin:./$$(product)/flash/:o:md5
@@ -169,9 +165,6 @@ build_droid_root_$$(product): output_dir
 	$(log) "  done"
 
 PUBLISHING_FILES2+=$$(product)/symbols_system.tgz:./$$(product)/debug/:o:md5
-
-	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/fake_packages/MarvellLogging/MarvellLogging.apk ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/fake_packages/MarvellLogging/MarvellLogging.apk $$(OUTPUT_DIR)/; fi
-
 endef
 
 define define-build-droid-otapackage
