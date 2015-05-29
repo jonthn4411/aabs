@@ -61,7 +61,6 @@ PUBLISHING_FILES2+=$$(product)/pxa1928concord.dtb:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/pxa1928concord-discrete.dtb:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/pxa1928ff.dtb:./$$(product)/debug/:o:md5
 
-##!!## HAWK files
 PUBLISHING_FILES2+=$$(product)/MarvellLogging.apk:./$$(product)/debug/:o:md5
 
 PUBLISHING_FILES2+=$$(product)/blf:./$$(product)/flash/:o:md5
@@ -125,6 +124,7 @@ PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0_CP6X_MDB.txt:./$$(product)/debug/:o
 PUBLISHING_FILES2+=$$(product)/CP6X_version.txt:./$$(product)/debug/:o:md5
 endif
 endif
+PUBLISHING_FILES2+=$$(product)/symbols_system.tgz:./$$(product)/debug/:o:md5
 
 .PHONY: build_droid_root_$$(product)
 build_droid_root_$$(product): private_product:=$$(product)
@@ -163,14 +163,11 @@ build_droid_root_$$(product): output_dir
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928concord-discrete.dtb ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928concord-discrete.dtb $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928ff.dtb ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/pxa1928ff.dtb $$(OUTPUT_DIR)/$$(private_product)/; fi
 	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/Software_Downloader.zip $$(OUTPUT_DIR)/; fi
+	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/fake_packages/MarvellLogging/MarvellLogging.apk ]; then cp $$(SRC_DIR)/out/target/product/$$(priva    te_device)/fake_packages/MarvellLogging/MarvellLogging.apk $$(OUTPUT_DIR)/; fi
 	echo "    generating symbols_system.tgz..." && \
 		cp -a $$(SRC_DIR)/out/target/product/$$(private_device)/symbols/system $$(OUTPUT_DIR)/$$(private_product) && \
 		cd $$(OUTPUT_DIR)/$$(private_product) && tar czf symbols_system.tgz system && rm system -rf
 	$(log) "  done"
-
-PUBLISHING_FILES2+=$$(product)/symbols_system.tgz:./$$(product)/debug/:o:md5
-
-	$$(hide)if [ -f $$(SRC_DIR)/out/target/product/$$(private_device)/fake_packages/MarvellLogging/MarvellLogging.apk ]; then cp $$(SRC_DIR)/out/target/product/$$(private_device)/fake_packages/MarvellLogging/MarvellLogging.apk $$(OUTPUT_DIR)/; fi
 
 endef
 
