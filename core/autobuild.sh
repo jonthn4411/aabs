@@ -388,6 +388,10 @@ fi
 echo "[$(date)]:starting build ${ABS_PRODUCT_CODE}${RLS_SUFFIX} ..." > $STD_LOG
 echo "AABS publishing dir base: ${PUBLISH_DIR_BASE}" > $STD_LOG
 
+if [ "$FLAG_DISTRIBUTED_BUILD" = "true" ]; then
+	echo "Distribution build device list: ${ABS_DEVICE_LIST}" | tee -a $STD_LOG
+	echo "Distribution build current: ${ABS_PRODUCT_CODE}${RLS_SUFFIX}" | tee -a $STD_LOG
+fi
 
 if [ "$FLAG_CCACHE" = "true" ]; then
 	export USE_CCACHE=true
@@ -522,7 +526,7 @@ fi
 
 #support distributed building
 if [ "$FLAG_DISTRIBUTED_BUILD" = "true" ]; then
-	echo "XXXXXX----> save $PUBLISH_DIR to $DISTRIBUTED_BUILD"
+	echo "Distribution build ----> save $PUBLISH_DIR to $DISTRIBUTED_BUILD"
 	if [ ! -e "$DISTRIBUTED_BUILD" ]; then
 		echo "$PUBLISH_DIR" > $DISTRIBUTED_BUILD
 	else
@@ -547,11 +551,11 @@ if [ "$FLAG_DISTRIBUTED_BUILD" = "true" ]; then
 
 	publish_index=0
 	publish_index=`cat $DISTRIBUTED_BUILD | wc -l`
-	echo "XXXXXX----> index=${index}, publish_index=${publish_index}"
+	echo "Distribution build ----> index=${index}, publish_index=${publish_index}"
 
 	build_failure=false
 	if [ $index -eq $publish_index ]; then
-		echo "XXXXXX----> all builds completed now, do release stuff..."
+		echo "Distribution build ----> all builds completed now, do release stuff..."
 		for i in `cat $DISTRIBUTED_BUILD`;do
 			if [ -e "${i}/FAILURE" ]; then
 				build_failure=true
@@ -584,8 +588,8 @@ if [ "$FLAG_DISTRIBUTED_BUILD" = "true" ]; then
 
 			#send out final success notification mail
 			rm -f ${pub}/SUCCESS
-			echo "XXXXXX----> pub=${pub}"
-			echo "XXXXXX----> PUBLISH_DIR=${PUBLISH_DIR}"
+			echo "Distribution build ----> pub=${pub}"
+			echo "Distribution build ----> PUBLISH_DIR=${PUBLISH_DIR}"
 			PUBLISH_DIR=${pub}
 			export PUBLISH_DIR
 			echo "all builds successfully done. Cheers!Package:${PUBLISH_DIR} " 2>&1 | tee -a $STD_LOG
@@ -613,6 +617,7 @@ if [ "$FLAG_DISTRIBUTED_BUILD" = "true" ]; then
 		cat $DISTRIBUTED_BUILD
 		rm -f $DISTRIBUTED_BUILD
 	fi
+	echo "Distribution build done(${index} of ${publish_index})!"
 fi
 
 echo "[AABS]-------------------END-------------------"
