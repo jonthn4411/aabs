@@ -47,7 +47,6 @@ ifneq ($(strip $(ABS_RELEASE_NAME)),)
 SRC_DIR:=$(SRC_DIR).$(ABS_RELEASE_NAME)
 OUTPUT_DIR:=$(OUTPUT_DIR).$(ABS_RELEASE_NAME)
 endif
-$(info ANDROID_SOURCE_DIR: $(SRC_DIR))
 
 #number of concurrent jobs for make
 JOBS_FACTOR:=1.5
@@ -66,7 +65,7 @@ SRC_DIR:=$(ABS_SOURCE_DIR)
 else
 SRC_DIR:=$(ABS_TOP_DIR)/$(SRC_DIR)
 endif
-
+$(info ANDROID_SOURCE_DIR: $(SRC_DIR))
 
 
 #Selecting the toolchain
