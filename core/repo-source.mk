@@ -21,7 +21,7 @@ source: output_dir
 		cp ${ABS_BUILD_MANIFEST} .repo/manifests/; \
 		repo init -m $(ABS_MANIFEST_FILE); \
 	fi && \
-	repo sync
+	repo sync -c -d -q --jobs 8
 	$(log) "saving manifest file..."
 	$(hide)if [ "$(FLAG_DISTRIBUTED_BUILD)" = "true" ]; then \
 		cp $(ABS_BUILD_MANIFEST) $(OUTPUT_DIR)/manifest.xml; \
