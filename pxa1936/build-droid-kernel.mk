@@ -443,7 +443,7 @@ ifeq ($(product),pxa1908dkb_tz)
 	echo -ne "\n    class late_start" >> root/init.pxa1908.rc &&\
 	cd root/ && find . | cpio -o -H newc | gzip > ../ramdisk-cmtb.img && cd ../ &&\
 	cat uImage|head -c `expr \`ls -l uImage | awk -F' ' '{print $$$$5}'\` - 131072` > uImage_orig &&\
-	cp obj/kernel/arch/arm64/boot/dts/pxa1908-cmtb.dtb ./ &&\
+	cp obj/kernel/arch/arm/boot/dts/pxa1908-cmtb.dtb ./ &&\
 	cat pxa1908-cmtb.dtb /dev/zero |head -c 131072 > pxa1908-cmtb.dtb.padded &&\
 	cat uImage_orig  pxa1908-cmtb.dtb.padded > uImage-cmtb &&\
 	mkbootimg --ramdisk ramdisk-cmtb.img --kernel uImage-cmtb -o boot-cmtb.img && \
