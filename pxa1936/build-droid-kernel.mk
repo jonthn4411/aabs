@@ -300,7 +300,9 @@ PUBLISHING_FILES2+=$$(product)/Skylark_LWG_V11.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_V13.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_MDB.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LWG_MDB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/logo:./$$(product)/flash/:o:md5
 #1936 specific begin
+
 PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
