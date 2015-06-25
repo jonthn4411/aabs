@@ -171,7 +171,7 @@ build_droid_$$(product):
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/u-boot.bin $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/vmlinux $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/System.map $(OUTPUT_DIR)/$$(private_product)/
-	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/logo $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/logo ]; then cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/logo $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader.zip $(OUTPUT_DIR)/
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/WTM.bin ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/WTM.bin $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/HLN2_NonTLoader_eMMC_DDR.bin ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/HLN2_NonTLoader_eMMC_DDR.bin $(OUTPUT_DIR)/$$(private_product)/; fi
