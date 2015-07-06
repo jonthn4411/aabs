@@ -280,9 +280,6 @@ $(foreach bd,$(ABS_BUILD_DEVICES),\
 	$(eval $(call define-clean-droid-kernel,$(bd)))\
 	$(eval $(call define-build-droid-kernel,$(bd)))\
 	$(eval $(call define-build-droid-root,$(bd)))\
-	$(foreach kc,$(kernel_configs),\
-		$(foreach bc,$(boot_configs),\
-			$(eval $(call define-build-droid-otapackage,$(bd),$(kc),$(bc)))))\
 	$(eval $(call define-build-droid-config,$(bd),internal))\
 	$(eval $(call package-droid-nfs-config,$(bd),internal))\
 )
