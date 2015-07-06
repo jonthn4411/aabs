@@ -35,7 +35,6 @@ device:=$$(word 2, $$(tw))
 #$$(warning define-build-droid-kernel arg1=$(1) tw=$$(tw) product=$$(product) device=$$(device))
 build_droid_kernel_$$(product): build_droid_root_$$(product)
 build_droid_kernel_$$(product): build_droid_pkgs_$$(product)
-build_droid_kernel_$$(product): build_droid_otapackage_$$(product)
 endef
 
 #$1:build device
