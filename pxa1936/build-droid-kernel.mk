@@ -296,6 +296,19 @@ PUBLISHING_FILES2+=$$(product)/Skylark_LWG_V11.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LWG_V13.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_MDB.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LWG_MDB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL4_LTG_DKB_DSDS_SHM_TX.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/NEZHA3_LTG_M10_Z3_ARG_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/LTG_ZIP_RF.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/NZ3_LTG_DKB_40M_DSDS_TX_MDB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL4_LWG_DKB_DSDS_SHM_TX.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/NEZHA3_LWG_M10_Z3_ARG_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/LWG_ZIP_RF.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/NZ3_LWG_DKB_40M_DSDS_TX_MDB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Argus_LTG.bin:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/Argus_LWG.bin:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/NZ3_LTG_DKB_40M_DSDS_TX_MDB.txt:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/NZ3_LWG_DKB_40M_DSDS_TX_MDB.txt:./$$(product)/debug/:o:md5
+
 #1936 specific begin
 PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS.bin:./$$(product)/flash/:o:md5
