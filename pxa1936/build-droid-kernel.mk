@@ -363,7 +363,7 @@ device:=$$(word 2, $$(tw) )
 build_droid_debug_img_$$(product): private_product:=$$(product)
 build_droid_debug_img_$$(product): private_device:=$$(device)
 build_droid_debug_img_$$(product): build_droid_$$(product)
-ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lmr1_32),)
+ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lmr1_32 mpre),)
 	$(log) "[$$(private_product)] disable make debug image to put .ko files to /system/lib/modules"
 else
 	$(log) "[$$(private_product)] make debug image to put .ko files to /system/lib/modules"
@@ -479,7 +479,7 @@ device:=$$(word 2, $$(tw) )
 build_debug_kernel_$$(product): private_product:=$$(product)
 build_debug_kernel_$$(product): private_device:=$$(device)
 build_debug_kernel_$$(product): 
-ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lmr1_32),)
+ifneq ($(filter $(ABS_DROID_BRANCH),aosp pdk5.0 lmr1 lmr1_32 mpre),)
 	$(log) "[$$(private_product)] disbale debug uImage ...private_product is"+$$(private_product)+"private_device is "+$$(private_device)
 else
 	$(log) "[$$(private_product)] building debug uImage ...private_product is"+$$(private_product)+"private_device is "+$$(private_device)
