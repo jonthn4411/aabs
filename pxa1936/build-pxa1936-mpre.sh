@@ -5,5 +5,5 @@ export ABS_BUILDHOST_DEF=buildhost-lpre.def
 export ABS_BUILDHOST_DEF
 
 export ABS_UNIQUE_MANIFEST_BRANCH=1
-export ABS_BUILD_DEVICES="pxa1908dkb_tz:pxa1908dkb"
+export ABS_BUILD_DEVICES="pxa1908dkb_tz:pxa1908dkb pxa1936dkb_tz:pxa1936dkb"
 
