@@ -169,6 +169,7 @@ build_droid_$$(product):
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/u-boot.bin $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/vmlinux $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/System.map $(OUTPUT_DIR)/$$(private_product)/
+	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/logo ]; then cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/logo $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader.zip $(OUTPUT_DIR)/
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/WTM.bin ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/WTM.bin $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/HLN2_NonTLoader_eMMC_DDR.bin ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/HLN2_NonTLoader_eMMC_DDR.bin $(OUTPUT_DIR)/$$(private_product)/; fi
@@ -308,6 +309,7 @@ PUBLISHING_FILES2+=$$(product)/Argus_LTG.bin:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/Argus_LWG.bin:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/NZ3_LTG_DKB_40M_DSDS_TX_MDB.txt:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/NZ3_LWG_DKB_40M_DSDS_TX_MDB.txt:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/logo:./$$(product)/flash/:o:md5
 
 #1936 specific begin
 PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
