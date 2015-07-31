@@ -187,6 +187,7 @@ endif
 ##!!## first time publish: all for two
 PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
 PUBLISHING_FILES2+=Software_Downloader_Helan2.zip:./:o:md5
+PUBLISHING_FILES2+=Software_Downloader_pxa1928.zip:./:o:md5
 PUBLISHING_FILES2+=$$(product)/WTM.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HLN2_NonTLoader_eMMC_DDR.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/obm.bin:./$$(product)/flash/:o:md5
