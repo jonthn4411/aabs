@@ -175,9 +175,8 @@ build_droid_$$(product):
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/HLN2_NonTLoader_eMMC_DDR.bin ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/HLN2_NonTLoader_eMMC_DDR.bin $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader_Helan2.zip ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader_Helan2.zip $(OUTPUT_DIR)/; fi
 
-ifeq ($$(private_device),pxa1928ff)
-	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader.zip ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader.zip $(OUTPUT_DIR)/Software_Downloader_pxa1928.zip; fi
-endif
+	$(hide)if [ "$$(private_device)" = "pxa1928ff" ]; then \
+	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader.zip ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader.zip $(OUTPUT_DIR)/Software_Downloader_pxa1928.zip; fi; fi
 
 	$(hide)if [ -d $(OUTPUT_DIR)/$$(private_product)/modules ]; then rm -fr $(OUTPUT_DIR)/$$(private_product)/modules; fi &&\
 	mkdir -p $(OUTPUT_DIR)/$$(private_product)/modules
