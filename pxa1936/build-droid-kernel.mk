@@ -172,6 +172,7 @@ build_droid_$$(product):
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/logo ]; then cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/logo $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader.zip $(OUTPUT_DIR)/
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/WTM.bin ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/WTM.bin $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/security/images/wtm_rel_eden_RealOTP.bin ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/wtm_rel_eden_RealOTP.bin $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/HLN2_NonTLoader_eMMC_DDR.bin ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/HLN2_NonTLoader_eMMC_DDR.bin $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader_Helan2.zip ]; then cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/Software_Downloader_Helan2.zip $(OUTPUT_DIR)/; fi
 
@@ -188,6 +189,7 @@ PUBLISHING_FILES2+=Software_Downloader.zip:./:m:md5
 PUBLISHING_FILES2+=Software_Downloader_Helan2.zip:./:o:md5
 PUBLISHING_FILES2+=Software_Downloader_pxa1928.zip:./:o:md5
 PUBLISHING_FILES2+=$$(product)/WTM.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/wtm_rel_eden_RealOTP.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HLN2_NonTLoader_eMMC_DDR.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/obm.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/obm_auto.bin:./$$(product)/flash/:o:md5
