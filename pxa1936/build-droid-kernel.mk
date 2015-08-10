@@ -318,6 +318,46 @@ PUBLISHING_FILES2+=$$(product)/NZ3_LTG_DKB_40M_DSDS_TX_MDB.txt:./$$(product)/deb
 PUBLISHING_FILES2+=$$(product)/NZ3_LWG_DKB_40M_DSDS_TX_MDB.txt:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/logo:./$$(product)/flash/:o:md5
 
+#pxa1928 begin
+PUBLISHING_FILES2+=$$(product)/Boerne_DIAG.mdb.txt:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash_B0.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_B0.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_B0_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_B0_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0_DIAG.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0_NVM.mdb:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_M09_B0_SKL_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_M09_B0_SKL_Flash_B0.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_MDB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_B0_MDB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_MDB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0_MDB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LTG.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LTG_B0.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LTG_B0_V13.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LTG_B0_V15.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LWG.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_V13.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_V15.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/EDEN_LWG_M09_B0_CP6X_DSDS_SKL_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0_CP6X.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0_CP6X_MDB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_CMCC_CP6X.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_EU_CP6X.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Skylark_LWG_B0_NA_CP6X.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL_LWG_DKB_B0_CP6X_MDB.txt:./$$(product)/debug/:o:md5
+PUBLISHING_FILES2+=$$(product)/CP6X_version.txt:./$$(product)/debug/:o:md5
+#end
+
 #1936 specific begin
 PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS.bin:./$$(product)/flash/:o:md5
