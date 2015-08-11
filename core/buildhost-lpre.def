@@ -3,7 +3,7 @@ export GIT_SERVER=shgit.marvell.com
 export GIT_ANDROID_ROOT=${GIT_SERVER}/git/lpre
 export GIT_MANIFEST=${GIT_ANDROID_ROOT}/platform/manifest.git
 export GIT_REPO=${GIT_SERVER}/git/android/tools/repo.git
-export GIT_LOCAL_MIRROR=/mnt/mirror/default/
+export GIT_LOCAL_MIRROR=/home/buildfarm/aabs/jenkins/mirror/mpre
 
 export OFFICIAL_PUBLISH_DIR_BASE=/pdkbuild/android
 export TEMP_PUBLISH_DIR_BASE=/pdkbuild/temp
