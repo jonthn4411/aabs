@@ -407,8 +407,8 @@ else
 	$(log) "[$$(private_product)] building android OTA package ..."
 	$(hide)cd $(SRC_DIR) && \
 	source ./build/envsetup.sh && \
-	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) && \
-	# make mrvlotapackage
+	chooseproduct $$(private_product) && choosetype $(DROID_TYPE) && choosevariant $(DROID_VARIANT) 
+	#make mrvlotapackage
 	$(hide)echo "  copy OTA package ..."
 
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/target_files-package.zip $(OUTPUT_DIR)/$$(private_product)
