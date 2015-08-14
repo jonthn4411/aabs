@@ -425,7 +425,7 @@ else
 	cd root/ && find . | cpio -o -H newc | gzip > ../ramdisk-debug.img && cd ../ &&\
 	mkbootimg --ramdisk ramdisk-debug.img --kernel uImage -o boot-debug.img && \
 	mkdir -p system/lib/modules/ && \
-	cp root/lib/modules/* system/lib/modules/ && \
+	cp -rf root/lib/modules/* system/lib/modules/ && \
 	rm -fr root/ && mv root-bak root && \
 	mv $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/system.img.bak && \
 	cd $(SRC_DIR) && \
@@ -563,15 +563,12 @@ PUBLISHING_FILES2+=$$(product)/debug_kernel_img/modules_debug.tgz:./$$(product)/
 endef
 
 
-#$(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
-#				$(eval $(call define-build-kernel-target,$(bv)) ) \
-#				$(eval $(call define-build-droid-target,$(bv)) ) \
-#				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
-#				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
-#				$(eval $(call define-build-debug-kernel-target,$(bv)) ) \
-#				$(eval $(call define-build-droid-debug-img,$(bv)) ) \
-#)
-
-$(foreach bv,$(ABS_BUILD_DEVICES), \
+$(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-target,$(bv)) )\
+				$(eval $(call define-build-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-target,$(bv)) ) \
+				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
+				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
+				$(eval $(call define-build-debug-kernel-target,$(bv)) ) \
+				$(eval $(call define-build-droid-debug-img,$(bv)) ) \
 )
+
