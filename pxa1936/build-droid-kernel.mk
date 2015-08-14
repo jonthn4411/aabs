@@ -572,5 +572,6 @@ endef
 #				$(eval $(call define-build-droid-debug-img,$(bv)) ) \
 #)
 
-$(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call $(eval $(call define-build-droid-target,$(bv)) ) \
+$(foreach bv,$(ABS_BUILD_DEVICES), \
+				$(eval $(call define-build-droid-target,$(bv)) ) \
 )
