@@ -499,7 +499,7 @@ if [ $? -ne 0 ]; then #auto build fail, send an email
     else
     	if [ -e "$PUBLISH_DIR" ]; then
     		if [ ! `ls -A $PUBLISH_DIR` ]; then
-    			rm -rf $PUBLISH_DIR
+    			rm -rfv $PUBLISH_DIR
     		fi
     	fi
     fi
@@ -566,8 +566,10 @@ if [ "$FLAG_DISTRIBUTED_BUILD" = "true" ]; then
 
 		if [ "$build_failure" = "true" ]; then
 			for i in `cat  $DISTRIBUTED_BUILD`;do
-				rm -rf $i
+				rm -rfv $i
 			done
+            echo "Distribution build ----> build fail."
+            send_error_notification "$(make -f ${MAKEFILE} get_changelog_build)"
 		else
 			#FORMAL_PUBLISH_DIR_BASE=$PUBLISH_DIR_BASE
 			PUBLISH_DIR_BASE=$FORMAL_PUBLISH_DIR_BASE
@@ -580,15 +582,15 @@ if [ "$FLAG_DISTRIBUTED_BUILD" = "true" ]; then
 				else
 					#cp -rf ${i}/* $pub
 					#if [ $? -eq 0 ];then
-					#	rm -rf $i
+					#	rm -rfv $i
 					#fi
-					mv -f ${i}/* $pub
-					rm -rf $i
+					mv -fv ${i}/* $pub
+					rm -rfv $i
 				fi
 			done
 
 			#send out final success notification mail
-			rm -f ${pub}/SUCCESS
+			rm -fv ${pub}/SUCCESS
 			echo "Distribution build ----> pub=${pub}"
 			echo "Distribution build ----> PUBLISH_DIR=${PUBLISH_DIR}"
 			PUBLISH_DIR=${pub}
@@ -616,7 +618,7 @@ if [ "$FLAG_DISTRIBUTED_BUILD" = "true" ]; then
 
 		fi
 		cat $DISTRIBUTED_BUILD
-		rm -f $DISTRIBUTED_BUILD
+		rm -fv $DISTRIBUTED_BUILD
 	fi
 	echo "Distribution build done(${index} of ${publish_index})!"
 fi
