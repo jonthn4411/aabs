@@ -65,7 +65,6 @@ SRC_DIR:=$(ABS_SOURCE_DIR)
 else
 SRC_DIR:=$(ABS_TOP_DIR)/$(SRC_DIR)
 endif
-$(info ANDROID_SOURCE_DIR: $(SRC_DIR))
 
 
 #Selecting the toolchain
