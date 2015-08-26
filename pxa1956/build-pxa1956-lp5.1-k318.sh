@@ -1,4 +1,4 @@
-export ABS_SOC=pxa1936
+export ABS_SOC=pxa1956
 export ABS_DROID_BRANCH=lp5.1
 export PATH=/usr/lib/jvm/java-6-sun/bin/:$PATH
 if [ -z "ABS_BUILDHOST_DEF" ]; then
