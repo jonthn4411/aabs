@@ -56,7 +56,7 @@ tw:=$$(subst :,  , $(1) )
 product:=$$(word 1, $$(tw) )
 device:=$$(word 2, $$(tw) )
 .PHONY:build_droid_kernel_$$(product)
-build_droid_kernel_$$(product): build_droid_$$(product) build_droid_otapackage_$$(product) build_debug_kernel_$$(product) build_droid_debug_img_$$(product)
+build_droid_kernel_$$(product): build_droid_$$(product) build_debug_kernel_$$(product) build_droid_debug_img_$$(product)
 endef
 
 export KERNEL_TOOLCHAIN_PREFIX
@@ -514,7 +514,6 @@ $(foreach bv,$(ABS_BUILD_DEVICES), $(eval $(call define-build-droid-kernel-targe
 				$(eval $(call define-build-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-target,$(bv)) ) \
 				$(eval $(call define-clean-droid-kernel-target,$(bv)) ) \
-				$(eval $(call define-build-droid-otapackage,$(bv)) ) \
 				$(eval $(call define-build-debug-kernel-target,$(bv)) ) \
 				$(eval $(call define-build-droid-debug-img,$(bv)) ) \
 )
