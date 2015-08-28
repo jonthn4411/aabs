@@ -377,13 +377,6 @@ fi
 
 LAST_BUILD=$PUBLISH_DIR_BASE/$LAST_BUILD
 DISTRIBUTED_BUILD=$PUBLISH_DIR_BASE/$DISTRIBUTED_BUILD
-echo "==will remove=$DISTRIBUTED_BUILD=="
-if [ -e "$DISTRIBUTED_BUILD" ]; then
-    echo "==remove=$DISTRIBUTED_BUILD=="
-    rm -fv $DISTRIBUTED_BUILD
-else
-    echo "==$DISTRIBUTED_BUILD= not exists="
-fi
 
 if [ "$FLAG_TEMP" = "true" ]; then
 	BUILD_TAG=[autobuild-temp]
