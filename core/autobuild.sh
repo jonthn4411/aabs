@@ -377,6 +377,13 @@ fi
 
 LAST_BUILD=$PUBLISH_DIR_BASE/$LAST_BUILD
 DISTRIBUTED_BUILD=$PUBLISH_DIR_BASE/$DISTRIBUTED_BUILD
+echo "==will remove=$DISTRIBUTED_BUILD=="
+if [ -e "$DISTRIBUTED_BUILD" ]; then
+    echo "==remove=$DISTRIBUTED_BUILD=="
+    rm -fv $DISTRIBUTED_BUILD
+else
+    echo "==$DISTRIBUTED_BUILD= not exists="
+fi
 
 if [ "$FLAG_TEMP" = "true" ]; then
 	BUILD_TAG=[autobuild-temp]
@@ -527,100 +534,102 @@ fi
 
 #support distributed building
 if [ "$FLAG_DISTRIBUTED_BUILD" = "true" ]; then
-	echo "Distribution build ----> save $PUBLISH_DIR to $DISTRIBUTED_BUILD"
-	if [ ! -e "$DISTRIBUTED_BUILD" ]; then
-		echo "$PUBLISH_DIR" > $DISTRIBUTED_BUILD
-	else
-		echo "$PUBLISH_DIR" >> $DISTRIBUTED_BUILD
-	fi
+    echo "Distribution build ----> save $PUBLISH_DIR to $DISTRIBUTED_BUILD"
+    if [ ! -e "$DISTRIBUTED_BUILD" ]; then
+        echo "$PUBLISH_DIR" > $DISTRIBUTED_BUILD
+    else
+        echo "$PUBLISH_DIR" >> $DISTRIBUTED_BUILD
+    fi
 
 
-	#support distributed building
-	#merge distributed publish directories
-	index=0
-	device_list=$ABS_DEVICE_LIST
-	if [ -n "$device_list" ]; then
-		index=1
-		while [ 1 ]; do
-	  	if [ ! `echo $device_list | grep -e ','` ]; then
-		  	break
-			fi
-			index=$(( index + 1 ))
-			device_list=${device_list#*,}
-	done
-	fi
+    #support distributed building
+    #merge distributed publish directories
+    index=0
+    device_list=$ABS_DEVICE_LIST
+    if [ -n "$device_list" ]; then
+        index=1
+        while [ 1 ]; do
+          if [ ! `echo $device_list | grep -e ','` ]; then
+              break
+            fi
+            index=$(( index + 1 ))
+            device_list=${device_list#*,}
+    done
+    fi
 
-	publish_index=0
-	publish_index=`cat $DISTRIBUTED_BUILD | wc -l`
-	echo "Distribution build ----> index=${index}, publish_index=${publish_index}"
+    publish_index=0
+    publish_index=`cat $DISTRIBUTED_BUILD | wc -l`
+    echo "Distribution build ----> index=${index}, publish_index=${publish_index}"
 
-	build_failure=false
-	if [ $index -eq $publish_index ]; then
-		echo "Distribution build ----> all builds completed now, do release stuff..."
-		for i in `cat $DISTRIBUTED_BUILD`;do
-			if [ -e "${i}/FAILURE" ]; then
-				build_failure=true
-				break
-			fi
-		done
+    build_failure=false
+    if [ $index -eq $publish_index ]; then
+        echo "Distribution build ----> all builds completed now, do release stuff..."
+        for i in `cat $DISTRIBUTED_BUILD`;do
+            if [ -e "${i}/FAILURE" ]; then
+                build_failure=true
+                break
+            fi
+        done
 
-		if [ "$build_failure" = "true" ]; then
-			for i in `cat  $DISTRIBUTED_BUILD`;do
-				rm -rfv $i
-			done
+        if [ "$build_failure" = "true" ]; then
+            for i in `cat  $DISTRIBUTED_BUILD`;do
+                echo "==build fail will delete [$i]===="
+                if [ -e "${i}/FAILURE" ]; then
+                    echo "==build fail if exists FAILURE file in [$i]==then will delete=="
+                    rm -rfv $i
+                fi
+            done
             echo "Distribution build ----> build fail."
             send_error_notification "$(make -f ${MAKEFILE} get_changelog_build)"
-		else
-			#FORMAL_PUBLISH_DIR_BASE=$PUBLISH_DIR_BASE
-			PUBLISH_DIR_BASE=$FORMAL_PUBLISH_DIR_BASE
-			get_new_publish_dir
-		  export PUBLISH_DIR
-			pub=$PUBLISH_DIR
-			for i in `cat  $DISTRIBUTED_BUILD`;do
-				if [ "$i" = "$pub" ];then
-					continue
-				else
-					#cp -rf ${i}/* $pub
-					#if [ $? -eq 0 ];then
-					#	rm -rfv $i
-					#fi
-					mv -fv ${i}/* $pub
-					rm -rfv $i
-				fi
-			done
+        else
+            #FORMAL_PUBLISH_DIR_BASE=$PUBLISH_DIR_BASE
+            PUBLISH_DIR_BASE=$FORMAL_PUBLISH_DIR_BASE
+            get_new_publish_dir
+            export PUBLISH_DIR
+            pub=$PUBLISH_DIR
+            for i in `cat  $DISTRIBUTED_BUILD`;do
+                if [ "$i" = "$pub" ];then
+                    continue
+                else
+                    mv -fv ${i}/* $pub
+                    rm -rfv $i
+                fi
+            done
 
-			#send out final success notification mail
-			rm -fv ${pub}/SUCCESS
-			echo "Distribution build ----> pub=${pub}"
-			echo "Distribution build ----> PUBLISH_DIR=${PUBLISH_DIR}"
-			PUBLISH_DIR=${pub}
-			export PUBLISH_DIR
-			echo "all builds successfully done. Cheers!Package:${PUBLISH_DIR} " 2>&1 | tee -a $STD_LOG
-			echo "~~<result>PASS</result>"
-			echo "~~<result-dir>http://$(get_publish_server_ip)${PUBLISH_DIR}</result-dir>"
-			if [ "$FLAG_EMAIL" = "true" ]; then
-				echo "    sending email notification..." 2>&1 | tee -a $STD_LOG
-				send_success_notification
-			fi
-			if [ "$FLAG_PUBLISH" = "true" ] && [ "$FLAG_TEMP" = "false" ] && [ "$FLAG_AUTOTEST" = "true" ]; then
-				echo "Sorry, autotest isn't supported temporarily."
-			fi
+            #send out final success notification mail
+            rm -fv ${pub}/SUCCESS
+            echo "Distribution build ----> pub=${pub}"
+            echo "Distribution build ----> PUBLISH_DIR=${PUBLISH_DIR}"
+            PUBLISH_DIR=${pub}
+            export PUBLISH_DIR
+            echo "all builds successfully done. Cheers!Package:${PUBLISH_DIR} " 2>&1 | tee -a $STD_LOG
+            echo "~~<result>PASS</result>"
+            echo "~~<result-dir>http://$(get_publish_server_ip)${PUBLISH_DIR}</result-dir>"
+            if [ "$FLAG_EMAIL" = "true" ]; then
+                echo "    sending email notification..." 2>&1 | tee -a $STD_LOG
+                send_success_notification
+            fi
+            if [ "$FLAG_PUBLISH" = "true" ] && [ "$FLAG_TEMP" = "false" ] && [ "$FLAG_AUTOTEST" = "true" ]; then
+                echo "Sorry, autotest isn't supported temporarily."
+            fi
 
-			#saving the build info to file:$LAST_BUILD
-			TEMP_NUM=$PUBLISH_DIR
-			TEMP_NUM=${TEMP_NUM##*/}
-			TEMP_NUM=${TEMP_NUM%_pxa*}
-			BUILD_NUM=${TEMP_NUM}
-			LAST_BUILD=${PUBLISH_DIR_BASE}/LAST_BUILD.${ABS_MANIFEST_BRANCH}
-			echo "Project:$ABS_SOC" > $LAST_BUILD &&
-			echo "Build-Num:$BUILD_NUM" >> $LAST_BUILD &&
-			echo "Package:$PUBLISH_DIR" >> $LAST_BUILD
+            #saving the build info to file:$LAST_BUILD
+            TEMP_NUM=$PUBLISH_DIR
+            TEMP_NUM=${TEMP_NUM##*/}
+            TEMP_NUM=${TEMP_NUM%_pxa*}
+            BUILD_NUM=${TEMP_NUM}
+            LAST_BUILD=${PUBLISH_DIR_BASE}/LAST_BUILD.${ABS_MANIFEST_BRANCH}
+            echo "Project:$ABS_SOC" > $LAST_BUILD &&
+            echo "Build-Num:$BUILD_NUM" >> $LAST_BUILD &&
+            echo "Package:$PUBLISH_DIR" >> $LAST_BUILD
 
-		fi
-		cat $DISTRIBUTED_BUILD
-		rm -fv $DISTRIBUTED_BUILD
-	fi
-	echo "Distribution build done(${index} of ${publish_index})!"
+        fi
+        echo "==will cat $DISTRIBUTED_BUILD==="
+        cat $DISTRIBUTED_BUILD
+        echo "==will rm -fv $DISTRIBUTED_BUILD==="
+        rm -fv $DISTRIBUTED_BUILD
+    fi
+    echo "Distribution build done(${index} of ${publish_index})!"
 fi
 
 echo "[AABS]-------------------END-------------------"
