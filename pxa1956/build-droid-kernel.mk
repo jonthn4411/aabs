@@ -301,6 +301,13 @@ PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_SS_M09_Y0_AI_SKL_Flash.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/Skylark_LTG_V15.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_MDB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/wtm_rel_helan4_RealOTP.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL4_LTG_DKB_DSDS_SHM_TX.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/NEZHA3_LTG_M10_Z3_ARG_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/NZ3_LTG_DKB_40M_DSDS_TX_MDB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/HL4_LWG_DKB_DSDS_SHM_TX.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/NEZHA3_LWG_M10_Z3_ARG_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/NZ3_LWG_DKB_40M_DSDS_TX_MDB.bin:./$$(product)/flash/:o:md5
 #1956 specific end
 
 PUBLISHING_FILES2+=$$(product)/LTG_ZIP_RF.bin:./$$(product)/flash/:o:md5
