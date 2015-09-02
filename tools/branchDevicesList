@@ -26,3 +26,4 @@ rls_pxa1928_lp5.1_alpha1=pxa1928dkb_tz:pxa1928dkb pxa1928ff_tz:pxa1928ff
 pxa1936-mpre=pxa1928ff_64bit:pxa1928ff pxa1928ff_tz:pxa1928ff pxa1908dkb_tz:pxa1908dkb pxa1936dkb_tz:pxa1936dkb pxa1936tk_tz:pxa1936tk pxa1908sl_tz:pxa1908sl
 rls_pxa1936_lp5.1_k314_beta1_mmx=pxa1908dkb_tz:pxa1908dkb pxa1908sl_tz:pxa1908sl
 rls_pxa1956_lp5.1_k318=pxa1956dkb_tz:pxa1956dkb
+rls_pxa1936_lp5.1_k314_beta2=pxa1908dkb_tz:pxa1908dkb pxa1908sl_tz:pxa1908sl
