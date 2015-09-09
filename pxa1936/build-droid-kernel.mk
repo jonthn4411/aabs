@@ -166,6 +166,7 @@ build_droid_$$(product):
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/boot.img $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/cache.img $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/recovery.img ]; then cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/recovery.img $(OUTPUT_DIR)/$$(private_product)/; fi
+	$(hide)if [ -e $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/persistent.img ]; then cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/persistent.img $(OUTPUT_DIR)/$$(private_product)/; fi
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/u-boot.bin $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/vmlinux $(OUTPUT_DIR)/$$(private_product)/
 	$(hide)cp $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/System.map $(OUTPUT_DIR)/$$(private_product)/
@@ -212,6 +213,7 @@ PUBLISHING_FILES2+=$$(product)/userdata_8g.img:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/primary_gpt_8g:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/secondary_gpt_8g:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/system.img:./$$(product)/flash/:m:md5
+PUBLISHING_FILES2+=$$(product)/persistent.img:./$$(product)/flash/:m:md5
 PUBLISHING_FILES2+=$$(product)/ramdisk.img:./$$(product)/debug/:m:md5
 PUBLISHING_FILES2+=$$(product)/ramdisk-rooted.img:./$$(product)/debug/:o:md5
 PUBLISHING_FILES2+=$$(product)/symbols_system.tgz:./$$(product)/debug/:o:md5
