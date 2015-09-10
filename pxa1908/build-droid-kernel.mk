@@ -387,7 +387,6 @@ build_droid_otapackage_$$(product):
 	make mrvlotapackage
 	$(hide)echo "  copy OTA package ..."
 
-	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/target_files-package.zip $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl.zip $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/$$(private_product)-ota-mrvl-recovery.zip $(OUTPUT_DIR)/$$(private_product)
 	$(hide)cp -p -r $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/obj/PACKAGING/target_files_intermediates/$$(private_product)-target_files*.zip $(OUTPUT_DIR)/$$(private_product)/$$(private_product)-ota-mrvl-intermediates.zip
@@ -396,7 +395,6 @@ build_droid_otapackage_$$(product):
 PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl.zip:./$$(product)/ota/:o:md5
 PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl-recovery.zip:./$$(product)/ota/:o:md5
 PUBLISHING_FILES2+=$$(product)/$$(product)-ota-mrvl-intermediates.zip:./$$(product)/ota/:o:md5
-PUBLISHING_FILES2+=$$(product)/target_files-package.zip:./$$(product)/ota/:o:md5
 
 endef
 #define define-build-droid-otapackage
