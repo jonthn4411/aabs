@@ -1,4 +1,4 @@
-ABS_BUILD_DEVICES ?=pxa1936ff_tz:pxa1936ff pxa1908dkb_tz:pxa1908dkb pxa1908FF_tz:pxa1908FF pxa1936dkb_64bit:pxa1936dkb pxa1936dkb_tz:pxa1936dkb pxa1956dkb_tz:pxa1956dkb pxa1936tk_tz:pxa1936tk pxa1908sl_tz:pxa1908sl
+ABS_BUILD_DEVICES ?=pxa1908dkb_tz:pxa1908dkb pxa1936dkb_64bit:pxa1936dkb pxa1936dkb_tz:pxa1936dkb pxa1956dkb_tz:pxa1956dkb pxa1936tk_tz:pxa1936tk pxa1908sl_tz:pxa1908sl
 BOARD:=pxa1936
 ANDROID_VERSION:=$(ABS_DROID_BRANCH)
 PRODUCT_CODE:=$(BOARD)-$(ANDROID_VERSION)
