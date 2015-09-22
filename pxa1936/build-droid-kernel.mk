@@ -366,6 +366,15 @@ PUBLISHING_FILES2+=$$(product)/Skylark_LTG_V15.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/HL_LTG_SL_DKB_DSDS_MDB.bin:./$$(product)/flash/:o:md5
 #1936 specific end
 
+#pxa1918 specific begin
+PUBLISHING_FILES2+=$$(product)/Argus_LTG.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/Argus_LWG.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/NEZHA3_LTG_M11_A0_ARG_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/NEZHA3_LWG_M11_A0_ARG_Flash.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/ULC2_LTG_DKB_DSDS_SHM_TX.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/ULC2_LWG_DKB_DSDS_SHM_TX.bin:./$$(product)/flash/:o:md5
+#pxa1918 specific end
+
 PUBLISHING_FILES2+=$$(product)/LTG_ZIP_RF.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/LWG_ZIP_RF.bin:./$$(product)/flash/:o:md5
 
