@@ -151,6 +151,8 @@ build_droid_$$(product):
 
 	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname radio*img |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
 	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname *gpt* |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
+	$(hide)find  $(SRC_DIR)/$(DROID_OUT)/$$(private_device)/ -iname DTim* |xargs -i cp {} $(OUTPUT_DIR)/$$(private_product)
+	$(log) "  done"
 	$(log) "  done"
 
 	$(hide)if [ "$(PLATFORM_ANDROID_VARIANT)" = "user" ]; then \
@@ -373,6 +375,7 @@ PUBLISHING_FILES2+=$$(product)/ULC2_LTG_DKB_DSDS_SHM_TX.bin:./$$(product)/flash/
 PUBLISHING_FILES2+=$$(product)/ULC2_LWG_DKB_DSDS_SHM_TX.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/NZ3_LTG_DKB_DSDS_40M_A0_TX_MDB.bin:./$$(product)/flash/:o:md5
 PUBLISHING_FILES2+=$$(product)/NZ3_LWG_DKB_40M_A0_DSDS_TX_MDB.bin:./$$(product)/flash/:o:md5
+PUBLISHING_FILES2+=$$(product)/DTim.CP:./$$(product)/flash/:o:md5
 #pxa1918 specific end
 
 PUBLISHING_FILES2+=$$(product)/LTG_ZIP_RF.bin:./$$(product)/flash/:o:md5
